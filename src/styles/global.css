@@ -1,7 +1,15 @@
+/* Hallmark · macrostructure: Bento Grid · F1 bento knobs: tiles=8, spans=irregular, accent=corner-only
+ * theme: custom · vibe: "gradient warmth, technical precision, developer confidence"
+ * paper: oklch(98% 0.008 30) · accent: oklch(65% 0.21 30) coral
+ * display: Space Grotesk 700 · body: Geist 400 · code: JetBrains Mono
+ * axes: light / geometric-sans / warm · nav: N1b · footer: Ft5
+ * studied: no · context: explicit · pre-emit critique: P5 H4 E5 S4 R5 V5
+ */
+
 @import "tailwindcss";
 
 @theme {
-	/* Pollora brand — from logo gradient */
+	/* === Pollora brand tokens — from logo gradient === */
 	--color-pollora-pink: #fb196d;
 	--color-pollora-red: #ff314c;
 	--color-pollora-coral: #ff5334;
@@ -10,16 +18,127 @@
 	--color-pollora-teal: #49c7b9;
 	--color-pollora-dark: #1d142a;
 
-	/* Extended palette */
-	--color-pollora-50: #fff5f0;
-	--color-pollora-100: #ffe8db;
-	--color-pollora-200: #ffd0b5;
-	--color-pollora-300: #ffab80;
-	--color-pollora-400: #ff8c12;
-	--color-pollora-500: #ff5334;
-	--color-pollora-600: #ff314c;
-	--color-pollora-700: #fb196d;
-	--color-pollora-800: #cc1058;
-	--color-pollora-900: #990c42;
-	--color-pollora-950: #1d142a;
+	/* === Hallmark design tokens === */
+
+	/* Paper (surface) */
+	--color-paper: oklch(98% 0.008 30);
+	--color-paper-2: oklch(95% 0.010 30);
+	--color-paper-3: oklch(92% 0.012 30);
+
+	/* Ink (text) */
+	--color-ink: oklch(17% 0.030 290);
+	--color-ink-2: oklch(40% 0.020 290);
+
+	/* Neutrals */
+	--color-rule: oklch(88% 0.008 30);
+	--color-rule-2: oklch(92% 0.006 30);
+	--color-muted: oklch(55% 0.012 30);
+	--color-neutral: oklch(70% 0.008 30);
+
+	/* Accent */
+	--color-accent: oklch(65% 0.21 30);
+	--color-accent-hover: oklch(60% 0.23 28);
+	--color-accent-ink: oklch(98% 0.008 30);
+	--color-focus: oklch(63% 0.24 30);
+
+	/* Code surface */
+	--color-code-bg: oklch(17% 0.030 290);
+	--color-code-surface: oklch(22% 0.025 290);
+
+	/* Spacing — 4pt scale */
+	--space-3xs: 0.125rem;
+	--space-2xs: 0.25rem;
+	--space-xs: 0.5rem;
+	--space-sm: 0.75rem;
+	--space-md: 1rem;
+	--space-lg: 1.5rem;
+	--space-xl: 2.5rem;
+	--space-2xl: 4rem;
+	--space-3xl: 6rem;
+	--space-4xl: 9rem;
+
+	/* Typography scale — major third (1.25) */
+	--text-xs: 0.64rem;
+	--text-sm: 0.8rem;
+	--text-base: 1rem;
+	--text-md: 1.25rem;
+	--text-lg: 1.5625rem;
+	--text-xl: 1.9531rem;
+	--text-2xl: 2.4414rem;
+	--text-3xl: 3.0518rem;
+	--text-4xl: 3.8147rem;
+	--text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
+
+	/* Font stacks */
+	--font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+	--font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--font-code: "JetBrains Mono", ui-monospace, monospace;
+
+	/* Motion */
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+	--ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+	--dur-micro: 120ms;
+	--dur-short: 220ms;
+	--dur-long: 420ms;
+
+	/* Radii */
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 16px;
+	--radius-pill: 9999px;
+
+	/* Z-index */
+	--z-base: 1;
+	--z-raised: 10;
+	--z-sticky: 200;
+	--z-modal: 400;
 }
+
+html {
+	overflow-x: clip;
+}
+
+body {
+	overflow-x: clip;
+	font-family: var(--font-body);
+	color: var(--color-ink);
+	background: var(--color-paper);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Reveal animation */
+.reveal {
+	opacity: 0;
+	transform: translateY(8px);
+	animation: reveal var(--dur-long) var(--ease-out) forwards;
+	animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes reveal {
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 150ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 150ms !important;
+	}
+}
+
+/* Code block syntax colours */
+.token-keyword { color: oklch(75% 0.18 330); }
+.token-attribute { color: oklch(80% 0.15 80); }
+.token-string { color: oklch(78% 0.14 155); }
+.token-comment { color: oklch(50% 0.01 290); }
+.token-class { color: oklch(82% 0.12 200); }
+.token-function { color: oklch(78% 0.16 55); }
+.token-variable { color: oklch(90% 0.01 290); }
+.token-punctuation { color: oklch(65% 0.01 290); }
