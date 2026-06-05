@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+	/* Pollora brand — from logo gradient */
+	--color-pollora-pink: #fb196d;
+	--color-pollora-red: #ff314c;
+	--color-pollora-coral: #ff5334;
+	--color-pollora-orange: #ff8c12;
+	--color-pollora-amber: #feb017;
+	--color-pollora-teal: #49c7b9;
+	--color-pollora-dark: #1d142a;
+
+	/* Extended palette */
+	--color-pollora-50: #fff5f0;
+	--color-pollora-100: #ffe8db;
+	--color-pollora-200: #ffd0b5;
+	--color-pollora-300: #ffab80;
+	--color-pollora-400: #ff8c12;
+	--color-pollora-500: #ff5334;
+	--color-pollora-600: #ff314c;
+	--color-pollora-700: #fb196d;
+	--color-pollora-800: #cc1058;
+	--color-pollora-900: #990c42;
+	--color-pollora-950: #1d142a;
+}
