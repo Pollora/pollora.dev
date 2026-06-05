@@ -55,7 +55,7 @@ import '../styles/global.css';
 						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,6vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
 							Modern PHP,<br /><span class="text-gradient">zero compromise.</span>
 						</h1>
-						<p class="text-xl md:text-2xl text-ink-2 max-w-[48ch] leading-relaxed mb-12">
+						<p class="text-lg text-ink-2 max-w-[50ch] leading-relaxed mb-12">
 							Build WordPress sites with Laravel's elegance. PHP 8 attributes, Blade templates, auto-discovery, and a full ecosystem of packages.
 						</p>
 						<div class="flex flex-wrap gap-4">
@@ -95,8 +95,8 @@ import '../styles/global.css';
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="reveal max-w-3xl mx-auto text-center mb-14" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
-					<p class="text-ink-2 text-xl">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
+					<p class="text-ink-2 text-lg">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
 				</div>
 				<div class="reveal max-w-2xl mx-auto" style="--i:1">
 					<div class="bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] shadow-2xl shadow-pollora-dark/10">
@@ -136,15 +136,15 @@ import '../styles/global.css';
 		<section class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="reveal mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
-					<p class="text-ink-2 text-xl max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
+					<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 					<!-- PHP 8 Attributes — 4 col -->
 					<div class="reveal md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
 						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">Declare, don't register</h3>
-						<p class="text-ink-2 text-lg mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, schedules — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Declare, don't register</h3>
+						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, schedules — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
 						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[PostType('product')]</span>
 <span class="token-attribute">#[HasArchive]</span>
 <span class="token-attribute">#[ShowInRest]</span>
@@ -153,34 +153,34 @@ import '../styles/global.css';
 					<!-- Auto-Discovery — 2 col -->
 					<div class="reveal md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
 						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Auto-Discovery</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">Write it, it works</h3>
-						<p class="text-ink-2 text-lg">No manual registration. Pollora scans your codebase and registers everything automatically. Convention over configuration.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Write it, it works</h3>
+						<p class="text-ink-2 text-base">No manual registration. Pollora scans your codebase and registers everything automatically. Convention over configuration.</p>
 					</div>
 					<!-- Blade Templates — 3 col -->
 					<div class="reveal md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:3">
 						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade Templates</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">WordPress data, Laravel syntax</h3>
-						<p class="text-ink-2 text-lg">Replace PHP template files with Blade. Use directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code> for clean, readable templates.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax</h3>
+						<p class="text-ink-2 text-base">Replace PHP template files with Blade. Use directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code> for clean, readable templates.</p>
 					</div>
 					<!-- Hybrid Routing — 3 col -->
 					<div class="reveal md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
 						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">Laravel routes + WordPress fallback</h3>
-						<p class="text-ink-2 text-lg mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Laravel routes + WordPress fallback</h3>
+						<p class="text-ink-2 text-base mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
 						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'single'</span>, [<span class="token-class">PostController</span>::<span class="token-keyword">class</span>, <span class="token-string">'show'</span>]);
 <span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
 					</div>
 					<!-- Vite + Tailwind — 3 col -->
 					<div class="reveal md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-orange/30 transition-all duration-[var(--dur-short)]" style="--i:5">
 						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Vite + Tailwind</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">Modern asset pipeline</h3>
-						<p class="text-ink-2 text-lg">Vite with HMR, Tailwind CSS v4, and the Asset facade for script and style registration. No more enqueue headaches.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Modern asset pipeline</h3>
+						<p class="text-ink-2 text-base">Vite with HMR, Tailwind CSS v4, and the Asset facade for script and style registration. No more enqueue headaches.</p>
 					</div>
 					<!-- Type Safety — 3 col -->
 					<div class="reveal md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-red/30 transition-all duration-[var(--dur-short)]" style="--i:6">
 						<div class="text-pollora-red font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Type Safety</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-4">PHPStan, types everywhere</h3>
-						<p class="text-ink-2 text-lg">Constructor property promotion, explicit return types, type-hinted parameters. PHPStan level 5 enforced across the framework.</p>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">PHPStan, types everywhere</h3>
+						<p class="text-ink-2 text-base">Constructor property promotion, explicit return types, type-hinted parameters. PHPStan level 5 enforced across the framework.</p>
 					</div>
 				</div>
 			</div>
@@ -190,8 +190,8 @@ import '../styles/global.css';
 		<section class="py-24 md:py-32 bg-code-bg">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="reveal mb-14" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
-					<p class="text-neutral text-xl max-w-[55ch]">Register a custom post type. Left: WordPress traditional. Right: Pollora.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
+					<p class="text-neutral text-lg max-w-[55ch]">Register a custom post type. Left: WordPress traditional. Right: Pollora.</p>
 				</div>
 				<div class="reveal grid md:grid-cols-2 gap-6" style="--i:1">
 					<!-- WordPress Traditional -->
@@ -259,8 +259,8 @@ import '../styles/global.css';
 		<section id="ecosystem" class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="reveal mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
-					<p class="text-ink-2 text-xl max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
+					<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
 				</div>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" class="reveal group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
@@ -296,8 +296,8 @@ import '../styles/global.css';
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="reveal mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight mb-5">Two themes, <span class="text-gradient">two purposes</span></h2>
-					<p class="text-ink-2 text-xl max-w-[55ch]">Start with a clean default or a conversion-ready WooCommerce storefront. Both use Blade, Vite, and Tailwind CSS.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Two themes, <span class="text-gradient">two purposes</span></h2>
+					<p class="text-ink-2 text-lg max-w-[55ch]">Start with a clean default or a conversion-ready WooCommerce storefront. Both use Blade, Vite, and Tailwind CSS.</p>
 				</div>
 				<div class="grid md:grid-cols-2 gap-6">
 					<div class="reveal bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:1">
@@ -310,8 +310,8 @@ import '../styles/global.css';
 							</div>
 						</div>
 						<div class="p-8">
-							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-3">Default Theme</h3>
-							<p class="text-ink-2 text-lg">Blade templates, Vite with HMR, Tailwind CSS v4, theme-specific service providers and configuration. The right starting point for any project.</p>
+							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Default Theme</h3>
+							<p class="text-ink-2 text-base">Blade templates, Vite with HMR, Tailwind CSS v4, theme-specific service providers and configuration. The right starting point for any project.</p>
 						</div>
 					</div>
 					<div class="reveal bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:2">
@@ -324,8 +324,8 @@ import '../styles/global.css';
 							</div>
 						</div>
 						<div class="p-8">
-							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] mb-3">Apiary <span class="text-base font-normal text-muted ml-1">WooCommerce</span></h3>
-							<p class="text-ink-2 text-lg">Sticky add-to-cart, search autocomplete, Alpine.js interactivity, responsive product grids, and full checkout override. Built for conversion.</p>
+							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Apiary <span class="text-base font-normal text-muted ml-1">WooCommerce</span></h3>
+							<p class="text-ink-2 text-base">Sticky add-to-cart, search autocomplete, Alpine.js interactivity, responsive product grids, and full checkout override. Built for conversion.</p>
 						</div>
 					</div>
 				</div>
@@ -338,8 +338,8 @@ import '../styles/global.css';
 				<div class="reveal grid md:grid-cols-[1.2fr_1fr] gap-14 md:gap-20 items-center" style="--i:0">
 					<div>
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">pollora/nectar</p>
-						<h2 class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
-						<p class="text-ink-2 text-xl leading-relaxed mb-10 max-w-[48ch]">
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
+						<p class="text-ink-2 text-lg leading-relaxed mb-10 max-w-[48ch]">
 							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature.
 						</p>
 						<div class="grid grid-cols-2 gap-8">
@@ -419,28 +419,18 @@ import '../styles/global.css';
 	</footer>
 
 	<script>
-		// Reveal-on-scroll with IntersectionObserver
-		const scrollObserver = new IntersectionObserver(
+		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
 					if (entry.isIntersecting) {
-						entry.target.style.animationPlayState = 'running';
-						scrollObserver.unobserve(entry.target);
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
 					}
 				});
 			},
-			{ threshold: 0.08 }
+			{ threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
 		);
-
-		document.querySelectorAll('.reveal').forEach((el) => {
-			const rect = el.getBoundingClientRect();
-			if (rect.top < window.innerHeight) {
-				el.style.animationPlayState = 'running';
-			} else {
-				el.style.animationPlayState = 'paused';
-				scrollObserver.observe(el);
-			}
-		});
+		document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 	</script>
 
 </body>
