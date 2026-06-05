@@ -133,6 +133,26 @@ body {
 	}
 }
 
+/* Pollora gradient utility */
+.text-gradient {
+	background: linear-gradient(135deg, #fb196d 0%, #ff314c 25%, #ff5334 50%, #ff8c12 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+}
+
+.bg-gradient-pollora {
+	background: linear-gradient(135deg, #fb196d 0%, #ff314c 25%, #ff5334 50%, #ff8c12 100%);
+}
+
+.border-gradient {
+	border-image: linear-gradient(135deg, #fb196d, #ff8c12) 1;
+}
+
+.gradient-bar {
+	background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+}
+
 /* Code block syntax colours */
 .token-keyword { color: oklch(75% 0.18 330); }
 .token-attribute { color: oklch(80% 0.15 80); }
