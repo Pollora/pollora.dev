@@ -343,7 +343,7 @@ Block CSS files (`style.css`, `editor.css`) support Tailwind via two directives:
 }
 ```
 
-> See [blocks.md](blocks.md) for detailed examples of Tailwind usage in Gutenberg blocks.
+> See [Gutenberg Blocks](/blocks/gutenberg-blocks/) for detailed examples of Tailwind usage in Gutenberg blocks.
 
 ## Theme Management
 
@@ -441,7 +441,7 @@ Commands needs to be run inside the theme folder.
 
 ## Asset Management
 
-For a comprehensive guide on asset management (registering scripts, styles, containers, and Vite integration), see the dedicated [Assets documentation](assets.md).
+For a comprehensive guide on asset management (registering scripts, styles, containers, and Vite integration), see the dedicated [Assets documentation](/theming/assets-vite/).
 
 ### Quick Reference
 

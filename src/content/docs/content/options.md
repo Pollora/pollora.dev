@@ -2,7 +2,7 @@
 title: Options
 description: Manage WordPress options with a fluent API
 sidebar:
-  order: 3
+  order: 4
 ---
 
 

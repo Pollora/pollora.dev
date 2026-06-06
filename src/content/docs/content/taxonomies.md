@@ -2,7 +2,7 @@
 title: Taxonomies
 description: Define custom taxonomies with PHP 8 attributes
 sidebar:
-  order: 2
+  order: 3
 ---
 
 

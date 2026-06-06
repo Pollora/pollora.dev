@@ -47,7 +47,7 @@ The `conditions` array maps WordPress conditional functions to their route alias
 
 Each key is a WordPress conditional function (like `is_404`, `is_search`, etc.), and the value is either a string or an array of strings representing the route aliases.
 
-See [Routing](routing.md) for more information about routing in Pollora.
+See [Routing](/routing/wordpress-routes/) for more information about routing in Pollora.
 
 #### Available Conditions
 

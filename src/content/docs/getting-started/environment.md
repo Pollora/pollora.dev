@@ -194,7 +194,7 @@ QUEUE_CONNECTION=sync
 
 ## Performance Integration
 
-The environment system is integrated with performance-critical components like the [Discovery Engine](discovery.md):
+The environment system is integrated with performance-critical components like the [Discovery Engine](/core-concepts/auto-discovery/):
 
 ```php
 class DiscoveryEngine

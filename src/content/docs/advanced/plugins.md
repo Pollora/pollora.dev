@@ -779,7 +779,7 @@ Key points:
 - **Blade/PHP HMR**: Full reload on PHP/Blade file changes
 - **Docker/DDEV aware**: Automatic detection of container environments with proper HMR configuration
 
-> See [blocks.md](blocks.md) for detailed documentation on creating Gutenberg blocks.
+> See [Gutenberg Blocks](/blocks/gutenberg-blocks/) for detailed documentation on creating Gutenberg blocks.
 
 ### Package.json
 
@@ -814,7 +814,7 @@ The plugin template includes all dependencies needed for modern asset compilatio
 
 > The `@wordpress/*` and `@roots/vite-plugin` packages are included by default so plugins are ready for Gutenberg block development without additional setup. If your plugin doesn't use blocks, these packages are simply unused — no performance impact.
 >
-> **Note:** No `tailwind.config.js` or `postcss.config.mjs` is needed — Tailwind v4 auto-detects source files via the `@tailwindcss/vite` plugin. See [blocks.md](blocks.md) for using Tailwind in Gutenberg blocks.
+> **Note:** No `tailwind.config.js` or `postcss.config.mjs` is needed — Tailwind v4 auto-detects source files via the `@tailwindcss/vite` plugin. See [Gutenberg Blocks](/blocks/gutenberg-blocks/) for using Tailwind in Gutenberg blocks.
 
 ### Asset Container
 
@@ -1000,7 +1000,7 @@ Tailwind v4 auto-detects source files — no `tailwind.config.js` needed. For Gu
 }
 ```
 
-This ensures utility classes from block JSX are generated and available in both the editor and frontend. See [blocks.md](blocks.md) for full details.
+This ensures utility classes from block JSX are generated and available in both the editor and frontend. See [Gutenberg Blocks](/blocks/gutenberg-blocks/) for full details.
 
 ## Translations
 
