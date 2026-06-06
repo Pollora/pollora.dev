@@ -186,49 +186,47 @@ import '../styles/global.css';
 			</div>
 		</section>
 
-		<!-- ═══ CODE COMPARISON ═══ -->
+		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
 		<section class="py-24 md:py-32 bg-code-bg">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" mb-14" style="--i:0">
+				<div data-reveal class=" mb-10" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
-					<p class="text-neutral text-lg max-w-[55ch]">Register a custom post type. Left: WordPress traditional. Right: Pollora.</p>
+					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register a <span id="tab-subject" class="text-gradient font-semibold">custom post type</span>. Left: WordPress traditional. Right: Pollora.</p>
+
+					<!-- Tabs -->
+					<div class="flex flex-wrap gap-2" role="tablist">
+						<button role="tab" aria-selected="true" data-tab="post-types" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-gradient-pollora text-white">Post Types</button>
+						<button role="tab" aria-selected="false" data-tab="hooks" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]">Actions &amp; Filters</button>
+						<button role="tab" aria-selected="false" data-tab="schedules" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]">Schedules</button>
+					</div>
 				</div>
-				<div data-reveal class=" grid md:grid-cols-2 gap-6" style="--i:1">
-					<!-- WordPress Traditional -->
+
+				<!-- Tab: Post Types -->
+				<div data-reveal data-tab-panel="post-types" class=" grid md:grid-cols-2 gap-6" style="--i:1">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
-							<span class="text-base font-medium text-muted">WordPress — 30+ lines</span>
+							<span class="text-base font-medium text-muted">WordPress — 25+ lines</span>
 						</div>
 						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
 							<pre><code><span class="token-keyword">function</span> <span class="token-function">register_book_post_type</span>() <span class="token-punctuation">&#123;</span>
     <span class="token-function">register_post_type</span>(<span class="token-string">'book'</span>, [
-        <span class="token-string">'labels'</span> => [
-            <span class="token-string">'name'</span>          => <span class="token-string">'Books'</span>,
-            <span class="token-string">'singular_name'</span> => <span class="token-string">'Book'</span>,
-            <span class="token-string">'add_new'</span>       => <span class="token-string">'Add New Book'</span>,
-            <span class="token-string">'add_new_item'</span>  => <span class="token-string">'Add New Book'</span>,
-            <span class="token-string">'edit_item'</span>     => <span class="token-string">'Edit Book'</span>,
-            <span class="token-string">'view_item'</span>     => <span class="token-string">'View Book'</span>,
-            <span class="token-string">'search_items'</span>  => <span class="token-string">'Search Books'</span>,
+        <span class="token-string">'labels'</span> =&gt; [
+            <span class="token-string">'name'</span>          =&gt; <span class="token-string">'Books'</span>,
+            <span class="token-string">'singular_name'</span> =&gt; <span class="token-string">'Book'</span>,
+            <span class="token-string">'add_new'</span>       =&gt; <span class="token-string">'Add New Book'</span>,
+            <span class="token-string">'edit_item'</span>     =&gt; <span class="token-string">'Edit Book'</span>,
+            <span class="token-string">'view_item'</span>     =&gt; <span class="token-string">'View Book'</span>,
         ],
-        <span class="token-string">'public'</span>       => <span class="token-keyword">true</span>,
-        <span class="token-string">'has_archive'</span>  => <span class="token-keyword">true</span>,
-        <span class="token-string">'show_in_rest'</span> => <span class="token-keyword">true</span>,
-        <span class="token-string">'supports'</span>     => [
-            <span class="token-string">'title'</span>,
-            <span class="token-string">'editor'</span>,
-            <span class="token-string">'thumbnail'</span>,
-        ],
-        <span class="token-string">'rewrite'</span> => [
-            <span class="token-string">'slug'</span> => <span class="token-string">'books'</span>,
-        ],
+        <span class="token-string">'public'</span>       =&gt; <span class="token-keyword">true</span>,
+        <span class="token-string">'has_archive'</span>  =&gt; <span class="token-keyword">true</span>,
+        <span class="token-string">'show_in_rest'</span> =&gt; <span class="token-keyword">true</span>,
+        <span class="token-string">'supports'</span>     =&gt; [<span class="token-string">'title'</span>, <span class="token-string">'editor'</span>, <span class="token-string">'thumbnail'</span>],
     ]);
 <span class="token-punctuation">&#125;</span>
 <span class="token-function">add_action</span>(<span class="token-string">'init'</span>, <span class="token-string">'register_book_post_type'</span>);</code></pre>
 						</div>
 					</div>
-					<!-- Pollora -->
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
@@ -236,9 +234,7 @@ import '../styles/global.css';
 						</div>
 						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\HasArchive</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\ShowInRest</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Supports</span>;
 
 <span class="token-attribute">#[PostType('book')]</span>
 <span class="token-attribute">#[HasArchive]</span>
@@ -247,11 +243,124 @@ import '../styles/global.css';
 <span class="token-keyword">class</span> <span class="token-class">Book</span> <span class="token-punctuation">&#123;&#125;</span>
 
 <span class="token-comment">// Auto-discovered. Auto-registered.</span>
-<span class="token-comment">// Labels generated from the class name.</span>
-<span class="token-comment">// No add_action() needed.</span></code></pre>
+<span class="token-comment">// Labels generated from the class name.</span></code></pre>
 						</div>
 					</div>
 				</div>
+
+				<!-- Tab: Hooks -->
+				<div data-tab-panel="hooks" class="grid md:grid-cols-2 gap-6 hidden">
+					<div>
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress — scattered across files</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
+							<pre><code><span class="token-comment">// functions.php — action</span>
+<span class="token-function">add_action</span>(<span class="token-string">'init'</span>, <span class="token-string">'setup_custom_rewrites'</span>, 20);
+
+<span class="token-keyword">function</span> <span class="token-function">setup_custom_rewrites</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-function">add_rewrite_rule</span>(/* ... */);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// functions.php — filter</span>
+<span class="token-function">add_filter</span>(<span class="token-string">'the_content'</span>, <span class="token-string">'add_cta_to_posts'</span>);
+
+<span class="token-keyword">function</span> <span class="token-function">add_cta_to_posts</span>($content) <span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">if</span> (<span class="token-function">is_single</span>()) <span class="token-punctuation">&#123;</span>
+        $content .= <span class="token-string">'&lt;div class="cta"&gt;...&lt;/div&gt;'</span>;
+    <span class="token-punctuation">&#125;</span>
+    <span class="token-keyword">return</span> $content;
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+					<div>
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — one class, typed methods</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Action</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Filter</span>;
+
+<span class="token-keyword">class</span> <span class="token-class">ContentHooks</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-attribute">#[Action('init', priority: 20)]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">setupRewrites</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-comment">// Auto-discovered, auto-registered</span>
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-attribute">#[Filter('the_content')]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">addCta</span>(<span class="token-class">string</span> $content): <span class="token-class">string</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-keyword">return</span> $content . <span class="token-string">'&lt;div class="cta"&gt;...&lt;/div&gt;'</span>;
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tab: Schedules -->
+				<div data-tab-panel="schedules" class="grid md:grid-cols-2 gap-6 hidden">
+					<div>
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress — 15+ lines, fragile</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
+							<pre><code><span class="token-comment">// Register custom interval</span>
+<span class="token-function">add_filter</span>(<span class="token-string">'cron_schedules'</span>, <span class="token-keyword">function</span>($s) <span class="token-punctuation">&#123;</span>
+    $s[<span class="token-string">'every_6h'</span>] = [
+        <span class="token-string">'interval'</span> =&gt; 21600,
+        <span class="token-string">'display'</span>  =&gt; <span class="token-string">'Every 6 hours'</span>,
+    ];
+    <span class="token-keyword">return</span> $s;
+<span class="token-punctuation">&#125;</span>);
+
+<span class="token-comment">// Schedule the event (check if not already)</span>
+<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'cleanup_task'</span>)) <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_schedule_event</span>(
+        <span class="token-function">time</span>(), <span class="token-string">'every_6h'</span>, <span class="token-string">'cleanup_task'</span>
+    );
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// Add the callback</span>
+<span class="token-function">add_action</span>(<span class="token-string">'cleanup_task'</span>, <span class="token-string">'do_cleanup'</span>);
+
+<span class="token-keyword">function</span> <span class="token-function">do_cleanup</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-comment">// Clean up old data</span>
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+					<div>
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — one attribute, done</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Schedule</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Every</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Interval</span>;
+
+<span class="token-keyword">class</span> <span class="token-class">Maintenance</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-attribute">#[Schedule(Every::DAY)]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">dailyCleanup</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-comment">// Runs daily. Auto-registered.</span>
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-attribute">#[Schedule(new Interval(hours: 6))]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">checkFeeds</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-comment">// Custom interval. No cron_schedules filter.</span>
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</section>
 
@@ -419,6 +528,26 @@ import '../styles/global.css';
 	</footer>
 
 	<script>
+		// Tabs
+		const tabSubjects = { 'post-types': 'custom post type', 'hooks': 'hook', 'schedules': 'scheduled event' };
+		document.querySelectorAll('.tab-btn').forEach(btn => {
+			btn.addEventListener('click', () => {
+				const tab = btn.dataset.tab;
+				document.querySelectorAll('.tab-btn').forEach(b => {
+					b.setAttribute('aria-selected', 'false');
+					b.className = b.className.replace('bg-gradient-pollora text-white', 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]');
+				});
+				btn.setAttribute('aria-selected', 'true');
+				btn.className = btn.className.replace('bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]', 'bg-gradient-pollora text-white');
+				document.querySelectorAll('[data-tab-panel]').forEach(p => p.classList.add('hidden'));
+				const panel = document.querySelector(`[data-tab-panel="${tab}"]`);
+				if (panel) panel.classList.remove('hidden');
+				const subject = document.getElementById('tab-subject');
+				if (subject) subject.textContent = tabSubjects[tab] || tab;
+			});
+		});
+
+		// Reveal
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {

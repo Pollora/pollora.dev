@@ -108,7 +108,7 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-/* Reveal animation — class-based, starts hidden */
+/* Reveal animation — class-based */
 [data-reveal] {
 	opacity: 0;
 	transform: translateY(12px);
@@ -119,6 +119,14 @@ body {
 [data-reveal].is-visible {
 	opacity: 1;
 	transform: none;
+}
+
+/* Fallback: make visible if JS hasn't run after 1s */
+@keyframes reveal-fallback {
+	to { opacity: 1; transform: none; }
+}
+[data-reveal] {
+	animation: reveal-fallback 0s 1.2s forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -149,6 +157,14 @@ body {
 
 .gradient-bar {
 	background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+}
+
+/* Code blocks — base text color on dark backgrounds */
+.bg-code-bg code,
+.bg-code-bg pre,
+.bg-code-surface code,
+.bg-code-surface pre {
+	color: oklch(85% 0.01 290);
 }
 
 /* Code block syntax colours */
