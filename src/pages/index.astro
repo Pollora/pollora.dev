@@ -4,6 +4,23 @@ import mascotDeveloper from '../assets/mascot-developer.svg';
 import mascotDocs from '../assets/mascot-documentation.svg';
 import mascotGithub from '../assets/mascot-github.svg';
 import '../styles/global.css';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+
+const peekRaw = readFileSync(resolve('src/assets/mascot-peek.svg'), 'utf-8');
+// Crop to top portion (eyes area) and clean up Inkscape metadata
+const peekSvg = peekRaw
+	.replace(/viewBox="[^"]*"/, 'viewBox="100 50 1900 850"')
+	.replace(/<sodipodi:namedview[\s\S]*?\/>/g, '')
+	.replace(/<\?xml[^>]*\?>/g, '')
+	.replace(/xmlns:inkscape="[^"]*"/g, '')
+	.replace(/xmlns:sodipodi="[^"]*"/g, '')
+	.replace(/inkscape:[a-z-]+="[^"]*"/g, '')
+	.replace(/sodipodi:[a-z-]+="[^"]*"/g, '')
+	.replace(/id="svg82"/, 'id="mascot-peek"')
+	.replace(/id="g82"/, 'id="pupil-2"')
+	.replace(/id="g83"/, 'id="pupil-1"')
+	.replace('display="block"', 'display="block" class="w-full h-auto"');
 ---
 
 <html lang="en">
@@ -107,6 +124,13 @@ import '../styles/global.css';
 				</div>
 			</div>
 		</section>
+
+		<!-- ═══ MASCOT PEEK ═══ -->
+		<div x-data="polloraPeek()" @mousemove.window="track($event)" class="relative -mt-8 md:-mt-12 z-10 flex justify-center pointer-events-none" aria-hidden="true">
+			<div class="w-48 md:w-64 lg:w-80" x-ref="container">
+				<Fragment set:html={peekSvg} />
+			</div>
+		</div>
 
 		<!-- ═══ INSTALL ═══ -->
 		<section class="py-24 md:py-32 bg-paper-2">
@@ -588,9 +612,41 @@ import '../styles/global.css';
 
 	<script>
 		import Alpine from 'alpinejs';
+
+		// Pollora peek — eye tracking
+		Alpine.data('polloraPeek', () => ({
+			track(e) {
+				const svg = document.getElementById('mascot-peek');
+				if (!svg) return;
+
+				const rect = svg.getBoundingClientRect();
+				const svgCX = rect.left + rect.width / 2;
+				const svgCY = rect.top + rect.height / 2;
+
+				// Direction from SVG center to mouse, normalized
+				const dx = e.clientX - svgCX;
+				const dy = e.clientY - svgCY;
+				const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+				const nx = dx / dist;
+				const ny = dy / dist;
+
+				// Max pixel movement in SVG units (pupils can move ~20-30 SVG units)
+				const maxMove = 18;
+				// Ease: move more when mouse is closer, cap at maxMove
+				const factor = Math.min(dist / 300, 1);
+				const moveX = nx * maxMove * factor;
+				const moveY = ny * maxMove * factor;
+
+				const p1 = document.getElementById('pupil-1');
+				const p2 = document.getElementById('pupil-2');
+				if (p1) p1.setAttribute('transform', `translate(${moveX}, ${moveY})`);
+				if (p2) p2.setAttribute('transform', `translate(${moveX}, ${moveY})`);
+			}
+		}));
+
 		Alpine.start();
 
-		// Reveal on scroll — lightweight vanilla observer (no Alpine scope needed)
+		// Reveal on scroll
 		const io = new IntersectionObserver((entries) => {
 			entries.forEach((e) => {
 				if (e.isIntersecting) { e.target.classList.add('shown'); io.unobserve(e.target); }
