@@ -126,9 +126,16 @@ const peekSvg = peekRaw
 		</section>
 
 		<!-- ═══ MASCOT PEEK ═══ -->
-		<div x-data="polloraPeek()" @mousemove.window="track($event)" class="relative -mt-8 md:-mt-12 z-10 flex justify-center pointer-events-none" aria-hidden="true">
-			<div class="w-48 md:w-64 lg:w-80" x-ref="container">
-				<Fragment set:html={peekSvg} />
+		<div x-data="polloraPeek()" @mousemove.window="track($event)" class="relative -mt-6 md:-mt-10 z-10 pointer-events-none" aria-hidden="true">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div class="grid md:grid-cols-[1.2fr_1fr]">
+					<div></div>
+					<div class="flex justify-center md:justify-end">
+						<div class="w-56 md:w-72 lg:w-96">
+							<Fragment set:html={peekSvg} />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
