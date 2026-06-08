@@ -516,8 +516,9 @@ import '../styles/global.css';
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="grid md:grid-cols-[1fr_1.1fr] gap-12 md:gap-20 items-center" style="--i:0">
-					<div class="flex justify-center">
-						<img src={mascotDocs.src} alt="Pollora documentation mascot" class="w-full max-w-sm md:max-w-md" width="400" height="400" loading="lazy" />
+					<div class="flex justify-center relative">
+						<div class="absolute inset-0 rounded-full blur-3xl opacity-10" style="background: radial-gradient(circle, #fb196d 0%, #ff8c12 40%, transparent 70%)"></div>
+						<img src={mascotDocs.src} alt="Pollora documentation mascot" class="relative w-full max-w-sm md:max-w-md" width="400" height="400" loading="lazy" />
 					</div>
 					<div>
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
@@ -556,8 +557,9 @@ import '../styles/global.css';
 							</a>
 						</div>
 					</div>
-					<div class="hidden md:flex justify-center">
-						<img src={mascotGithub.src} alt="Pollora open source mascot" class="w-full max-w-xs" width="300" height="300" loading="lazy" />
+					<div class="hidden md:flex justify-center relative">
+						<div class="absolute inset-0 rounded-full blur-3xl opacity-25" style="background: radial-gradient(circle, #ff5334 0%, #ff8c12 40%, transparent 70%)"></div>
+						<img src={mascotGithub.src} alt="Pollora open source mascot" class="relative w-full max-w-xs" width="300" height="300" loading="lazy" />
 					</div>
 				</div>
 			</div>
