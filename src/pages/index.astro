@@ -81,7 +81,7 @@ const peekSvg = peekRaw
 	<main>
 
 		<!-- ═══ HERO ═══ -->
-		<section class="pt-36 pb-24 md:pt-44 md:pb-32">
+		<section class="pt-36 pb-24 md:pt-44 md:pb-32 relative">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
 					<div data-reveal class="" style="--i:0">
@@ -102,7 +102,7 @@ const peekSvg = peekRaw
 						</div>
 					</div>
 					<div data-reveal class="rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
-						<div class="bg-code-bg p-6 md:p-8 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
+						<div class="bg-code-bg p-6 md:p-8 pb-24 md:pb-28 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
 							<div class="flex items-center gap-2 mb-6">
 								<span class="w-3 h-3 rounded-full bg-pollora-pink"></span>
 								<span class="w-3 h-3 rounded-full bg-pollora-amber"></span>
@@ -123,21 +123,21 @@ const peekSvg = peekRaw
 					</div>
 				</div>
 			</div>
-		</section>
 
-		<!-- ═══ MASCOT PEEK ═══ -->
-		<div x-data="polloraPeek()" @mousemove.window="track($event)" class="relative -mt-6 md:-mt-10 z-10 pointer-events-none" aria-hidden="true">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div class="grid md:grid-cols-[1.2fr_1fr]">
-					<div></div>
-					<div class="flex justify-center md:justify-end">
-						<div class="w-56 md:w-72 lg:w-96">
-							<Fragment set:html={peekSvg} />
+			<!-- Mascot peek — absolute, bottom-right of hero -->
+			<div x-data="polloraPeek()" @mousemove.window="track($event)" class="absolute bottom-0 right-0 z-10 pointer-events-none w-full" aria-hidden="true">
+				<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+					<div class="grid md:grid-cols-[1.2fr_1fr]">
+						<div></div>
+						<div class="flex justify-end">
+							<div class="w-56 md:w-72 lg:w-96 translate-y-1/3">
+								<Fragment set:html={peekSvg} />
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 
 		<!-- ═══ INSTALL ═══ -->
 		<section class="py-24 md:py-32 bg-paper-2">
