@@ -216,7 +216,7 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Post Types -->
-				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid md:grid-cols-2 gap-6" style="--i:1">
+				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6" style="--i:1">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
@@ -263,7 +263,7 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Hooks -->
-				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
+				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
@@ -316,14 +316,14 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Schedules -->
-				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
+				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
-							<span class="text-base font-medium text-muted">WordPress — 15+ lines, fragile</span>
+							<span class="text-base font-medium text-muted">WordPress — 30+ lines, fragile</span>
 						</div>
 						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
-							<pre><code><span class="token-comment">// Register custom interval</span>
+							<pre><code><span class="token-comment">// 1. Register custom 6h interval</span>
 <span class="token-function">add_filter</span>(<span class="token-string">'cron_schedules'</span>, <span class="token-keyword">function</span>($s) <span class="token-punctuation">&#123;</span>
     $s[<span class="token-string">'every_6h'</span>] = [
         <span class="token-string">'interval'</span> =&gt; 21600,
@@ -332,18 +332,24 @@ import '../styles/global.css';
     <span class="token-keyword">return</span> $s;
 <span class="token-punctuation">&#125;</span>);
 
-<span class="token-comment">// Schedule the event (check if not already)</span>
-<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'cleanup_task'</span>)) <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_schedule_event</span>(
-        <span class="token-function">time</span>(), <span class="token-string">'every_6h'</span>, <span class="token-string">'cleanup_task'</span>
-    );
+<span class="token-comment">// 2. Schedule daily cleanup</span>
+<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'daily_cleanup'</span>)) <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_schedule_event</span>(<span class="token-function">time</span>(), <span class="token-string">'daily'</span>, <span class="token-string">'daily_cleanup'</span>);
+<span class="token-punctuation">&#125;</span>
+<span class="token-function">add_action</span>(<span class="token-string">'daily_cleanup'</span>, <span class="token-string">'do_daily_cleanup'</span>);
+
+<span class="token-keyword">function</span> <span class="token-function">do_daily_cleanup</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-comment">// Clean up old data</span>
 <span class="token-punctuation">&#125;</span>
 
-<span class="token-comment">// Add the callback</span>
-<span class="token-function">add_action</span>(<span class="token-string">'cleanup_task'</span>, <span class="token-string">'do_cleanup'</span>);
+<span class="token-comment">// 3. Schedule feed check every 6h</span>
+<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'check_feeds'</span>)) <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_schedule_event</span>(<span class="token-function">time</span>(), <span class="token-string">'every_6h'</span>, <span class="token-string">'check_feeds'</span>);
+<span class="token-punctuation">&#125;</span>
+<span class="token-function">add_action</span>(<span class="token-string">'check_feeds'</span>, <span class="token-string">'do_check_feeds'</span>);
 
-<span class="token-keyword">function</span> <span class="token-function">do_cleanup</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-comment">// Clean up old data</span>
+<span class="token-keyword">function</span> <span class="token-function">do_check_feeds</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-comment">// Check RSS feeds</span>
 <span class="token-punctuation">&#125;</span></code></pre>
 						</div>
 					</div>
