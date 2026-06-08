@@ -1,5 +1,8 @@
 ---
 import polloraLogo from '../assets/pollora-logo.svg';
+import mascotDeveloper from '../assets/mascot-developer.svg';
+import mascotDocs from '../assets/mascot-documentation.svg';
+import mascotGithub from '../assets/mascot-github.svg';
 import '../styles/global.css';
 ---
 
@@ -112,7 +115,7 @@ import '../styles/global.css';
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
 					<p class="text-ink-2 text-lg">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
 				</div>
-				<div data-reveal class="max-w-2xl mx-auto" style="--i:1">
+				<div data-reveal class="grid md:grid-cols-[1fr_auto] gap-8 items-end max-w-4xl mx-auto" style="--i:1">
 					<div class="bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] shadow-2xl shadow-pollora-dark/10">
 						<div class="flex items-center gap-3 mb-7 text-sm text-muted">
 							<span class="text-pollora-teal text-base">~</span>
@@ -143,6 +146,7 @@ import '../styles/global.css';
 						</div>
 					</div>
 				</div>
+				<img src={mascotDeveloper.src} alt="Pollora developer mascot" class="hidden md:block w-40 lg:w-48" width="192" height="192" loading="lazy" />
 			</div>
 		</section>
 
@@ -510,24 +514,52 @@ import '../styles/global.css';
 			</div>
 		</section>
 
+		<!-- ═══ DOCUMENTATION ═══ -->
+		<section class="py-24 md:py-32 bg-paper-2">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="grid md:grid-cols-[1fr_1.1fr] gap-12 md:gap-20 items-center" style="--i:0">
+					<div class="flex justify-center">
+						<img src={mascotDocs.src} alt="Pollora documentation mascot" class="w-full max-w-sm md:max-w-md" width="400" height="400" loading="lazy" />
+					</div>
+					<div>
+						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
+						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
+							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, versioned, and AI-ready with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>.
+						</p>
+						<div class="flex flex-wrap gap-4">
+							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Read the Docs <span aria-hidden="true">&rarr;</span>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
 		<!-- ═══ CTA ═══ -->
 		<section class="py-28 md:py-36 bg-code-bg relative overflow-hidden">
 			<div class="absolute inset-0 opacity-[0.07]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 70%)"></div>
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] text-center relative">
-				<div data-reveal class="" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.25rem,4.5vw+0.5rem,4rem)] tracking-tight text-[var(--color-accent-ink)] mb-7" style="overflow-wrap:anywhere;min-width:0">
-						Start building with <span class="text-gradient">Pollora</span>
-					</h2>
-					<p class="text-neutral text-xl max-w-[45ch] mx-auto mb-12">
-						One command to install. Laravel conventions from day one. WordPress power underneath.
-					</p>
-					<div class="flex flex-wrap justify-center gap-5">
-						<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-10 py-4 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-bold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-							Get Started <span aria-hidden="true">&rarr;</span>
-						</a>
-						<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-10 py-4 rounded-[var(--radius-md)] border border-[oklch(30%_0.01_290)] text-[var(--color-accent-ink)] text-lg font-semibold hover:border-neutral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-							View on GitHub
-						</a>
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
+				<div data-reveal class="grid md:grid-cols-[1.2fr_1fr] gap-12 items-center" style="--i:0">
+					<div class="text-center md:text-left">
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.25rem,4.5vw+0.5rem,4rem)] tracking-tight text-[var(--color-accent-ink)] mb-7" style="overflow-wrap:anywhere;min-width:0">
+							Start building with <span class="text-gradient">Pollora</span>
+						</h2>
+						<p class="text-neutral text-xl max-w-[45ch] mb-12">
+							One command to install. Laravel conventions from day one. WordPress power underneath.
+						</p>
+						<div class="flex flex-wrap justify-center md:justify-start gap-5">
+							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-10 py-4 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-bold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Get Started <span aria-hidden="true">&rarr;</span>
+							</a>
+							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-10 py-4 rounded-[var(--radius-md)] border border-[oklch(30%_0.01_290)] text-[var(--color-accent-ink)] text-lg font-semibold hover:border-neutral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								View on GitHub
+							</a>
+						</div>
+					</div>
+					<div class="hidden md:flex justify-center">
+						<img src={mascotGithub.src} alt="Pollora open source mascot" class="w-full max-w-xs" width="300" height="300" loading="lazy" />
 					</div>
 				</div>
 			</div>
