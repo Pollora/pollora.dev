@@ -11,7 +11,6 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@alpinejs/intersect": "^3.15.12",
     "@astrojs/starlight": "^0.39.3",
     "@tailwindcss/vite": "^4.3.0",
     "alpinejs": "^3.15.12",
