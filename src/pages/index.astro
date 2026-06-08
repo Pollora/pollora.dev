@@ -18,12 +18,20 @@ import '../styles/global.css';
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+
+	<script>
+		import Alpine from 'alpinejs';
+		import intersect from '@alpinejs/intersect';
+		Alpine.plugin(intersect);
+		window.Alpine = Alpine;
+		Alpine.start();
+	</script>
 </head>
 
 <body class="bg-paper text-ink">
 
 	<!-- ═══ NAV ═══ -->
-	<nav class="fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
+	<nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
 		<div class="gradient-bar h-[3px]"></div>
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
 			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
@@ -38,9 +46,22 @@ import '../styles/global.css';
 			<a href="/getting-started/installation/" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 				Get Started
 			</a>
-			<button class="md:hidden p-2 -mr-2" aria-label="Menu">
-				<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+			<button @click="open = !open" class="md:hidden p-2 -mr-2" :aria-expanded="open" aria-label="Menu">
+				<svg x-show="!open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+				<svg x-show="open" x-cloak width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 			</button>
+		</div>
+		<!-- Mobile menu -->
+		<div x-show="open" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150 ease-in" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-6 flex flex-col gap-4 font-[var(--font-body)] text-base font-medium text-ink-2">
+				<a href="/getting-started/installation/" @click="open = false" class="hover:text-ink">Docs</a>
+				<a href="#ecosystem" @click="open = false" class="hover:text-ink">Ecosystem</a>
+				<a href="#nectar" @click="open = false" class="hover:text-ink">Nectar AI</a>
+				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-ink">GitHub</a>
+				<a href="/getting-started/installation/" class="inline-flex items-center justify-center gap-2 px-6 py-3 mt-2 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold">
+					Get Started
+				</a>
+			</div>
 		</div>
 	</nav>
 
@@ -50,7 +71,7 @@ import '../styles/global.css';
 		<section class="pt-36 pb-24 md:pt-44 md:pb-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
-					<div data-reveal class="" style="--i:0">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden" style="--i:0">
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Laravel + WordPress</p>
 						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,6vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
 							Modern PHP,<br /><span class="text-gradient">zero compromise.</span>
@@ -67,7 +88,7 @@ import '../styles/global.css';
 							</a>
 						</div>
 					</div>
-					<div data-reveal class=" rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
 						<div class="bg-code-bg p-6 md:p-8 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
 							<div class="flex items-center gap-2 mb-6">
 								<span class="w-3 h-3 rounded-full bg-pollora-pink"></span>
@@ -94,11 +115,11 @@ import '../styles/global.css';
 		<!-- ═══ INSTALL ═══ -->
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" max-w-3xl mx-auto text-center mb-14" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden max-w-3xl mx-auto text-center mb-14" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
 					<p class="text-ink-2 text-lg">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
 				</div>
-				<div data-reveal class=" max-w-2xl mx-auto" style="--i:1">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden max-w-2xl mx-auto" style="--i:1">
 					<div class="bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] shadow-2xl shadow-pollora-dark/10">
 						<div class="flex items-center gap-3 mb-7 text-sm text-muted">
 							<span class="text-pollora-teal text-base">~</span>
@@ -135,13 +156,13 @@ import '../styles/global.css';
 		<!-- ═══ FEATURES — Bento grid ═══ -->
 		<section class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" mb-16" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden mb-16" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 					<!-- PHP 8 Attributes — 4 col -->
-					<div data-reveal class=" md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
 						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Declare, don't register</h3>
 						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, schedules — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
@@ -151,19 +172,19 @@ import '../styles/global.css';
 <span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></code></pre>
 					</div>
 					<!-- Auto-Discovery — 2 col -->
-					<div data-reveal class=" md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
 						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Auto-Discovery</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Write it, it works</h3>
 						<p class="text-ink-2 text-base">No manual registration. Pollora scans your codebase and registers everything automatically. Convention over configuration.</p>
 					</div>
 					<!-- Blade Templates — 3 col -->
-					<div data-reveal class=" md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:3">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:3">
 						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade Templates</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax</h3>
 						<p class="text-ink-2 text-base">Replace PHP template files with Blade. Use directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code> for clean, readable templates.</p>
 					</div>
 					<!-- Hybrid Routing — 3 col -->
-					<div data-reveal class=" md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
 						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Laravel routes + WordPress fallback</h3>
 						<p class="text-ink-2 text-base mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
@@ -171,13 +192,13 @@ import '../styles/global.css';
 <span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
 					</div>
 					<!-- Vite + Tailwind — 3 col -->
-					<div data-reveal class=" md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-orange/30 transition-all duration-[var(--dur-short)]" style="--i:5">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-orange/30 transition-all duration-[var(--dur-short)]" style="--i:5">
 						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Vite + Tailwind</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Modern asset pipeline</h3>
 						<p class="text-ink-2 text-base">Vite with HMR, Tailwind CSS v4, and the Asset facade for script and style registration. No more enqueue headaches.</p>
 					</div>
 					<!-- Type Safety — 3 col -->
-					<div data-reveal class=" md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-red/30 transition-all duration-[var(--dur-short)]" style="--i:6">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-red/30 transition-all duration-[var(--dur-short)]" style="--i:6">
 						<div class="text-pollora-red font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Type Safety</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">PHPStan, types everywhere</h3>
 						<p class="text-ink-2 text-base">Constructor property promotion, explicit return types, type-hinted parameters. PHPStan level 5 enforced across the framework.</p>
@@ -187,22 +208,22 @@ import '../styles/global.css';
 		</section>
 
 		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
-		<section class="py-24 md:py-32 bg-code-bg">
+		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', subjects: { 'post-types': 'custom post type', 'hooks': 'hook', 'schedules': 'scheduled event' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" mb-10" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden mb-10" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
-					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register a <span id="tab-subject" class="text-gradient font-semibold">custom post type</span>. Left: WordPress traditional. Right: Pollora.</p>
+					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register a <span x-text="subjects[tab]" class="text-gradient font-semibold">custom post type</span>. Left: WordPress traditional. Right: Pollora.</p>
 
 					<!-- Tabs -->
 					<div class="flex flex-wrap gap-2" role="tablist">
-						<button role="tab" aria-selected="true" data-tab="post-types" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-gradient-pollora text-white">Post Types</button>
-						<button role="tab" aria-selected="false" data-tab="hooks" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]">Actions &amp; Filters</button>
-						<button role="tab" aria-selected="false" data-tab="schedules" class="tab-btn px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)] bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]">Schedules</button>
+						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Post Types</button>
+						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Actions &amp; Filters</button>
+						<button role="tab" :aria-selected="tab === 'schedules'" @click="tab = 'schedules'" :class="tab === 'schedules' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Schedules</button>
 					</div>
 				</div>
 
 				<!-- Tab: Post Types -->
-				<div data-reveal data-tab-panel="post-types" class=" grid md:grid-cols-2 gap-6" style="--i:1">
+				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden grid md:grid-cols-2 gap-6" style="--i:1">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
@@ -249,7 +270,7 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Hooks -->
-				<div data-tab-panel="hooks" class="grid md:grid-cols-2 gap-6 hidden">
+				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
@@ -302,7 +323,7 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Schedules -->
-				<div data-tab-panel="schedules" class="grid md:grid-cols-2 gap-6 hidden">
+				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
 					<div>
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
@@ -367,32 +388,32 @@ import '../styles/global.css';
 		<!-- ═══ ECOSYSTEM ═══ -->
 		<section id="ecosystem" class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" mb-16" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden mb-16" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
 				</div>
 				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" data-reveal class=" group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
+					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
 						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/cli</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">CLI</h3>
 						<p class="text-ink-2 text-base">Scaffold projects in one command. Interactive setup with optional DDEV integration. Global binary.</p>
 					</a>
-					<a href="https://github.com/Pollora/colt" target="_blank" rel="noopener" data-reveal class=" group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:2">
+					<a href="https://github.com/Pollora/colt" target="_blank" rel="noopener" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:2">
 						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/colt</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Colt</h3>
 						<p class="text-ink-2 text-base">Eloquent ORM models for WordPress. Access posts, users, taxonomies, and options with Laravel's query builder.</p>
 					</a>
-					<a href="https://github.com/Pollora/entity" target="_blank" rel="noopener" data-reveal class=" group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:3">
+					<a href="https://github.com/Pollora/entity" target="_blank" rel="noopener" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:3">
 						<div class="font-[var(--font-code)] text-pollora-amber text-sm tracking-wider uppercase font-semibold mb-3">pollora/entity</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-amber transition-colors duration-[var(--dur-micro)]">Entity</h3>
 						<p class="text-ink-2 text-base">Fluent interface for post types and taxonomies. Hexagonal architecture with full type safety.</p>
 					</a>
-					<a href="https://github.com/Pollora/query" target="_blank" rel="noopener" data-reveal class=" group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:4">
+					<a href="https://github.com/Pollora/query" target="_blank" rel="noopener" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:4">
 						<div class="font-[var(--font-code)] text-pollora-orange text-sm tracking-wider uppercase font-semibold mb-3">pollora/query</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-orange transition-colors duration-[var(--dur-micro)]">Query</h3>
 						<p class="text-ink-2 text-base">Fluent WP_Query wrapper. Type-safe method chaining with IDE autocompletion for readable post queries.</p>
 					</a>
-					<a href="https://github.com/Pollora/nectar" target="_blank" rel="noopener" data-reveal class=" group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-1" style="--i:5">
+					<a href="https://github.com/Pollora/nectar" target="_blank" rel="noopener" x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-1" style="--i:5">
 						<div class="font-[var(--font-code)] text-pollora-pink text-sm tracking-wider uppercase font-semibold mb-3">pollora/nectar</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-pink transition-colors duration-[var(--dur-micro)]">Nectar</h3>
 						<p class="text-ink-2 text-base">AI-powered development context. 10 MCP tools for live introspection, 8 agent skills for domain tasks.</p>
@@ -404,12 +425,12 @@ import '../styles/global.css';
 		<!-- ═══ THEMES ═══ -->
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" mb-16" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden mb-16" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Two themes, <span class="text-gradient">two purposes</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Start with a clean default or a conversion-ready WooCommerce storefront. Both use Blade, Vite, and Tailwind CSS.</p>
 				</div>
 				<div class="grid md:grid-cols-2 gap-6">
-					<div data-reveal class=" bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:1">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:1">
 						<div class="aspect-[16/9] bg-paper-3 flex items-center justify-center">
 							<div class="text-center p-8">
 								<div class="inline-block px-5 py-2.5 rounded-[var(--radius-md)] bg-code-bg mb-5">
@@ -423,7 +444,7 @@ import '../styles/global.css';
 							<p class="text-ink-2 text-base">Blade templates, Vite with HMR, Tailwind CSS v4, theme-specific service providers and configuration. The right starting point for any project.</p>
 						</div>
 					</div>
-					<div data-reveal class=" bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:2">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:2">
 						<div class="aspect-[16/9] bg-code-bg flex items-center justify-center">
 							<div class="text-center p-8">
 								<div class="inline-block px-5 py-2.5 rounded-[var(--radius-md)] bg-code-surface mb-5">
@@ -444,7 +465,7 @@ import '../styles/global.css';
 		<!-- ═══ NECTAR AI ═══ -->
 		<section id="nectar" class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class=" grid md:grid-cols-[1.2fr_1fr] gap-14 md:gap-20 items-center" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden grid md:grid-cols-[1.2fr_1fr] gap-14 md:gap-20 items-center" style="--i:0">
 					<div>
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">pollora/nectar</p>
 						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
@@ -462,7 +483,7 @@ import '../styles/global.css';
 							</div>
 						</div>
 					</div>
-					<div data-reveal class=" bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] text-base shadow-2xl shadow-pollora-dark/10" style="--i:1">
+					<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] text-base shadow-2xl shadow-pollora-dark/10" style="--i:1">
 						<div class="text-sm text-muted font-[var(--font-body)] mb-6">Compatible with</div>
 						<div class="space-y-5">
 							<div class="flex items-center gap-4">
@@ -494,7 +515,7 @@ import '../styles/global.css';
 		<section class="py-28 md:py-36 bg-code-bg relative overflow-hidden">
 			<div class="absolute inset-0 opacity-[0.07]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 70%)"></div>
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] text-center relative">
-				<div data-reveal class="" style="--i:0">
+				<div x-intersect:enter.once="$el.classList.remove('reveal-hidden'); $el.classList.add('reveal-visible')" class="reveal-hidden" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.25rem,4.5vw+0.5rem,4rem)] tracking-tight text-[var(--color-accent-ink)] mb-7" style="overflow-wrap:anywhere;min-width:0">
 						Start building with <span class="text-gradient">Pollora</span>
 					</h2>
@@ -527,40 +548,6 @@ import '../styles/global.css';
 		</div>
 	</footer>
 
-	<script>
-		// Tabs
-		const tabSubjects = { 'post-types': 'custom post type', 'hooks': 'hook', 'schedules': 'scheduled event' };
-		document.querySelectorAll('.tab-btn').forEach(btn => {
-			btn.addEventListener('click', () => {
-				const tab = btn.dataset.tab;
-				document.querySelectorAll('.tab-btn').forEach(b => {
-					b.setAttribute('aria-selected', 'false');
-					b.className = b.className.replace('bg-gradient-pollora text-white', 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]');
-				});
-				btn.setAttribute('aria-selected', 'true');
-				btn.className = btn.className.replace('bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]', 'bg-gradient-pollora text-white');
-				document.querySelectorAll('[data-tab-panel]').forEach(p => p.classList.add('hidden'));
-				const panel = document.querySelector(`[data-tab-panel="${tab}"]`);
-				if (panel) panel.classList.remove('hidden');
-				const subject = document.getElementById('tab-subject');
-				if (subject) subject.textContent = tabSubjects[tab] || tab;
-			});
-		});
-
-		// Reveal
-		const observer = new IntersectionObserver(
-			(entries) => {
-				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						entry.target.classList.add('is-visible');
-						observer.unobserve(entry.target);
-					}
-				});
-			},
-			{ threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
-		);
-		document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
-	</script>
 
 </body>
 </html>
