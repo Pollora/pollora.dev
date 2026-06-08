@@ -216,13 +216,13 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Post Types -->
-				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6" style="--i:1">
-					<div>
+				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid md:grid-cols-2 gap-6" style="--i:1">
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — 25+ lines</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">function</span> <span class="token-function">register_book_post_type</span>() <span class="token-punctuation">&#123;</span>
     <span class="token-function">register_post_type</span>(<span class="token-string">'book'</span>, [
         <span class="token-string">'labels'</span> =&gt; [
@@ -241,12 +241,12 @@ import '../styles/global.css';
 <span class="token-function">add_action</span>(<span class="token-string">'init'</span>, <span class="token-string">'register_book_post_type'</span>);</code></pre>
 						</div>
 					</div>
-					<div>
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — 6 lines</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\ShowInRest</span>;
 
@@ -263,13 +263,13 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Hooks -->
-				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6">
-					<div>
+				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — scattered across files</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-comment">// functions.php — action</span>
 <span class="token-function">add_action</span>(<span class="token-string">'init'</span>, <span class="token-string">'setup_custom_rewrites'</span>, 20);
 
@@ -288,12 +288,12 @@ import '../styles/global.css';
 <span class="token-punctuation">&#125;</span></code></pre>
 						</div>
 					</div>
-					<div>
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — one class, typed methods</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Action</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Filter</span>;
 
@@ -316,13 +316,13 @@ import '../styles/global.css';
 				</div>
 
 				<!-- Tab: Schedules -->
-				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 md:grid-rows-[auto_1fr] gap-6">
-					<div>
+				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — 30+ lines, fragile</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-comment">// 1. Register custom 6h interval</span>
 <span class="token-function">add_filter</span>(<span class="token-string">'cron_schedules'</span>, <span class="token-keyword">function</span>($s) <span class="token-punctuation">&#123;</span>
     $s[<span class="token-string">'every_6h'</span>] = [
@@ -353,12 +353,12 @@ import '../styles/global.css';
 <span class="token-punctuation">&#125;</span></code></pre>
 						</div>
 					</div>
-					<div>
+					<div class="flex flex-col">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — one attribute, done</span>
 						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto h-full">
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Schedule</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Every</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Interval</span>;
