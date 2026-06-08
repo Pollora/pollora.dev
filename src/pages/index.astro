@@ -557,9 +557,13 @@ import '../styles/global.css';
 							</a>
 						</div>
 					</div>
-					<div class="hidden md:flex justify-center relative">
-						<div class="absolute inset-0 rounded-full blur-3xl opacity-25" style="background: radial-gradient(circle, #ff5334 0%, #ff8c12 40%, transparent 70%)"></div>
-						<img src={mascotGithub.src} alt="Pollora open source mascot" class="relative w-full max-w-xs" width="300" height="300" loading="lazy" />
+					<div class="hidden md:flex justify-center items-center relative">
+						<!-- Outer soft glow -->
+						<div class="absolute w-[130%] h-[130%] rounded-full blur-[80px] opacity-20" style="background: radial-gradient(circle, #fb196d 0%, #ff5334 30%, #ff8c12 60%, transparent 80%)"></div>
+						<!-- Inner ring -->
+						<div class="absolute w-[85%] aspect-square rounded-full opacity-[0.12]" style="background: conic-gradient(from 0deg, #fb196d, #ff314c, #ff5334, #ff8c12, #feb017, #ff8c12, #ff5334, #ff314c, #fb196d)"></div>
+						<div class="absolute w-[85%] aspect-square rounded-full blur-xl opacity-[0.08]" style="background: conic-gradient(from 180deg, #fb196d, #ff8c12, #fb196d)"></div>
+						<img src={mascotGithub.src} alt="Pollora open source mascot" class="relative w-full max-w-md drop-shadow-[0_0_40px_rgba(255,83,52,0.3)]" width="450" height="450" loading="lazy" />
 					</div>
 				</div>
 			</div>
