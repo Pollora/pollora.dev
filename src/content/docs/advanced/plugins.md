@@ -48,7 +48,7 @@ Generate a new plugin using the Artisan command:
 
 ```bash
 # Create a plugin with modern asset management (recommended for frontend-heavy plugins)
-php artisan pollora:make-plugin my-awesome-plugin \
+php artisan pollora:make:plugin my-awesome-plugin \
     --plugin-author="John Doe" \
     --plugin-author-uri="https://johndoe.com" \
     --plugin-uri="https://github.com/johndoe/my-awesome-plugin" \
@@ -57,7 +57,7 @@ php artisan pollora:make-plugin my-awesome-plugin \
     --asset=true
 
 # Or create a minimal plugin without assets (good for backend-focused plugins)
-php artisan pollora:make-plugin my-awesome-plugin \
+php artisan pollora:make:plugin my-awesome-plugin \
     --plugin-author="John Doe" \
     --plugin-author-uri="https://johndoe.com" \
     --plugin-uri="https://github.com/johndoe/my-awesome-plugin" \
@@ -78,7 +78,7 @@ This creates a complete plugin structure with:
 
 ### Plugin Registration
 
-Plugins are automatically discovered and registered when they contain a valid main plugin file. The registration is handled by the Pollora PluginRegistrar service:
+Plugins are registered with the Pollora framework using the `pollora_register()` helper and the `ModuleType` enum. This replaces all manual registrar wiring with a single, type-safe call:
 
 ```php
 <?php
@@ -93,52 +93,36 @@ Plugins are automatically discovered and registered when they contain a valid ma
  * Domain Path: /languages
  * Requires at least: 6.0
  * Tested up to: 6.9
- * Requires PHP: 8.3
+ * Requires PHP: 8.2
  */
 
 declare(strict_types=1);
 
+use Pollora\Modules\Domain\Enums\ModuleType;
+
 // Prevent direct access
-if (!defined('ABSPATH')) {
+if (! defined('ABSPATH')) {
     exit;
 }
 
-// Define plugin constants
+// Plugin constants
 define('MY_AWESOME_PLUGIN_VERSION', '1.0.0');
 define('MY_AWESOME_PLUGIN_PLUGIN_FILE', __FILE__);
 define('MY_AWESOME_PLUGIN_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('MY_AWESOME_PLUGIN_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // Register with Pollora framework
-if (class_exists('Pollora\\Plugin\\Application\\Services\\PluginRegistrar')) {
-    $registrar = app('Pollora\\Plugin\\Application\\Services\\PluginRegistrar');
-    $registrar->register('my-awesome-plugin', __DIR__);
-}
-
-/**
- * Initialize the plugin.
- */
-function my_awesome_plugin_init(): void
-{
-    // Load plugin textdomain for translations
-    load_plugin_textdomain(
-        'my-awesome-plugin',
-        false,
-        dirname(plugin_basename(__FILE__)) . '/languages'
-    );
-
-    // Initialize plugin functionality
-    if (class_exists('Plugin\\MyAwesomePlugin\\MyAwesomePluginPlugin')) {
-        $plugin = new Plugin\MyAwesomePlugin\MyAwesomePluginPlugin();
-        
-        // Register activation/deactivation hooks through the plugin class
-        register_activation_hook(__FILE__, [$plugin, 'activate']);
-        register_deactivation_hook(__FILE__, [$plugin, 'deactivate']);
-        register_uninstall_hook(__FILE__, [Plugin\MyAwesomePlugin\MyAwesomePluginPlugin::class, 'uninstall']);
-    }
-}
-add_action('plugins_loaded', 'my_awesome_plugin_init');
+pollora_register(ModuleType::Plugin, 'my-awesome-plugin', __DIR__);
 ```
+
+The `pollora_register()` helper handles:
+- Resolving the correct registrar (`PluginRegistrar`) based on the `ModuleType`
+- Registering the plugin name and directory with the framework
+- Gracefully handling cases where the framework is not available (e.g., standalone activation)
+
+For plugins, the second and third arguments are **required**:
+- **Plugin slug**: The plugin's text domain / directory name
+- **Plugin directory**: The root directory of the plugin (typically `__DIR__`)
 
 ## Plugin Architecture
 
@@ -187,11 +171,11 @@ namespace Plugin\MyAwesomePlugin;
 
 ### Using the Make Command
 
-The `pollora:make-plugin` command provides several options:
+The `pollora:make:plugin` command provides several options:
 
 ```bash
 # Basic plugin creation
-php artisan pollora:make-plugin my-plugin \
+php artisan pollora:make:plugin my-plugin \
     --plugin-author="Author" \
     --plugin-author-uri="https://author.com" \
     --plugin-uri="https://plugin.com" \
@@ -199,7 +183,7 @@ php artisan pollora:make-plugin my-plugin \
     --plugin-version="1.0.0"
 
 # Create plugin with assets (JS/CSS with ViteJS compilation)
-php artisan pollora:make-plugin my-plugin \
+php artisan pollora:make:plugin my-plugin \
     --plugin-author="Author" \
     --plugin-author-uri="https://author.com" \
     --plugin-uri="https://plugin.com" \
@@ -208,7 +192,7 @@ php artisan pollora:make-plugin my-plugin \
     --asset=true
 
 # Create plugin without assets (minimal structure)
-php artisan pollora:make-plugin my-plugin \
+php artisan pollora:make:plugin my-plugin \
     --plugin-author="Author" \
     --plugin-author-uri="https://author.com" \
     --plugin-uri="https://plugin.com" \
@@ -217,7 +201,7 @@ php artisan pollora:make-plugin my-plugin \
     --asset=false
 
 # Create from GitHub repository
-php artisan pollora:make-plugin my-plugin \
+php artisan pollora:make:plugin my-plugin \
     --plugin-author="Author" \
     --plugin-author-uri="https://author.com" \
     --plugin-uri="https://plugin.com" \
@@ -226,7 +210,7 @@ php artisan pollora:make-plugin my-plugin \
     --repository=owner/repo
 
 # Force overwrite existing plugin
-php artisan pollora:make-plugin my-plugin \
+php artisan pollora:make:plugin my-plugin \
     --plugin-author="Author" \
     --plugin-author-uri="https://author.com" \
     --plugin-uri="https://plugin.com" \
@@ -326,14 +310,14 @@ declare(strict_types=1);
 namespace Plugin\MyAwesomePlugin;
 
 use Pollora\Attributes\Action;
-use Pollora\Hook\Domain\Contracts\Hooks;
+use Pollora\Attributes\Filter;
 
 /**
  * Main plugin class for My Awesome Plugin.
  *
  * Uses Pollora's attribute-based hook system for cleaner code organization.
  */
-class MyAwesomePluginPlugin implements Hooks
+class MyAwesomePluginPlugin
 {
     protected string $version = '1.0.0';
     protected string $slug = 'my-awesome-plugin';
@@ -535,9 +519,8 @@ Instead of manual `add_action()` calls, use PHP 8 attributes:
 
 ```php
 use Pollora\Attributes\Action;
-use Pollora\Hook\Domain\Contracts\Hooks;
 
-class MyPluginClass implements Hooks
+class MyPluginClass
 {
     #[Action('init', priority: 10)]
     public function onInit(): void
@@ -566,7 +549,7 @@ class MyPluginClass implements Hooks
 ```php
 use Pollora\Attributes\Filter;
 
-class MyPluginClass implements Hooks
+class MyPluginClass
 {
     #[Filter('the_content', priority: 10)]
     public function modifyContent(string $content): string

@@ -7,33 +7,33 @@ sidebar:
 
 
 - [Attribute-based hooks](#attribute-based-hooks)
-  - [Declarate with artisan](#declarate-with-artisan-1)
+  - [Generate with Artisan](#generate-with-artisan)
   - [Action hooks](#action-hooks)
   - [Filter hooks](#filter-hooks)
 - [Facades](#action-and-filter-facades)
   - [Registering an action or filter](#registering-an-action-or-filter)
   - [Using functions, closures, or instances](#using-functions-closures-or-instances)
   - [Constructor injection](#constructor-injection)
-  - [Executing actions and filters](executing-actions-and-filters)
+  - [Executing actions and filters](#executing-actions-and-filters)
   - [Checking existence](#checking-existence)
   - [Removing actions and filters](#removing-actions-and-filters)
   - [Retrieving callbacks](#retrieving-callbacks)
-- [Singleton access](#singleton-access)
+- [Service access](#service-access)
 
 ## Attribute-based hooks
 
 You can define action and filter hooks using PHP attributes. This provides a more concise way to define hooks within your classes.
 
-### Declarate with artisan
+### Generate with Artisan
 
-You can create a new attribute-based hook class using the `pollora:make-action` or `pollora:make-filter` Artisan commands:
+You can create a new attribute-based hook class using the `pollora:make:action` or `pollora:make:filter` Artisan commands:
 
 ```bash
 # Create a new action hook class
-php artisan pollora:make-action MyActionClass
+php artisan pollora:make:action MyActionClass
 
 # Create a new filter hook class
-php artisan pollora:make-filter MyFilterClass
+php artisan pollora:make:filter MyFilterClass
 ```
 
 ### Action hooks
@@ -235,16 +235,16 @@ Action::add('init', 'my_plugin_function');
 
 ## Service access
 
-The `Action` and `Filter` services are registered as singletons in the container and can be accessed via facades or dependency injection:
+The `Action` and `Filter` services are registered in the container and can be accessed via facades or dependency injection:
 
 ```php
-// Via facades
+// Via facades (recommended for most use cases)
 use Pollora\Support\Facades\Action;
 use Pollora\Support\Facades\Filter;
 
-// Via dependency injection
-use Pollora\Hook\Domain\Contracts\Action as ActionContract;
-use Pollora\Hook\Domain\Contracts\Filter as FilterContract;
+// Via dependency injection (for services that need hook contracts)
+use Pollora\Hook\Domain\Contract\Action as ActionContract;
+use Pollora\Hook\Domain\Contract\Filter as FilterContract;
 
 class MyService {
     public function __construct(
@@ -253,3 +253,5 @@ class MyService {
     ) {}
 }
 ```
+
+> **Extension author API:** The `Pollora\Hook\Domain\Contract\Action` and `Pollora\Hook\Domain\Contract\Filter` interfaces are **stable public contracts** for services that need to register hooks programmatically via dependency injection. For most use cases, prefer the facades above.

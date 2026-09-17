@@ -2,7 +2,7 @@
 title: Authentication
 description: WordPress authentication guard integration
 sidebar:
-  order: 4
+  order: 5
 ---
 
 

@@ -2,7 +2,7 @@
 title: Scheduling
 description: Schedule recurring tasks with attributes
 sidebar:
-  order: 2
+  order: 3
 ---
 
 

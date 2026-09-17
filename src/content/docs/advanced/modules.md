@@ -2,7 +2,7 @@
 title: Modules
 description: Organize projects with Laravel Modules
 sidebar:
-  order: 3
+  order: 4
 ---
 
 

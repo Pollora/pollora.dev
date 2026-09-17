@@ -17,13 +17,13 @@ The Pollora framework offers a robust and flexible system for creating and manag
 To generate a new theme, run the following command:
 
 ```bash
-php artisan pollora:make-theme
+php artisan pollora:make:theme
 ```
 
 You'll be prompted to answer several questions to configure your theme. Alternatively, you can pass the configuration as options:
 
 ```bash
-php artisan pollora:make-theme {theme-name} \
+php artisan pollora:make:theme {theme-name} \
   --theme-author="Author Name" \
   --theme-author-uri="https://author.com" \
   --theme-uri="https://theme.com" \
@@ -81,6 +81,27 @@ theme-name/
 ├─ theme.json
 └─ vite.config.js
 ```
+
+### Theme Registration (functions.php)
+
+The theme's `functions.php` file registers the theme with the Pollora framework using the `pollora_register()` helper:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Pollora\Modules\Domain\Enums\ModuleType;
+
+pollora_register(ModuleType::Theme);
+```
+
+That's it — three lines. The `pollora_register()` helper:
+- Auto-detects the active theme name and path from WordPress
+- Resolves the correct registrar (`ThemeRegistrarInterface`)
+- Triggers automatic discovery of all PHP attributes, service providers, post types, hooks, etc.
+
+For themes, no additional arguments are needed — the framework reads the theme name and directory from WordPress automatically.
 
 ## Theme.json and Vite Build Integration
 
@@ -410,7 +431,7 @@ Or, explicitly specify the theme container:
 
 ## Localization
 
-Language files should be placed in the `lang/` folder of your theme. Pollora will load them automatically.
+A theme can translate through WordPress's own `.po`/`.mo` catalogues (a `languages/` directory, compiled automatically by `pollora:make:theme`) and through a Laravel-namespaced catalogue (a `lang/` directory, registered automatically as `{theme-name}::group.key`) at the same time — a single `__()` call routes to the right one. See the dedicated [Translations](/core-concepts/translations/) guide for how the routing works and when to use which.
 
 ## Theme Development
 

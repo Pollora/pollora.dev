@@ -13,6 +13,7 @@ The Pollora Discovery system provides automatic component discovery in your appl
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [Built-in Discovery Classes](#built-in-discovery-classes)
+- [Skipping Discovery](#skipping-discovery)
 - [API Usage](#api-usage)
 - [Creating Custom Discovery Classes](#creating-custom-discovery-classes)
 - [Discovery Engine](#discovery-engine)
@@ -81,8 +82,9 @@ The Discovery system automatically scans your codebase to find and register comp
 **Discovers**: Classes with `#[PostType]` attributes
 
 ```php
-#[PostType('product', ['public' => true])]
-class Product extends AbstractPostType
+#[PostType('product')]
+#[PublicPostType]
+class Product
 {
     // Post type implementation
 }
@@ -93,8 +95,9 @@ class Product extends AbstractPostType
 **Discovers**: Classes with `#[Taxonomy]` attributes
 
 ```php
-#[Taxonomy('product-category', ['hierarchical' => true])]
-class ProductCategory extends AbstractTaxonomy
+#[Taxonomy('product-category')]
+#[Hierarchical]
+class ProductCategory
 {
     // Taxonomy implementation
 }
@@ -153,6 +156,105 @@ class ApiController
 }
 ```
 
+## Skipping Discovery
+
+### Excluding a Class Entirely
+
+Use the `#[SkipDiscovery]` attribute to prevent a class from being processed by the discovery engine. No reflection will be loaded and no attributes will be scanned — the class is completely invisible to all discoveries.
+
+```php
+use Pollora\Attributes\SkipDiscovery;
+
+#[SkipDiscovery]
+class InternalHelper
+{
+    // This class will never be discovered, regardless of its attributes
+}
+```
+
+This is useful for:
+- Base classes or abstract helpers that should not be auto-registered
+- Test fixtures or development-only classes
+- Classes with attributes that are processed by external systems
+
+### Selective Exclusion with `except`
+
+Sometimes you want a class to be ignored by most discoveries but still processed by specific ones. Use the `except` parameter to list the discovery classes that should still see the class:
+
+```php
+use Pollora\Attributes\SkipDiscovery;
+use Pollora\Hook\Infrastructure\Services\HookDiscovery;
+
+#[SkipDiscovery(except: [HookDiscovery::class])]
+class SpecializedHookHandler
+{
+    #[Action('init')]
+    public function onInit(): void
+    {
+        // This hook WILL be discovered (HookDiscovery is in the except list)
+    }
+}
+```
+
+In this example, the class is skipped by `PostTypeDiscovery`, `ServiceProviderDiscovery`, `ScheduleDiscovery`, etc. — but `HookDiscovery` will still process it and register the `#[Action]` attribute.
+
+You can list multiple discovery classes:
+
+```php
+#[SkipDiscovery(except: [HookDiscovery::class, ScheduleDiscovery::class])]
+class MyClass
+{
+    // Only hooks and schedules will be discovered
+}
+```
+
+### Config-Level Exclusions
+
+For cases where you cannot modify the source code (third-party packages, vendor classes), use the `config/discovery.php` configuration file to exclude classes or paths globally.
+
+Publish the config file:
+
+```bash
+php artisan vendor:publish --tag=pollora-config
+```
+
+Then configure the exclusions:
+
+```php
+// config/discovery.php
+return [
+    /*
+     * Fully qualified class names to exclude from discovery.
+     */
+    'skip_classes' => [
+        App\Legacy\OldController::class,
+        SomeVendor\Package\InternalHelper::class,
+    ],
+
+    /*
+     * Path patterns to exclude from discovery scanning.
+     * Matched with str_contains() — use directory names or partial paths.
+     */
+    'skip_paths' => [
+        '/Fixtures/',
+        '/Tests/',
+        '/stubs/',
+    ],
+];
+```
+
+Config-level exclusions are checked before any reflection is loaded, just like `#[SkipDiscovery]`.
+
+### How It Works
+
+The `#[SkipDiscovery]` attribute is detected during the Spatie token-parsing phase — before any reflection is loaded. This means:
+
+- **Zero overhead** on classes without the attribute
+- **No reflection cost** for fully skipped classes (`#[SkipDiscovery]` without `except`)
+- Reflection is only loaded when `except` is used, to read the parameter values
+
+Config-level exclusions (`skip_classes`, `skip_paths`) are also checked at the same early stage — no reflection is triggered for excluded classes.
+
 ## API Usage
 
 ### Using the Discovery Manager
@@ -198,6 +300,8 @@ $discoveryManager->clearCache();
 ```
 
 ## Creating Custom Discovery Classes
+
+> **Extension author API:** The `Pollora\Discovery\Domain\Contracts\*` and `Pollora\Discovery\Domain\Services\*` namespaces are the **stable public contracts** for building custom discoveries. These types are intentionally exposed to extension authors and will follow semantic versioning guarantees.
 
 ### 1. Basic Discovery Class
 
@@ -353,6 +457,8 @@ final class TemplateDiscovery implements DiscoversPathInterface
 
 ### 3. Registering Custom Discovery
 
+Discovery classes are **automatically registered** by the framework. You only need to bind your discovery as a singleton in a service provider — the `DiscoveryRegistrar` will detect it and add it to the engine.
+
 ```php
 <?php
 
@@ -360,34 +466,20 @@ namespace MyTheme\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use MyTheme\Discovery\CustomComponentDiscovery;
-use Pollora\Discovery\Domain\Contracts\DiscoveryEngineInterface;
 
 class ThemeServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // Register your discovery class
+        // Just register as a singleton — auto-registration handles the rest
         $this->app->singleton(CustomComponentDiscovery::class);
-    }
-
-    public function boot(): void
-    {
-        /** @var DiscoveryEngineInterface $engine */
-        $engine = $this->app->make(DiscoveryEngineInterface::class);
-
-        // Add your discovery to the engine
-        $engine->addDiscovery('custom_components', $this->app->make(CustomComponentDiscovery::class));
-
-        // Add theme locations for discovery
-        $engine->addLocation(
-            new \Pollora\Discovery\Domain\Models\DiscoveryLocation(
-                'MyTheme\\',
-                get_stylesheet_directory() . '/app'
-            )
-        );
     }
 }
 ```
+
+That's it. The `DiscoveryRegistrar` scans the container for all singletons whose class name ends with `Discovery` and that implement `DiscoveryInterface`. It registers them with the engine using the identifier returned by `getIdentifier()`.
+
+> **How it works:** During the engine's `discover()` phase, the registrar iterates over container bindings, resolves any that look like discovery classes, and calls `addDiscovery()` automatically. No manual wiring needed.
 
 ## Discovery Engine
 
@@ -404,12 +496,8 @@ $engine = app(DiscoveryEngineInterface::class);
 $engine->addLocation(new DiscoveryLocation('App\\', app_path()));
 $engine->addLocation(new DiscoveryLocation('MyTheme\\', get_stylesheet_directory() . '/app'));
 
-// Add custom discoveries
-$engine->addDiscovery('my_discovery', MyDiscovery::class);
-
-// Configure caching
-$cache = app(\Pollora\Discovery\Domain\Contracts\DiscoveryCacheInterface::class);
-$engine->withCache($cache);
+// Discoveries are auto-registered from container singletons.
+// Manual registration is no longer needed.
 
 // Run discovery
 $engine->run(); // Discovery + Apply
@@ -510,27 +598,14 @@ DISCOVERY_CACHE_PREFIX=app.discovery. # Cache key prefix
 ### Service Provider Configuration
 
 ```php
-// In a service provider
-public function boot(): void
+// In a service provider — just register discoveries as singletons
+public function register(): void
 {
-    /** @var DiscoveryManager $manager */
-    $manager = $this->app->make(DiscoveryManager::class);
-
-    // Add application-specific locations
-    $manager->addLocations([
-        ['namespace' => 'App\\', 'path' => app_path()],
-        ['namespace' => 'MyTheme\\', 'path' => get_stylesheet_directory() . '/app'],
-    ]);
-
-    // Add custom discoveries
-    $manager->addDiscoveries([
-        'my_components' => MyComponentDiscovery::class,
-        'my_services' => MyServiceDiscovery::class,
-    ]);
-
-    // Run discovery on application boot
-    $manager->run();
+    $this->app->singleton(MyComponentDiscovery::class);
+    $this->app->singleton(MyServiceDiscovery::class);
 }
+
+// The DiscoveryRegistrar auto-detects them. No boot() wiring needed.
 ```
 
 ## Usage Examples
@@ -711,11 +786,8 @@ class MyDiscovery implements DiscoveryInterface
 PolloraDiscover::register('my_scout', MyScout::class);
 $classes = PolloraDiscover::scout('my_scout');
 
-// New
-$manager = app(DiscoveryManager::class);
-$manager->addDiscovery('my_discovery', MyDiscovery::class);
-$manager->run();
-$classes = $manager->getDiscoveredItems('my_discovery');
+// New — just register as singleton, auto-discovered
+$this->app->singleton(MyDiscovery::class);
 ```
 
 ## Troubleshooting

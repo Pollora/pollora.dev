@@ -38,12 +38,14 @@ rewrite_links() {
     -e 's|(menu\.md\(#[^)]*\)\?)|(/theming/menus/\1)|g' \
     -e 's|(blocks\.md\(#[^)]*\)\?)|(/blocks/gutenberg-blocks/\1)|g' \
     -e 's|(patterns\.md\(#[^)]*\)\?)|(/blocks/patterns/\1)|g' \
+    -e 's|(server-configuration\.md\(#[^)]*\)\?)|(/getting-started/server-configuration/\1)|g' \
+    -e 's|(translations\.md\(#[^)]*\)\?)|(/core-concepts/translations/\1)|g' \
+    -e 's|(abilities\.md\(#[^)]*\)\?)|(/advanced/abilities/\1)|g' \
     -e 's|(wp-rest-api\.md\(#[^)]*\)\?)|(/advanced/rest-api/\1)|g' \
     -e 's|(schedule-events\.md\(#[^)]*\)\?)|(/advanced/scheduling/\1)|g' \
     -e 's|(modules\.md\(#[^)]*\)\?)|(/advanced/modules/\1)|g' \
     -e 's|(auth\.md\(#[^)]*\)\?)|(/advanced/authentication/\1)|g' \
     -e 's|(ajax\.md\(#[^)]*\)\?)|(/advanced/ajax/\1)|g' \
-    -e 's|(admin-pages\.md\(#[^)]*\)\?)|(/advanced/admin-pages/\1)|g' \
     -e 's|(dashboard\.md\(#[^)]*\)\?)|(/advanced/dashboard/\1)|g' \
     -e 's|(wordpress-logging\.md\(#[^)]*\)\?)|(/advanced/logging/\1)|g' \
     -e 's|(wp-cli-commands\.md\(#[^)]*\)\?)|(/advanced/wp-cli/\1)|g' \
@@ -90,10 +92,12 @@ sync_file "getting-started.md" "getting-started/installation.md" "Installation" 
 sync_file "installation.md" "getting-started/configuration.md" "Configuration" "Configure your Pollora project after installation" 2
 sync_file "ide.md" "getting-started/ide-setup.md" "IDE Setup" "Configure your IDE for Pollora development" 3
 sync_file "environment-management.md" "getting-started/environment.md" "Environment Management" "Manage environments and context detection" 4
+sync_file "server-configuration.md" "getting-started/server-configuration.md" "Server Configuration" "Apache and Nginx setup, directory protection, reverse proxy and HTTPS" 5
 
 # Core Concepts
 sync_file "discovery.md" "core-concepts/auto-discovery.md" "Auto-Discovery" "How Pollora discovers and registers components" 1
 sync_file "wordpress-config.md" "core-concepts/wordpress-config.md" "WordPress Configuration" "Configure WordPress constants through Laravel" 2
+sync_file "translations.md" "core-concepts/translations.md" "Translations" "Route __() between Laravel and WordPress translation catalogues" 3
 
 # Routing
 sync_file "routing.md" "routing/wordpress-routes.md" "WordPress Routes" "Hybrid routing with Route::wp() and template hierarchy" 1
@@ -122,11 +126,11 @@ sync_file "patterns.md" "blocks/patterns.md" "Block Patterns" "Register and mana
 
 # Advanced
 sync_file "wp-rest-api.md" "advanced/rest-api.md" "REST API" "Build REST endpoints with WpRestRoute attributes" 1
-sync_file "schedule-events.md" "advanced/scheduling.md" "Scheduling" "Schedule recurring tasks with attributes" 2
-sync_file "modules.md" "advanced/modules.md" "Modules" "Organize projects with Laravel Modules" 3
-sync_file "auth.md" "advanced/authentication.md" "Authentication" "WordPress authentication guard integration" 4
-sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle AJAX requests in Pollora" 5
-sync_file "admin-pages.md" "advanced/admin-pages.md" "Admin Pages" "Create WordPress admin pages" 6
+sync_file "abilities.md" "advanced/abilities.md" "Abilities" "Declare WordPress abilities for AI agents and MCP" 2
+sync_file "schedule-events.md" "advanced/scheduling.md" "Scheduling" "Schedule recurring tasks with attributes" 3
+sync_file "modules.md" "advanced/modules.md" "Modules" "Organize projects with Laravel Modules" 4
+sync_file "auth.md" "advanced/authentication.md" "Authentication" "WordPress authentication guard integration" 5
+sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle AJAX requests in Pollora" 6
 sync_file "dashboard.md" "advanced/dashboard.md" "Dashboard & Status" "Monitor your Pollora application" 7
 sync_file "wordpress-logging.md" "advanced/logging.md" "Logging" "WordPress error logging through Laravel" 8
 sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create custom WP-CLI commands" 9
