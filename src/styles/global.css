@@ -173,3 +173,31 @@ body {
 .token-function { color: oklch(78% 0.16 55); }
 .token-variable { color: oklch(90% 0.01 290); }
 .token-punctuation { color: oklch(80% 0.01 290); }
+
+/* Terminal animation */
+.term-teal { color: #49c7b9; }
+.term-green { color: oklch(75% 0.16 155); }
+.term-amber { color: #feb017; }
+.term-accent { color: oklch(92% 0.01 290); }
+.term-muted { color: oklch(55% 0.01 290); }
+.term-info { color: oklch(75% 0.10 230); }
+.term-url { color: oklch(78% 0.14 200); }
+.term-banner { color: oklch(70% 0.18 30); }
+.term-prompt-border { color: oklch(45% 0.01 290); }
+.term-success-box { color: oklch(75% 0.16 155); }
+
+.term-cursor {
+  display: inline;
+  animation: term-blink 0.7s step-end infinite;
+}
+@keyframes term-blink {
+  50% { opacity: 0; }
+}
+
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(30% 0.02 290) transparent;
+}
+.terminal-scroll::-webkit-scrollbar { width: 4px; }
+.terminal-scroll::-webkit-scrollbar-track { background: transparent; }
+.terminal-scroll::-webkit-scrollbar-thumb { background: oklch(30% 0.02 290); border-radius: 2px; }

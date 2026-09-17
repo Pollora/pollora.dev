@@ -1,0 +1,527 @@
+pollora new pollora-site --ddev --branch=release/v13.4.0
+
+  ██████╗  ██████╗ ██╗     ██╗      ██████╗ ██████╗  █████╗
+  ██╔══██╗██╔═══██╗██║     ██║     ██╔═══██╗██╔══██╗██╔══██╗
+  ██████╔╝██║   ██║██║     ██║     ██║   ██║██████╔╝███████║
+  ██╔═══╝ ██║   ██║██║     ██║     ██║   ██║██╔══██╗██╔══██║
+  ██║     ╚██████╔╝███████╗███████╗╚██████╔╝██║  ██║██║  ██║
+  ╚═╝      ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+
+
+Setting up DDEV environment...
+Creating a new DDEV project config in the current directory (/home/pollora-user/Sites/pollora-site)
+Once completed, your configuration will be written to /home/pollora-user/Sites/pollora-site/.ddev/config.yaml
+
+Created docroot at /home/pollora-user/Sites/pollora-site/public
+Configuring a 'wordpress' project named 'pollora-site' with docroot 'public' at '/home/pollora-user/Sites/pollora-site/public'.
+For full details use 'ddev describe'.
+Configuration complete. You may now run 'ddev start'.
+Not creating CMS settings files because disable_settings_management=true or project type doesn't require settings
+
+Starting DDEV...
+Starting pollora-site...
+The index.php or index.html does not yet exist at this path:
+
+Custom configuration is updated on restart. Run 'ddev restart' if changes don't take effect.
+Add '#ddev-silent-no-warn' comment to files if you don't want to see these warnings.
+Not creating CMS settings files because disable_settings_management=true or project type doesn't require settings
+
+Building project images...    .    .    .    .    .    .    .    .    .    .    .
+Project images built in 12s.
+Network ddev-pollora-site_default Created
+Container ddev-pollora-site-web Started
+Container ddev-pollora-site-db Started
+Waiting for containers to become ready: [web db]...     ready in 5.5s
+Starting ddev-router, pushing config...
+Container ddev-router Recreate
+Container ddev-router Started
+Waiting for ddev-router to become ready...     ready in 1.0s
+Successfully started pollora-site
+Not creating CMS settings files because disable_settings_management=true or project type doesn't require settings
+Your project can be reached at https://pollora-site.ddev.site
+
+See 'ddev describe' for alternate URLs.
+
+Installing Pollora via Composer...
+Executing Composer command: [composer create-project --remove-vcs --prefer-dist --no-interaction --no-scripts --no-plugins --no-install pollora/pollora /tmp/FsKHHX]
+
+Creating a "pollora/pollora" project at "/tmp/FsKHHX"
+Installing pollora/pollora (v13.4.0)
+Plugins have been disabled.
+Created project in /tmp/FsKHHX
+Moving install to Composer root
+Creating a "pollora/pollora" project at "/tmp/FsKHHX"
+Installing pollora/pollora (v13.4.0)
+Plugins have been disabled.
+- Downloading pollora/pollora (v13.4.0)
+- Installing pollora/pollora (v13.4.0): Extracting archive
+Created project in /tmp/FsKHHX
+Not creating CMS settings files because disable_settings_management=true or project type doesn't require settings
+Executing Composer command: [composer install --prefer-dist --no-interaction --no-scripts]
+
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Package operations: 136 installs, 0 updates, 0 removals
+0/87 [>---------------------------]   0%
+14/87 [====>-----------------------]  16%
+24/87 [=======>--------------------]  27%
+28/87 [=========>------------------]  32%
+35/87 [===========>----------------]  40%
+44/87 [==============>-------------]  50%
+55/87 [=================>----------]  63%
+63/87 [====================>-------]  72%
+71/87 [======================>-----]  81%
+79/87 [=========================>--]  90%
+87/87 [============================] 100%
+0/133 [>---------------------------]   0%
+69/133 [==============>-------------]  51%
+104/133 [=====================>------]  78%
+132/133 [===========================>]  99%
+133/133 [============================] 100%
+Generating optimized autoload files
+89 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+
+No patches supplied.
+Gathering patches for dependencies. This might take a minute.
+- Applying patches for johnpbloch/wordpress-core
+https://raw.githubusercontent.com/Pollora/framework/refs/heads/main/patches/wordpress-core.patch (Patch __ method in l10n to stop conflicting with Laravel)
+
+- Applying patches for mockery/mockery
+https://raw.githubusercontent.com/Pollora/framework/refs/heads/main/patches/mockery-php84-nullable.patch (Fix PHP 8.4 implicit nullable deprecations)
+Could not apply patch! Skipping. The error was: Cannot apply patch https://raw.githubusercontent.com/Pollora/framework/refs/heads/main/patches/mockery-php84-nullable.patch
+
+Installing dependencies from lock file (including require-dev)
+Verifying lock file contents can be installed on current platform.
+Package operations: 136 installs, 0 updates, 0 removals
+- Downloading wikimedia/composer-merge-plugin (v2.1.0)
+- Downloading cweagans/composer-patches (1.7.3)
+- Downloading voku/portable-ascii (2.1.1)
+- Downloading symfony/css-selector (v8.0.9)
+- Downloading symfony/var-dumper (v8.0.8)
+- Downloading symfony/polyfill-uuid (v1.37.0)
+- Downloading symfony/uid (v8.0.9)
+- Downloading symfony/routing (v8.0.9)
+- Downloading symfony/process (v8.0.8)
+- Downloading symfony/polyfill-php86 (v1.37.0)
+- Downloading symfony/polyfill-php85 (v1.37.0)
+- Downloading symfony/mime (v8.0.9)
+- Downloading psr/container (2.0.2)
+- Downloading symfony/event-dispatcher (v8.0.9)
+- Downloading psr/log (3.0.2)
+- Downloading doctrine/lexer (3.0.1)
+- Downloading egulias/email-validator (4.0.4)
+- Downloading symfony/mailer (v8.0.8)
+- Downloading symfony/http-foundation (v8.0.8)
+- Downloading symfony/error-handler (v8.0.8)
+- Downloading symfony/http-kernel (v8.0.10)
+- Downloading symfony/finder (v8.0.8)
+- Downloading symfony/string (v8.0.8)
+- Downloading symfony/console (v8.0.9)
+- Downloading psr/simple-cache (3.0.0)
+- Downloading nunomaduro/termwind (v2.4.0)
+- Downloading symfony/translation (v8.0.10)
+- Downloading symfony/clock (v8.0.8)
+- Downloading carbonphp/carbon-doctrine-types (3.2.0)
+- Downloading nesbot/carbon (3.11.4)
+- Downloading monolog/monolog (3.10.0)
+- Downloading league/uri-interfaces (7.8.1)
+- Downloading league/uri (7.8.1)
+- Downloading league/flysystem-local (3.31.0)
+- Downloading league/flysystem (3.33.0)
+- Downloading laravel/serializable-closure (v2.0.13)
+- Downloading laravel/prompts (v0.3.17)
+- Downloading guzzlehttp/uri-template (v1.0.5)
+- Downloading fruitcake/php-cors (v1.4.0)
+- Downloading laravel/framework (v13.8.0)
+- Downloading barryvdh/laravel-ide-helper (v3.7.0)
+- Downloading johnbillion/args (2.4.0)
+- Downloading johnbillion/extended-cpts (5.1.0)
+- Downloading johnpbloch/wordpress-core (6.9.4)
+- Downloading johnpbloch/wordpress (6.9.4)
+- Downloading laravel/pail (v1.2.6)
+- Downloading laravel/pint (v1.29.1)
+- Downloading symfony/yaml (v8.0.8)
+- Downloading laravel/sail (v1.58.0)
+- Downloading laravel/sanctum (v4.3.2)
+- Downloading laravel/tinker (v3.0.2)
+- Downloading hamcrest/hamcrest-php (v2.1.1)
+- Downloading mockery/mockery (1.6.12)
+- Downloading nunomaduro/collision (v8.9.4)
+- Downloading staabm/side-effects-detector (1.0.5)
+- Downloading sebastian/version (6.0.0)
+- Downloading sebastian/type (6.0.3)
+- Downloading sebastian/recursion-context (7.0.1)
+- Downloading sebastian/object-reflector (5.0.0)
+- Downloading sebastian/object-enumerator (7.0.0)
+- Downloading sebastian/global-state (8.0.2)
+- Downloading sebastian/exporter (7.0.2)
+- Downloading sebastian/environment (8.1.0)
+- Downloading sebastian/diff (7.0.0)
+- Downloading sebastian/comparator (7.1.6)
+- Downloading sebastian/cli-parser (4.2.0)
+- Downloading phpunit/php-timer (8.0.0)
+- Downloading phpunit/php-text-template (5.0.0)
+- Downloading phpunit/php-invoker (6.0.0)
+- Downloading phpunit/php-file-iterator (6.0.1)
+- Downloading theseer/tokenizer (2.0.1)
+- Downloading sebastian/lines-of-code (4.0.0)
+- Downloading sebastian/complexity (5.0.0)
+- Downloading phpunit/php-code-coverage (12.5.6)
+- Downloading phpunit/phpunit (12.5.24)
+- Downloading watson/rememberable (7.1.0)
+- Downloading spatie/laravel-package-tools (1.93.0)
+- Downloading spatie/php-structure-discoverer (2.4.2)
+- Downloading pollora/wordpress-args (1.1.0)
+- Downloading pollora/query (1.0.2)
+- Downloading pollora/helper-overrider (1.0.1)
+- Downloading pollora/entity (1.2.0)
+- Downloading pollora/colt (10.0.0)
+- Downloading nwidart/laravel-modules (v13.0.0)
+- Downloading log1x/sage-directives (v2.0.6)
+- Downloading coduo/php-humanizer (5.0.3)
+- Downloading pollora/framework (v13.4.0)
+0/87 [>---------------------------]   0%
+14/87 [====>-----------------------]  16%
+24/87 [=======>--------------------]  27%
+28/87 [=========>------------------]  32%
+35/87 [===========>----------------]  40%
+44/87 [==============>-------------]  50%
+55/87 [=================>----------]  63%
+63/87 [====================>-------]  72%
+71/87 [======================>-----]  81%
+79/87 [=========================>--]  90%
+87/87 [============================] 100%
+- Installing johnpbloch/wordpress-core-installer (2.0.0): Extracting archive
+- Installing wikimedia/composer-merge-plugin (v2.1.0): Extracting archive
+- Installing cweagans/composer-patches (1.7.3): Extracting archive
+- Installing voku/portable-ascii (2.1.1): Extracting archive
+- Installing symfony/polyfill-php80 (v1.37.0): Extracting archive
+- Installing symfony/polyfill-mbstring (v1.37.0): Extracting archive
+- Installing symfony/polyfill-ctype (v1.37.0): Extracting archive
+- Installing phpoption/phpoption (1.9.5): Extracting archive
+- Installing graham-campbell/result-type (v1.1.4): Extracting archive
+- Installing vlucas/phpdotenv (v5.6.3): Extracting archive
+- Installing symfony/css-selector (v8.0.9): Extracting archive
+- Installing tijsverkoyen/css-to-inline-styles (v2.4.0): Extracting archive
+- Installing symfony/var-dumper (v8.0.8): Extracting archive
+- Installing symfony/polyfill-uuid (v1.37.0): Extracting archive
+- Installing symfony/uid (v8.0.9): Extracting archive
+- Installing symfony/deprecation-contracts (v3.7.0): Extracting archive
+- Installing symfony/routing (v8.0.9): Extracting archive
+- Installing symfony/process (v8.0.8): Extracting archive
+- Installing symfony/polyfill-php86 (v1.37.0): Extracting archive
+- Installing symfony/polyfill-php85 (v1.37.0): Extracting archive
+- Installing symfony/polyfill-php84 (v1.37.0): Extracting archive
+- Installing symfony/polyfill-intl-normalizer (v1.37.0): Extracting archive
+- Installing symfony/polyfill-intl-idn (v1.37.0): Extracting archive
+- Installing symfony/mime (v8.0.9): Extracting archive
+- Installing psr/container (2.0.2): Extracting archive
+- Installing symfony/service-contracts (v3.7.0): Extracting archive
+- Installing psr/event-dispatcher (1.0.0): Extracting archive
+- Installing symfony/event-dispatcher-contracts (v3.7.0): Extracting archive
+- Installing symfony/event-dispatcher (v8.0.9): Extracting archive
+- Installing psr/log (3.0.2): Extracting archive
+- Installing doctrine/lexer (3.0.1): Extracting archive
+- Installing egulias/email-validator (4.0.4): Extracting archive
+- Installing symfony/mailer (v8.0.8): Extracting archive
+- Installing symfony/http-foundation (v8.0.8): Extracting archive
+- Installing symfony/error-handler (v8.0.8): Extracting archive
+- Installing symfony/http-kernel (v8.0.10): Extracting archive
+- Installing symfony/finder (v8.0.8): Extracting archive
+- Installing symfony/polyfill-intl-grapheme (v1.37.0): Extracting archive
+- Installing symfony/string (v8.0.8): Extracting archive
+- Installing symfony/console (v8.0.9): Extracting archive
+- Installing ramsey/collection (2.1.1): Extracting archive
+- Installing brick/math (0.14.8): Extracting archive
+- Installing ramsey/uuid (4.9.2): Extracting archive
+- Installing psr/simple-cache (3.0.0): Extracting archive
+- Installing nunomaduro/termwind (v2.4.0): Extracting archive
+- Installing symfony/translation-contracts (v3.7.0): Extracting archive
+- Installing symfony/translation (v8.0.10): Extracting archive
+- Installing psr/clock (1.0.0): Extracting archive
+- Installing symfony/clock (v8.0.8): Extracting archive
+- Installing carbonphp/carbon-doctrine-types (3.2.0): Extracting archive
+- Installing nesbot/carbon (3.11.4): Extracting archive
+- Installing monolog/monolog (3.10.0): Extracting archive
+- Installing psr/http-message (2.0): Extracting archive
+- Installing psr/http-factory (1.1.0): Extracting archive
+- Installing league/uri-interfaces (7.8.1): Extracting archive
+- Installing league/uri (7.8.1): Extracting archive
+- Installing league/mime-type-detection (1.16.0): Extracting archive
+- Installing league/flysystem-local (3.31.0): Extracting archive
+- Installing league/flysystem (3.33.0): Extracting archive
+- Installing nette/utils (v4.1.4): Extracting archive
+- Installing nette/schema (v1.3.5): Extracting archive
+- Installing dflydev/dot-access-data (v3.0.3): Extracting archive
+- Installing league/config (v1.2.0): Extracting archive
+- Installing league/commonmark (2.8.2): Extracting archive
+- Installing laravel/serializable-closure (v2.0.13): Extracting archive
+- Installing laravel/prompts (v0.3.17): Extracting archive
+- Installing guzzlehttp/uri-template (v1.0.5): Extracting archive
+- Installing guzzlehttp/promises (2.3.0): Extracting archive
+- Installing psr/http-client (1.0.3): Extracting archive
+- Installing ralouphie/getallheaders (3.0.3): Extracting archive
+- Installing guzzlehttp/psr7 (2.9.0): Extracting archive
+- Installing guzzlehttp/guzzle (7.10.0): Extracting archive
+- Installing fruitcake/php-cors (v1.4.0): Extracting archive
+- Installing dragonmantank/cron-expression (v3.6.0): Extracting archive
+- Installing doctrine/inflector (2.1.0): Extracting archive
+- Installing laravel/framework (v13.8.0): Extracting archive
+- Installing composer/pcre (3.3.2): Extracting archive
+- Installing composer/class-map-generator (1.7.3): Extracting archive
+- Installing barryvdh/reflection-docblock (v2.4.1): Extracting archive
+- Installing barryvdh/laravel-ide-helper (v3.7.0): Extracting archive
+- Installing bordoni/phpass (0.3.6): Extracting archive
+- Installing fakerphp/faker (v1.24.1): Extracting archive
+- Installing johnbillion/args (2.4.0): Extracting archive
+- Installing johnbillion/extended-cpts (5.1.0): Extracting archive
+- Installing johnpbloch/wordpress-core (6.9.4): Extracting archive
+- Installing johnpbloch/wordpress (6.9.4): Extracting archive
+- Installing laravel/pail (v1.2.6): Extracting archive
+- Installing laravel/pint (v1.29.1): Extracting archive
+- Installing symfony/yaml (v8.0.8): Extracting archive
+- Installing laravel/sail (v1.58.0): Extracting archive
+- Installing laravel/sanctum (v4.3.2): Extracting archive
+- Installing nikic/php-parser (v5.7.0): Extracting archive
+- Installing psy/psysh (v0.12.22): Extracting archive
+- Installing laravel/tinker (v3.0.2): Extracting archive
+- Installing hamcrest/hamcrest-php (v2.1.1): Extracting archive
+- Installing mockery/mockery (1.6.12): Extracting archive
+- Installing filp/whoops (2.18.4): Extracting archive
+- Installing nunomaduro/collision (v8.9.4): Extracting archive
+- Installing staabm/side-effects-detector (1.0.5): Extracting archive
+- Installing sebastian/version (6.0.0): Extracting archive
+- Installing sebastian/type (6.0.3): Extracting archive
+- Installing sebastian/recursion-context (7.0.1): Extracting archive
+- Installing sebastian/object-reflector (5.0.0): Extracting archive
+- Installing sebastian/object-enumerator (7.0.0): Extracting archive
+- Installing sebastian/global-state (8.0.2): Extracting archive
+- Installing sebastian/exporter (7.0.2): Extracting archive
+- Installing sebastian/environment (8.1.0): Extracting archive
+- Installing sebastian/diff (7.0.0): Extracting archive
+- Installing sebastian/comparator (7.1.6): Extracting archive
+- Installing sebastian/cli-parser (4.2.0): Extracting archive
+- Installing phpunit/php-timer (8.0.0): Extracting archive
+- Installing phpunit/php-text-template (5.0.0): Extracting archive
+- Installing phpunit/php-invoker (6.0.0): Extracting archive
+- Installing phpunit/php-file-iterator (6.0.1): Extracting archive
+- Installing theseer/tokenizer (2.0.1): Extracting archive
+- Installing sebastian/lines-of-code (4.0.0): Extracting archive
+- Installing sebastian/complexity (5.0.0): Extracting archive
+- Installing phpunit/php-code-coverage (12.5.6): Extracting archive
+- Installing phar-io/version (3.2.1): Extracting archive
+- Installing phar-io/manifest (2.0.4): Extracting archive
+- Installing myclabs/deep-copy (1.13.4): Extracting archive
+- Installing phpunit/phpunit (12.5.24): Extracting archive
+- Installing watson/rememberable (7.1.0): Extracting archive
+- Installing spatie/laravel-package-tools (1.93.0): Extracting archive
+- Installing spatie/php-structure-discoverer (2.4.2): Extracting archive
+- Installing roots/bedrock-autoloader (1.1.0): Extracting archive
+- Installing pollora/wordpress-args (1.1.0): Extracting archive
+- Installing pollora/query (1.0.2): Extracting archive
+- Installing pollora/helper-overrider (1.0.1): Extracting archive
+- Installing pollora/entity (1.2.0): Extracting archive
+- Installing thunderer/shortcode (v0.7.6): Extracting archive
+- Installing pollora/colt (10.0.0): Extracting archive
+- Installing nwidart/laravel-modules (v13.0.0): Extracting archive
+- Installing log1x/sage-directives (v2.0.6): Extracting archive
+- Installing coduo/php-humanizer (5.0.3): Extracting archive
+- Installing pollora/framework (v13.4.0): Extracting archive
+0/133 [>---------------------------]   0%
+69/133 [==============>-------------]  51%
+104/133 [=====================>------]  78%
+132/133 [===========================>]  99%
+133/133 [============================] 100%
+Generating optimized autoload files
+89 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+Not creating CMS settings files because disable_settings_management=true or project type doesn't require settings
+
+ddev composer create-project was successful.
+
+Configuring environment for DDEV...
+
+Finalizing installation...
+- Removing mockery/mockery (1.6.12)
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 0 installs, 1 update, 0 removals
+- Upgrading pollora/framework (v13.4.0 dd7d5a0 => v13.4.0 3013fcb)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 1 install, 1 update, 0 removals
+0/1 [>---------------------------]   0%
+1/1 [============================] 100%
+0/2 [>---------------------------]   0%
+2/2 [============================] 100%
+Generating optimized autoload files
+89 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+Found 14 security vulnerability advisories affecting 9 packages.
+Run "composer audit" for a full list of advisories.
+Removing package mockery/mockery so that it can be re-installed and re-patched.
+No patches supplied.
+Gathering patches for dependencies. This might take a minute.
+- Applying patches for mockery/mockery
+https://raw.githubusercontent.com/Pollora/framework/refs/heads/main/patches/mockery-php84-nullable.patch (Fix PHP 8.4 implicit nullable deprecations)
+Could not apply patch! Skipping. The error was: Cannot apply patch https://raw.githubusercontent.com/Pollora/framework/refs/heads/main/patches/mockery-php84-nullable.patch
+
+- Removing mockery/mockery (1.6.12)
+Loading composer repositories with package information
+Updating dependencies
+Lock file operations: 0 installs, 1 update, 0 removals
+- Upgrading pollora/framework (v13.4.0 dd7d5a0 => v13.4.0 3013fcb)
+Writing lock file
+Installing dependencies from lock file (including require-dev)
+Package operations: 1 install, 1 update, 0 removals
+- Downloading pollora/framework (v13.4.0)
+0/1 [>---------------------------]   0%
+1/1 [============================] 100%
+- Installing mockery/mockery (1.6.12): Extracting archive
+- Upgrading pollora/framework (v13.4.0 dd7d5a0 => v13.4.0 3013fcb): Extracting archive
+0/2 [>---------------------------]   0%
+2/2 [============================] 100%
+Generating optimized autoload files
+89 packages you are using are looking for funding.
+Use the `composer fund` command to find out more!
+Found 14 security vulnerability advisories affecting 9 packages.
+Run "composer audit" for a full list of advisories.
+Running pollora:install...
+
+Starting WordPress installation...
+
+┌ Site title? ─────────────────────────────────────────────────┐
+│ Pollora Site                                                 │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Site description? ───────────────────────────────────────────┐
+│ Laravel meets WordPress                                      │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Admin username? ─────────────────────────────────────────────┐
+│ pollora                                                      │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Admin email? ────────────────────────────────────────────────┐
+│ hello@pollora.dev                                            │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Admin password? ─────────────────────────────────────────────┐
+│ ••••••••••••••                                               │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Select site language (type to search) ───────────────────────┐
+│ English (US)                                                 │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Allow search engine indexing? ───────────────────────────────┐
+│ Yes                                                          │
+└──────────────────────────────────────────────────────────────┘
+
+Pretty permalinks have been enabled by default.
+
+Running migration.
+
+INFO  Preparing database.
+
+Creating migration table ....................................... 5.90ms DONE
+
+INFO  Running migrations.
+
+2014_10_12_100000_create_password_reset_tokens_table ........... 4.02ms DONE
+2019_08_19_000000_create_failed_jobs_table .................... 11.50ms DONE
+2019_12_14_000001_create_personal_access_tokens_table ......... 21.60ms DONE
+2024_07_21_053116_create_jobs_table ........................... 11.58ms DONE
+2024_07_22_054233_add_wordpress_columns_to_jobs_table ......... 34.85ms DONE
+2024_07_31_065026_create_wordpress_recurring_events_table ...... 6.49ms DONE
+2024_08_02_055418_rename_wp_event_table ....................... 23.09ms DONE
+2024_10_09_071831_create_sessions_table ....................... 22.25ms DONE
+
+Migration completed successfully.
+
+WordPress has been successfully installed!
+
+┌ What is a name of the new theme? ────────────────────────────┐
+│ pollora-site                                                    │
+└──────────────────────────────────────────────────────────────┘
+
+┌ What is the author of the new theme? ────────────────────────┐
+│ Pollora                                                      │
+└──────────────────────────────────────────────────────────────┘
+
+┌ What is the URL of the theme author? ────────────────────────┐
+│ https://pollora.dev                                         │
+└──────────────────────────────────────────────────────────────┘
+
+┌ What is the URL of the theme? ───────────────────────────────┐
+│ https://pollora.dev                                          │
+└──────────────────────────────────────────────────────────────┘
+
+┌ What is the description of the new theme? ───────────────────┐
+│ A new theme using Pollora Framework                          │
+└──────────────────────────────────────────────────────────────┘
+
+┌ What is the version of the theme? ───────────────────────────┐
+│ 1.0                                                          │
+└──────────────────────────────────────────────────────────────┘
+
+┌ Which theme template would you like to use? ─────────────────┐
+│ Default — Basic starter theme                                │
+└──────────────────────────────────────────────────────────────┘
+
+Downloading from pollora/theme-default...
+Downloaded and extracted successfully.
+Theme "pollora-site" created successfully.
+Running npm install and npm run build in /var/www/html/themes/pollora-site ...
+
+added 76 packages, and audited 77 packages in 8s
+20 packages are looking for funding
+run `npm fund` for details
+
+found 0 vulnerabilities
+
+> build
+> vite build
+
+vite v8.0.16 building client environment for production...
+transforming...✓ 56 modules transformed.
+rendering chunks...
+computing gzip size...
+../../public/build/theme/pollora-site/manifest.json                          0.82 kB │ gzip:  0.27 kB
+../../public/build/theme/pollora-site/assets/pollora-DR7acyLU.svg            5.30 kB │ gzip:  2.32 kB
+../../public/build/theme/pollora-site/assets/pollora-logo-qke9FShS.svg      19.10 kB │ gzip:  6.41 kB
+../../public/build/theme/pollora-site/assets/Inter-Regular-B0QUfDW0.woff2  108.48 kB
+../../public/build/theme/pollora-site/assets/Inter-Italic-B_ozvy2G.woff2   114.57 kB
+../../public/build/theme/pollora-site/assets/app-CPURq9Sn.css               29.56 kB │ gzip:  5.62 kB
+../../public/build/theme/pollora-site/assets/app-DYK4bhx5.js                44.39 kB │ gzip: 17.00 kB
+
+✓ built in 89ms
+npm install and build completed.
+
+┌ Do you want to set "pollora-site" as the active WordPress theme? ┐
+│ Yes                                                              │
+└──────────────────────────────────────────────────────────────────┘
+
+Theme "pollora-site" is now set as the active WordPress theme.
+
+WordPress has been successfully installed!
+
+Next steps:
+
+1. Access your WordPress admin at: http://pollora-site.ddev.site/cms/wp-admin/
+2. Start customizing your site
+3. Enjoy Pollora :)
+
+┌ Initialize a Git repository? ────────────────────────────────┐
+│ No                                                           │
+└──────────────────────────────────────────────────────────────┘
+
+[OK] Pollora was installed successfully!
+
+Enter your project directory with cd pollora-site
+Your site is available at https://pollora-site.ddev.site
+
+Use ddev pollora to run Pollora commands
+Use ddev launch to open your site in a browser
+Documentation: https://pollora.dev

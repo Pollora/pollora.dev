@@ -1,0 +1,187 @@
+[
+  {
+    "type": "command",
+    "text": "pollora new pollora-site --ddev"
+  },
+  {
+    "type": "output",
+    "lines": [
+      "",
+      "  ██████╗  ██████╗ ██╗     ██╗      ██████╗ ██████╗  █████╗ ",
+      "  ██╔══██╗██╔═══██╗██║     ██║     ██╔═══██╗██╔══██╗██╔══██╗",
+      "  ██████╔╝██║   ██║██║     ██║     ██║   ██║██████╔╝███████║",
+      "  ██╔═══╝ ██║   ██║██║     ██║     ██║   ██║██╔══██╗██╔══██║",
+      "  ██║     ╚██████╔╝███████╗███████╗╚██████╔╝██║  ██║██║  ██║",
+      "  ╚═╝      ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝",
+      ""
+    ],
+    "style": "banner"
+  },
+  {
+    "type": "output",
+    "lines": ["Setting up DDEV environment..."],
+    "style": "info"
+  },
+  { "type": "pause", "ms": 600 },
+  {
+    "type": "output",
+    "lines": [
+      "Starting pollora-site...",
+      "Building project images..."
+    ]
+  },
+  {
+    "type": "progress",
+    "total": 100,
+    "duration": 1400
+  },
+  {
+    "type": "output",
+    "lines": ["Project images built in 12s."],
+    "style": "muted"
+  },
+  {
+    "type": "output",
+    "lines": ["Successfully started pollora-site"],
+    "style": "success"
+  },
+  {
+    "type": "output",
+    "lines": ["Your project can be reached at https://pollora-site.ddev.site"],
+    "style": "url"
+  },
+  { "type": "pause", "ms": 500 },
+  {
+    "type": "output",
+    "lines": ["", "Installing Pollora via Composer...", "Installing dependencies from lock file"]
+  },
+  {
+    "type": "progress",
+    "total": 133,
+    "duration": 2200
+  },
+  {
+    "type": "output",
+    "lines": ["Generating optimized autoload files"],
+    "style": "muted"
+  },
+  { "type": "pause", "ms": 500 },
+  {
+    "type": "output",
+    "lines": ["", "Running pollora:install...", "", "Starting WordPress installation...", ""]
+  },
+  {
+    "type": "prompt",
+    "question": "Site title?",
+    "answer": "Pollora Site"
+  },
+  {
+    "type": "prompt",
+    "question": "Site description?",
+    "answer": "Laravel meets WordPress"
+  },
+  {
+    "type": "prompt",
+    "question": "Admin username?",
+    "answer": "pollora"
+  },
+  {
+    "type": "prompt",
+    "question": "Admin email?",
+    "answer": "hello@pollora.dev"
+  },
+  {
+    "type": "select",
+    "question": "Select site language (type to search)",
+    "answer": "English (US)"
+  },
+  { "type": "pause", "ms": 300 },
+  {
+    "type": "output",
+    "lines": ["", "Pretty permalinks have been enabled by default.", "", "Running migration.", ""]
+  },
+  {
+    "type": "output",
+    "lines": ["INFO  Running migrations."],
+    "style": "info"
+  },
+  {
+    "type": "migrations",
+    "items": [
+      { "name": "create_password_reset_tokens_table", "time": "4.02ms" },
+      { "name": "create_failed_jobs_table", "time": "11.50ms" },
+      { "name": "create_personal_access_tokens_table", "time": "21.60ms" },
+      { "name": "create_sessions_table", "time": "22.25ms" }
+    ]
+  },
+  {
+    "type": "output",
+    "lines": ["", "Migration completed successfully."],
+    "style": "success"
+  },
+  {
+    "type": "output",
+    "lines": ["", "WordPress has been successfully installed!", ""],
+    "style": "success"
+  },
+  { "type": "pause", "ms": 500 },
+  {
+    "type": "prompt",
+    "question": "What is a name of the new theme?",
+    "answer": "pollora-site"
+  },
+  {
+    "type": "select",
+    "question": "Which theme template would you like to use?",
+    "answer": "Default — Basic starter theme"
+  },
+  { "type": "pause", "ms": 300 },
+  {
+    "type": "output",
+    "lines": [
+      "Downloading from pollora/theme-default...",
+      "Downloaded and extracted successfully.",
+      "Theme \"pollora-site\" created successfully."
+    ],
+    "style": "success"
+  },
+  {
+    "type": "output",
+    "lines": ["Running npm install and npm run build..."]
+  },
+  {
+    "type": "progress",
+    "total": 56,
+    "duration": 1000
+  },
+  {
+    "type": "output",
+    "lines": ["✓ built in 89ms"],
+    "style": "success"
+  },
+  {
+    "type": "select",
+    "question": "Set \"pollora-site\" as the active WordPress theme?",
+    "answer": "Yes"
+  },
+  { "type": "pause", "ms": 400 },
+  {
+    "type": "output",
+    "lines": [
+      "",
+      " [OK] Pollora was installed successfully!",
+      ""
+    ],
+    "style": "success-box"
+  },
+  {
+    "type": "output",
+    "lines": [
+      "Your site is available at https://pollora-site.ddev.site",
+      "",
+      "Use ddev pollora to run Pollora commands",
+      "Documentation: https://pollora.dev"
+    ],
+    "style": "url"
+  }
+]

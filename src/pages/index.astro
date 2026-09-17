@@ -7,6 +7,7 @@ import '../styles/global.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
+const terminalSequence = JSON.parse(readFileSync(resolve('sources/terminal-sequence.json'), 'utf-8'));
 const peekRaw = readFileSync(resolve('src/assets/mascot-peek.svg'), 'utf-8');
 // Crop to top portion (eyes area) and clean up Inkscape metadata
 const peekSvg = peekRaw
@@ -85,8 +86,14 @@ const peekSvg = peekRaw
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
 					<div data-reveal class="" style="--i:0">
-						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Laravel + WordPress</p>
-						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,6vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
+						<div class="flex flex-wrap items-center gap-3 mb-5">
+							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Laravel + WordPress</p>
+							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-coral/40 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								<span class="w-2 h-2 rounded-full bg-pollora-coral" aria-hidden="true"></span>
+								v13.32.0-beta.2
+							</a>
+						</div>
+						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
 							Modern PHP,<br /><span class="text-gradient">zero compromise.</span>
 						</h1>
 						<p class="text-lg text-ink-2 max-w-[50ch] leading-relaxed mb-12">
@@ -146,34 +153,20 @@ const peekSvg = peekRaw
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
 					<p class="text-ink-2 text-lg">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
 				</div>
-				<div data-reveal class="max-w-2xl mx-auto relative" style="--i:1">
-					<div class="bg-code-bg rounded-[var(--radius-lg)] p-7 md:p-9 font-[var(--font-code)] shadow-2xl shadow-pollora-dark/10">
-						<div class="flex items-center gap-3 mb-7 text-sm text-muted">
-							<span class="text-pollora-teal text-base">~</span>
-							<span class="font-[var(--font-body)]">Terminal</span>
+				<div data-reveal class="max-w-3xl mx-auto relative" style="--i:1">
+					<div x-data="terminalAnim()" class="bg-code-bg rounded-[var(--radius-lg)] shadow-2xl shadow-pollora-dark/10 overflow-hidden">
+						<!-- Title bar -->
+						<div class="flex items-center gap-2 px-5 py-3.5 border-b border-code-surface">
+							<span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
+							<span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
+							<span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
+							<span class="ml-3 text-sm text-muted font-[var(--font-body)]">Terminal</span>
 						</div>
-						<div class="space-y-5 text-[0.9rem] md:text-base">
-							<div>
-								<span class="text-pollora-teal">$</span>
-								<span class="text-[var(--color-accent-ink)] ml-2">composer global require pollora/cli</span>
-							</div>
-							<div>
-								<span class="text-pollora-teal">$</span>
-								<span class="text-[var(--color-accent-ink)] ml-2">pollora new my-site --ddev</span>
-							</div>
-							<div class="pt-3 border-t border-code-surface">
-								<span class="text-[oklch(70%_0.14_155)]">&#10003; Project created successfully.</span>
-							</div>
-							<div>
-								<span class="text-[oklch(70%_0.14_155)]">&#10003; DDEV environment configured.</span>
-							</div>
-							<div>
-								<span class="text-[oklch(70%_0.14_155)]">&#10003; WordPress installed.</span>
-							</div>
-							<div class="pt-3">
-								<span class="text-pollora-amber">Ready at</span>
-								<span class="text-[var(--color-accent-ink)] ml-1">https://my-site.ddev.site</span>
-							</div>
+						<!-- Terminal content -->
+						<div x-ref="scroll" class="terminal-scroll px-5 md:px-7 py-5 text-[0.72rem] md:text-[0.82rem] leading-[1.6] overflow-y-auto" style="height: 420px; max-height: 55vh; font-family: 'JetBrains Mono', ui-monospace, monospace;">
+							<template x-for="line in lines" :key="line.id">
+								<div :class="line.cls" x-html="line.html" class="whitespace-pre"></div>
+							</template>
 						</div>
 					</div>
 					<img src={mascotDeveloper.src} alt="Pollora mascot" class="hidden md:block absolute -bottom-12 -right-16 lg:-right-24 w-44 lg:w-56 pointer-events-none drop-shadow-[0_0_20px_rgba(255,83,52,0.2)]" width="224" height="224" loading="lazy" />
@@ -193,7 +186,7 @@ const peekSvg = peekRaw
 					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
 						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Declare, don't register</h3>
-						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, schedules — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
+						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, AJAX handlers, WP-CLI commands, schedules, AI abilities — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
 						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[PostType('product')]</span>
 <span class="token-attribute">#[HasArchive]</span>
 <span class="token-attribute">#[ShowInRest]</span>
@@ -236,23 +229,38 @@ const peekSvg = peekRaw
 		</section>
 
 		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
-		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', subjects: { 'post-types': 'custom post type', 'hooks': 'hook', 'schedules': 'scheduled event' } }">
+		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'schedules': 'a scheduled event', 'rest': 'a REST endpoint', 'ajax': 'an AJAX handler', 'cli': 'a WP-CLI command', 'abilities': 'an AI ability' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-10" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
-					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register a <span x-text="subjects[tab]" class="text-gradient font-semibold">custom post type</span>. Left: WordPress traditional. Right: Pollora.</p>
+					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register <span x-text="subjects[tab]" class="text-gradient font-semibold">a custom post type</span>.<span class="hidden md:inline"> Left: WordPress traditional. Right: Pollora.</span></p>
 
 					<!-- Tabs -->
-					<div class="flex flex-wrap gap-2" role="tablist">
-						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Post Types</button>
-						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Actions &amp; Filters</button>
-						<button role="tab" :aria-selected="tab === 'schedules'" @click="tab = 'schedules'" :class="tab === 'schedules' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Schedules</button>
+					<div class="flex flex-nowrap md:flex-wrap gap-2 overflow-x-auto md:overflow-visible -mx-[clamp(1rem,4vw,2rem)] px-[clamp(1rem,4vw,2rem)] md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist">
+						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Post Types</button>
+						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Actions &amp; Filters</button>
+						<button role="tab" :aria-selected="tab === 'schedules'" @click="tab = 'schedules'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'schedules' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Schedules</button>
+						<button role="tab" :aria-selected="tab === 'rest'" @click="tab = 'rest'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'rest' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">REST API</button>
+						<button role="tab" :aria-selected="tab === 'ajax'" @click="tab = 'ajax'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'ajax' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">AJAX</button>
+						<button role="tab" :aria-selected="tab === 'cli'" @click="tab = 'cli'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'cli' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">WP-CLI</button>
+						<button role="tab" :aria-selected="tab === 'abilities'" @click="tab = 'abilities'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'abilities' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Abilities</button>
+					</div>
+					<!-- Mobile: Pollora / WordPress switch -->
+					<div class="md:hidden mt-5 grid grid-cols-2 gap-1 p-1 rounded-[var(--radius-pill)] bg-code-surface border border-white/10" role="group" aria-label="Code version">
+						<button type="button" @click="side = 'pollora'" :aria-pressed="side === 'pollora'" :class="side === 'pollora' ? 'bg-pollora-coral/25 border-pollora-coral text-white shadow-[0_0_24px_rgba(255,83,52,0.35)]' : 'border-transparent text-muted'" class="flex items-center justify-center gap-2 py-3 border rounded-[var(--radius-pill)] font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold transition-colors duration-[var(--dur-short)]">
+							<span class="w-2 h-2 rounded-full" :class="side === 'pollora' ? 'bg-pollora-coral shadow-[0_0_8px_rgba(255,83,52,0.9)]' : 'bg-neutral/40'"></span>
+							Pollora
+						</button>
+						<button type="button" @click="side = 'wp'" :aria-pressed="side === 'wp'" :class="side === 'wp' ? 'bg-white/10 border-white/40 text-white' : 'border-transparent text-muted'" class="flex items-center justify-center gap-2 py-3 border rounded-[var(--radius-pill)] font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold transition-colors duration-[var(--dur-short)]">
+							<span class="w-2 h-2 rounded-full" :class="side === 'wp' ? 'bg-white' : 'bg-neutral/40'"></span>
+							WordPress
+						</button>
 					</div>
 				</div>
 
 				<!-- Tab: Post Types -->
-				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid md:grid-cols-2 gap-6" style="--i:1">
-					<div class="flex flex-col">
+				<div x-show="tab === 'post-types'" x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" data-reveal class="grid grid-cols-1 md:grid-cols-2 gap-6" style="--i:1">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — 25+ lines</span>
@@ -276,7 +284,7 @@ const peekSvg = peekRaw
 <span class="token-function">add_action</span>(<span class="token-string">'init'</span>, <span class="token-string">'register_book_post_type'</span>);</code></pre>
 						</div>
 					</div>
-					<div class="flex flex-col">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — 6 lines</span>
@@ -298,8 +306,8 @@ const peekSvg = peekRaw
 				</div>
 
 				<!-- Tab: Hooks -->
-				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
-					<div class="flex flex-col">
+				<div x-show="tab === 'hooks'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — scattered across files</span>
@@ -323,7 +331,7 @@ const peekSvg = peekRaw
 <span class="token-punctuation">&#125;</span></code></pre>
 						</div>
 					</div>
-					<div class="flex flex-col">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — one class, typed methods</span>
@@ -351,8 +359,8 @@ const peekSvg = peekRaw
 				</div>
 
 				<!-- Tab: Schedules -->
-				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid md:grid-cols-2 gap-6">
-					<div class="flex flex-col">
+				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
 							<span class="text-base font-medium text-muted">WordPress — 30+ lines, fragile</span>
@@ -388,7 +396,7 @@ const peekSvg = peekRaw
 <span class="token-punctuation">&#125;</span></code></pre>
 						</div>
 					</div>
-					<div class="flex flex-col">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
 							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
 							<span class="text-base font-semibold text-gradient">Pollora — one attribute, done</span>
@@ -416,6 +424,300 @@ const peekSvg = peekRaw
 					</div>
 				</div>
 
+
+				<!-- Tab: REST API -->
+				<div x-show="tab === 'rest'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress — one array, loose callbacks</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-function">add_action</span>(<span class="token-string">'rest_api_init'</span>, <span class="token-keyword">function</span> () <span class="token-punctuation">&#123;</span>
+    <span class="token-function">register_rest_route</span>(<span class="token-string">'app/v2'</span>, <span class="token-string">'/document/(?P&lt;documentId&gt;\\d+)'</span>, [
+        [
+            <span class="token-string">'methods'</span>             =&gt; <span class="token-string">'GET'</span>,
+            <span class="token-string">'callback'</span>            =&gt; <span class="token-string">'app_get_document'</span>,
+            <span class="token-string">'permission_callback'</span> =&gt; <span class="token-string">'app_is_admin'</span>,
+            <span class="token-string">'args'</span> =&gt; [
+                <span class="token-string">'documentId'</span> =&gt; [<span class="token-string">'validate_callback'</span> =&gt; <span class="token-string">'is_numeric'</span>],
+            ],
+        ],
+        [
+            <span class="token-string">'methods'</span>             =&gt; [<span class="token-string">'DELETE'</span>, <span class="token-string">'POST'</span>],
+            <span class="token-string">'callback'</span>            =&gt; <span class="token-string">'app_delete_document'</span>,
+            <span class="token-string">'permission_callback'</span> =&gt; <span class="token-string">'app_is_admin'</span>,
+        ],
+    ]);
+<span class="token-punctuation">&#125;</span>);
+
+<span class="token-keyword">function</span> <span class="token-function">app_get_document</span>(<span class="token-class">WP_REST_Request</span> $request) <span class="token-punctuation">&#123;</span>
+    $id = (int) $request-&gt;<span class="token-function">get_param</span>(<span class="token-string">'documentId'</span>);
+    <span class="token-keyword">return</span> <span class="token-keyword">new</span> <span class="token-class">WP_REST_Response</span>([<span class="token-string">'documentId'</span> =&gt; $id]);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-keyword">function</span> <span class="token-function">app_delete_document</span>(<span class="token-class">WP_REST_Request</span> $request) <span class="token-punctuation">&#123;</span>
+    $id = (int) $request-&gt;<span class="token-function">get_param</span>(<span class="token-string">'documentId'</span>);
+    <span class="token-keyword">return</span> <span class="token-keyword">new</span> <span class="token-class">WP_REST_Response</span>([<span class="token-string">'deleted'</span> =&gt; $id]);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-keyword">function</span> <span class="token-function">app_is_admin</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">return</span> <span class="token-function">current_user_can</span>(<span class="token-string">'manage_options'</span>);
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — a class, typed methods</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute\Method</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute\Permissions\IsAdmin</span>;
+
+<span class="token-attribute">#[WpRestRoute(</span>
+    <span class="token-attribute">namespace:</span> <span class="token-string">'app/v2'</span>,
+    <span class="token-attribute">route:</span> <span class="token-string">'document/(?P&lt;documentId&gt;\\d+)'</span>,
+    <span class="token-attribute">permissionCallback:</span> <span class="token-class">IsAdmin</span>::<span class="token-keyword">class</span>,
+<span class="token-attribute">)]</span>
+<span class="token-keyword">class</span> <span class="token-class">DocumentAPI</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-attribute">#[Method('GET')]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">get</span>(<span class="token-class">int</span> $documentId): <span class="token-class">WP_REST_Response</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-keyword">return</span> <span class="token-keyword">new</span> <span class="token-class">WP_REST_Response</span>([<span class="token-string">'documentId'</span> =&gt; $documentId]);
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-attribute">#[Method(['DELETE', 'POST'])]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">delete</span>(<span class="token-class">int</span> $documentId): <span class="token-class">WP_REST_Response</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-keyword">return</span> <span class="token-keyword">new</span> <span class="token-class">WP_REST_Response</span>([<span class="token-string">'deleted'</span> =&gt; $documentId]);
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// Route params injected as typed arguments.</span></code></pre>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tab: AJAX -->
+				<div x-show="tab === 'ajax'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress — one hook per audience</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-comment">// Logged-in users only</span>
+<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_subscribe'</span>, <span class="token-string">'app_subscribe'</span>);
+
+<span class="token-comment">// Everyone — two hooks to keep in sync</span>
+<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_load_more'</span>, <span class="token-string">'app_load_more'</span>);
+<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_nopriv_load_more'</span>, <span class="token-string">'app_load_more'</span>);
+
+<span class="token-comment">// Guests only</span>
+<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_nopriv_track_visit'</span>, <span class="token-string">'app_track_visit'</span>);
+
+<span class="token-keyword">function</span> <span class="token-function">app_subscribe</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_send_json_success</span>([<span class="token-string">'message'</span> =&gt; <span class="token-string">'Subscribed!'</span>]);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-keyword">function</span> <span class="token-function">app_load_more</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-keyword">function</span> <span class="token-function">app_track_visit</span>() <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// Forget a nopriv_ hook: silently broken for guests.</span>
+<span class="token-comment">// Add one by mistake: open to the whole internet.</span></code></pre>
+						</div>
+					</div>
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — secure by default</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Ajax</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Ajax\Domain\Model\AjaxAccess</span>;
+
+<span class="token-keyword">class</span> <span class="token-class">NewsletterHandler</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-attribute">#[Ajax('subscribe')]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">subscribe</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-function">wp_send_json_success</span>([<span class="token-string">'message'</span> =&gt; <span class="token-string">'Subscribed!'</span>]);
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-attribute">#[Ajax('load_more', access: AjaxAccess::ALL)]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">loadMore</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-attribute">#[Ajax('track_visit', access: AjaxAccess::GUEST)]</span>
+    <span class="token-keyword">public function</span> <span class="token-function">trackVisit</span>(): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// Logged-in only by default. Public is opt-in.</span></code></pre>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tab: WP-CLI -->
+				<div x-show="tab === 'cli'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress — manual require, synopsis array</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-comment">// commands/class-greet-command.php</span>
+<span class="token-keyword">class</span> <span class="token-class">Greet_Command</span> <span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">public function</span> <span class="token-function">__invoke</span>($args, $assoc_args) <span class="token-punctuation">&#123;</span>
+        $greeting = $assoc_args[<span class="token-string">'greeting'</span>] ?? <span class="token-string">'Hello'</span>;
+        <span class="token-class">WP_CLI</span>::<span class="token-function">success</span>(<span class="token-string">"&#123;$greeting&#125;, &#123;$args[0]&#125;!"</span>);
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// functions.php</span>
+<span class="token-keyword">if</span> (<span class="token-function">defined</span>(<span class="token-string">'WP_CLI'</span>) &amp;&amp; <span class="token-class">WP_CLI</span>) <span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">require_once</span> <span class="token-class">__DIR__</span> . <span class="token-string">'/commands/class-greet-command.php'</span>;
+
+    <span class="token-class">WP_CLI</span>::<span class="token-function">add_command</span>(<span class="token-string">'greet'</span>, <span class="token-string">'Greet_Command'</span>, [
+        <span class="token-string">'shortdesc'</span> =&gt; <span class="token-string">'Greets someone.'</span>,
+        <span class="token-string">'synopsis'</span>  =&gt; [
+            [
+                <span class="token-string">'type'</span> =&gt; <span class="token-string">'positional'</span>,
+                <span class="token-string">'name'</span> =&gt; <span class="token-string">'name'</span>,
+            ],
+            [
+                <span class="token-string">'type'</span>     =&gt; <span class="token-string">'assoc'</span>,
+                <span class="token-string">'name'</span>     =&gt; <span class="token-string">'greeting'</span>,
+                <span class="token-string">'optional'</span> =&gt; <span class="token-keyword">true</span>,
+            ],
+        ],
+    ]);
+<span class="token-punctuation">&#125;</span></code></pre>
+						</div>
+					</div>
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — one attribute, auto-discovered</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpCli</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpCli\Synopsis</span>;
+
+<span class="token-attribute">#[WpCli]</span>
+<span class="token-attribute">#[Synopsis('&lt;name&gt; [--greeting=&lt;greeting&gt;]')]</span>
+<span class="token-keyword">class</span> <span class="token-class">GreetCommand</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">public function</span> <span class="token-function">__invoke</span>(<span class="token-class">array</span> $arguments, <span class="token-class">array</span> $options): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        $greeting = $options[<span class="token-string">'greeting'</span>] ?? <span class="token-string">'Hello'</span>;
+        <span class="token-class">WP_CLI</span>::<span class="token-function">success</span>(<span class="token-string">"&#123;$greeting&#125;, &#123;$arguments[0]&#125;!"</span>);
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// $ wp greet John --greeting=Hi</span>
+<span class="token-comment">// Slug from the class name. No require, no guard.</span></code></pre>
+						</div>
+					</div>
+				</div>
+
+				<!-- Tab: Abilities -->
+				<div x-show="tab === 'abilities'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
+							<span class="text-base font-medium text-muted">WordPress 6.9 — two hooks, raw JSON Schema</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-comment">// 1. Register the category</span>
+<span class="token-function">add_action</span>(<span class="token-string">'wp_abilities_api_categories_init'</span>, <span class="token-keyword">function</span> () <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_register_ability_category</span>(<span class="token-string">'acme-content'</span>, [
+        <span class="token-string">'label'</span>       =&gt; <span class="token-string">'Editorial'</span>,
+        <span class="token-string">'description'</span> =&gt; <span class="token-string">'Posts and pages.'</span>,
+    ]);
+<span class="token-punctuation">&#125;</span>);
+
+<span class="token-comment">// 2. Register the ability — raw JSON Schema</span>
+<span class="token-function">add_action</span>(<span class="token-string">'wp_abilities_api_init'</span>, <span class="token-keyword">function</span> () <span class="token-punctuation">&#123;</span>
+    <span class="token-function">wp_register_ability</span>(<span class="token-string">'acme/create-post'</span>, [
+        <span class="token-string">'label'</span>        =&gt; <span class="token-string">'Create Post'</span>,
+        <span class="token-string">'description'</span>  =&gt; <span class="token-string">'Creates a post from a title and a status.'</span>,
+        <span class="token-string">'category'</span>     =&gt; <span class="token-string">'acme-content'</span>,
+        <span class="token-string">'input_schema'</span> =&gt; [
+            <span class="token-string">'type'</span>       =&gt; <span class="token-string">'object'</span>,
+            <span class="token-string">'properties'</span> =&gt; [
+                <span class="token-string">'title'</span>  =&gt; [<span class="token-string">'type'</span> =&gt; <span class="token-string">'string'</span>, <span class="token-comment">/* ... */</span>],
+                <span class="token-string">'status'</span> =&gt; [<span class="token-string">'type'</span> =&gt; <span class="token-string">'string'</span>, <span class="token-string">'enum'</span> =&gt; [<span class="token-comment">/* ... */</span>]],
+            ],
+            <span class="token-string">'required'</span> =&gt; [<span class="token-string">'title'</span>],
+        ],
+        <span class="token-string">'permission_callback'</span> =&gt; <span class="token-keyword">fn</span> () =&gt; <span class="token-function">current_user_can</span>(<span class="token-string">'edit_posts'</span>),
+        <span class="token-string">'execute_callback'</span>    =&gt; <span class="token-keyword">function</span> ($input) <span class="token-punctuation">&#123;</span>
+            <span class="token-keyword">return</span> [<span class="token-string">'id'</span> =&gt; <span class="token-function">wp_insert_post</span>([
+                <span class="token-string">'post_title'</span>  =&gt; $input[<span class="token-string">'title'</span>] ?? <span class="token-string">''</span>,
+                <span class="token-string">'post_status'</span> =&gt; $input[<span class="token-string">'status'</span>] ?? <span class="token-string">'draft'</span>,
+            ])];
+        <span class="token-punctuation">&#125;</span>,
+        <span class="token-string">'meta'</span> =&gt; [<span class="token-string">'annotations'</span> =&gt; [
+            <span class="token-string">'readonly'</span> =&gt; <span class="token-keyword">false</span>, <span class="token-string">'destructive'</span> =&gt; <span class="token-keyword">false</span>, <span class="token-string">'idempotent'</span> =&gt; <span class="token-keyword">false</span>,
+        ]],
+    ]);
+<span class="token-punctuation">&#125;</span>);</code></pre>
+						</div>
+					</div>
+					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
+						<div class="flex items-center gap-2 mb-4">
+							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
+							<span class="text-base font-semibold text-gradient">Pollora — one attribute, a testable class</span>
+						</div>
+						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
+							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Ability</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Abilities\Domain\Model\Behaviour</span>;
+
+<span class="token-attribute">#[Ability(</span>
+    <span class="token-attribute">name:</span> <span class="token-string">'acme/create-post'</span>,
+    <span class="token-attribute">description:</span> <span class="token-string">'Creates a post from a title and a status.'</span>,
+    <span class="token-attribute">category:</span> <span class="token-string">'acme-content'</span>,
+    <span class="token-attribute">behaviour:</span> <span class="token-class">Behaviour</span>::<span class="token-class">Creates</span>,
+<span class="token-attribute">)]</span>
+<span class="token-keyword">final class</span> <span class="token-class">CreatePost</span> <span class="token-keyword">implements</span> <span class="token-class">AbilityHandler</span>
+<span class="token-punctuation">&#123;</span>
+    <span class="token-keyword">public function</span> <span class="token-function">schema</span>(<span class="token-class">SchemaBuilder</span> $schema): <span class="token-class">void</span>
+    <span class="token-punctuation">&#123;</span>
+        $schema-&gt;<span class="token-function">string</span>(<span class="token-string">'title'</span>, <span class="token-string">'Title of the post.'</span>, required: <span class="token-keyword">true</span>);
+        $schema-&gt;<span class="token-function">enum</span>(<span class="token-string">'status'</span>, <span class="token-string">'Publication status.'</span>, [<span class="token-string">'draft'</span>, <span class="token-string">'publish'</span>]);
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-keyword">public function</span> <span class="token-function">authorize</span>(<span class="token-class">Input</span> $input): <span class="token-class">mixed</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-keyword">return</span> <span class="token-function">current_user_can</span>(<span class="token-string">'edit_posts'</span>);
+    <span class="token-punctuation">&#125;</span>
+
+    <span class="token-keyword">public function</span> <span class="token-function">handle</span>(<span class="token-class">Input</span> $input): <span class="token-class">mixed</span>
+    <span class="token-punctuation">&#123;</span>
+        <span class="token-keyword">return</span> [<span class="token-string">'id'</span> =&gt; <span class="token-function">wp_insert_post</span>([
+            <span class="token-string">'post_title'</span>  =&gt; $input-&gt;<span class="token-function">string</span>(<span class="token-string">'title'</span>),
+            <span class="token-string">'post_status'</span> =&gt; $input-&gt;<span class="token-function">string</span>(<span class="token-string">'status'</span>, <span class="token-string">'draft'</span>),
+        ])];
+    <span class="token-punctuation">&#125;</span>
+<span class="token-punctuation">&#125;</span>
+
+<span class="token-comment">// Category auto-declared. Ready for MCP clients.</span></code></pre>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 
@@ -426,31 +728,80 @@ const peekSvg = peekRaw
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
 				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
-						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/cli</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">CLI</h3>
-						<p class="text-ink-2 text-base">Scaffold projects in one command. Interactive setup with optional DDEV integration. Global binary.</p>
-					</a>
-					<a href="https://github.com/Pollora/colt" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:2">
-						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/colt</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Colt</h3>
-						<p class="text-ink-2 text-base">Eloquent ORM models for WordPress. Access posts, users, taxonomies, and options with Laravel's query builder.</p>
-					</a>
-					<a href="https://github.com/Pollora/entity" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:3">
+
+				<!-- Core packages -->
+				<div data-reveal class="mb-6 flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1" style="--i:1">
+					<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Core packages</h3>
+					<p class="text-muted text-base">Power the framework — and work in any WordPress project.</p>
+				</div>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+					<a href="https://github.com/Pollora/WordPressEntity" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
 						<div class="font-[var(--font-code)] text-pollora-amber text-sm tracking-wider uppercase font-semibold mb-3">pollora/entity</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-amber transition-colors duration-[var(--dur-micro)]">Entity</h3>
-						<p class="text-ink-2 text-base">Fluent interface for post types and taxonomies. Hexagonal architecture with full type safety.</p>
+						<p class="text-ink-2 text-base">Fluent interface for post types and taxonomies, built on Extended CPTs. Hexagonal architecture with full type safety.</p>
 					</a>
-					<a href="https://github.com/Pollora/query" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:4">
+					<a href="https://github.com/Pollora/Query" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:2">
 						<div class="font-[var(--font-code)] text-pollora-orange text-sm tracking-wider uppercase font-semibold mb-3">pollora/query</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-orange transition-colors duration-[var(--dur-micro)]">Query</h3>
 						<p class="text-ink-2 text-base">Fluent WP_Query wrapper. Type-safe method chaining with IDE autocompletion for readable post queries.</p>
 					</a>
-					<a href="https://github.com/Pollora/nectar" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-1" style="--i:5">
+					<a href="https://github.com/Pollora/colt" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:3">
+						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/colt</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Colt</h3>
+						<p class="text-ink-2 text-base">Eloquent ORM models for WordPress. Access posts, users, taxonomies, and options with Laravel's query builder.</p>
+					</a>
+					<a href="https://github.com/Pollora/hook" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:4">
+						<div class="font-[var(--font-code)] text-pollora-pink text-sm tracking-wider uppercase font-semibold mb-3">pollora/hook</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-pink transition-colors duration-[var(--dur-micro)]">Hook</h3>
+						<p class="text-ink-2 text-base">Actions and filters as objects, with callback resolution and reflection caching behind a clean API.</p>
+					</a>
+					<a href="https://github.com/Pollora/ajax" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-red/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:5">
+						<div class="font-[var(--font-code)] text-pollora-red text-sm tracking-wider uppercase font-semibold mb-3">pollora/ajax</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-red transition-colors duration-[var(--dur-micro)]">Ajax</h3>
+						<p class="text-ink-2 text-base">AJAX actions with a fluent API. Logged-in users only by default — public access is an explicit opt-in.</p>
+					</a>
+					<a href="https://github.com/Pollora/option" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:6">
+						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/option</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Option</h3>
+						<p class="text-ink-2 text-base">WordPress options with validation and immutable value objects. Typed reads, smart upserts.</p>
+					</a>
+					<a href="https://github.com/Pollora/abilities" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-2" style="--i:6">
+						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/abilities</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Abilities</h3>
+						<p class="text-ink-2 text-base">The WordPress 6.9 Abilities API, declared fluently or with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">#[Ability]</code>. Typed input schemas and deny-by-default permissions, ready for AI agents and MCP.</p>
+					</a>
+				</div>
+
+				<!-- Tools & plugins -->
+				<div data-reveal class="mb-6 flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1" style="--i:1">
+					<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Tools &amp; plugins</h3>
+					<p class="text-muted text-base">CLI, AI tooling and ready-to-install WordPress plugins.</p>
+				</div>
+				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5">
+					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:1">
+						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/cli</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">CLI</h3>
+						<p class="text-ink-2 text-base">Scaffold projects in one command. Interactive setup with optional DDEV integration. Global binary.</p>
+					</a>
+					<a href="https://github.com/Pollora/nectar" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:2">
 						<div class="font-[var(--font-code)] text-pollora-pink text-sm tracking-wider uppercase font-semibold mb-3">pollora/nectar</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-pink transition-colors duration-[var(--dur-micro)]">Nectar</h3>
 						<p class="text-ink-2 text-base">AI-powered development context. 10 MCP tools for live introspection, 8 agent skills for domain tasks.</p>
+					</a>
+					<a href="https://github.com/Pollora/McpConnector" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:3">
+						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/mcp-connector</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">MCP Connector</h3>
+						<p class="text-ink-2 text-base">Connect Claude and other MCP clients to WordPress by URL. 27 content-management tools with a built-in OAuth 2.1 provider.</p>
+					</a>
+					<a href="https://github.com/Pollora/AiVisibility" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-3" style="--i:4">
+						<div class="font-[var(--font-code)] text-pollora-amber text-sm tracking-wider uppercase font-semibold mb-3">pollora/ai-visibility</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-amber transition-colors duration-[var(--dur-micro)]">AI Visibility</h3>
+						<p class="text-ink-2 text-base">Make your site legible to AI engines: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">/llms.txt</code>, a Markdown twin of every page, AI crawler rules and discovery files.</p>
+					</a>
+					<a href="https://github.com/Pollora/portcullis" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-3" style="--i:5">
+						<div class="font-[var(--font-code)] text-pollora-orange text-sm tracking-wider uppercase font-semibold mb-3">pollora/portcullis</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-orange transition-colors duration-[var(--dur-micro)]">Portcullis</h3>
+						<p class="text-ink-2 text-base">Secure the WordPress login: a secret URL, genuine 404s on wp-login.php and wp-admin, and brute-force lockouts.</p>
 					</a>
 				</div>
 			</div>
@@ -463,7 +814,7 @@ const peekSvg = peekRaw
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Two themes, <span class="text-gradient">two purposes</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Start with a clean default or a conversion-ready WooCommerce storefront. Both use Blade, Vite, and Tailwind CSS.</p>
 				</div>
-				<div class="grid md:grid-cols-2 gap-6">
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:1">
 						<div class="aspect-[16/9] bg-paper-3 flex items-center justify-center">
 							<div class="text-center p-8">
@@ -557,7 +908,7 @@ const peekSvg = peekRaw
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
 						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
 						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
-							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, versioned, and AI-ready with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>.
+							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>.
 						</p>
 						<div class="flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
@@ -575,10 +926,11 @@ const peekSvg = peekRaw
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
 				<div data-reveal class="grid md:grid-cols-[1.2fr_1fr] gap-12 items-center" style="--i:0">
 					<div class="text-center md:text-left">
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.25rem,4.5vw+0.5rem,4rem)] tracking-tight text-[var(--color-accent-ink)] mb-7" style="overflow-wrap:anywhere;min-width:0">
+
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight mb-7 text-[var(--color-accent-ink)]" style="overflow-wrap:anywhere;min-width:0">
 							Start building with <span class="text-gradient">Pollora</span>
 						</h2>
-						<p class="text-neutral text-xl max-w-[45ch] mb-12">
+						<p class="text-neutral text-lg max-w-[45ch] mb-12">
 							One command to install. Laravel conventions from day one. WordPress power underneath.
 						</p>
 						<div class="flex flex-wrap justify-center md:justify-start gap-5">
@@ -588,6 +940,19 @@ const peekSvg = peekRaw
 							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-10 py-4 rounded-[var(--radius-md)] border border-[oklch(30%_0.01_290)] text-[var(--color-accent-ink)] text-lg font-semibold hover:border-neutral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								View on GitHub
 							</a>
+						</div>
+
+						<!-- Issues -->
+						<div class="mt-12 flex flex-col sm:flex-row items-center sm:items-start gap-4 p-5 rounded-[var(--radius-lg)] border border-code-surface bg-code-surface/40 text-left max-w-[34rem] mx-auto md:mx-0">
+							<svg class="shrink-0 w-6 h-6 mt-0.5 text-pollora-coral" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/><path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0ZM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0Z"/></svg>
+							<div class="text-center sm:text-left">
+								<p class="text-[var(--color-accent-ink)] font-semibold mb-1">Found a bug? Have an idea?</p>
+								<p class="text-neutral text-base mb-3">Open an issue on GitHub. Every report, question and feature request helps shape Pollora.</p>
+								<div class="flex flex-wrap justify-center sm:justify-start gap-x-5 gap-y-2 text-sm font-semibold">
+									<a href="https://github.com/Pollora/framework/issues/new" target="_blank" rel="noopener" class="text-gradient hover:opacity-80 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Open an issue <span aria-hidden="true">&rarr;</span></a>
+									<a href="https://github.com/Pollora/framework/issues" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Browse open issues</a>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="hidden md:flex justify-center items-center relative">
@@ -607,16 +972,23 @@ const peekSvg = peekRaw
 	<!-- ═══ FOOTER ═══ -->
 	<footer class="bg-code-bg border-t border-code-surface">
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-10 flex flex-col sm:flex-row items-center justify-between gap-5">
-			<div class="flex items-center gap-8 text-base text-muted">
+			<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base text-muted">
 				<a href="/getting-started/installation/" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">Docs</a>
 				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">GitHub</a>
 				<a href="/llms.txt" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">llms.txt</a>
+				<a href="mailto:support@pollora.dev" class="text-sm font-[var(--font-code)] hover:text-neutral transition-colors duration-[var(--dur-micro)]">support@pollora.dev</a>
 			</div>
-			<p class="text-sm text-muted">Pollora is open source under the GPL-2.0 license.</p>
+			<div class="text-sm text-muted text-center sm:text-right space-y-1">
+				<p>Pollora is open source under the MIT license.</p>
+				<p>Built by <a href="https://amphibee.fr" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">AmphiBee</a>, backed by <a href="https://rubee.group" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">RuBee</a>.</p>
+			</div>
 		</div>
 	</footer>
 
 
+	<script define:vars={{ terminalSequence }}>
+		window.__terminalSequence = terminalSequence;
+	</script>
 	<script>
 		import Alpine from 'alpinejs';
 
@@ -630,16 +1002,13 @@ const peekSvg = peekRaw
 				const svgCX = rect.left + rect.width / 2;
 				const svgCY = rect.top + rect.height / 2;
 
-				// Direction from SVG center to mouse, normalized
 				const dx = e.clientX - svgCX;
 				const dy = e.clientY - svgCY;
 				const dist = Math.sqrt(dx * dx + dy * dy) || 1;
 				const nx = dx / dist;
 				const ny = dy / dist;
 
-				// Max pixel movement in SVG units (pupils can move ~20-30 SVG units)
 				const maxMove = 18;
-				// Ease: move more when mouse is closer, cap at maxMove
 				const factor = Math.min(dist / 300, 1);
 				const moveX = nx * maxMove * factor;
 				const moveY = ny * maxMove * factor;
@@ -648,6 +1017,199 @@ const peekSvg = peekRaw
 				const p2 = document.getElementById('pupil-2');
 				if (p1) p1.setAttribute('transform', `translate(${moveX}, ${moveY})`);
 				if (p2) p2.setAttribute('transform', `translate(${moveX}, ${moveY})`);
+			}
+		}));
+
+		// Terminal animation
+		Alpine.data('terminalAnim', () => ({
+			lines: [],
+			_id: 0,
+			_stopped: false,
+			_started: false,
+
+			init() {
+				const obs = new IntersectionObserver(entries => {
+					if (entries[0].isIntersecting && !this._started) {
+						this._started = true;
+						this.run();
+					}
+				}, { threshold: 0.2 });
+				obs.observe(this.$el);
+			},
+
+			// Helpers
+			_sleep(ms) {
+				return new Promise(r => setTimeout(r, ms));
+			},
+			_esc(s) {
+				return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			},
+			_scroll() {
+				this.$nextTick(() => {
+					const el = this.$refs.scroll;
+					if (el) el.scrollTop = el.scrollHeight;
+				});
+			},
+			_addLine(html, cls = '') {
+				const id = this._id++;
+				this.lines.push({ id, html, cls });
+				this._scroll();
+				return id;
+			},
+			_updateLine(id, html) {
+				const l = this.lines.find(x => x.id === id);
+				if (l) l.html = html;
+			},
+
+			// Step runners
+			async _doCommand(step) {
+				const text = step.text;
+				const id = this._addLine('<span class="term-teal">$</span> <span class="term-cursor">█</span>');
+				await this._sleep(400);
+				for (let i = 0; i <= text.length; i++) {
+					this._updateLine(id,
+						`<span class="term-teal">$</span> <span class="term-accent">${this._esc(text.slice(0, i))}</span><span class="term-cursor">█</span>`
+					);
+					await this._sleep(28 + Math.random() * 42);
+				}
+				this._updateLine(id, `<span class="term-teal">$</span> <span class="term-accent">${this._esc(text)}</span>`);
+				await this._sleep(400);
+			},
+
+			async _doOutput(step) {
+				const style = step.style || '';
+				let cls = '';
+				if (style === 'success') cls = 'term-green';
+				else if (style === 'muted') cls = 'term-muted';
+				else if (style === 'info') cls = 'term-info';
+				else if (style === 'url') cls = 'term-url';
+				else if (style === 'banner') cls = 'term-banner';
+				else if (style === 'success-box') cls = 'term-success-box font-bold';
+
+				for (const line of step.lines) {
+					this._addLine(this._esc(line), cls);
+					await this._sleep(style === 'banner' ? 15 : 60);
+				}
+			},
+
+			// W = inner width (chars between │ and │). Total box width = W + 2
+			_W: 58,
+
+			_promptTop(question) {
+				const dashes = '─'.repeat(Math.max(1, this._W - question.length - 2));
+				return `<span class="term-prompt-border">┌</span> <span class="term-accent">${this._esc(question)}</span> <span class="term-prompt-border">${dashes}┐</span>`;
+			},
+			_promptMid(content, contentLen, colorCls = 'term-accent') {
+				const spaces = ' '.repeat(Math.max(0, this._W - contentLen - 1));
+				return `<span class="term-prompt-border">│</span> <span class="${colorCls}">${content}</span>${spaces}<span class="term-prompt-border">│</span>`;
+			},
+			_promptBot() {
+				return `<span class="term-prompt-border">└${'─'.repeat(this._W)}┘</span>`;
+			},
+
+			async _doPrompt(step) {
+				// Top border
+				this._addLine(this._promptTop(step.question));
+
+				// Middle — empty with cursor
+				const midId = this._addLine(this._promptMid('<span class="term-cursor">█</span>', 1));
+				await this._sleep(250);
+
+				// Type the answer char by char
+				const answer = step.answer;
+				for (let i = 0; i <= answer.length; i++) {
+					const typed = this._esc(answer.slice(0, i));
+					this._updateLine(midId, this._promptMid(`${typed}<span class="term-cursor">█</span>`, i + 1));
+					await this._sleep(35 + Math.random() * 35);
+				}
+
+				// Final state — no cursor
+				const spaces = ' '.repeat(Math.max(0, this._W - answer.length - 1));
+				this._updateLine(midId,
+					`<span class="term-prompt-border">│</span> <span class="term-accent">${this._esc(answer)}</span>${spaces}<span class="term-prompt-border">│</span>`
+				);
+
+				// Bottom border
+				this._addLine(this._promptBot());
+				await this._sleep(350);
+			},
+
+			async _doSelect(step) {
+				const answer = step.answer;
+
+				// Top border
+				this._addLine(this._promptTop(step.question));
+
+				// Middle — empty, then answer appears
+				const emptySpaces = ' '.repeat(Math.max(0, this._W - 1));
+				const midId = this._addLine(`<span class="term-prompt-border">│</span>${emptySpaces} <span class="term-prompt-border">│</span>`);
+				await this._sleep(500);
+
+				const spaces = ' '.repeat(Math.max(0, this._W - answer.length - 1));
+				this._updateLine(midId,
+					`<span class="term-prompt-border">│</span> <span class="term-green">${this._esc(answer)}</span>${spaces}<span class="term-prompt-border">│</span>`
+				);
+
+				// Bottom border
+				this._addLine(this._promptBot());
+				await this._sleep(350);
+			},
+
+			async _doProgress(step) {
+				const total = step.total || 100;
+				const duration = step.duration || 1500;
+				const barWidth = 28;
+				const steps = 12;
+
+				const id = this._addLine('');
+				for (let i = 0; i <= steps; i++) {
+					const pct = Math.min(Math.round((i / steps) * 100), 100);
+					const current = Math.round((i / steps) * total);
+					const filled = Math.round((i / steps) * barWidth);
+					const empty = barWidth - filled;
+					const bar = '='.repeat(filled) + (empty > 0 ? '>' + '-'.repeat(Math.max(0, empty - 1)) : '');
+					const pctStr = pct.toString().padStart(3, ' ');
+					this._updateLine(id,
+						`<span class="term-muted">${current}/${total} [${bar}] ${pctStr}%</span>`
+					);
+					await this._sleep(duration / steps);
+				}
+			},
+
+			async _doMigrations(step) {
+				for (const m of step.items) {
+					const name = m.name;
+					const dots = '.'.repeat(Math.max(0, 50 - name.length));
+					const id = this._addLine(`<span class="term-accent">${this._esc(name)}</span><span class="term-muted"> ${dots}</span>`);
+					await this._sleep(200 + Math.random() * 300);
+					this._updateLine(id,
+						`<span class="term-accent">${this._esc(name)}</span><span class="term-muted"> ${dots} ${m.time}</span> <span class="term-green">DONE</span>`
+					);
+					await this._sleep(100);
+				}
+			},
+
+			async run() {
+				const sequence = window.__terminalSequence;
+				while (true) {
+					this.lines = [];
+					this._id = 0;
+
+					for (const step of sequence) {
+						switch (step.type) {
+							case 'command': await this._doCommand(step); break;
+							case 'output': await this._doOutput(step); break;
+							case 'prompt': await this._doPrompt(step); break;
+							case 'select': await this._doSelect(step); break;
+							case 'progress': await this._doProgress(step); break;
+							case 'migrations': await this._doMigrations(step); break;
+							case 'pause': await this._sleep(step.ms || 500); break;
+						}
+					}
+
+					// Pause before restarting
+					await this._sleep(6000);
+				}
 			}
 		}));
 
