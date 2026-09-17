@@ -3,9 +3,15 @@ import polloraLogo from '../assets/pollora-logo.svg';
 import mascotDeveloper from '../assets/mascot-developer.svg';
 import mascotDocs from '../assets/mascot-documentation.svg';
 import mascotGithub from '../assets/mascot-github.svg';
+import videoPoster from '../assets/video-tour-poster.png';
+import { Image } from 'astro:assets';
 import '../styles/global.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+// YouTube ID of the 1-minute beta launch tour
+const youtubeId = 'Wk1VzPapqM8';
+const tourEmbedUrl = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&playsinline=1`;
 
 const terminalSequence = JSON.parse(readFileSync(resolve('sources/terminal-sequence.json'), 'utf-8'));
 const peekRaw = readFileSync(resolve('src/assets/mascot-peek.svg'), 'utf-8');
@@ -110,6 +116,11 @@ const peekSvg = peekRaw
 								View on GitHub
 							</a>
 						</div>
+						<button type="button" x-data @click="$store.tour.show()" class="group mt-8 inline-flex items-center gap-3 text-base font-semibold text-ink-2 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
+							<span class="grid place-items-center w-11 h-11 rounded-full bg-gradient-pollora text-white shadow-[0_0_20px_rgba(255,83,52,0.35)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-5 h-5 translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
+							Watch the 1-min tour
+							<span class="font-[var(--font-code)] text-sm font-normal text-muted">1:06</span>
+						</button>
 					</div>
 					<div data-reveal class="rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
 						<div class="bg-code-bg p-6 md:p-8 pb-24 md:pb-28 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
@@ -144,6 +155,33 @@ const peekSvg = peekRaw
 								<Fragment set:html={peekSvg} />
 							</div>
 						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ═══ VIDEO TOUR ═══ -->
+		<section id="tour" class="py-24 md:py-32 bg-code-bg relative overflow-hidden">
+			<div class="absolute inset-0 opacity-[0.08]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 65%)"></div>
+			<div class="max-w-5xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
+				<div data-reveal class="text-center mb-12" style="--i:0">
+					<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Public beta</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">Pollora in <span class="text-gradient">60 seconds</span></h2>
+					<p class="text-neutral text-lg max-w-[52ch] mx-auto">From one install command to your first post type — a quick tour of what changes when WordPress meets Laravel.</p>
+				</div>
+				<div data-reveal style="--i:1">
+					<div x-data="{ playing: false }" class="relative aspect-video rounded-[var(--radius-lg)] overflow-hidden bg-black shadow-2xl shadow-black/40 ring-1 ring-white/10">
+						<button type="button" x-show="!playing" @click="playing = true" class="group absolute inset-0 w-full h-full focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-focus)]" aria-label="Play the Pollora 1-minute tour video">
+							<Image src={videoPoster} alt="" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 1024px, 100vw" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+							<span class="absolute inset-0 bg-black/15 group-hover:bg-black/0 transition-colors duration-[var(--dur-short)]"></span>
+							<span class="absolute inset-0 grid place-items-center">
+								<span class="grid place-items-center w-18 h-18 md:w-24 md:h-24 rounded-full bg-gradient-pollora text-white shadow-[0_0_40px_rgba(255,83,52,0.55)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-[40%] h-[40%] translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
+							</span>
+							<span class="absolute bottom-3 right-3 md:bottom-4 md:right-4 px-2.5 py-1 rounded-[var(--radius-sm)] bg-black/70 text-white text-sm font-[var(--font-code)]">1:06</span>
+						</button>
+						<template x-if="playing">
+							<iframe src={tourEmbedUrl} title="Pollora in 60 seconds" class="absolute inset-0 w-full h-full" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+						</template>
 					</div>
 				</div>
 			</div>
@@ -972,6 +1010,21 @@ const peekSvg = peekRaw
 
 	</main>
 
+
+	<!-- ═══ VIDEO MODAL ═══ -->
+	<div x-data x-show="$store.tour.open" x-cloak x-transition.opacity @keydown.escape.window="$store.tour.hide()" @click.self="$store.tour.hide()" class="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-10 bg-black/85 backdrop-blur-sm" role="dialog" aria-modal="true" aria-label="Pollora in 60 seconds">
+		<div class="relative w-full max-w-5xl">
+			<button type="button" x-ref="close" @click="$store.tour.hide()" class="absolute -top-12 right-0 grid place-items-center w-10 h-10 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" aria-label="Close video">
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+			</button>
+			<div class="relative aspect-video rounded-[var(--radius-lg)] overflow-hidden bg-black shadow-2xl">
+				<template x-if="$store.tour.open">
+					<iframe src={tourEmbedUrl} title="Pollora in 60 seconds" class="absolute inset-0 w-full h-full" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+				</template>
+			</div>
+		</div>
+	</div>
+
 	<!-- ═══ FOOTER ═══ -->
 	<footer class="bg-code-bg border-t border-code-surface">
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-10 flex flex-col sm:flex-row items-center justify-between gap-5">
@@ -1215,6 +1268,23 @@ const peekSvg = peekRaw
 				}
 			}
 		}));
+
+		// Video tour modal
+		Alpine.store('tour', {
+			open: false,
+			lastFocus: null,
+			show() {
+				this.lastFocus = document.activeElement;
+				this.open = true;
+				document.documentElement.style.overflow = 'hidden';
+				setTimeout(() => document.querySelector('[aria-label="Close video"]')?.focus(), 50);
+			},
+			hide() {
+				this.open = false;
+				document.documentElement.style.overflow = '';
+				this.lastFocus?.focus();
+			},
+		});
 
 		Alpine.start();
 
