@@ -18,9 +18,22 @@ Welcome to Pollora! This guide will help you get a working installation up and r
 
 ## Current release
 
-Pollora's version numbers follow the Laravel release it is built on. The current release is **v13.32.0-beta.2**, built on Laravel 13.32.
+Pollora's version numbers follow the Laravel release it is built on, so the
+current line is **13.32**, built on Laravel 13.32.
 
-Because it is a pre-release, Composer never selects it by default: a plain `composer create-project pollora/pollora` still installs the last stable release (v13.4.0). The commands below ask for the beta explicitly.
+Two packages carry that number and they are tagged independently:
+
+| Package | Current | What it is |
+|---|---|---|
+| `pollora/pollora` | `v13.32.0-beta.4` | the skeleton — what `create-project` installs |
+| `pollora/framework` | `v13.32.0-beta.6` | the framework the skeleton requires, at `^13.32@beta` |
+
+So a fresh install gives you the latest skeleton **and** the latest framework
+beta, whichever numbers those happen to be.
+
+Because these are pre-releases, Composer never selects them by default: a
+plain `composer create-project pollora/pollora` still installs the last stable
+release, **v13.4.0**. The commands below ask for the beta explicitly.
 
 ## Installation Methods
 
@@ -61,10 +74,10 @@ With `--ddev`, the CLI configures DDEV (WordPress project type, PHP 8.4, MariaDB
 | `--force`, `-f` | Force install even if the directory already exists |
 | `--git` | Initialize a Git repository |
 | `--branch=NAME` | Branch name for the new repository (default: `main`) |
-| `--ver=VERSION` | Install a specific version or constraint (e.g. `13.32.0-beta.2`, `^13.32@beta`) |
+| `--ver=VERSION` | Install a specific version or constraint (e.g. `13.32.0-beta.4`, `^13.32@beta`) |
 | `--stable` | Install the latest stable release instead of the latest pre-release |
 
-`pollora new` installs the latest release **including pre-releases**, so you get v13.32.0-beta.2 today. Pass `--stable` to stay on the last stable release, or `--ver` to pin an exact version.
+`pollora new` installs the latest release **including pre-releases**, so you get the current beta. Pass `--stable` to stay on the last stable release, or `--ver` to pin an exact version.
 
 ### 2. Composer create-project
 
