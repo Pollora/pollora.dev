@@ -4,6 +4,9 @@ import mascotDeveloper from '../assets/mascot-developer.svg';
 import mascotDocs from '../assets/mascot-documentation.svg';
 import mascotGithub from '../assets/mascot-github.svg';
 import videoPoster from '../assets/video-tour-poster.png';
+import themeDefault from '../assets/themes/default.png';
+import themeApiary from '../assets/themes/apiary.png';
+import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
 import '../styles/global.css';
 import { readFileSync } from 'node:fs';
@@ -852,36 +855,44 @@ const peekSvg = peekRaw
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Two themes, <span class="text-gradient">two purposes</span></h2>
-					<p class="text-ink-2 text-lg max-w-[55ch]">Start with a clean default or a conversion-ready WooCommerce storefront. Both use Blade, Vite, and Tailwind CSS.</p>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Three themes, <span class="text-gradient">three purposes</span></h2>
+					<p class="text-ink-2 text-lg max-w-[55ch]">Start from a clean Blade default, a conversion-ready WooCommerce storefront, or a magazine built for the Site Editor. <code class="font-[var(--font-code)] text-base">pollora:make:theme</code> offers all three.</p>
 				</div>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:1">
-						<div class="aspect-[16/9] bg-paper-3 flex items-center justify-center">
-							<div class="text-center p-8">
-								<div class="inline-block px-5 py-2.5 rounded-[var(--radius-md)] bg-code-bg mb-5">
-									<code class="font-[var(--font-code)] text-base text-pollora-teal">pollora:make-theme starter</code>
-								</div>
-								<p class="text-muted text-base">Clean, minimal, ready to customize</p>
-							</div>
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden flex flex-col" style="--i:1">
+						<div class="aspect-[16/9] bg-paper-3 overflow-hidden border-b border-rule">
+							<Image src={themeDefault} alt="The default theme's home page: a dark hero, a gradient headline and feature cards" widths={[480, 720, 960]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw" loading="lazy" class="w-full h-full object-cover object-top" />
 						</div>
-						<div class="p-8">
-							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Default Theme</h3>
-							<p class="text-ink-2 text-base">Blade templates, Vite with HMR, Tailwind CSS v4, theme-specific service providers and configuration. The right starting point for any project.</p>
+						<div class="p-8 flex flex-col gap-4 grow">
+							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Default Theme</h3>
+							<p class="text-ink-2 text-base grow">Blade templates, Vite with HMR, Tailwind CSS v4, theme-specific service providers and configuration. The right starting point for any project.</p>
+							<div class="px-4 py-2.5 rounded-[var(--radius-md)] bg-code-bg">
+								<code class="font-[var(--font-code)] text-sm text-pollora-teal break-words">pollora:make:theme my-theme</code>
+							</div>
 						</div>
 					</div>
-					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden" style="--i:2">
-						<div class="aspect-[16/9] bg-code-bg flex items-center justify-center">
-							<div class="text-center p-8">
-								<div class="inline-block px-5 py-2.5 rounded-[var(--radius-md)] bg-code-surface mb-5">
-									<code class="font-[var(--font-code)] text-base text-pollora-amber">--template=apiary</code>
-								</div>
-								<p class="text-muted text-base">WooCommerce, conversion-optimized</p>
+					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden flex flex-col" style="--i:2">
+						<div class="aspect-[16/9] bg-paper-3 overflow-hidden border-b border-rule">
+							<Image src={themeApiary} alt="The Apiary theme's home page: product search, a category menu and a grid of products with sale badges" widths={[480, 720, 960]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw" loading="lazy" class="w-full h-full object-cover object-top" />
+						</div>
+						<div class="p-8 flex flex-col gap-4 grow">
+							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Apiary <span class="text-base font-normal text-muted ml-1">WooCommerce</span></h3>
+							<p class="text-ink-2 text-base grow">Sticky add-to-cart, search autocomplete, Alpine.js interactivity, responsive product grids, and full checkout override. Built for conversion.</p>
+							<div class="px-4 py-2.5 rounded-[var(--radius-md)] bg-code-bg">
+								<code class="font-[var(--font-code)] text-sm text-pollora-amber break-words">--repository=pollora/theme-apiary</code>
 							</div>
 						</div>
-						<div class="p-8">
-							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Apiary <span class="text-base font-normal text-muted ml-1">WooCommerce</span></h3>
-							<p class="text-ink-2 text-base">Sticky add-to-cart, search autocomplete, Alpine.js interactivity, responsive product grids, and full checkout override. Built for conversion.</p>
+					</div>
+					<div data-reveal class="bg-paper rounded-[var(--radius-lg)] border border-rule overflow-hidden flex flex-col" style="--i:3">
+						<div class="aspect-[16/9] bg-paper-3 overflow-hidden border-b border-rule">
+							<Image src={themeBuzz} alt="The Buzz theme's home page: a large serif nameplate and a journal index of articles set in Playfair Display" widths={[480, 720, 960]} sizes="(min-width: 1024px) 400px, (min-width: 768px) 50vw, 100vw" loading="lazy" class="w-full h-full object-cover object-top" />
+						</div>
+						<div class="p-8 flex flex-col gap-4 grow">
+							<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Buzz <span class="text-base font-normal text-muted ml-1">Full Site Editing</span></h3>
+							<p class="text-ink-2 text-base grow">A typographic magazine and a true block theme: templates, parts and patterns edited in the Site Editor, ink-on-paper palette, Playfair Display and Source Serif.</p>
+							<div class="px-4 py-2.5 rounded-[var(--radius-md)] bg-code-bg">
+								<code class="font-[var(--font-code)] text-sm text-pollora-teal break-words">--repository=pollora/theme-buzz</code>
+							</div>
 						</div>
 					</div>
 				</div>
