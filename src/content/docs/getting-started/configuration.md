@@ -1,6 +1,7 @@
 ---
 title: Configuration
-description: Configure your Pollora project after installation
+description: "Configure a new Pollora project: environment variables, database, WordPress settings, local environments such as DDEV, and fixes for common setup issues."
+editUrl: https://github.com/Pollora/documentation/edit/main/installation.md
 sidebar:
   order: 2
 ---

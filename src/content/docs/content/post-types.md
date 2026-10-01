@@ -1,6 +1,7 @@
 ---
 title: Post Types
-description: Define custom post types with PHP 8 attributes
+description: "Declare WordPress custom post types in Pollora with a PHP 8 attribute on a class: labels, supported features, archives and translations, all in one place."
+editUrl: https://github.com/Pollora/documentation/edit/main/post-types.md
 sidebar:
   order: 1
 ---

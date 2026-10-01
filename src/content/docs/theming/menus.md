@@ -1,6 +1,7 @@
 ---
 title: Menus
-description: Menu management with rule-based configuration
+description: "Customize WordPress menus in Pollora with rule-based classes and attributes by depth and position, made for Tailwind CSS and Alpine.js markup."
+editUrl: https://github.com/Pollora/documentation/edit/main/menu.md
 sidebar:
   order: 3
 ---

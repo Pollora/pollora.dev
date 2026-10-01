@@ -1,6 +1,7 @@
 ---
 title: Gutenberg Blocks
-description: Create custom blocks with Vite and JSX
+description: "Build custom Gutenberg blocks in Pollora with Vite and JSX, scaffold them with pollora:make:block, and render them on the server with Blade templates."
+editUrl: https://github.com/Pollora/documentation/edit/main/blocks.md
 sidebar:
   order: 1
 ---

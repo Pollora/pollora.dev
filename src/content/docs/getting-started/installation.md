@@ -1,6 +1,7 @@
 ---
 title: Installation
-description: Get started with Pollora in minutes
+description: "Install Pollora, the Laravel framework for WordPress, with the Pollora CLI or Composer, run the WordPress setup and check that your new project works."
+editUrl: https://github.com/Pollora/documentation/edit/main/getting-started.md
 sidebar:
   order: 1
 ---

@@ -1,6 +1,7 @@
 ---
 title: Translations
-description: Route __() between Laravel and WordPress translation catalogues
+description: "How Pollora routes __() between the Laravel and WordPress translation catalogues, which locale is used, and when to choose .po/.mo or Laravel files."
+editUrl: https://github.com/Pollora/documentation/edit/main/translations.md
 sidebar:
   order: 3
 ---

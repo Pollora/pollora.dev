@@ -1,6 +1,7 @@
 ---
 title: Middleware
-description: Filter HTTP requests and responses
+description: "Filter requests to WordPress routes with Laravel middleware in Pollora: the built-in middleware, writing your own, and grouping middleware together."
+editUrl: https://github.com/Pollora/documentation/edit/main/middleware.md
 sidebar:
   order: 3
 ---

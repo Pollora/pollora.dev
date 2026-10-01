@@ -1,6 +1,7 @@
 ---
 title: Auto-Discovery
-description: How Pollora discovers and registers components
+description: "How Pollora auto-discovery scans your code and registers hooks, post types, routes and other components, with caching and custom discovery classes."
+editUrl: https://github.com/Pollora/documentation/edit/main/discovery.md
 sidebar:
   order: 1
 ---

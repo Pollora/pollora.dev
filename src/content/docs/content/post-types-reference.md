@@ -1,6 +1,7 @@
 ---
 title: Post Type Attributes Reference
-description: Complete reference of all post type attributes
+description: "Every PHP attribute for Pollora post types: visibility, archives, supported features, admin UI, labels, capabilities, REST API, feeds and export settings."
+editUrl: https://github.com/Pollora/documentation/edit/main/post-types-reference.md
 sidebar:
   order: 2
 ---

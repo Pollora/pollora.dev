@@ -1,6 +1,7 @@
 ---
 title: Abilities
-description: Declare WordPress abilities for AI agents and MCP
+description: "Declare WordPress abilities in Pollora with an attribute or a facade, with permissions and input schemas, so AI agents and MCP clients can use your site."
+editUrl: https://github.com/Pollora/documentation/edit/main/abilities.md
 sidebar:
   order: 2
 ---

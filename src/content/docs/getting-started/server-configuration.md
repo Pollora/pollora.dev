@@ -1,6 +1,7 @@
 ---
 title: Server Configuration
-description: Apache and Nginx setup, directory protection, reverse proxy and HTTPS
+description: "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy."
+editUrl: https://github.com/Pollora/documentation/edit/main/server-configuration.md
 sidebar:
   order: 5
 ---

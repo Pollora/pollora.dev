@@ -1,6 +1,7 @@
 ---
 title: WordPress Configuration
-description: Configure WordPress constants through Laravel
+description: "Manage WordPress constants from Laravel configuration in Pollora: publish config/wordpress.php, then set authentication keys, multisite and caching."
+editUrl: https://github.com/Pollora/documentation/edit/main/wordpress-config.md
 sidebar:
   order: 2
 ---

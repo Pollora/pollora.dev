@@ -1,6 +1,7 @@
 ---
 title: Theme Structure
-description: Create and manage Pollora themes
+description: "Create a Pollora theme: folder structure, theme.json, Blade templates and the template hierarchy, Vite and Tailwind CSS, localization and the login screen."
+editUrl: https://github.com/Pollora/documentation/edit/main/theming.md
 sidebar:
   order: 1
 ---

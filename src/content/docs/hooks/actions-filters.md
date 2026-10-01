@@ -1,6 +1,7 @@
 ---
 title: Actions & Filters
-description: Register hooks with PHP 8 attributes and facades
+description: "Register WordPress actions and filters in Pollora with PHP 8 attributes or the Action and Filter facades, including deferred callbacks and service access."
+editUrl: https://github.com/Pollora/documentation/edit/main/hooks.md
 sidebar:
   order: 1
 ---

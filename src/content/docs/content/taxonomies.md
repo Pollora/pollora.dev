@@ -1,6 +1,7 @@
 ---
 title: Taxonomies
-description: Define custom taxonomies with PHP 8 attributes
+description: "Declare WordPress custom taxonomies in Pollora with PHP 8 attributes on a class, and attach them to your post types without calling register_taxonomy."
+editUrl: https://github.com/Pollora/documentation/edit/main/taxonomies.md
 sidebar:
   order: 3
 ---

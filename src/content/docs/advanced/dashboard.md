@@ -1,6 +1,7 @@
 ---
 title: Dashboard & Status
-description: Monitor your Pollora application
+description: "Check a Pollora installation from the WordPress admin dashboard or the CLI, see discovered components and diagnose a project with pollora:doctor."
+editUrl: https://github.com/Pollora/documentation/edit/main/dashboard.md
 sidebar:
   order: 7
 ---

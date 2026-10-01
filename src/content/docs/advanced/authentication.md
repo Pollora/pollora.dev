@@ -1,6 +1,7 @@
 ---
 title: Authentication
-description: WordPress authentication guard integration
+description: "Use Laravel's Auth facade with WordPress users in Pollora: the WordPress guard lets the standard Auth methods work against WordPress accounts."
+editUrl: https://github.com/Pollora/documentation/edit/main/auth.md
 sidebar:
   order: 5
 ---

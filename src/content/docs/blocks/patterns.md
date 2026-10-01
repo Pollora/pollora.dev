@@ -1,6 +1,7 @@
 ---
 title: Block Patterns
-description: Register and manage block patterns
+description: "Register WordPress block patterns in Pollora: configuration, how to organize pattern files, writing patterns, and how they are loaded automatically."
+editUrl: https://github.com/Pollora/documentation/edit/main/patterns.md
 sidebar:
   order: 2
 ---

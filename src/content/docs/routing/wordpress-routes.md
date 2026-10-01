@@ -1,6 +1,7 @@
 ---
 title: WordPress Routes
-description: Hybrid routing with Route::wp() and template hierarchy
+description: "Route WordPress pages with Laravel in Pollora: Route::wp() conditions, the template hierarchy as a fallback, and API routes for themes and plugins."
+editUrl: https://github.com/Pollora/documentation/edit/main/routing.md
 sidebar:
   order: 1
 ---

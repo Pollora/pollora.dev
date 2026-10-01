@@ -1,6 +1,7 @@
 ---
 title: Events & Listeners
-description: WordPress hooks as Laravel events
+description: "Listen to WordPress actions and filters as typed Laravel events in Pollora, and use standard Laravel listeners and subscribers inside a WordPress site."
+editUrl: https://github.com/Pollora/documentation/edit/main/events-listeners.md
 sidebar:
   order: 2
 ---

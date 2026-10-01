@@ -1,6 +1,7 @@
 ---
 title: Logging
-description: WordPress error logging through Laravel
+description: "Log WordPress errors, warnings and deprecated function calls through Laravel logging in Pollora, so they reach your log channels without breaking pages."
+editUrl: https://github.com/Pollora/documentation/edit/main/wordpress-logging.md
 sidebar:
   order: 8
 ---

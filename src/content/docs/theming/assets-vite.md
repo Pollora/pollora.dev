@@ -1,6 +1,7 @@
 ---
 title: Assets & Vite
-description: Modern asset management with Vite
+description: "Build theme and plugin assets with Vite in Pollora: asset containers, the Vite integration, and how to reference the compiled CSS and JavaScript files."
+editUrl: https://github.com/Pollora/documentation/edit/main/assets.md
 sidebar:
   order: 2
 ---

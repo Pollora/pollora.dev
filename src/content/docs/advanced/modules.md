@@ -1,6 +1,7 @@
 ---
 title: Modules
-description: Organize projects with Laravel Modules
+description: "Organize a Pollora project with Laravel Modules: when to choose a module over a WordPress plugin, and how to create, enable and auto-discover modules."
+editUrl: https://github.com/Pollora/documentation/edit/main/modules.md
 sidebar:
   order: 4
 ---

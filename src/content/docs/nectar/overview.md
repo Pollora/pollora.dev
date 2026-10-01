@@ -1,6 +1,7 @@
 ---
 title: Overview
-description: AI-powered development context for Pollora
+description: "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help."
+editUrl: https://github.com/Pollora/documentation/edit/main/nectar.md
 sidebar:
   order: 1
 ---

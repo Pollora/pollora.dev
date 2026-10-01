@@ -1,6 +1,7 @@
 ---
 title: Controllers
-description: Create controllers with dependency injection
+description: "Write Laravel controllers for WordPress routes in Pollora: create them, attach them to Route::wp() routes and inject services through their constructor."
+editUrl: https://github.com/Pollora/documentation/edit/main/controllers.md
 sidebar:
   order: 2
 ---

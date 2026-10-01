@@ -1,6 +1,7 @@
 ---
 title: REST API
-description: Build REST endpoints with WpRestRoute attributes
+description: "Build WordPress REST API endpoints in Pollora with the WpRestRoute attribute: define routes and methods, and control access with permission classes."
+editUrl: https://github.com/Pollora/documentation/edit/main/wp-rest-api.md
 sidebar:
   order: 1
 ---

@@ -1,6 +1,7 @@
 ---
 title: Scheduling
-description: Schedule recurring tasks with attributes
+description: "Schedule recurring WordPress tasks in Pollora with PHP attributes: the Every enum, custom intervals, hook names and arguments, without WP-Cron boilerplate."
+editUrl: https://github.com/Pollora/documentation/edit/main/schedule-events.md
 sidebar:
   order: 3
 ---
