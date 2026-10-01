@@ -46,6 +46,14 @@ const GTM_ID = 'GTM-59HN2M7Z';
 		if (/^404\b/.test(document.title)) group = 'Not found';
 		window.dataLayer.push({ content_group: group });
 
+		// Events recorded on a click that left the previous page (see below): sent now,
+		// since GA4 batches hits and loses those queued right before a navigation.
+		try {
+			var pending = JSON.parse(sessionStorage.getItem('pollora-pending-event') || 'null');
+			sessionStorage.removeItem('pollora-pending-event');
+			if (pending && pending.event) window.dataLayer.push(pending);
+		} catch (e) {}
+
 		window.polloraConsent = {
 			stored: stored,
 			set: function (value) {
@@ -97,12 +105,16 @@ const GTM_ID = 'GTM-59HN2M7Z';
 			// Links into the docs from the homepage
 			var link = target.closest('a[href^="/getting-started"]');
 			if (link && location.pathname === '/') {
-				push({
+				var data = {
 					event: 'cta_click',
 					cta_name: link.textContent.trim().replace(/\s+/g, ' ').replace(/\s*→$/, '').slice(0, 60),
 					cta_location: location_of(link),
 					link_url: link.getAttribute('href'),
-				});
+				};
+				// Same-tab navigation: hand the event to the next page
+				var newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1 || link.target === '_blank';
+				if (newTab) push(data);
+				else try { sessionStorage.setItem('pollora-pending-event', JSON.stringify(data)); } catch (err) { push(data); }
 			}
 		}, true);
 
