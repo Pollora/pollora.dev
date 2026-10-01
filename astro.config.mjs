@@ -47,6 +47,8 @@ export default defineConfig({
 			},
 			customCss: ['./src/styles/docs.css'],
 			components: {
+				Head: './src/components/docs/Head.astro',
+				SkipLink: './src/components/docs/SkipLink.astro',
 				PageTitle: './src/components/docs/PageTitle.astro',
 				Footer: './src/components/docs/Footer.astro',
 			},

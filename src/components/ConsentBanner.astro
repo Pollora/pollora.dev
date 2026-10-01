@@ -1,0 +1,117 @@
+---
+// Consent banner for AnalyticsHead: shown until the visitor answers, reopened by any [data-consent-open] element.
+---
+
+<div id="pl-consent" class="pl-consent" role="dialog" aria-live="polite" aria-label="Cookie consent" hidden>
+	<p class="pl-consent-text">
+		We use Google Analytics cookies to see which pages help and what to improve. Nothing is set unless you accept.
+	</p>
+	<div class="pl-consent-actions">
+		<button type="button" class="pl-consent-btn pl-consent-btn--ghost" data-consent="denied">Decline</button>
+		<button type="button" class="pl-consent-btn pl-consent-btn--primary" data-consent="granted">Accept</button>
+	</div>
+</div>
+
+<script is:inline>
+	(function () {
+		function init() {
+			var banner = document.getElementById('pl-consent');
+			if (!banner) return;
+			if (!window.polloraConsent.stored) banner.hidden = false;
+			banner.addEventListener('click', function (e) {
+				var btn = e.target instanceof Element && e.target.closest('[data-consent]');
+				if (!btn) return;
+				window.polloraConsent.set(btn.getAttribute('data-consent'));
+				banner.hidden = true;
+			});
+			document.addEventListener('click', function (e) {
+				if (e.target instanceof Element && e.target.closest('[data-consent-open]')) {
+					e.preventDefault();
+					banner.hidden = false;
+					var focus = banner.querySelector('[data-consent="granted"]');
+					if (focus) focus.focus();
+				}
+			});
+		}
+		if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+		else init();
+	})();
+</script>
+
+<style is:global>
+	.pl-consent {
+		--pl-consent-bg: oklch(19% 0.03 295);
+		--pl-consent-rule: oklch(32% 0.04 295);
+		--pl-consent-ink: oklch(92% 0.01 295);
+		--pl-consent-muted: oklch(74% 0.02 295);
+		--pl-consent-accent: #ff5334;
+		--pl-consent-gradient: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+
+		position: fixed;
+		z-index: 1000;
+		inset-inline: 1rem;
+		bottom: 1rem;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.75rem 1.25rem;
+		max-width: 34rem;
+		padding: 1rem 1.25rem;
+		border: 1px solid var(--pl-consent-rule);
+		border-radius: 12px;
+		background:
+			var(--pl-consent-gradient) top / 100% 3px no-repeat,
+			var(--pl-consent-bg);
+		color: var(--pl-consent-ink);
+		font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		box-shadow: 0 12px 32px oklch(10% 0.03 295 / 0.35);
+	}
+	.pl-consent[hidden] {
+		display: none;
+	}
+	.pl-consent-text {
+		flex: 1 1 16rem;
+		margin: 0;
+		color: var(--pl-consent-muted);
+	}
+	.pl-consent-actions {
+		display: flex;
+		gap: 0.5rem;
+		margin-inline-start: auto;
+	}
+	.pl-consent-btn {
+		padding: 0.5rem 1rem;
+		border: 1px solid var(--pl-consent-rule);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--pl-consent-ink);
+		font: inherit;
+		font-weight: 600;
+		white-space: nowrap;
+		cursor: pointer;
+		transition: border-color 120ms cubic-bezier(0.16, 1, 0.3, 1), opacity 120ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	.pl-consent-btn--ghost:hover {
+		border-color: var(--pl-consent-muted);
+	}
+	.pl-consent-btn--primary {
+		border-color: transparent;
+		background: var(--pl-consent-gradient);
+		color: #fff;
+	}
+	.pl-consent-btn--primary:hover {
+		opacity: 0.9;
+	}
+	.pl-consent-btn:focus-visible {
+		outline: 2px solid var(--pl-consent-accent);
+		outline-offset: 2px;
+	}
+	@media (min-width: 40rem) {
+		.pl-consent {
+			inset-inline: 1.5rem auto;
+			bottom: 1.5rem;
+		}
+	}
+</style>

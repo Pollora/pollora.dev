@@ -12,13 +12,15 @@ const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encode
 	<div>
 		<p class="pl-help-title">Something unclear or missing?</p>
 		<p class="pl-help-body">
-			<a href={issueUrl}>Open an issue</a> on <a href="https://github.com/Pollora/framework">Pollora/framework</a>
+			<a href={issueUrl} data-track="docs_feedback">Open an issue</a> on <a href="https://github.com/Pollora/framework">Pollora/framework</a>
 			and we'll fix it.
 		</p>
 	</div>
 </aside>
 
 <Default />
+
+<p class="pl-cookie-settings print:hidden"><button type="button" data-consent-open>Cookie settings</button></p>
 
 <style>
 	.pl-help {
@@ -62,6 +64,24 @@ const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encode
 
 	.pl-help-body a:hover {
 		text-decoration-color: var(--sl-color-accent);
+	}
+
+	.pl-cookie-settings {
+		margin-top: 1.5rem;
+		text-align: center;
+	}
+
+	.pl-cookie-settings button {
+		border: 0;
+		background: none;
+		color: var(--sl-color-gray-3);
+		font: inherit;
+		font-size: var(--sl-text-xs);
+		cursor: pointer;
+	}
+
+	.pl-cookie-settings button:hover {
+		color: var(--sl-color-white);
 	}
 
 	@media (max-width: 30rem) {

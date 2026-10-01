@@ -8,6 +8,8 @@ import themeDefault from '../assets/themes/default.png';
 import themeApiary from '../assets/themes/apiary.png';
 import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
+import AnalyticsHead from '../components/AnalyticsHead.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
 import '../styles/global.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -85,6 +87,7 @@ const peekSvg = peekRaw
 	<meta name="twitter:description" content={socialDescription} />
 	<meta name="twitter:image" content={ogImage} />
 	<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+	<AnalyticsHead />
 	<link rel="icon" href="/favicon.ico" sizes="32x32" />
 	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -216,7 +219,7 @@ const peekSvg = peekRaw
 				</div>
 				<div data-reveal style="--i:1">
 					<div x-data="{ playing: false }" class="relative aspect-video rounded-[var(--radius-lg)] overflow-hidden bg-black shadow-2xl shadow-black/40 ring-1 ring-white/10">
-						<button type="button" x-show="!playing" @click="playing = true" class="group absolute inset-0 w-full h-full focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-focus)]" aria-label="Play the Pollora 1-minute tour video">
+						<button type="button" x-show="!playing" @click="playing = true" data-track="tour_video_play" class="group absolute inset-0 w-full h-full focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-focus)]" aria-label="Play the Pollora 1-minute tour video">
 							<Image src={videoPoster} alt="" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 1024px, 100vw" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
 							<span class="absolute inset-0 bg-black/15 group-hover:bg-black/0 transition-colors duration-[var(--dur-short)]"></span>
 							<span class="absolute inset-0 grid place-items-center">
@@ -1086,6 +1089,7 @@ const peekSvg = peekRaw
 				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">GitHub</a>
 				<a href="/llms.txt" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">llms.txt</a>
 				<a href="mailto:support@pollora.dev" class="text-sm font-[var(--font-code)] hover:text-neutral transition-colors duration-[var(--dur-micro)]">support@pollora.dev</a>
+				<button type="button" data-consent-open class="hover:text-neutral transition-colors duration-[var(--dur-micro)] cursor-pointer">Cookie settings</button>
 			</div>
 			<div class="text-sm text-muted text-center sm:text-right space-y-1">
 				<p>Pollora is open source under the MIT license.</p>
@@ -1349,5 +1353,6 @@ const peekSvg = peekRaw
 		}, { threshold: 0.08 });
 		document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 	</script>
+<ConsentBanner />
 </body>
 </html>
