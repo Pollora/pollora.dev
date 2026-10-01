@@ -1,0 +1,498 @@
+/* Hallmark · redesign: Starlight docs · genre: modern-minimal · theme: custom (shared with homepage)
+ * paper: oklch(98.5% 0.006 30) light · oklch(16% 0.026 295) dark (Pollora aubergine)
+ * accent: coral oklch(64% 0.21 30) · display: Space Grotesk 600/700 · body: Geist 400 · code: JetBrains Mono
+ * Docs-only stylesheet: no Tailwind preflight here, Starlight owns the reset.
+ * pre-emit critique: P5 H4 E4 S5 R5 V4
+ */
+
+/* ─── Brand tokens (same values as the homepage @theme) ─────────────── */
+:root {
+	--pl-pink: #fb196d;
+	--pl-red: #ff314c;
+	--pl-coral: #ff5334;
+	--pl-orange: #ff8c12;
+	--pl-amber: #feb017;
+	--pl-teal: #49c7b9;
+	--pl-gradient: linear-gradient(90deg, var(--pl-pink), var(--pl-red), var(--pl-coral), var(--pl-orange));
+
+	--pl-font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+	--sl-font: 'Geist', ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+	--pl-radius-sm: 6px;
+	--pl-radius-md: 10px;
+	--pl-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--pl-dur-micro: 120ms;
+
+	/* Code frame title bar: fixed height so the copy button can sit inside it */
+	--pl-titlebar-h: 2.25rem;
+	--pl-window-controls-w: 56px;
+	--pl-copy-size: 1.5rem;
+
+	/* Code frames stay dark in both modes, so one colour fits */
+	--pl-window-controls: oklch(70% 0.025 295);
+	--pl-window-controls-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 12' fill='none' stroke='black' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M1 8.5h10'/%3E%3Crect x='23' y='1.5' width='9' height='9' rx='1.5'/%3E%3Cpath d='M45.5 1.5l9 9M54.5 1.5l-9 9'/%3E%3C/svg%3E");
+
+	--sl-content-width: 48rem;
+	--sl-sidebar-width: 17.5rem;
+	--sl-line-height: 1.7;
+	--sl-line-height-headings: 1.15;
+	--sl-text-code: 0.84rem;
+
+	/* Aside hues, remapped onto the brand (Starlight feeds these into hsl()) */
+	--sl-hue-blue: 174;   /* note    → teal */
+	--sl-hue-purple: 338; /* tip     → pink */
+	--sl-hue-orange: 32;  /* caution → orange */
+	--sl-hue-red: 356;    /* danger  → red */
+}
+
+/* ─── Dark: Pollora aubergine ───────────────────────────────────────── */
+:root {
+	--sl-color-white: oklch(97% 0.006 30);
+	--sl-color-gray-1: oklch(91% 0.01 295);
+	--sl-color-gray-2: oklch(82% 0.014 295);
+	--sl-color-gray-3: oklch(66% 0.02 295);
+	--sl-color-gray-4: oklch(46% 0.026 295);
+	--sl-color-gray-5: oklch(29% 0.03 295);
+	--sl-color-gray-6: oklch(20.5% 0.03 295);
+	--sl-color-black: oklch(16% 0.026 295);
+
+	--sl-color-accent-low: oklch(29% 0.08 22);
+	--sl-color-accent: oklch(68% 0.2 32);
+	--sl-color-accent-high: oklch(82% 0.11 42);
+
+	--sl-color-text: var(--sl-color-gray-2);
+	--sl-color-text-accent: var(--sl-color-accent-high);
+	--sl-color-bg: var(--sl-color-black);
+	--sl-color-bg-nav: oklch(16% 0.026 295 / 0.82);
+	--sl-color-bg-sidebar: var(--sl-color-black);
+	--sl-color-bg-inline-code: oklch(24% 0.032 295);
+	--sl-color-hairline-light: oklch(25% 0.03 295);
+	--sl-color-hairline: oklch(22% 0.03 295);
+	--sl-color-hairline-shade: oklch(12% 0.02 295);
+	--sl-color-backdrop-overlay: oklch(12% 0.03 295 / 0.7);
+
+	--pl-surface: oklch(19.5% 0.03 295);
+	--pl-surface-hover: oklch(23% 0.035 295);
+	--pl-inline-code-ink: oklch(86% 0.07 40);
+	--pl-mark: oklch(68% 0.2 32 / 0.22);
+}
+
+/* ─── Light: warm paper ─────────────────────────────────────────────── */
+:root[data-theme='light'] {
+	--sl-color-white: oklch(17% 0.03 290);
+	--sl-color-gray-1: oklch(24% 0.028 290);
+	--sl-color-gray-2: oklch(34% 0.022 290);
+	--sl-color-gray-3: oklch(47% 0.016 300);
+	--sl-color-gray-4: oklch(64% 0.012 30);
+	--sl-color-gray-5: oklch(87% 0.01 30);
+	--sl-color-gray-6: oklch(94% 0.01 30);
+	--sl-color-gray-7: oklch(96.5% 0.008 30);
+	--sl-color-black: oklch(98.5% 0.006 30);
+
+	--sl-color-accent-low: oklch(93% 0.035 30);
+	--sl-color-accent: oklch(62% 0.21 30);
+	--sl-color-accent-high: oklch(50% 0.19 28);
+
+	--sl-color-text-accent: var(--sl-color-accent-high);
+	--sl-color-bg-nav: oklch(98.5% 0.006 30 / 0.85);
+	--sl-color-bg-sidebar: var(--sl-color-black);
+	--sl-color-bg-inline-code: oklch(95% 0.014 30);
+	--sl-color-hairline-light: oklch(91% 0.01 30);
+	--sl-color-hairline: oklch(91% 0.01 30);
+	--sl-color-hairline-shade: oklch(91% 0.01 30);
+	--sl-color-backdrop-overlay: oklch(30% 0.03 290 / 0.45);
+
+	--pl-surface: oklch(100% 0 0);
+	--pl-surface-hover: oklch(97% 0.012 30);
+	--pl-inline-code-ink: oklch(45% 0.17 28);
+	--pl-mark: oklch(62% 0.21 30 / 0.16);
+}
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+	background: var(--pl-mark);
+	color: var(--sl-color-white);
+}
+
+:focus-visible {
+	outline: 2px solid var(--sl-color-accent);
+	outline-offset: 2px;
+}
+
+/* ─── Header: brand bar + translucent paper ─────────────────────────── */
+header.header {
+	background:
+		var(--pl-gradient) top / 100% 3px no-repeat,
+		var(--sl-color-bg-nav);
+	padding-top: calc(var(--sl-nav-pad-y) + 3px);
+	-webkit-backdrop-filter: blur(14px);
+	backdrop-filter: blur(14px);
+	border-bottom-color: var(--sl-color-hairline);
+}
+
+.site-title img {
+	height: 2.1rem;
+}
+
+/* Search trigger — pill, like the homepage chips */
+site-search button[data-open-modal] {
+	border-radius: 999px;
+	background-color: var(--pl-surface);
+	border-color: var(--sl-color-gray-5);
+	transition: border-color var(--pl-dur-micro) var(--pl-ease-out);
+}
+site-search button[data-open-modal]:hover {
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-gray-1);
+}
+site-search button > kbd {
+	font-family: var(--sl-font-mono);
+	border-radius: 999px;
+}
+
+/* ─── Sidebar ───────────────────────────────────────────────────────── */
+#starlight__sidebar {
+	border-inline-end-color: var(--sl-color-hairline);
+}
+.sidebar-pane,
+.sidebar-content,
+.right-sidebar {
+	scrollbar-width: thin;
+	scrollbar-color: var(--sl-color-gray-5) transparent;
+}
+
+/* Content panels: the hairline between title and body uses the same token */
+.content-panel + .content-panel {
+	border-top-color: var(--sl-color-hairline);
+}
+
+.sidebar-content summary .large {
+	font-family: var(--pl-font-display);
+	font-weight: 600;
+	letter-spacing: -0.005em;
+	color: var(--sl-color-white);
+}
+
+.sidebar-content ul ul li {
+	border-inline-start-color: var(--sl-color-hairline-light);
+}
+
+.sidebar-content a {
+	color: var(--sl-color-gray-3);
+	border-radius: var(--pl-radius-sm);
+	transition: color var(--pl-dur-micro) var(--pl-ease-out), background-color var(--pl-dur-micro) var(--pl-ease-out);
+}
+.sidebar-content a:hover,
+.sidebar-content a:focus-visible {
+	color: var(--sl-color-white);
+	background-color: var(--pl-surface-hover);
+}
+
+/* Current page: gradient tick on the rail instead of a filled pill */
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	position: relative;
+	color: var(--sl-color-white);
+	background-color: var(--sl-color-accent-low);
+	font-weight: 600;
+}
+.sidebar-content a[aria-current='page']::before {
+	content: '';
+	position: absolute;
+	inset-block: 0.3em;
+	inset-inline-start: calc(-1 * var(--sl-sidebar-item-padding-inline) - 1px);
+	width: 2px;
+	border-radius: 2px;
+	background: linear-gradient(180deg, var(--pl-pink), var(--pl-orange));
+}
+
+/* ─── Right-hand TOC ────────────────────────────────────────────────── */
+starlight-toc h2,
+mobile-starlight-toc h2 {
+	font-family: var(--pl-font-display);
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+starlight-toc nav > ul {
+	border-inline-start: 1px solid var(--sl-color-hairline-light);
+}
+starlight-toc a {
+	color: var(--sl-color-gray-3);
+	border-radius: 0;
+	transition: color var(--pl-dur-micro) var(--pl-ease-out);
+}
+starlight-toc a:hover {
+	color: var(--sl-color-white);
+}
+starlight-toc a[aria-current='true'] {
+	color: var(--sl-color-text-accent);
+	box-shadow: inset 2px 0 0 var(--sl-color-accent);
+	margin-inline-start: -1px;
+}
+
+/* ─── Content typography ────────────────────────────────────────────── */
+.sl-markdown-content :is(h1, h2, h3, h4, h5, h6):not(:where(.not-content *)) {
+	font-family: var(--pl-font-display);
+	font-weight: 600;
+	letter-spacing: -0.015em;
+	color: var(--sl-color-white);
+}
+
+.sl-markdown-content h2:not(:where(.not-content *)) {
+	font-size: clamp(1.6rem, 1.2rem + 1vw, 2rem);
+}
+/* Each H2 opens a new chapter: hairline above it */
+.sl-markdown-content .sl-heading-wrapper.level-h2:not(:first-child) {
+	margin-top: 3rem;
+	padding-top: 2rem;
+	border-top: 1px solid var(--sl-color-hairline);
+}
+.sl-markdown-content h3:not(:where(.not-content *)) {
+	font-size: clamp(1.25rem, 1.05rem + 0.6vw, 1.45rem);
+}
+.sl-markdown-content h4:not(:where(.not-content *)) {
+	font-size: 1.125rem;
+}
+
+/* Anchor links appear in coral on hover */
+.sl-anchor-link {
+	color: var(--sl-color-accent);
+}
+
+.sl-markdown-content a:not(:where(.not-content *)) {
+	color: var(--sl-color-text-accent);
+	text-decoration-line: underline;
+	text-decoration-color: color-mix(in oklch, var(--sl-color-accent) 40%, transparent);
+	text-decoration-thickness: 1.5px;
+	text-underline-offset: 0.2em;
+	transition: text-decoration-color var(--pl-dur-micro) var(--pl-ease-out);
+}
+.sl-markdown-content a:not(:where(.not-content *)):hover {
+	text-decoration-color: var(--sl-color-accent);
+}
+
+.sl-markdown-content strong:not(:where(.not-content *)) {
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+/* Lists: coral markers */
+.sl-markdown-content :is(ul, ol):not(:where(.not-content *)) > li::marker {
+	color: var(--sl-color-accent);
+}
+.sl-markdown-content ol:not(:where(.not-content *)) > li::marker {
+	font-family: var(--sl-font-mono);
+	font-size: 0.85em;
+	font-weight: 500;
+}
+
+/* Inline code */
+.sl-markdown-content :not(pre) > code:not(:where(.not-content *)) {
+	padding: 0.12em 0.4em;
+	border: 1px solid var(--sl-color-hairline-light);
+	border-radius: var(--pl-radius-sm);
+	background-color: var(--sl-color-bg-inline-code);
+	color: var(--pl-inline-code-ink);
+	font-size: 0.86em;
+	overflow-wrap: anywhere;
+}
+.sl-markdown-content :is(h1, h2, h3, h4) code {
+	color: inherit;
+	font-size: 0.85em;
+}
+
+/* Blockquote */
+.sl-markdown-content blockquote:not(:where(.not-content *)) {
+	border-inline-start: 3px solid var(--sl-color-accent);
+	padding: 0.25rem 0 0.25rem 1rem;
+	color: var(--sl-color-gray-2);
+}
+
+/* Horizontal rule as a short brand stroke */
+.sl-markdown-content hr:not(:where(.not-content *)) {
+	border: 0;
+	height: 1px;
+	background: var(--sl-color-hairline);
+}
+
+/* Tables */
+.sl-markdown-content table:not(:where(.not-content *)) {
+	display: block;
+	width: fit-content;
+	max-width: 100%;
+	overflow-x: auto;
+	border: 1px solid var(--sl-color-hairline-light);
+	border-radius: var(--pl-radius-md);
+	border-collapse: separate;
+	border-spacing: 0;
+	font-size: var(--sl-text-sm);
+}
+.sl-markdown-content :is(th, td):not(:where(.not-content *)) {
+	border-bottom: 1px solid var(--sl-color-hairline-light);
+	padding: 0.6rem 0.9rem;
+}
+.sl-markdown-content tr:last-child td:not(:where(.not-content *)) {
+	border-bottom: 0;
+}
+.sl-markdown-content th:not(:where(.not-content *)) {
+	background-color: var(--sl-color-bg-inline-code);
+	color: var(--sl-color-white);
+	font-family: var(--pl-font-display);
+	font-weight: 600;
+	text-align: start;
+}
+.sl-markdown-content tbody tr:hover td:not(:where(.not-content *)) {
+	background-color: var(--pl-surface-hover);
+}
+
+/* ─── Code blocks (Expressive Code) ─────────────────────────────────── */
+/* In dark mode the code surface sits a step above the page so frames stay visible */
+:root:not([data-theme='light']) .expressive-code {
+	--ec-codeBg: oklch(21.5% 0.035 293);
+	--ec-brdCol: oklch(33% 0.04 295);
+	--ec-frm-edBg: oklch(21.5% 0.035 293);
+	--ec-frm-trmBg: oklch(21.5% 0.035 293);
+	--ec-frm-edActTabBg: oklch(21.5% 0.035 293);
+	--ec-frm-edTabBarBg: oklch(26% 0.04 293);
+	--ec-frm-trmTtbBg: oklch(26% 0.04 293);
+	--ec-frm-trmTtbBrdBtmCol: oklch(33% 0.04 295);
+	--ec-frm-edTabBarBrdBtmCol: oklch(33% 0.04 295);
+}
+.expressive-code .frame {
+	box-shadow: none;
+}
+
+/* Window controls (minimise · maximise · close), right-aligned in every title bar */
+.expressive-code .frame .header::after,
+.expressive-code .frame.is-terminal .header::before {
+	content: '';
+	position: absolute;
+	inset: auto;
+	top: 50%;
+	right: var(--ec-uiPadInl);
+	left: auto;
+	width: var(--pl-window-controls-w);
+	height: 12px;
+	margin-top: -6px;
+	border: 0;
+	background-color: var(--pl-window-controls);
+	opacity: 1;
+	pointer-events: none;
+	-webkit-mask: var(--pl-window-controls-icon) center / contain no-repeat;
+	mask: var(--pl-window-controls-icon) center / contain no-repeat;
+}
+/* Terminals draw their bottom hairline with ::after: keep ::before for the controls */
+.expressive-code .frame.is-terminal .header::after {
+	all: unset;
+	content: '';
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	border-bottom: var(--ec-brdWd) solid var(--ec-frm-trmTtbBrdBtmCol);
+}
+.expressive-code .frame .header {
+	box-sizing: border-box;
+	height: var(--pl-titlebar-h);
+	/* Room for the window controls and the copy button */
+	padding-inline-end: calc(var(--pl-window-controls-w) + var(--pl-copy-size) + 3 * var(--ec-uiPadInl));
+}
+/* Terminal titles are centred: balance the padding */
+.expressive-code .frame.is-terminal .header {
+	padding-inline-start: calc(var(--pl-window-controls-w) + var(--pl-copy-size) + 3 * var(--ec-uiPadInl));
+}
+
+/* Copy button lives in the title bar, left of the window controls */
+.expressive-code .frame .copy {
+	inset-block-start: calc((var(--pl-titlebar-h) - var(--pl-copy-size)) / 2);
+	inset-inline-end: calc(var(--pl-window-controls-w) + 2 * var(--ec-uiPadInl));
+	align-items: center;
+}
+.expressive-code .frame .copy button {
+	width: var(--pl-copy-size);
+	height: var(--pl-copy-size);
+	opacity: 0.7;
+}
+.expressive-code .frame .copy button::after {
+	margin: 0.25rem;
+}
+.expressive-code .frame .copy button:hover,
+.expressive-code .frame .copy button:focus-visible {
+	opacity: 1;
+}
+.expressive-code .frame .copy .feedback {
+	padding-block: 0;
+	font-size: var(--sl-text-xs);
+}
+
+/* Untitled blocks get the same title bar as terminals */
+.expressive-code .frame:not(.has-title):not(.is-terminal) .header {
+	display: flex;
+	border: var(--ec-brdWd) solid var(--ec-brdCol);
+	border-bottom-color: var(--ec-frm-trmTtbBrdBtmCol);
+	border-radius: var(--ec-brdRad) var(--ec-brdRad) 0 0;
+	background-color: var(--ec-frm-trmTtbBg);
+}
+.expressive-code .frame:not(.has-title):not(.is-terminal) pre {
+	border-top: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+/* ─── Asides ────────────────────────────────────────────────────────── */
+.starlight-aside {
+	border-inline-start-width: 3px;
+	border-radius: 0 var(--pl-radius-md) var(--pl-radius-md) 0;
+	padding: 0.9rem 1.1rem;
+	color: var(--sl-color-gray-1);
+}
+:root:not([data-theme='light']) .starlight-aside--note { background-color: oklch(22% 0.035 190); }
+:root:not([data-theme='light']) .starlight-aside--tip { background-color: oklch(22% 0.045 345); }
+:root:not([data-theme='light']) .starlight-aside--caution { background-color: oklch(23% 0.045 60); }
+:root:not([data-theme='light']) .starlight-aside--danger { background-color: oklch(22% 0.06 20); }
+:root[data-theme='light'] .starlight-aside--note { background-color: oklch(96.5% 0.02 190); }
+:root[data-theme='light'] .starlight-aside--tip { background-color: oklch(96.5% 0.02 345); }
+:root[data-theme='light'] .starlight-aside--caution { background-color: oklch(96.5% 0.03 70); }
+:root[data-theme='light'] .starlight-aside--danger { background-color: oklch(96.5% 0.025 20); }
+.starlight-aside__title {
+	font-family: var(--pl-font-display);
+	font-size: var(--sl-text-base);
+	letter-spacing: 0;
+}
+
+/* ─── Footer: pagination + edit link ────────────────────────────────── */
+.pagination-links a {
+	border: 1px solid var(--sl-color-hairline-light);
+	border-radius: var(--pl-radius-md);
+	background-color: var(--pl-surface);
+	box-shadow: none;
+	color: var(--sl-color-gray-3);
+	transition: border-color var(--pl-dur-micro) var(--pl-ease-out), transform var(--pl-dur-micro) var(--pl-ease-out);
+}
+.pagination-links a:hover {
+	border-color: var(--sl-color-accent);
+}
+.pagination-links a:hover svg {
+	color: var(--sl-color-accent);
+}
+.pagination-links .link-title {
+	font-family: var(--pl-font-display);
+	font-weight: 600;
+	font-size: var(--sl-text-xl);
+	color: var(--sl-color-white);
+}
+
+/* ─── Reduced motion ────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		transition-duration: 0.01ms !important;
+	}
+}

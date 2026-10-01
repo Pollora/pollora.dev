@@ -1,11 +1,20 @@
 [
   {
+    "date": "2026-10-01",
+    "macrostructure": "Starlight docs (redesign in place)",
+    "theme": "custom",
+    "theme_axes": "light+dark aubergine / geometric-sans / warm",
+    "vibe": "homepage tokens carried into the docs, content first",
+    "enrichment": "none (mascot in docs footer)",
+    "brief": "Pollora docs \u00b7 Starlight redesign, light + dark"
+  },
+  {
     "date": "2026-06-05",
     "macrostructure": "Bento Grid",
     "theme": "custom",
     "theme_axes": "light / geometric-sans / warm",
     "vibe": "gradient warmth, technical precision, developer confidence",
     "enrichment": "none",
-    "brief": "Pollora · Laravel+WordPress framework homepage"
+    "brief": "Pollora \u00b7 Laravel+WordPress framework homepage"
   }
 ]

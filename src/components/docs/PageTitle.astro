@@ -1,0 +1,46 @@
+---
+// Same id as Starlight's PAGE_TITLE_ID: the "Overview" TOC entry links to it.
+const PAGE_TITLE_ID = '_top';
+const { title, description } = Astro.locals.starlightRoute.entry.data;
+---
+
+<div class="pl-page-title">
+	<h1 id={PAGE_TITLE_ID}>{title}</h1>
+	{description && <p class="pl-lead">{description}</p>}
+</div>
+
+<style>
+	.pl-page-title {
+		margin-top: 1.25rem;
+	}
+
+	h1 {
+		font-family: var(--pl-font-display);
+		font-size: clamp(2.25rem, 1.6rem + 2.2vw, 3.25rem);
+		font-weight: 700;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+		color: var(--sl-color-white);
+		overflow-wrap: anywhere;
+		min-width: 0;
+	}
+
+	/* Short brand stroke under the title */
+	h1::after {
+		content: '';
+		display: block;
+		width: 3rem;
+		height: 3px;
+		margin-top: 1rem;
+		border-radius: 3px;
+		background: var(--pl-gradient);
+	}
+
+	.pl-lead {
+		margin-top: 1rem;
+		max-width: 60ch;
+		font-size: var(--sl-text-lg);
+		line-height: 1.55;
+		color: var(--sl-color-gray-3);
+	}
+</style>

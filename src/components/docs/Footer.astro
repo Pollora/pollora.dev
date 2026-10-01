@@ -1,0 +1,79 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import mascot from '../../assets/mascot-documentation.svg';
+
+const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encodeURIComponent(
+	`Docs: ${Astro.locals.starlightRoute.entry.data.title}`
+)}`;
+---
+
+<aside class="pl-help not-content print:hidden" aria-label="Documentation feedback">
+	<img src={mascot.src} alt="" width="72" height="72" loading="lazy" decoding="async" />
+	<div>
+		<p class="pl-help-title">Something unclear or missing?</p>
+		<p class="pl-help-body">
+			<a href={issueUrl}>Open an issue</a> on <a href="https://github.com/Pollora/framework">Pollora/framework</a>
+			and we'll fix it.
+		</p>
+	</div>
+</aside>
+
+<Default />
+
+<style>
+	.pl-help {
+		display: flex;
+		align-items: center;
+		gap: 1.25rem;
+		margin-top: 4rem;
+		padding: 1.25rem 1.5rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: var(--pl-radius-md);
+		background-color: var(--pl-surface);
+	}
+
+	img {
+		flex-shrink: 0;
+		width: 4.5rem;
+		height: 4.5rem;
+		transform: rotate(-6deg);
+	}
+
+	.pl-help-title {
+		font-family: var(--pl-font-display);
+		font-weight: 600;
+		font-size: var(--sl-text-lg);
+		line-height: 1.3;
+		color: var(--sl-color-white);
+	}
+
+	.pl-help-body {
+		margin-top: 0.25rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+
+	.pl-help-body a {
+		color: var(--sl-color-text-accent);
+		font-weight: 500;
+		text-decoration-color: color-mix(in oklch, var(--sl-color-accent) 40%, transparent);
+		text-underline-offset: 0.2em;
+	}
+
+	.pl-help-body a:hover {
+		text-decoration-color: var(--sl-color-accent);
+	}
+
+	@media (max-width: 30rem) {
+		.pl-help {
+			align-items: flex-start;
+			gap: 1rem;
+			padding: 1rem;
+		}
+
+		img {
+			width: 3.25rem;
+			height: 3.25rem;
+		}
+	}
+</style>
