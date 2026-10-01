@@ -273,3 +273,7 @@ class Event
 | `configuring()` | Yes | Yes | Dynamic + i18n support |
 
 For a complete list of all available attributes, see [Post Type Attributes Reference](/content/post-types-reference/).
+
+## See also
+
+- [Custom post types and taxonomies with PHP attributes](https://pollora.dev/guides/custom-post-types-php-attributes/)
