@@ -1,0 +1,77 @@
+---
+// Release notes of pollora/framework, fetched from GitHub at build time.
+// A failed fetch (rate limit, network) renders a link to GitHub instead of failing the build.
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+
+const REPO = 'Pollora/framework';
+
+type Release = { tag_name: string; name: string | null; body: string | null; published_at: string; prerelease: boolean; html_url: string };
+
+let releases: Release[] = [];
+try {
+	const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+	if (import.meta.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${import.meta.env.GITHUB_TOKEN}`;
+	const res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=30`, { headers });
+	if (res.ok) releases = await res.json();
+} catch {}
+
+const markdown = await createMarkdownProcessor();
+const entries = await Promise.all(
+	releases.map(async (r) => ({
+		...r,
+		html: (await markdown.render(r.body ?? '')).code,
+		date: new Date(r.published_at).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' }),
+	})),
+);
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Changelog',
+		description: 'Release notes for Pollora, the Laravel framework for WordPress: every stable and pre-release version of pollora/framework, newest first.',
+		tableOfContents: false,
+	}}
+>
+	<p>
+		Pollora's version numbers follow the Laravel release it is built on. The skeleton (<code>pollora/pollora</code>) is tagged
+		with the same number as the framework it ships. Releases are also published on
+		<a href={`https://github.com/${REPO}/releases`}>GitHub</a>.
+	</p>
+
+	{entries.length === 0 && (
+		<p>The release notes could not be loaded. Read them on <a href={`https://github.com/${REPO}/releases`}>GitHub</a>.</p>
+	)}
+
+	{entries.map((r) => (
+		<section class="pl-release">
+			<h2 id={r.tag_name}>
+				{r.name || r.tag_name}
+				{r.prerelease && <span class="pl-release-badge">Pre-release</span>}
+			</h2>
+			<p class="pl-release-meta">
+				<time datetime={r.published_at}>{r.date}</time> · <a href={r.html_url}>View on GitHub</a>
+			</p>
+			<div set:html={r.html} />
+		</section>
+	))}
+</StarlightPage>
+
+<style>
+	.pl-release-badge {
+		margin-inline-start: 0.6rem;
+		padding: 0.15rem 0.6rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 999px;
+		font-family: var(--sl-font);
+		font-size: var(--sl-text-xs);
+		font-weight: 500;
+		letter-spacing: 0;
+		color: var(--sl-color-gray-3);
+		vertical-align: middle;
+	}
+	.pl-release-meta {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+</style>

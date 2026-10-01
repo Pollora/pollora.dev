@@ -15,9 +15,9 @@
 	--pl-teal: #49c7b9;
 	--pl-gradient: linear-gradient(90deg, var(--pl-pink), var(--pl-red), var(--pl-coral), var(--pl-orange));
 
-	--pl-font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-	--sl-font: 'Geist', ui-sans-serif, system-ui, sans-serif;
-	--sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+	--pl-font-display: 'Space Grotesk Variable', 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+	--sl-font: 'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
 
 	--pl-radius-sm: 6px;
 	--pl-radius-md: 10px;

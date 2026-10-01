@@ -1,7 +1,43 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro';
 import AnalyticsHead from '../AnalyticsHead.astro';
+
+// schema.org data for docs pages: the page as a TechArticle, and its place in the site.
+const route = Astro.locals.starlightRoute;
+const site = 'https://pollora.dev';
+const url = new URL(Astro.url.pathname, site).href;
+const sections: Record<string, string> = {
+	'getting-started': 'Getting Started', 'core-concepts': 'Core Concepts', routing: 'Routing',
+	content: 'Content', hooks: 'Hooks & Events', theming: 'Theming', blocks: 'Blocks',
+	advanced: 'Advanced', nectar: 'Nectar AI', guides: 'Guides',
+};
+const first = route.id.split('/')[0];
+const section = route.id.includes('/') ? sections[first] : undefined;
+const isDocPage = route.entry.data.template !== 'splash' && route.id !== '404';
+
+const breadcrumb = [
+	{ name: 'Pollora', item: `${site}/` },
+	...(section ? [{ name: section }] : []),
+	{ name: route.entry.data.title, item: url },
+].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb }));
+
+const structuredData = isDocPage && [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'TechArticle',
+		headline: route.entry.data.title,
+		description: route.entry.data.description,
+		url,
+		inLanguage: 'en',
+		image: `${site}/og-image.png`,
+		isPartOf: { '@type': 'WebSite', name: 'Pollora', url: `${site}/` },
+		about: { '@type': 'SoftwareApplication', name: 'Pollora', applicationCategory: 'DeveloperApplication', url: `${site}/` },
+		publisher: { '@type': 'Organization', name: 'AmphiBee', url: 'https://amphibee.fr' },
+	},
+	{ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: breadcrumb },
+];
 ---
 
 <Default />
+{structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
 <AnalyticsHead />

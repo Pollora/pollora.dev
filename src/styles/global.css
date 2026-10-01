@@ -70,9 +70,9 @@
 	--text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
 
 	/* Font stacks */
-	--font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
-	--font-body: "Geist", ui-sans-serif, system-ui, sans-serif;
-	--font-code: "JetBrains Mono", ui-monospace, monospace;
+	--font-display: "Space Grotesk Variable", "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+	--font-body: "Geist Variable", "Geist", ui-sans-serif, system-ui, sans-serif;
+	--font-code: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, monospace;
 
 	/* Motion */
 	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);

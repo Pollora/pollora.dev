@@ -14,7 +14,25 @@ export default defineConfig({
 		starlight({
 			title: 'Pollora',
 			description: 'Laravel meets WordPress. Modern PHP, zero compromise.',
-			plugins: [starlightLlmsTxt()],
+			plugins: [
+				starlightLlmsTxt({
+					projectName: 'Pollora',
+					description: 'Pollora is the Laravel framework for WordPress: an open-source PHP framework that runs WordPress inside a Laravel application.',
+					details: [
+						'- The front end uses Laravel routing, controllers, Blade and Eloquent; the WordPress admin, database, editors and plugins keep working.',
+						'- Hooks, post types, taxonomies, REST routes, WP-CLI commands and schedules are declared with PHP 8 attributes and registered by auto-discovery.',
+						'- `Route::wp()` matches Laravel routes on WordPress conditional tags, with the template hierarchy as a fallback.',
+						'- Current release: v13.34.0 (stable). Version numbers follow the Laravel release Pollora is built on.',
+						'- Requirements for a new project: PHP 8.4+, Laravel 13.34, WordPress 7.1+, Composer 2.',
+						'- Install: `composer global require pollora/cli` then `pollora new example-app` (or `composer create-project pollora/pollora example-app`).',
+						'- License: MIT (pollora/framework, pollora/pollora, pollora/cli). Nectar, the AI context package for coding agents, is GPL-2.0-or-later.',
+						'- Maintained by AmphiBee (https://amphibee.fr). Source: https://github.com/Pollora',
+					].join('\n'),
+					promote: ['why', 'getting-started/**', 'guides/**'],
+					demote: ['hooks/wordpress-events-reference', 'content/post-types-reference', 'changelog'],
+					exclude: ['hooks/wordpress-events-reference', 'content/post-types-reference'],
+				}),
+			],
 			favicon: '/favicon.svg',
 			head: [
 				{ tag: 'link', attrs: { rel: 'icon', href: '/favicon.ico', sizes: '32x32' } },
@@ -25,15 +43,6 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://pollora.dev/og-image.png' } },
-				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
-				{ tag: 'link', attrs: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: true } },
-				{
-					tag: 'link',
-					attrs: {
-						rel: 'stylesheet',
-						href: 'https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap',
-					},
-				},
 			],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Pollora' },
@@ -45,7 +54,13 @@ export default defineConfig({
 			editLink: {
 				baseUrl: 'https://github.com/Pollora/pollora.dev/edit/main/',
 			},
-			customCss: ['./src/styles/docs.css'],
+			routeMiddleware: './src/starlightRouteData.ts',
+			customCss: [
+				'@fontsource-variable/geist',
+				'@fontsource-variable/space-grotesk',
+				'@fontsource-variable/jetbrains-mono',
+				'./src/styles/docs.css',
+			],
 			components: {
 				Head: './src/components/docs/Head.astro',
 				SkipLink: './src/components/docs/SkipLink.astro',
@@ -59,10 +74,10 @@ export default defineConfig({
 					borderRadius: '10px',
 					borderColor: 'oklch(27% 0.03 295)',
 					codeBackground: 'oklch(17% 0.03 290)',
-					codeFontFamily: "'JetBrains Mono', ui-monospace, monospace",
+					codeFontFamily: "'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace",
 					codeFontSize: '0.84rem',
 					codeLineHeight: '1.7',
-					uiFontFamily: "'Geist', ui-sans-serif, system-ui, sans-serif",
+					uiFontFamily: "'Geist Variable', 'Geist', ui-sans-serif, system-ui, sans-serif",
 					frames: {
 						editorBackground: 'oklch(17% 0.03 290)',
 						terminalBackground: 'oklch(17% 0.03 290)',
@@ -77,7 +92,17 @@ export default defineConfig({
 				},
 			},
 			sidebar: [
+				{
+					label: 'About Pollora',
+					items: [
+						{ label: 'Why Pollora', link: '/why/' },
+						{ label: 'How Pollora compares', link: '/compare/' },
+						{ label: 'FAQ', link: '/faq/' },
+						{ label: 'Changelog', link: '/changelog/' },
+					],
+				},
 				{ label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started' } }] },
+				{ label: 'Guides', items: [{ autogenerate: { directory: 'guides' } }] },
 				{ label: 'Core Concepts', items: [{ autogenerate: { directory: 'core-concepts' } }] },
 				{ label: 'Routing', items: [{ autogenerate: { directory: 'routing' } }] },
 				{ label: 'Content', items: [{ autogenerate: { directory: 'content' } }] },

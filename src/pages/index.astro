@@ -10,6 +10,9 @@ import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
 import AnalyticsHead from '../components/AnalyticsHead.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -19,7 +22,7 @@ const version = '13.34.0';
 
 const siteUrl = 'https://pollora.dev/';
 const ogImage = new URL('/og-image.png', siteUrl).href;
-const title = 'Pollora — Laravel meets WordPress';
+const title = 'Pollora: the Laravel framework for WordPress';
 const description = "The modern PHP framework that blends Laravel's elegance with WordPress's power. PHP 8 attributes, Blade templates, auto-discovery — zero compromise.";
 const socialDescription = 'Modern PHP framework blending Laravel and WordPress. PHP 8 attributes, auto-discovery, Blade templates.';
 
@@ -93,9 +96,6 @@ const peekSvg = peekRaw
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<link rel="manifest" href="/site.webmanifest" />
 
-	<link rel="preconnect" href="https://fonts.googleapis.com" />
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-	<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
 </head>
 
@@ -144,17 +144,17 @@ const peekSvg = peekRaw
 				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
 					<div data-reveal class="" style="--i:0">
 						<div class="flex flex-wrap items-center gap-3 mb-5">
-							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Laravel + WordPress</p>
+							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Modern PHP, zero compromise</p>
 							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-coral/40 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								<span class="w-2 h-2 rounded-full bg-pollora-coral" aria-hidden="true"></span>
 								v{version}
 							</a>
 						</div>
 						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
-							Modern PHP,<br /><span class="text-gradient">zero compromise.</span>
+							The Laravel framework<br /><span class="text-gradient">for WordPress.</span>
 						</h1>
 						<p class="text-lg text-ink-2 max-w-[50ch] leading-relaxed mb-12">
-							Build WordPress sites with Laravel's elegance. PHP 8 attributes, Blade templates, auto-discovery, and a full ecosystem of packages.
+							WordPress runs inside a Laravel app: routing, controllers, Blade and Eloquent on the front end, the admin and plugins untouched. PHP 8 attributes and auto-discovery do the registering.
 						</p>
 						<div class="flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
@@ -179,7 +179,7 @@ const peekSvg = peekRaw
 								<span class="ml-4 text-sm text-muted font-[var(--font-body)]">Book.php</span>
 							</div>
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\ShowInRest</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType\&#123;HasArchive, Supports, ShowInRest&#125;</span>;
 
 <span class="token-attribute">#[PostType('book')]</span>
 <span class="token-attribute">#[HasArchive]</span>
@@ -280,18 +280,21 @@ const peekSvg = peekRaw
 <span class="token-attribute">#[HasArchive]</span>
 <span class="token-attribute">#[ShowInRest]</span>
 <span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></code></pre>
+						<a href="/guides/custom-post-types-php-attributes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Post types with attributes <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Auto-Discovery — 2 col -->
 					<div data-reveal class="md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
 						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Auto-Discovery</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Write it, it works</h3>
 						<p class="text-ink-2 text-base">No manual registration. Pollora scans your codebase and registers everything automatically. Convention over configuration.</p>
+						<a href="/core-concepts/auto-discovery/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">How auto-discovery works <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Blade Templates — 3 col -->
 					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:3">
 						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade Templates</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax</h3>
 						<p class="text-ink-2 text-base">Replace PHP template files with Blade. Use directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code> for clean, readable templates.</p>
+						<a href="/guides/blade-templates-wordpress/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Blade in WordPress <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Hybrid Routing — 3 col -->
 					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
@@ -300,12 +303,14 @@ const peekSvg = peekRaw
 						<p class="text-ink-2 text-base mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
 						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'single'</span>, [<span class="token-class">PostController</span>::<span class="token-keyword">class</span>, <span class="token-string">'show'</span>]);
 <span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
+						<a href="/routing/wordpress-routes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">WordPress routes <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Vite + Tailwind — 3 col -->
 					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-orange/30 transition-all duration-[var(--dur-short)]" style="--i:5">
 						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Vite + Tailwind</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Modern asset pipeline</h3>
 						<p class="text-ink-2 text-base">Vite with HMR, Tailwind CSS v4, and the Asset facade for script and style registration. No more enqueue headaches.</p>
+						<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Type Safety — 3 col -->
 					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-red/30 transition-all duration-[var(--dur-short)]" style="--i:6">
@@ -314,6 +319,60 @@ const peekSvg = peekRaw
 						<p class="text-ink-2 text-base">Constructor property promotion, explicit return types, type-hinted parameters. PHPStan level 5 enforced across the framework.</p>
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<!-- ═══ COMPARE ═══ -->
+		<section id="compare" class="pb-24 md:pb-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="mb-12" style="--i:0">
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
+					<p class="text-ink-2 text-lg max-w-[60ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
+				</div>
+				<div data-reveal class="overflow-x-auto rounded-[var(--radius-lg)] border border-rule" style="--i:1">
+					<table class="w-full min-w-[44rem] text-left text-base">
+						<thead class="bg-paper-2 font-[var(--font-display)]">
+							<tr>
+								<th scope="col" class="p-5 font-semibold text-ink-2 w-[22%]"></th>
+								<th scope="col" class="p-5 font-bold text-ink">Pollora</th>
+								<th scope="col" class="p-5 font-semibold text-ink">Acorn + Sage</th>
+								<th scope="col" class="p-5 font-semibold text-ink">Radicle</th>
+								<th scope="col" class="p-5 font-semibold text-ink">Corcel</th>
+							</tr>
+						</thead>
+						<tbody class="text-ink-2 [&_td]:p-5 [&_th]:p-5 [&_tr]:border-t [&_tr]:border-rule">
+							<tr>
+								<th scope="row" class="font-semibold text-ink">Approach</th>
+								<td>WordPress inside a Laravel app</td>
+								<td>Laravel components inside WordPress</td>
+								<td>Roots stack starter, Laravel-powered</td>
+								<td>Laravel reads the WordPress database</td>
+							</tr>
+							<tr>
+								<th scope="row" class="font-semibold text-ink">Front end</th>
+								<td>Laravel routes, controllers, Blade, template hierarchy fallback</td>
+								<td>Blade theme on the template hierarchy</td>
+								<td>Blade theme, Laravel features</td>
+								<td>Your Laravel app, no WordPress theme</td>
+							</tr>
+							<tr>
+								<th scope="row" class="font-semibold text-ink">Post types &amp; hooks</th>
+								<td>PHP 8 attributes, auto-discovered</td>
+								<td>Theme or plugin code</td>
+								<td>Configuration file</td>
+								<td>Reads existing data</td>
+							</tr>
+							<tr>
+								<th scope="row" class="font-semibold text-ink">Price</th>
+								<td>Free, MIT</td>
+								<td>Free, MIT</td>
+								<td>One-time purchase</td>
+								<td>Free, MIT</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<a href="/compare/" class="inline-flex items-center gap-2 mt-8 text-lg font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Read the full comparison <span aria-hidden="true">&rarr;</span></a>
 			</div>
 		</section>
 
@@ -380,7 +439,7 @@ const peekSvg = peekRaw
 						</div>
 						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\ShowInRest</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType\&#123;HasArchive, Supports, ShowInRest&#125;</span>;
 
 <span class="token-attribute">#[PostType('book')]</span>
 <span class="token-attribute">#[HasArchive]</span>
@@ -563,7 +622,7 @@ const peekSvg = peekRaw
 						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute\Method</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpRestRoute\Permissions\IsAdmin</span>;
+<span class="token-keyword">use</span> <span class="token-class">Pollora\WpRest\Permissions\IsAdmin</span>;
 
 <span class="token-attribute">#[WpRestRoute(</span>
     <span class="token-attribute">namespace:</span> <span class="token-string">'app/v2'</span>,
@@ -954,13 +1013,17 @@ const peekSvg = peekRaw
 						<p class="text-ink-2 text-lg leading-relaxed mb-10 max-w-[48ch]">
 							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature.
 						</p>
+						<div class="flex flex-wrap gap-x-8 gap-y-3 mb-10 -mt-4">
+							<a href="/guides/ai-coding-agents-wordpress/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">AI agents for WordPress <span aria-hidden="true">&rarr;</span></a>
+							<a href="/nectar/overview/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Nectar docs <span aria-hidden="true">&rarr;</span></a>
+						</div>
 						<div class="grid grid-cols-2 gap-8">
 							<div>
 								<div class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] text-gradient" style="font-variant-numeric:tabular-nums">10</div>
 								<p class="text-ink-2 text-base mt-2">MCP tools for live introspection of WordPress, routes, hooks, and components</p>
 							</div>
 							<div>
-								<div class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] text-pollora-teal" style="font-variant-numeric:tabular-nums">8</div>
+								<div class="font-[var(--font-display)] font-bold text-[var(--text-4xl)] text-pollora-teal" style="font-variant-numeric:tabular-nums">9</div>
 								<p class="text-ink-2 text-base mt-2">Agent skills for post types, theming, hooks, blocks, REST API, and more</p>
 							</div>
 						</div>
@@ -1011,7 +1074,11 @@ const peekSvg = peekRaw
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								Read the Docs <span aria-hidden="true">&rarr;</span>
 							</a>
+							<a href="/why/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-rule text-ink text-lg font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Why Pollora
+							</a>
 						</div>
+						<p class="mt-6 text-ink-2 text-base">Also: <a href="/faq/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">FAQ</a> · <a href="/guides/how-pollora-runs-wordpress-inside-laravel/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">How it works</a> · <a href="/changelog/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">Changelog</a></p>
 					</div>
 				</div>
 			</div>
