@@ -31,6 +31,7 @@ rewrite_links() {
     -e 's|(post-types\.md\(#[^)]*\)\?)|(/content/post-types/\1)|g' \
     -e 's|(post-types-reference\.md\(#[^)]*\)\?)|(/content/post-types-reference/\1)|g' \
     -e 's|(taxonomies\.md\(#[^)]*\)\?)|(/content/taxonomies/\1)|g' \
+    -e 's|(meta\.md\(#[^)]*\)\?)|(/content/typed-meta/\1)|g' \
     -e 's|(options\.md\(#[^)]*\)\?)|(/content/options/\1)|g' \
     -e 's|(hooks\.md\(#[^)]*\)\?)|(/hooks/actions-filters/\1)|g' \
     -e 's|(events-listeners\.md\(#[^)]*\)\?)|(/hooks/events-listeners/\1)|g' \
@@ -112,7 +113,8 @@ sync_file "middleware.md" "routing/middleware.md" "Middleware" "Filter requests 
 sync_file "post-types.md" "content/post-types.md" "Post Types" "Declare WordPress custom post types in Pollora with a PHP 8 attribute on a class: labels, supported features, archives and translations, all in one place." 1
 sync_file "post-types-reference.md" "content/post-types-reference.md" "Post Type Attributes Reference" "Every PHP attribute for Pollora post types: visibility, archives, supported features, admin UI, labels, capabilities, REST API, feeds and export settings." 2
 sync_file "taxonomies.md" "content/taxonomies.md" "Taxonomies" "Declare WordPress custom taxonomies in Pollora with PHP 8 attributes on a class, and attach them to your post types without calling register_taxonomy." 3
-sync_file "options.md" "content/options.md" "Options" "Read and write WordPress options in Pollora through a fluent API, with defaults, error handling, testing and a migration path from get_option." 4
+sync_file "meta.md" "content/typed-meta.md" "Typed Meta" "Declare WordPress meta once in Pollora, as typed PHP properties with #[Meta]: register_meta(), sanitization, REST schema and typed reads and writes." 4
+sync_file "options.md" "content/options.md" "Options" "Read and write WordPress options in Pollora through a fluent API, with defaults, error handling, testing and a migration path from get_option." 5
 
 # Hooks & Events
 sync_file "hooks.md" "hooks/actions-filters.md" "Actions & Filters" "Register WordPress actions and filters in Pollora with PHP 8 attributes or the Action and Filter facades, including deferred callbacks and service access." 1
