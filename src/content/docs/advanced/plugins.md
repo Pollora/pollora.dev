@@ -3,7 +3,7 @@ title: Plugin Development
 description: "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets."
 editUrl: https://github.com/Pollora/documentation/edit/main/plugins.md
 sidebar:
-  order: 10
+  order: 11
 ---
 
 

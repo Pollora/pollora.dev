@@ -31,6 +31,7 @@ rewrite_links() {
     -e 's|(post-types\.md\(#[^)]*\)\?)|(/content/post-types/\1)|g' \
     -e 's|(post-types-reference\.md\(#[^)]*\)\?)|(/content/post-types-reference/\1)|g' \
     -e 's|(taxonomies\.md\(#[^)]*\)\?)|(/content/taxonomies/\1)|g' \
+    -e 's|(meta\.md\(#[^)]*\)\?)|(/content/typed-meta/\1)|g' \
     -e 's|(options\.md\(#[^)]*\)\?)|(/content/options/\1)|g' \
     -e 's|(hooks\.md\(#[^)]*\)\?)|(/hooks/actions-filters/\1)|g' \
     -e 's|(events-listeners\.md\(#[^)]*\)\?)|(/hooks/events-listeners/\1)|g' \
@@ -47,6 +48,7 @@ rewrite_links() {
     -e 's|(schedule-events\.md\(#[^)]*\)\?)|(/advanced/scheduling/\1)|g' \
     -e 's|(modules\.md\(#[^)]*\)\?)|(/advanced/modules/\1)|g' \
     -e 's|(auth\.md\(#[^)]*\)\?)|(/advanced/authentication/\1)|g' \
+    -e 's|(roles\.md\(#[^)]*\)\?)|(/advanced/roles-capabilities/\1)|g' \
     -e 's|(ajax\.md\(#[^)]*\)\?)|(/advanced/ajax/\1)|g' \
     -e 's|(dashboard\.md\(#[^)]*\)\?)|(/advanced/dashboard/\1)|g' \
     -e 's|(wordpress-logging\.md\(#[^)]*\)\?)|(/advanced/logging/\1)|g' \
@@ -111,7 +113,8 @@ sync_file "middleware.md" "routing/middleware.md" "Middleware" "Filter requests 
 sync_file "post-types.md" "content/post-types.md" "Post Types" "Declare WordPress custom post types in Pollora with a PHP 8 attribute on a class: labels, supported features, archives and translations, all in one place." 1
 sync_file "post-types-reference.md" "content/post-types-reference.md" "Post Type Attributes Reference" "Every PHP attribute for Pollora post types: visibility, archives, supported features, admin UI, labels, capabilities, REST API, feeds and export settings." 2
 sync_file "taxonomies.md" "content/taxonomies.md" "Taxonomies" "Declare WordPress custom taxonomies in Pollora with PHP 8 attributes on a class, and attach them to your post types without calling register_taxonomy." 3
-sync_file "options.md" "content/options.md" "Options" "Read and write WordPress options in Pollora through a fluent API, with defaults, error handling, testing and a migration path from get_option." 4
+sync_file "meta.md" "content/typed-meta.md" "Typed Meta" "Declare WordPress meta once in Pollora, as typed PHP properties with #[Meta]: register_meta(), sanitization, REST schema and typed reads and writes." 4
+sync_file "options.md" "content/options.md" "Options" "Read and write WordPress options in Pollora through a fluent API, with defaults, error handling, testing and a migration path from get_option." 5
 
 # Hooks & Events
 sync_file "hooks.md" "hooks/actions-filters.md" "Actions & Filters" "Register WordPress actions and filters in Pollora with PHP 8 attributes or the Action and Filter facades, including deferred callbacks and service access." 1
@@ -133,11 +136,12 @@ sync_file "abilities.md" "advanced/abilities.md" "Abilities" "Declare WordPress 
 sync_file "schedule-events.md" "advanced/scheduling.md" "Scheduling" "Schedule recurring WordPress tasks in Pollora with PHP attributes: the Every enum, custom intervals, hook names and arguments, without WP-Cron boilerplate." 3
 sync_file "modules.md" "advanced/modules.md" "Modules" "Organize a Pollora project with Laravel Modules: when to choose a module over a WordPress plugin, and how to create, enable and auto-discover modules." 4
 sync_file "auth.md" "advanced/authentication.md" "Authentication" "Use Laravel's Auth facade with WordPress users in Pollora: the WordPress guard lets the standard Auth methods work against WordPress accounts." 5
-sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle WordPress AJAX requests in Pollora with an attribute or a facade, understand the security model, and call your handlers from frontend JavaScript." 6
-sync_file "dashboard.md" "advanced/dashboard.md" "Dashboard & Status" "Check a Pollora installation from the WordPress admin dashboard or the CLI, see discovered components and diagnose a project with pollora:doctor." 7
-sync_file "wordpress-logging.md" "advanced/logging.md" "Logging" "Log WordPress errors, warnings and deprecated function calls through Laravel logging in Pollora, so they reach your log channels without breaking pages." 8
-sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create custom WP-CLI commands in Pollora with PHP attributes: single commands, subcommand suites, automatic slugs, and a generator to scaffold them." 9
-sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets." 10
+sync_file "roles.md" "advanced/roles-capabilities.md" "Roles & Capabilities" "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole]." 6
+sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle WordPress AJAX requests in Pollora with an attribute or a facade, understand the security model, and call your handlers from frontend JavaScript." 7
+sync_file "dashboard.md" "advanced/dashboard.md" "Dashboard & Status" "Check a Pollora installation from the WordPress admin dashboard or the CLI, see discovered components and diagnose a project with pollora:doctor." 8
+sync_file "wordpress-logging.md" "advanced/logging.md" "Logging" "Log WordPress errors, warnings and deprecated function calls through Laravel logging in Pollora, so they reach your log channels without breaking pages." 9
+sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create custom WP-CLI commands in Pollora with PHP attributes: single commands, subcommand suites, automatic slugs, and a generator to scaffold them." 10
+sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets." 11
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1

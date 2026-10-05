@@ -3,7 +3,7 @@ title: WP-CLI Commands
 description: "Create custom WP-CLI commands in Pollora with PHP attributes: single commands, subcommand suites, automatic slugs, and a generator to scaffold them."
 editUrl: https://github.com/Pollora/documentation/edit/main/wp-cli-commands.md
 sidebar:
-  order: 9
+  order: 10
 ---
 
 
