@@ -3,7 +3,7 @@ title: AJAX
 description: "Handle WordPress AJAX requests in Pollora with an attribute or a facade, understand the security model, and call your handlers from frontend JavaScript."
 editUrl: https://github.com/Pollora/documentation/edit/main/ajax.md
 sidebar:
-  order: 6
+  order: 7
 ---
 
 

@@ -3,7 +3,7 @@ title: Options
 description: "Read and write WordPress options in Pollora through a fluent API, with defaults, error handling, testing and a migration path from get_option."
 editUrl: https://github.com/Pollora/documentation/edit/main/options.md
 sidebar:
-  order: 4
+  order: 5
 ---
 
 
