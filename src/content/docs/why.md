@@ -112,6 +112,6 @@ class ContentHooks
 
 **Two frameworks to keep updated.** This is the most common concern, and Pollora's versioning is designed around it. Version numbers follow the Laravel release Pollora is built on: 13.34 means Laravel 13.34. The skeleton and the framework are tagged together, and a skeleton tag pins the framework tag of the same number, so one version number describes an install. WordPress core is a Composer dependency like the rest. For major upgrades, [Nectar](/nectar/overview/) ships upgrade prompts that walk AI coding agents through the steps.
 
-**A smaller community.** Pollora is maintained by AmphiBee and its community is much smaller than that of the Roots projects. The current release, v13.34.2, is stable, but you will find fewer third-party tutorials.
+**A smaller community.** Pollora is maintained by AmphiBee and its community is much smaller than that of the Roots projects. The current release, v13.34.3, is stable, but you will find fewer third-party tutorials.
 
 If those trade-offs work for you, [install Pollora](/getting-started/installation/) and try it, or read the [FAQ](/faq/).
