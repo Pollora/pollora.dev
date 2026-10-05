@@ -28,7 +28,7 @@ Pollora's own WordPress models are built on **`pollora/colt`, a fork of Corcel**
 | **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions | Your app's tests |
 | **AI tooling** | [Nectar](/nectar/overview/): guidelines, 9 agent skills and 10 MCP tools, on Laravel Boost | | | | |
 | **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites | MIT, free |
-| **Maturity** (October 2026) | v13.34.1 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots | v9.0.0, about 4.8k GitHub stars |
+| **Maturity** (October 2026) | v13.34.2 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots | v9.0.0, about 4.8k GitHub stars |
 
 Sources: each project's GitHub repository, Packagist and product page (roots.io/acorn, roots.io/radicle), checked on 1 October 2026.
 
