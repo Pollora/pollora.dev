@@ -1,0 +1,284 @@
+---
+// Press kit: facts, descriptions, brand assets, screenshots and code samples for editors writing about Pollora.
+// Linked from press pitches, not from the sidebar. Assets live in public/press/ (pollora-press-kit.zip bundles the images).
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+import { Code } from '@astrojs/starlight/components';
+
+// Signed quote: leave empty until Olivier has written and approved it; the section is hidden while empty.
+const quote = '';
+
+const youtubeId = 'Wk1VzPapqM8';
+const embedCode = `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/${youtubeId}" title="Pollora in one minute" frameborder="0" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+
+const facts = [
+	['Name', 'Pollora, the Laravel framework for WordPress'],
+	['What it is', 'An open-source PHP framework: WordPress runs inside a Laravel application'],
+	['First stable release', 'v13.34.0, 30 September 2026 (the version number follows Laravel: 13.34 = Laravel 13.34)'],
+	['License', 'MIT (framework, skeleton, CLI); Nectar is GPL-2.0-or-later'],
+	['Publisher', 'AmphiBee, a French web agency'],
+];
+
+const descriptions = {
+	en: {
+		short: `Pollora is an open-source framework that runs WordPress inside a Laravel application. Laravel routing, controllers and Blade render the front end, while the WordPress admin and plugins keep working. Hooks, post types and REST routes are declared with PHP 8 attributes. The first stable release, v13.34.0, shipped on 30 September 2026.`,
+		medium: `Pollora is an open-source PHP framework that runs WordPress inside a Laravel application. It takes the inverse route of Acorn, where Laravel runs inside WordPress: in Pollora, Laravel boots first and loads WordPress as part of its own boot. The front end is rendered with Laravel routing, controllers and Blade; the WordPress admin, database, plugins and REST API keep working. Hooks, post types, taxonomies and REST routes are declared with PHP 8 attributes and registered by auto-discovery, and Route::wp() matches Laravel routes on WordPress conditional tags. Nectar gives AI coding agents accurate context about a Pollora project. The first stable release, v13.34.0, shipped on 30 September 2026; its version number follows Laravel's. Pollora builds on the work of Roots (@roots/vite-plugin, the Bedrock layout, Sage Directives) and its models fork Corcel. It is MIT-licensed and published by AmphiBee, a French web agency.`,
+		long: `Pollora is an open-source PHP framework that runs WordPress inside a Laravel application. Many Laravel developers also have to ship WordPress sites, and there they find functions.php, scattered hooks and global functions again. Pollora lets them keep the Laravel way of working without giving up what WordPress does well.
+
+The arrangement is the inverse of Acorn, where Laravel runs inside WordPress. In Pollora, Laravel's front controller receives the request and WordPress core loads inside a service provider. The front end is rendered with Laravel routing, controllers and Blade, and the WordPress admin, database, plugins and REST API keep working. Route::wp() lets a Laravel route match a WordPress conditional tag such as is_single or is_page, with the WordPress template hierarchy as a fallback.
+
+Registration code becomes PHP 8 attributes. A class carrying #[PostType] becomes a post type, a method carrying #[Action('init')] becomes an action, and REST routes are declared the same way. Pollora discovers them automatically, so there is nothing to register by hand.
+
+Nectar, an optional development package, gives AI coding agents accurate context about a Pollora project.
+
+Pollora owes a lot to Roots: it uses @roots/vite-plugin, a Bedrock-style layout and Sage Directives, and its WordPress models are built on a fork of Corcel. The comparison page on pollora.dev explains where each of these projects fits.
+
+The first stable release, v13.34.0, shipped on 30 September 2026. Version numbers follow the Laravel release Pollora is built on, so 13.34 means Laravel 13.34. A new project needs PHP 8.4+, WordPress 7.1+, and MySQL 5.7+ or MariaDB 10.3+. The framework, the project skeleton and the CLI are MIT-licensed; Nectar is GPL-2.0-or-later. Pollora is published by AmphiBee, a French web agency, and its source is on GitHub.`,
+	},
+	fr: {
+		short: `Pollora est un framework open source qui fait tourner WordPress dans une application Laravel. Routes, contrôleurs et Blade de Laravel rendent le front ; l'administration et les extensions WordPress fonctionnent toujours. Hooks, types de contenu et routes REST se déclarent en attributs PHP 8. Première version stable, v13.34.0, le 30 septembre 2026.`,
+		medium: `Pollora est un framework PHP open source qui fait tourner WordPress à l'intérieur d'une application Laravel. Il prend le chemin inverse d'Acorn, où Laravel tourne dans WordPress : avec Pollora, Laravel démarre en premier et charge WordPress pendant son propre démarrage. Le front est rendu par le routage, les contrôleurs et Blade de Laravel ; l'administration, la base de données, les extensions et l'API REST de WordPress continuent de fonctionner. Hooks, types de contenu, taxonomies et routes REST se déclarent en attributs PHP 8 et sont enregistrés par découverte automatique, et Route::wp() associe une route Laravel aux balises conditionnelles de WordPress. Nectar donne aux agents IA de code un contexte juste sur un projet Pollora. La première version stable, v13.34.0, est sortie le 30 septembre 2026 ; son numéro suit celui de Laravel. Pollora s'appuie sur le travail de Roots (@roots/vite-plugin, la structure Bedrock, Sage Directives) et ses modèles forkent Corcel. Il est sous licence MIT et édité par AmphiBee, agence web française.`,
+		long: `Pollora est un framework PHP open source qui fait tourner WordPress à l'intérieur d'une application Laravel. Beaucoup de développeurs Laravel doivent aussi livrer des sites WordPress, et y retrouvent functions.php, des hooks éparpillés et des fonctions globales. Pollora leur permet de garder leurs habitudes Laravel sans renoncer à ce que WordPress fait bien.
+
+L'organisation est l'inverse de celle d'Acorn, où Laravel tourne dans WordPress. Avec Pollora, le contrôleur frontal de Laravel reçoit la requête et le cœur de WordPress se charge dans un fournisseur de services. Le front est rendu par le routage, les contrôleurs et Blade de Laravel, et l'administration, la base de données, les extensions et l'API REST de WordPress continuent de fonctionner. Route::wp() permet à une route Laravel de répondre à une balise conditionnelle de WordPress comme is_single ou is_page, avec la hiérarchie des modèles de WordPress en repli.
+
+Le code d'enregistrement devient des attributs PHP 8. Une classe portant #[PostType] devient un type de contenu, une méthode portant #[Action('init')] devient une action, et les routes REST se déclarent de la même façon. Pollora les découvre automatiquement : rien à enregistrer à la main.
+
+Nectar, un paquet de développement optionnel, donne aux agents IA de code un contexte juste sur un projet Pollora.
+
+Pollora doit beaucoup à Roots : il utilise @roots/vite-plugin, une structure inspirée de Bedrock et Sage Directives, et ses modèles WordPress reposent sur un fork de Corcel. La page de comparaison de pollora.dev explique la place de chacun de ces projets.
+
+La première version stable, v13.34.0, est sortie le 30 septembre 2026. Les numéros de version suivent ceux de Laravel : 13.34 correspond à Laravel 13.34. Un nouveau projet demande PHP 8.4+, WordPress 7.1+, et MySQL 5.7+ ou MariaDB 10.3+. Le framework, le squelette de projet et la CLI sont sous licence MIT ; Nectar est sous GPL-2.0-or-later. Pollora est édité par AmphiBee, agence web française, et son code source est sur GitHub.`,
+	},
+};
+
+const words = (t: string) => t.trim().split(/\s+/).length;
+
+const logos = [
+	{ file: 'pollora-logo.svg', label: 'Logo, SVG', preview: 'pollora-logo-light.png' },
+	{ file: 'pollora-logo-light.png', label: 'Logo, PNG on light', preview: 'pollora-logo-light.png' },
+	{ file: 'pollora-logo-dark.png', label: 'Logo, PNG on dark', preview: 'pollora-logo-dark.png' },
+	{ file: 'pollora-logo.png', label: 'Logo, transparent PNG', preview: 'pollora-logo-light.png' },
+	{ file: 'pollora-icon.svg', label: 'Icon, SVG (PNG: pollora-icon.png)', preview: 'pollora-icon.png' },
+	{ file: 'pollora-share-1200x630.png', label: 'Share image, 1200 × 630', preview: 'pollora-share-1200x630.png' },
+];
+const mascots = ['developer', 'documentation', 'github', 'peek'];
+const screenshots = [
+	{ file: 'screenshot-home.png', label: 'pollora.dev home page' },
+	{ file: 'screenshot-docs.png', label: 'Documentation: How Pollora runs WordPress inside Laravel' },
+	{ file: 'theme-default.png', label: 'Theme: Starter (default)' },
+	{ file: 'theme-apiary.png', label: 'Theme: E-commerce (pollora/theme-apiary)' },
+	{ file: 'theme-buzz.png', label: 'Theme: Magazine (pollora/theme-buzz)' },
+];
+
+const snippets = [
+	{
+		title: 'A post type, declared with attributes',
+		note: 'The class is found by auto-discovery and registered as the book post type, with an archive at /books/. No register_post_type() call.',
+		code: `<?php
+
+namespace App\\Cms\\PostTypes;
+
+use Pollora\\Attributes\\PostType;
+use Pollora\\Attributes\\PostType\\HasArchive;
+use Pollora\\Attributes\\PostType\\Rewrite;
+use Pollora\\Attributes\\PostType\\ShowInRest;
+use Pollora\\Attributes\\PostType\\Supports;
+
+#[PostType('book', textDomain: 'my-theme')]
+#[HasArchive('books')]
+#[Rewrite(['slug' => 'books', 'with_front' => false])]
+#[Supports(['title', 'editor', 'excerpt', 'thumbnail', 'revisions'])]
+#[ShowInRest]
+class Book
+{
+}`,
+		file: 'app/Cms/PostTypes/Book.php',
+		guide: '/guides/custom-post-types-php-attributes/',
+	},
+	{
+		title: 'WordPress hooks as methods',
+		note: 'Each method carrying #[Action] or #[Filter] is registered with WordPress on an instance resolved from the container. The accepted argument count comes from the method signature.',
+		code: `<?php
+
+namespace App\\Cms\\Hooks;
+
+use Pollora\\Attributes\\Action;
+use Pollora\\Attributes\\Filter;
+
+class Seo
+{
+    #[Action('wp_head', priority: 1)]
+    public function metaDescription(): void
+    {
+        if (is_singular()) {
+            echo '<meta name="description" content="'.esc_attr(get_the_excerpt()).'">';
+        }
+    }
+
+    #[Filter('body_class')]
+    public function bodyClass(array $classes, array $cssClass): array
+    {
+        $classes[] = 'has-js';
+
+        return $classes;
+    }
+}`,
+		file: 'app/Cms/Hooks/Seo.php',
+		guide: '/guides/wordpress-hooks-php-attributes/',
+	},
+	{
+		title: 'Laravel routes on WordPress conditional tags',
+		note: 'Route::wp() matches a WordPress conditional tag instead of a URI: the first route runs when is_single() is true, the second for is_page(\'contact\'). Anything unmatched falls back to the WordPress template hierarchy, rendered with Blade.',
+		code: `Route::wp('single', [BlogController::class, 'show']);
+Route::wp('page', 'contact', [ContactController::class, 'show']);`,
+		file: 'routes/web.php',
+		guide: '/guides/how-pollora-runs-wordpress-inside-laravel/',
+	},
+];
+---
+
+<StarlightPage
+	frontmatter={{
+		title: 'Press kit',
+		description: 'Pollora press kit: key facts, descriptions in English and French, logos, mascots, screenshots, code samples and the one-minute video.',
+		tableOfContents: false,
+	}}
+>
+	<p>
+		Everything you need to write about Pollora: key facts, ready-to-use descriptions, brand assets, screenshots and code samples.
+		Use them freely in articles about the project. <a href="/press/pollora-press-kit.zip" download>Download every image (ZIP, 3.4 MB)</a>.
+	</p>
+
+	<h2 id="facts">Key facts</h2>
+	<table>
+		<tbody>
+			{facts.map(([k, v]) => (
+				<tr><th scope="row">{k}</th><td>{v}</td></tr>
+			))}
+			<tr><th scope="row">Requirements</th><td>PHP 8.4+, WordPress 7.1+, MySQL 5.7+ or MariaDB 10.3+</td></tr>
+			<tr><th scope="row">Links</th><td><a href="https://github.com/Pollora">GitHub</a> · <a href="https://github.com/Pollora/framework/releases/tag/v13.34.0">v13.34.0 release notes</a> · <a href="/getting-started/installation/">Installation</a> · <a href="/compare/">How Pollora compares</a></td></tr>
+		</tbody>
+	</table>
+
+	<h2 id="descriptions">Descriptions</h2>
+	<p>Copy whichever length fits. Each description uses only the facts above.</p>
+	{(['en', 'fr'] as const).map((lang) => (
+		<>
+			<h3 id={`descriptions-${lang}`}>{lang === 'en' ? 'English' : 'Français'}</h3>
+			{(['short', 'medium', 'long'] as const).map((size) => (
+				<details class="pl-desc" open={size === 'short'}>
+					<summary>{lang === 'en' ? { short: 'Short', medium: 'Medium', long: 'Long' }[size] : { short: 'Courte', medium: 'Moyenne', long: 'Longue' }[size]} · {words(descriptions[lang][size])} {lang === 'en' ? 'words' : 'mots'}</summary>
+					<div lang={lang}>
+						{descriptions[lang][size].split('\n\n').map((p) => <p>{p}</p>)}
+					</div>
+				</details>
+			))}
+		</>
+	))}
+
+	{quote && (
+		<>
+			<h2 id="quote">Quote</h2>
+			<blockquote><p>{quote}</p><p>Olivier Gorzalka, AmphiBee</p></blockquote>
+		</>
+	)}
+
+	<h2 id="logos">Logo and share image</h2>
+	<div class="pl-assets">
+		{logos.map((l) => (
+			<figure>
+				<a href={`/press/${l.file}`} download><img src={`/press/${l.preview}`} alt="" loading="lazy" /></a>
+				<figcaption><a href={`/press/${l.file}`} download>{l.label}</a></figcaption>
+			</figure>
+		))}
+	</div>
+
+	<h2 id="mascots">Mascots</h2>
+	<div class="pl-assets pl-assets--small">
+		{mascots.map((m) => (
+			<figure>
+				<a href={`/press/mascot-${m}.png`} download><img src={`/press/mascot-${m}.png`} alt={`Pollora mascot: ${m}`} loading="lazy" /></a>
+				<figcaption><a href={`/press/mascot-${m}.png`} download>PNG</a> · <a href={`/press/mascot-${m}.svg`} download>SVG</a></figcaption>
+			</figure>
+		))}
+	</div>
+
+	<h2 id="screenshots">Screenshots</h2>
+	<div class="pl-assets">
+		{screenshots.map((s) => (
+			<figure>
+				<a href={`/press/${s.file}`} download><img src={`/press/${s.file}`} alt={s.label} loading="lazy" /></a>
+				<figcaption>{s.label}</figcaption>
+			</figure>
+		))}
+	</div>
+
+	<h2 id="code">Code samples</h2>
+	<p>Three short samples taken from the published guides, ready to copy.</p>
+	{snippets.map((s) => (
+		<>
+			<h3>{s.title}</h3>
+			<p>{s.note} <a href={s.guide}>Read the guide</a>.</p>
+			<Code code={s.code} lang="php" title={s.file} />
+		</>
+	))}
+
+	<h2 id="video">One-minute video</h2>
+	<p>
+		A one-minute tour of Pollora: <a href={`https://www.youtube.com/watch?v=${youtubeId}`}>watch on YouTube</a>. To embed it:
+	</p>
+	<Code code={embedCode} lang="html" />
+
+	<h2 id="contact">Contact</h2>
+	<p>
+		Olivier Gorzalka, <a href="https://amphibee.fr">AmphiBee</a>. For questions about the project, use the
+		<a href="https://github.com/Pollora/pollora/discussions">GitHub discussions</a>.
+		For how Pollora relates to Roots (Acorn, Sage, Radicle) and Corcel, whose work it builds on, see
+		<a href="/compare/">How Pollora compares</a>.
+	</p>
+</StarlightPage>
+
+<style>
+	.pl-assets {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+		gap: 1rem;
+	}
+	.pl-assets--small {
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 9rem), 1fr));
+	}
+	.pl-assets figure {
+		margin: 0;
+	}
+	.pl-assets img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 10;
+		object-fit: contain;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 8px;
+		background: var(--sl-color-gray-7, #f5f1f0);
+	}
+	.pl-assets--small img {
+		aspect-ratio: 1;
+	}
+	.pl-assets figcaption {
+		margin-top: 0.4rem;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+	.pl-desc {
+		margin-block: 0.75rem;
+		padding: 0.6rem 1rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 8px;
+	}
+	.pl-desc summary {
+		cursor: pointer;
+		font-weight: 600;
+	}
+	th[scope='row'] {
+		white-space: nowrap;
+		vertical-align: top;
+	}
+</style>
