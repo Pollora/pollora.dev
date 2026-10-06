@@ -17,7 +17,7 @@ Yes. The framework (`pollora/framework`), the project skeleton (`pollora/pollora
 
 ## Is Pollora production ready?
 
-Yes, the current release, v13.34.5, is a stable release, and `composer create-project pollora/pollora` installs it. Pollora has gone through several major versions: Nectar ships upgrade prompts from Pollora 12 to 13. Its community is still small compared with older WordPress tooling, which is worth weighing for long-lived projects.
+Yes, the current release, v13.34.6, is a stable release, and `composer create-project pollora/pollora` installs it. Pollora has gone through several major versions: Nectar ships upgrade prompts from Pollora 12 to 13. Its community is still small compared with older WordPress tooling, which is worth weighing for long-lived projects.
 
 ## How do Pollora version numbers work?
 
