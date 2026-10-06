@@ -41,6 +41,7 @@ rewrite_links() {
     -e 's|(menu\.md\(#[^)]*\)\?)|(/theming/menus/\1)|g' \
     -e 's|(blocks\.md\(#[^)]*\)\?)|(/blocks/gutenberg-blocks/\1)|g' \
     -e 's|(patterns\.md\(#[^)]*\)\?)|(/blocks/patterns/\1)|g' \
+    -e 's|(block-bindings\.md\(#[^)]*\)\?)|(/blocks/block-bindings/\1)|g' \
     -e 's|(server-configuration\.md\(#[^)]*\)\?)|(/getting-started/server-configuration/\1)|g' \
     -e 's|(translations\.md\(#[^)]*\)\?)|(/core-concepts/translations/\1)|g' \
     -e 's|(abilities\.md\(#[^)]*\)\?)|(/advanced/abilities/\1)|g' \
@@ -128,6 +129,7 @@ sync_file "menu.md" "theming/menus.md" "Menus" "Customize WordPress menus in Pol
 
 # Blocks
 sync_file "blocks.md" "blocks/gutenberg-blocks.md" "Gutenberg Blocks" "Build custom Gutenberg blocks in Pollora with Vite and JSX, scaffold them with pollora:make:block, and render them on the server with Blade templates." 1
+sync_file "block-bindings.md" "blocks/block-bindings.md" "Block Bindings" "Fill core blocks and Blade blocks with server data in Pollora: #[BlockBinding] sources in PHP, typed meta formatted by type, a field picker and live preview in the editor." 3
 sync_file "patterns.md" "blocks/patterns.md" "Block Patterns" "Register WordPress block patterns in Pollora: configuration, how to organize pattern files, writing patterns, and how they are loaded automatically." 2
 
 # Advanced
