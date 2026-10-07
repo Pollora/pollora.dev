@@ -1,0 +1,29 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import BlogIndex from '../../components/blog/BlogIndex.astro';
+import { getPosts, postUrl } from '../../lib/blog';
+
+const posts = await getPosts();
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'Blog',
+	name: 'The Pollora blog',
+	url: 'https://pollora.dev/blog/',
+	publisher: { '@type': 'Organization', name: 'AmphiBee', url: 'https://amphibee.fr' },
+	blogPost: posts.slice(0, 10).map((p) => ({
+		'@type': 'BlogPosting',
+		headline: p.data.title,
+		datePublished: p.data.date.toISOString(),
+		url: new URL(postUrl(p), 'https://pollora.dev').href,
+	})),
+};
+---
+
+<BlogLayout
+	title="Blog · Pollora, the Laravel framework for WordPress"
+	description="Release announcements, roadmap previews and tutorials for Pollora, the open-source framework that runs WordPress inside a Laravel application."
+	structuredData={structuredData}
+>
+	<BlogIndex posts={posts} />
+</BlogLayout>

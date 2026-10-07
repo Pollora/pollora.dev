@@ -1,0 +1,130 @@
+---
+// Shell of the blog pages: the homepage's head, nav and footer around a page of the blog.
+import polloraLogo from '../assets/pollora-logo.svg';
+import AnalyticsHead from '../components/AnalyticsHead.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import '../styles/blog.css';
+
+interface Props {
+	title: string;
+	description: string;
+	/** og:type, "article" for a post */
+	type?: 'website' | 'article';
+	structuredData?: object;
+}
+
+const { title, description, type = 'website', structuredData } = Astro.props;
+const site = 'https://pollora.dev';
+const url = new URL(Astro.url.pathname, site).href;
+const ogImage = `${site}/og-image.png`;
+
+const links = [
+	{ label: 'Docs', href: '/getting-started/installation/' },
+	{ label: 'Blog', href: '/blog/' },
+	{ label: 'Changelog', href: '/changelog/' },
+	{ label: 'GitHub', href: 'https://github.com/Pollora', external: true },
+];
+const isCurrent = (href: string) => Astro.url.pathname.startsWith(href);
+---
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<link rel="canonical" href={url} />
+	<link rel="sitemap" href="/sitemap-index.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Pollora blog" href="/blog/rss.xml" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={description} />
+	<meta property="og:type" content={type} />
+	<meta property="og:url" content={url} />
+	<meta property="og:site_name" content="Pollora" />
+	<meta property="og:locale" content="en" />
+	<meta property="og:image" content={ogImage} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={description} />
+	<meta name="twitter:image" content={ogImage} />
+	{structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+	<AnalyticsHead />
+	<link rel="icon" href="/favicon.ico" sizes="32x32" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<link rel="manifest" href="/site.webmanifest" />
+</head>
+
+<body class="bg-paper text-ink">
+	<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[var(--z-modal)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-sm)] focus:bg-ink focus:text-paper">Skip to content</a>
+
+	<nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
+		<div class="gradient-bar h-[3px]"></div>
+		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
+			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
+				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
+			</a>
+			<div class="hidden md:flex items-center gap-9 text-[0.95rem] font-medium text-ink-2">
+				{links.map((l) => (
+					<a
+						href={l.href}
+						{...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
+						aria-current={isCurrent(l.href) ? 'page' : undefined}
+						class:list={['hover:text-ink transition-colors duration-[var(--dur-micro)]', isCurrent(l.href) && 'text-ink']}
+					>{l.label}</a>
+				))}
+			</div>
+			<a href="/getting-started/installation/" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+				Get Started
+			</a>
+			<button @click="open = !open" class="md:hidden p-2 -mr-2" :aria-expanded="open" aria-label="Menu">
+				<svg x-show="!open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+				<svg x-show="open" x-cloak width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+			</button>
+		</div>
+		<div x-show="open" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150 ease-in" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-6 flex flex-col gap-4 text-base font-medium text-ink-2">
+				{links.map((l) => (
+					<a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener' } : {})} class="hover:text-ink">{l.label}</a>
+				))}
+				<a href="/getting-started/installation/" class="inline-flex items-center justify-center gap-2 px-6 py-3 mt-2 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold">
+					Get Started
+				</a>
+			</div>
+		</div>
+	</nav>
+
+	<main id="main">
+		<slot />
+	</main>
+
+	<footer class="bg-code-bg border-t border-code-surface">
+		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-10 flex flex-col sm:flex-row items-center justify-between gap-5">
+			<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base text-muted">
+				<a href="/getting-started/installation/" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">Docs</a>
+				<a href="/blog/" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">Blog</a>
+				<a href="/blog/rss.xml" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">RSS</a>
+				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">GitHub</a>
+				<a href="mailto:support@pollora.dev" class="text-sm font-[var(--font-code)] hover:text-neutral transition-colors duration-[var(--dur-micro)]">support@pollora.dev</a>
+				<button type="button" data-consent-open class="hover:text-neutral transition-colors duration-[var(--dur-micro)] cursor-pointer">Cookie settings</button>
+			</div>
+			<div class="text-sm text-muted text-center sm:text-right space-y-1">
+				<p>Pollora is open source under the MIT license.</p>
+				<p>Built by <a href="https://amphibee.fr" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">AmphiBee</a>, backed by <a href="https://rubee.group" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">RuBee</a>.</p>
+			</div>
+		</div>
+	</footer>
+
+	<script>
+		import Alpine from 'alpinejs';
+		Alpine.start();
+	</script>
+	<ConsentBanner />
+</body>
+</html>

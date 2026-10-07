@@ -1,0 +1,18 @@
+---
+import { categories, type Category } from '../../lib/blog';
+
+interface Props {
+	category: Category;
+	/** Light text on the dark featured card */
+	onDark?: boolean;
+	link?: boolean;
+}
+
+const { category, onDark = false, link = true } = Astro.props;
+const Tag = link ? 'a' : 'span';
+---
+
+<Tag
+	href={link ? `/blog/category/${category}/` : undefined}
+	class:list={['pl-pill', `pl-pill--${category}`, onDark && 'pl-pill--on-dark']}
+>{categories[category].label}</Tag>

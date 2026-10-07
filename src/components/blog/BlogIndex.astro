@@ -1,0 +1,81 @@
+---
+// The blog's front page, also used for each category: header, filters, the newest post as a feature, then the list.
+import mascotDeveloper from '../../assets/mascot-developer.svg';
+import CategoryPill from './CategoryPill.astro';
+import PostList from './PostList.astro';
+import { categories, formatDate, postUrl, readingTime, type Category, type Post } from '../../lib/blog';
+
+interface Props {
+	posts: Post[];
+	active?: Category;
+}
+
+const { posts, active } = Astro.props;
+const [featured, ...rest] = posts;
+
+const filters = [
+	{ label: 'All posts', href: '/blog/', current: !active },
+	...(Object.keys(categories) as Category[]).map((c) => ({
+		label: categories[c].plural,
+		href: `/blog/category/${c}/`,
+		current: active === c,
+	})),
+];
+---
+
+<header class="pt-36 md:pt-44 pb-12 md:pb-16">
+	<div class="pl-container">
+		<p class="pl-kicker">
+			<span class="pl-kicker__dot" aria-hidden="true"></span>
+			{active ? <a href="/blog/" class="hover:text-ink">The Pollora blog</a> : 'The Pollora blog'}
+		</p>
+		<h1 class="pl-index-title">
+			{active ? categories[active].plural : <>News from <span class="text-gradient">the hive</span></>}
+		</h1>
+		<p class="pl-index-lede">
+			{active
+				? categories[active].intro
+				: 'Releases and the reasons behind them, what we are building next, and tutorials that go from an empty file to a working page.'}
+		</p>
+
+		<nav class="pl-filters" aria-label="Blog categories">
+			{filters.map((f) => (
+				<a href={f.href} aria-current={f.current ? 'page' : undefined} class:list={['pl-filter', f.current && 'is-current']}>{f.label}</a>
+			))}
+			<a href="/blog/rss.xml" class="pl-filter pl-filter--rss">
+				<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="19" r="2.5"/><path d="M2.5 9.5v3a9 9 0 0 1 9 9h3a12 12 0 0 0-12-12Zm0-7v3a16 16 0 0 1 16 16h3a19 19 0 0 0-19-19Z"/></svg>
+				RSS
+			</a>
+		</nav>
+	</div>
+</header>
+
+{featured && (
+	<section class="pl-container pb-6" aria-label="Latest post">
+		<article class="pl-featured">
+			<div class="gradient-bar h-[3px] absolute inset-x-0 top-0" aria-hidden="true"></div>
+			<div class="pl-featured__body">
+				<div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-6">
+					<CategoryPill category={featured.data.category} onDark />
+					{featured.data.version && <span class="pl-version pl-version--on-dark">v{featured.data.version}</span>}
+					<span class="text-sm text-[oklch(70%_0.02_295)]">
+						<time datetime={featured.data.date.toISOString()}>{formatDate(featured.data.date)}</time> · {readingTime(featured)} min read
+					</span>
+				</div>
+				<h2 class="pl-featured__title">
+					<a href={postUrl(featured)} class="pl-stretched">{featured.data.title}</a>
+				</h2>
+				<p class="pl-featured__desc">{featured.data.description}</p>
+				<span class="pl-featured__cta" aria-hidden="true">
+					Read the post
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</span>
+			</div>
+			<img src={mascotDeveloper.src} alt="" width="220" height="220" class="pl-featured__mascot" loading="lazy" />
+		</article>
+	</section>
+)}
+
+<section class="pl-container pb-24 md:pb-32" aria-label="All posts">
+	{rest.length > 0 ? <PostList posts={rest} /> : !featured && <p class="py-16 text-ink-2">No post here yet.</p>}
+</section>

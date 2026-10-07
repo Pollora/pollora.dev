@@ -99,6 +99,7 @@ export default defineConfig({
 						{ label: 'How Pollora compares', link: '/compare/' },
 						{ label: 'FAQ', link: '/faq/' },
 						{ label: 'Changelog', link: '/changelog/' },
+						{ label: 'Blog', link: '/blog/' },
 					],
 				},
 				{ label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started' } }] },
