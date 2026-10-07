@@ -1,0 +1,116 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import CategoryPill from '../../components/blog/CategoryPill.astro';
+import { authorOf, categories, formatDate, getPosts, postUrl, readingTime, type Post } from '../../lib/blog';
+
+export async function getStaticPaths() {
+	const posts = await getPosts();
+	return posts.map((post, i) => ({
+		params: { slug: post.id },
+		// posts are newest first: the next one in the list is the older post
+		props: { post, newer: posts[i - 1], older: posts[i + 1] },
+	}));
+}
+
+interface Props {
+	post: Post;
+	newer?: Post;
+	older?: Post;
+}
+
+const { post, newer, older } = Astro.props;
+const { Content, headings } = await render(post);
+const author = authorOf(post);
+const toc = headings.filter((h) => h.depth === 2);
+const url = new URL(postUrl(post), 'https://pollora.dev').href;
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: post.data.title,
+	description: post.data.description,
+	datePublished: post.data.date.toISOString(),
+	url,
+	inLanguage: 'en',
+	image: 'https://pollora.dev/og-image.png',
+	author: { '@type': 'Person', name: author.name, ...(author.url ? { url: new URL(author.url, 'https://pollora.dev').href } : {}) },
+	publisher: { '@type': 'Organization', name: 'AmphiBee', url: 'https://amphibee.fr' },
+	about: { '@type': 'SoftwareApplication', name: 'Pollora', applicationCategory: 'DeveloperApplication', url: 'https://pollora.dev/' },
+};
+---
+
+<BlogLayout title={`${post.data.title} · Pollora blog`} description={post.data.description} type="article" structuredData={structuredData}>
+	<article>
+		<header class="pl-post-header">
+			<div class="pl-container">
+				<a href="/blog/" class="pl-back">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+					All posts
+				</a>
+				<div class="flex flex-wrap items-center gap-2 mt-10 mb-6">
+					<CategoryPill category={post.data.category} />
+					{post.data.version && <span class="pl-version">v{post.data.version}</span>}
+				</div>
+				<h1 class="pl-post-title">{post.data.title}</h1>
+				<p class="pl-post-deck">{post.data.description}</p>
+				<div class="pl-byline">
+					<Image src={author.avatar} alt="" width={80} height={80} class="pl-byline__avatar" />
+					<div>
+						<p class="font-semibold text-ink">{author.url ? <a href={author.url} class="hover:text-accent">{author.name}</a> : author.name}</p>
+						<p class="text-ink-2 text-[0.9rem]">
+							<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+							<span aria-hidden="true"> · </span>{readingTime(post)} min read
+						</p>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<div class="pl-container pl-post-grid">
+			<div class="pl-prose">
+				<Content />
+			</div>
+
+			{toc.length > 2 && (
+				<aside class="pl-toc" aria-label="On this page">
+					<p class="pl-toc__label">On this page</p>
+					<ol role="list">
+						{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+					</ol>
+				</aside>
+			)}
+		</div>
+	</article>
+
+	<section class="pl-container pb-24 md:pb-32" aria-label="More posts">
+		<div class="pl-post-end">
+			<div class="pl-cta">
+				<p class="pl-cta__title">Try it on a new project</p>
+				<pre class="pl-cta__cmd"><code><span class="text-pollora-teal">$</span> composer global require pollora/cli
+<span class="text-pollora-teal">$</span> pollora new example-app</code></pre>
+				<a href="/getting-started/installation/" class="pl-cta__link">Read the installation guide →</a>
+			</div>
+
+			{(older || newer) && (
+				<nav class="pl-pager" aria-label="Other posts">
+					{older && (
+						<a href={postUrl(older)} class="pl-pager__item">
+							<span class="pl-pager__dir">← Older</span>
+							<span class="pl-pager__cat">{categories[older.data.category].label}</span>
+							<span class="pl-pager__title">{older.data.title}</span>
+						</a>
+					)}
+					{newer && (
+						<a href={postUrl(newer)} class="pl-pager__item pl-pager__item--next">
+							<span class="pl-pager__dir">Newer →</span>
+							<span class="pl-pager__cat">{categories[newer.data.category].label}</span>
+							<span class="pl-pager__title">{newer.data.title}</span>
+						</a>
+					)}
+				</nav>
+			)}
+		</div>
+	</section>
+</BlogLayout>

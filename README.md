@@ -34,7 +34,7 @@ npm run sync-docs -- /path/to/documentation
 
 The script **overwrites** every page it maps (see `scripts/sync-docs.sh`): it adds the front matter, rewrites the links between pages and points each page's "Edit page" link at Pollora/documentation. **Fix the documentation in [Pollora/documentation](https://github.com/Pollora/documentation), never here**: a change made to a synced page is lost on the next sync.
 
-The pages that belong to the site itself, and are edited here, are `why.md`, `compare.md`, `faq.md` and the `guides/` folder.
+The pages that belong to the site itself, and are edited here, are `why.md`, `compare.md`, `faq.md`, the `guides/` folder and the blog (`src/content/blog/`).
 
 ## Project structure
 
@@ -42,6 +42,7 @@ The pages that belong to the site itself, and are edited here, are `why.md`, `co
 |---|---|
 | `src/pages/index.astro` | The home page |
 | `src/pages/changelog.astro` | The release notes, fetched from the GitHub releases of Pollora/framework at build time (set `GITHUB_TOKEN` to avoid the API rate limit) |
+| `src/content/blog/`, `src/pages/blog/` | The blog: one Markdown file per post (front matter: `title`, `description`, `date`, `category` among `announcement`, `release`, `tutorial`, `roadmap`, optional `version`, `author`, `draft`), its index, category pages and RSS feed (`/blog/rss.xml`) |
 | `src/pages/press.astro` | The press kit: facts, descriptions, brand assets, screenshots and code samples |
 | `public/press/` | The press kit's files (logos, mascots, screenshots, `pollora-press-kit.zip`) |
 | `src/content/docs/` | The documentation pages (see above) |

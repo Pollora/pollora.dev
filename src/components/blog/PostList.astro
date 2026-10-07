@@ -1,0 +1,32 @@
+---
+// The editorial list of posts: date on the left, title and standfirst on the right.
+import CategoryPill from './CategoryPill.astro';
+import { formatDate, postUrl, readingTime, type Post } from '../../lib/blog';
+
+interface Props {
+	posts: Post[];
+}
+
+const { posts } = Astro.props;
+---
+
+<ol class="pl-post-list" role="list">
+	{posts.map((post) => (
+		<li class="pl-post-row">
+			<div class="pl-post-row__meta">
+				<time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+				<span>{readingTime(post)} min read</span>
+			</div>
+			<div class="pl-post-row__body">
+				<div class="flex flex-wrap items-center gap-2 mb-3">
+					<CategoryPill category={post.data.category} />
+					{post.data.version && <span class="pl-version">v{post.data.version}</span>}
+				</div>
+				<h2 class="pl-post-row__title">
+					<a href={postUrl(post)}>{post.data.title}</a>
+				</h2>
+				<p class="pl-post-row__desc">{post.data.description}</p>
+			</div>
+		</li>
+	))}
+</ol>
