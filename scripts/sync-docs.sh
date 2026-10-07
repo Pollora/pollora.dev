@@ -34,6 +34,7 @@ rewrite_links() {
     -e 's|(meta\.md\(#[^)]*\)\?)|(/content/typed-meta/\1)|g' \
     -e 's|(options\.md\(#[^)]*\)\?)|(/content/options/\1)|g' \
     -e 's|(hooks\.md\(#[^)]*\)\?)|(/hooks/actions-filters/\1)|g' \
+    -e 's|(async-actions\.md\(#[^)]*\)\?)|(/hooks/async-actions/\1)|g' \
     -e 's|(events-listeners\.md\(#[^)]*\)\?)|(/hooks/events-listeners/\1)|g' \
     -e 's|(wordpress-events-reference\.md\(#[^)]*\)\?)|(/hooks/wordpress-events-reference/\1)|g' \
     -e 's|(theming\.md\(#[^)]*\)\?)|(/theming/theme-structure/\1)|g' \
@@ -119,8 +120,9 @@ sync_file "options.md" "content/options.md" "Options" "Read and write WordPress 
 
 # Hooks & Events
 sync_file "hooks.md" "hooks/actions-filters.md" "Actions & Filters" "Register WordPress actions and filters in Pollora with PHP 8 attributes or the Action and Filter facades, including deferred callbacks and service access." 1
-sync_file "events-listeners.md" "hooks/events-listeners.md" "Events & Listeners" "Listen to WordPress actions and filters as typed Laravel events in Pollora, and use standard Laravel listeners and subscribers inside a WordPress site." 2
-sync_file "wordpress-events-reference.md" "hooks/wordpress-events-reference.md" "WordPress Events Reference" "Complete list of the Laravel events Pollora dispatches for WordPress core and supported plugins, with the class to listen to for each of them." 3
+sync_file "async-actions.md" "hooks/async-actions.md" "Asynchronous Actions" "Run a WordPress action after the request in Pollora with ->async() or #[Async]: queued to a Laravel worker, Action Scheduler or WP-Cron, with retries and tests." 2
+sync_file "events-listeners.md" "hooks/events-listeners.md" "Events & Listeners" "Listen to WordPress actions and filters as typed Laravel events in Pollora, and use standard Laravel listeners and subscribers inside a WordPress site." 3
+sync_file "wordpress-events-reference.md" "hooks/wordpress-events-reference.md" "WordPress Events Reference" "Complete list of the Laravel events Pollora dispatches for WordPress core and supported plugins, with the class to listen to for each of them." 4
 
 # Theming
 sync_file "theming.md" "theming/theme-structure.md" "Theme Structure" "Create a Pollora theme: folder structure, theme.json, Blade templates and the template hierarchy, Vite and Tailwind CSS, localization and the login screen." 1

@@ -3,7 +3,7 @@ title: WordPress Events Reference
 description: "Complete list of the Laravel events Pollora dispatches for WordPress core and supported plugins, with the class to listen to for each of them."
 editUrl: https://github.com/Pollora/documentation/edit/main/wordpress-events-reference.md
 sidebar:
-  order: 3
+  order: 4
 ---
 
 
