@@ -3,7 +3,7 @@ title: Events & Listeners
 description: "Listen to WordPress actions and filters as typed Laravel events in Pollora, and use standard Laravel listeners and subscribers inside a WordPress site."
 editUrl: https://github.com/Pollora/documentation/edit/main/events-listeners.md
 sidebar:
-  order: 2
+  order: 3
 ---
 
 

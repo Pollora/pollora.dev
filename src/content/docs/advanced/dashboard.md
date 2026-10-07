@@ -50,7 +50,7 @@ php artisan pollora:status
 Example output:
 
 ```
-Pollora v13.35.1 (latest: v13.35.1) ✓
+Pollora v13.35.2 (latest: v13.35.2) ✓
 
   PHP 8.4.12 | Laravel 13.35 | WordPress 7.1
 
@@ -93,8 +93,8 @@ This outputs the complete system information as a JSON object:
 ```json
 {
     "framework": {
-        "current": "13.35.1",
-        "latest": "13.35.1",
+        "current": "13.35.2",
+        "latest": "13.35.2",
         "update_available": false,
         "development": false
     },
@@ -129,7 +129,7 @@ This outputs the complete system information as a JSON object:
 When running a dev branch (`dev-develop`, `13.x-dev`, etc.), the command adapts its output:
 
 ```
-Pollora dev-develop (latest stable: v13.35.1)
+Pollora dev-develop (latest stable: v13.35.2)
 ```
 
 No misleading "update available" warning is shown for development installations: `development` is `true` in the JSON output, and Site Health reports a development build instead of comparing it with releases.
@@ -170,6 +170,7 @@ It looks for failures that stay silent — the site renders, every command exits
 | Theme pattern cache | pattern files missing from WordPress's cached list |
 | Routes over block templates | `Route::wp()` routes answering in place of a block theme's templates |
 | Blocks in the legacy folder | blocks still in `resources/blocks`, which stops loading in v15 |
+| Asynchronous actions | an ignored `#[Async]`, an unavailable driver, WP-Cron events overdue or queued jobs waiting with nothing to run them — see [Asynchronous Actions](/hooks/async-actions/#something-must-run-the-queue) |
 
 The builds, directories, placeholders and blocks are checked for the active theme, every Pollora plugin and every enabled Laravel module.
 

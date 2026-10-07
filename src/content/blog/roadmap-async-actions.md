@@ -5,6 +5,8 @@ date: 2026-10-07
 category: roadmap
 ---
 
+> **Update, 7 October 2026: shipped in [Pollora 13.35.2](/blog/pollora-13-35-2-async-actions/).** One change from the design below: `auto` takes the Laravel queue only once `HOOKS_ASYNC_CONNECTION` names the connection a worker runs, since a fresh project ships a `database` queue and no worker. See [Asynchronous Actions](/hooks/async-actions/).
+
 A WordPress hook runs inside the request that fires it. Attach a call to a CRM, an ERP or an email API to `save_post`, and every editor waits for that API each time they press *Save*. Attach it to a WooCommerce order, and the customer waits at checkout. If the third-party service fails, the save or the payment can fail with it.
 
 This post describes the next feature we are building. It is a design, not a release: names and options may still move, and this is the right moment to tell us what you would change.
