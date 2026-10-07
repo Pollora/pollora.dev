@@ -1,49 +1,58 @@
-# Starlight Starter Kit: Basics
+<p align="center">
+  <a href="https://pollora.dev">
+    <img src="https://raw.githubusercontent.com/Pollora/.github/main/brand/banners/pollora.dev.png" width="100%" alt="pollora.dev: the website of Pollora, the Laravel framework for WordPress">
+  </a>
+</p>
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+<p align="center">
+  <a href="https://pollora.dev"><img src="https://img.shields.io/website?url=https%3A%2F%2Fpollora.dev&label=pollora.dev" alt="pollora.dev"></a>
+</p>
 
-```
-npm create astro@latest -- --template starlight
-```
+This repository is the source of [pollora.dev](https://pollora.dev), the website and documentation of Pollora, the Laravel framework for WordPress. It holds the home page, the documentation pages, the release notes and the press kit. It is built with [Astro](https://astro.build) 6, [Starlight](https://starlight.astro.build) and Tailwind CSS v4, and deployed on Vercel from `main`.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+> Every push to `main` deploys production. Work on a branch and open a pull request.
 
-## 🚀 Project Structure
+## Development
 
-Inside of your Astro + Starlight project, you'll see the following folders and files:
+Requirements: Node.js 22.12+ (the floor Astro 6 requires) and npm.
 
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+```bash
+npm install
+npm run dev       # local server with hot reload, on http://localhost:4321
+npm run build     # production build into dist/
+npm run preview   # serve the production build locally
 ```
 
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
+## Documentation pages
 
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
+Most pages under `src/content/docs/` are copied from the [Pollora/documentation](https://github.com/Pollora/documentation) repository by the sync script:
 
-Static assets, like favicons, can be placed in the `public/` directory.
+```bash
+npm run sync-docs                          # reads ~/Sites/pollora-documentation by default
+npm run sync-docs -- /path/to/documentation
+```
 
-## 🧞 Commands
+The script **overwrites** every page it maps (see `scripts/sync-docs.sh`): it adds the front matter, rewrites the links between pages and points each page's "Edit page" link at Pollora/documentation. **Fix the documentation in [Pollora/documentation](https://github.com/Pollora/documentation), never here**: a change made to a synced page is lost on the next sync.
 
-All commands are run from the root of the project, from a terminal:
+The pages that belong to the site itself, and are edited here, are `why.md`, `compare.md`, `faq.md` and the `guides/` folder.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Project structure
 
-## 👀 Want to learn more?
+| Path | What it holds |
+|---|---|
+| `src/pages/index.astro` | The home page |
+| `src/pages/changelog.astro` | The release notes, fetched from the GitHub releases of Pollora/framework at build time (set `GITHUB_TOKEN` to avoid the API rate limit) |
+| `src/pages/press.astro` | The press kit: facts, descriptions, brand assets, screenshots and code samples |
+| `public/press/` | The press kit's files (logos, mascots, screenshots, `pollora-press-kit.zip`) |
+| `src/content/docs/` | The documentation pages (see above) |
+| `src/components/`, `src/styles/` | Starlight component overrides, analytics and consent banner, CSS |
+| `astro.config.mjs` | Starlight settings: sidebar, `llms.txt`, head tags |
+| `scripts/og-image.mjs` | Generates `public/og-image.png`, the social preview (`node scripts/og-image.mjs`) |
 
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+## Contributing
+
+Contributions are welcome: see the [contributing guide](https://github.com/Pollora/.github/blob/main/CONTRIBUTING.md). Report security issues privately, as described in the [security policy](https://github.com/Pollora/.github/blob/main/SECURITY.md).
+
+## License
+
+© [RuBee group](https://rubee.group)
