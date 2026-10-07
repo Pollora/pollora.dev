@@ -13,7 +13,7 @@ A new project needs PHP 8.4 or higher, Composer 2, MySQL 5.7+ or MariaDB 10.3+, 
 
 ## Is Pollora free?
 
-Yes. The framework (`pollora/framework`), the project skeleton (`pollora/pollora`) and the CLI (`pollora/cli`) are released under the MIT license. Nectar, the optional AI tooling package, is licensed GPL-2.0-or-later. There is no paid edition.
+Yes. The framework (`pollora/framework`), the project skeleton (`pollora/pollora`) and the CLI (`pollora/cli`) are released under the MIT license, like Nectar, the optional AI tooling package, and the other Pollora packages. There is no paid edition.
 
 ## Is Pollora production ready?
 
