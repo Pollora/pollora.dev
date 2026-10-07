@@ -9,7 +9,7 @@ Pollora is an open-source PHP framework that runs WordPress inside a Laravel app
 
 ## What are the requirements?
 
-A new project needs PHP 8.4 or higher, Composer 2, MySQL 5.7+ or MariaDB 10.3+, and Node.js for theme assets. The current release is built on Laravel 13.34 and installs WordPress 7.1 or later. PHP 8.4 is required because the skeleton's `composer.lock` ships Symfony 8; the framework package alone accepts PHP 8.3. DDEV is optional, and `pollora new example-app --ddev` sets up a complete local environment (see [Installation](/getting-started/installation/)).
+A new project needs PHP 8.4 or higher, Composer 2, MySQL 5.7+ or MariaDB 10.3+, and Node.js for theme assets. The current release is built on Laravel 13.35 and installs WordPress 7.1 or later. PHP 8.4 is required because the skeleton's `composer.lock` ships Symfony 8; the framework package alone accepts PHP 8.3. DDEV is optional, and `pollora new example-app --ddev` sets up a complete local environment (see [Installation](/getting-started/installation/)).
 
 ## Is Pollora free?
 
@@ -17,7 +17,7 @@ Yes. The framework (`pollora/framework`), the project skeleton (`pollora/pollora
 
 ## Is Pollora production ready?
 
-Yes, the current release, v13.34.6, is a stable release, and `composer create-project pollora/pollora` installs it. Pollora has gone through several major versions: Nectar ships upgrade prompts from Pollora 12 to 13. Its community is still small compared with older WordPress tooling, which is worth weighing for long-lived projects.
+Yes, the current release, v13.35.0, is a stable release, and `composer create-project pollora/pollora` installs it. Pollora has gone through several major versions: Nectar ships upgrade prompts from Pollora 12 to 13. Its community is still small compared with older WordPress tooling, which is worth weighing for long-lived projects.
 
 ## How do Pollora version numbers work?
 
