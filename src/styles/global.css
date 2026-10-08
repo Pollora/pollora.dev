@@ -210,7 +210,7 @@ body {
 }
 .pl-compare table {
   width: 100%;
-  min-width: 46rem;
+  min-width: 40rem;
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;
@@ -227,7 +227,7 @@ body {
   border-top: 1px dashed var(--color-rule);
 }
 .pl-compare tbody th {
-  width: 18%;
+  width: 20%;
   padding-left: 0;
   font-family: var(--font-code);
   font-size: 0.78rem;
@@ -265,7 +265,7 @@ body {
 /* The Pollora column: one card from header to last row */
 .pl-compare :is(th, td).is-pollora {
   position: relative;
-  width: 24%;
+  width: 30%;
   background: oklch(100% 0 0);
   color: var(--color-ink);
   border-inline: 1px solid oklch(65% 0.21 30 / 0.25);
