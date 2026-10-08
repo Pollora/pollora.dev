@@ -218,8 +218,8 @@ const packages = [
 					<a href="/features/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] shrink-0">All features <span aria-hidden="true">&rarr;</span></a>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
-					<!-- PHP 8 Attributes + auto-discovery — 4 col -->
-					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
+					<!-- PHP 8 Attributes + auto-discovery — 3 col -->
+					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
 						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Declare, don't register</h3>
 						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, WP-CLI commands, schedules: a class and an attribute. Pollora finds them and registers them for you. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
@@ -229,8 +229,8 @@ const packages = [
 <span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></code></pre>
 						<a href="/guides/custom-post-types-php-attributes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Post types with attributes <span aria-hidden="true">&rarr;</span></a>
 					</div>
-					<!-- Async actions — 2 col -->
-					<div data-reveal class="md:col-span-2 group relative bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
+					<!-- Async actions — 3 col -->
+					<div data-reveal class="md:col-span-3 group relative bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
 						<span class="absolute top-6 right-6 px-2.5 py-1 rounded-[var(--radius-pill)] bg-pollora-teal/15 text-[oklch(45%_0.09_185)] text-xs font-semibold font-[var(--font-code)]">New in 13.35.2</span>
 						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Async actions</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Slow work, after the response</h3>
@@ -240,8 +240,8 @@ const packages = [
     -&gt;<span class="token-function">tries</span>(<span class="token-attribute">3</span>);</code></pre>
 						<a href="/hooks/async-actions/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Asynchronous actions <span aria-hidden="true">&rarr;</span></a>
 					</div>
-					<!-- Hybrid Routing — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:3">
+					<!-- Hybrid Routing — 4 col -->
+					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:3">
 						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Laravel routes + WordPress fallback</h3>
 						<p class="text-ink-2 text-base mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
@@ -249,8 +249,8 @@ const packages = [
 <span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
 						<a href="/routing/wordpress-routes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">WordPress routes <span aria-hidden="true">&rarr;</span></a>
 					</div>
-					<!-- Blade + Vite — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:4">
+					<!-- Blade + Vite — 2 col -->
+					<div data-reveal class="md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:4">
 						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade + Vite</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax, instant reload</h3>
 						<p class="text-ink-2 text-base">Themes in Blade with directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code> and <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code>. Assets through Vite with hot reload and Tailwind CSS v4, no enqueue headaches.</p>
