@@ -1,6 +1,7 @@
 ---
 // "Copy page" split button: copies the page's Markdown (served by src/pages/[...slug].md.ts),
-// or opens it raw or in an AI assistant with the page as context.
+// or opens it raw or in an AI assistant with the page as context, and connects editors to the
+// docs MCP server (api/mcp.ts).
 const route = Astro.locals.starlightRoute;
 const mdUrl = new URL(`/${route.id}.md`, Astro.site).href;
 const prompt = `Read ${mdUrl} so I can ask questions about it.`;
@@ -11,6 +12,16 @@ const links = [
 	{ label: 'Open in ChatGPT', hint: 'Ask questions about this page', href: `https://chatgpt.com/?hints=search&q=${q}` },
 	{ label: 'Open in Claude', hint: 'Ask questions about this page', href: `https://claude.ai/new?q=${q}` },
 	{ label: 'Open in Perplexity', hint: 'Ask questions about this page', href: `https://www.perplexity.ai/search?q=${q}` },
+];
+
+// One-click installs of the docs MCP server, see /nectar/docs-mcp-server/
+const mcpUrl = new URL('/mcp', Astro.site).href;
+const cursorConfig = Buffer.from(JSON.stringify({ url: mcpUrl })).toString('base64');
+const vscodeConfig = encodeURIComponent(JSON.stringify({ name: 'pollora-docs', type: 'http', url: mcpUrl }));
+const claudeCommand = `claude mcp add --transport http pollora-docs ${mcpUrl}`;
+const installs = [
+	{ label: 'Connect to Cursor', hint: 'Install the docs MCP server', href: `cursor://anysphere.cursor-deeplink/mcp/install?name=pollora-docs&config=${cursorConfig}` },
+	{ label: 'Connect to VS Code', hint: 'Install the docs MCP server', href: `vscode:mcp/install?${vscodeConfig}` },
 ];
 ---
 
@@ -36,6 +47,21 @@ const links = [
 				<span class="item-hint">{hint}</span>
 			</a>
 		))}
+		<div class="separator" role="separator"></div>
+		<button type="button" role="menuitem" tabindex="-1" data-copy-text={claudeCommand} data-copy-message="Command copied">
+			<span class="item-label">Connect to Claude Code</span>
+			<span class="item-hint">Copy the <code>claude mcp add</code> command</span>
+		</button>
+		{installs.map(({ label, hint, href }) => (
+			<a role="menuitem" tabindex="-1" href={href}>
+				<span class="item-label">{label}</span>
+				<span class="item-hint">{hint}</span>
+			</a>
+		))}
+		<a role="menuitem" tabindex="-1" href="/nectar/docs-mcp-server/">
+			<span class="item-label">Other assistants</span>
+			<span class="item-hint">Set up the docs MCP server</span>
+		</a>
 	</div>
 	<span class="sr-only" role="status" data-status></span>
 </pl-copy-page>
@@ -62,14 +88,17 @@ const links = [
 				if (refocus) toggle.focus();
 			};
 
-			const copy = async () => {
+			// The page's Markdown, or a given text such as the Claude Code command
+			const copy = async (literal?: string, done = 'Page copied as Markdown') => {
 				let message = 'Copied';
 				try {
 					// Pass a promise to ClipboardItem so Safari keeps the click's user activation
-					const text = fetch(this.dataset.md!).then((r) => {
-						if (!r.ok) throw new Error(String(r.status));
-						return r.text();
-					});
+					const text = literal
+						? Promise.resolve(literal)
+						: fetch(this.dataset.md!).then((r) => {
+								if (!r.ok) throw new Error(String(r.status));
+								return r.text();
+							});
 					if (typeof ClipboardItem !== 'undefined') {
 						const blob = text.then((t) => new Blob([t], { type: 'text/plain' }));
 						await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
@@ -77,11 +106,11 @@ const links = [
 						await navigator.clipboard.writeText(await text);
 					}
 					this.dataset.state = 'done';
-					status.textContent = 'Page copied as Markdown';
+					status.textContent = done;
 				} catch {
 					message = 'Copy failed';
 					this.dataset.state = 'error';
-					status.textContent = 'The page could not be copied';
+					status.textContent = 'Copy failed';
 				}
 				label.textContent = message;
 				clearTimeout(reset);
@@ -95,6 +124,12 @@ const links = [
 				button.addEventListener('click', () => {
 					close(true);
 					copy();
+				}),
+			);
+			this.querySelectorAll<HTMLElement>('[data-copy-text]').forEach((button) =>
+				button.addEventListener('click', () => {
+					close(true);
+					copy(button.dataset.copyText, button.dataset.copyMessage);
 				}),
 			);
 			toggle.addEventListener('click', () => (menu.hidden ? open() : close()));
@@ -241,6 +276,18 @@ const links = [
 			right: auto;
 			left: 0;
 		}
+	}
+
+	.separator {
+		height: 1px;
+		margin: 0.3rem 0.4rem;
+		background: var(--sl-color-gray-5);
+	}
+
+	.item-hint code {
+		font-size: inherit;
+		background: none;
+		padding: 0;
 	}
 
 	.menu[hidden] {

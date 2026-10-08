@@ -26,6 +26,7 @@ export default defineConfig({
 						'- Requirements for a new project: PHP 8.4+, Laravel 13.35, WordPress 7.1+, Composer 2.',
 						'- Install: `composer global require pollora/cli` then `pollora new example-app` (or `composer create-project pollora/pollora example-app`).',
 						'- License: MIT (pollora/framework, pollora/pollora, pollora/cli, and Nectar, the AI context package for coding agents).',
+						'- Docs MCP server (remote, Streamable HTTP, no auth): https://pollora.dev/mcp with search_docs, get_page and list_pages. Every docs page is also served as Markdown at its path + `.md`.',
 						'- Maintained by AmphiBee (https://amphibee.fr), © RuBee group (https://rubee.group). Source: https://github.com/Pollora',
 					].join('\n'),
 					promote: ['why', 'getting-started/**', 'guides/**'],
