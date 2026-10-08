@@ -1,0 +1,288 @@
+---
+// "Copy page" split button: copies the page's Markdown (served by src/pages/[...slug].md.ts),
+// or opens it raw or in an AI assistant with the page as context.
+const route = Astro.locals.starlightRoute;
+const mdUrl = new URL(`/${route.id}.md`, Astro.site).href;
+const prompt = `Read ${mdUrl} so I can ask questions about it.`;
+const q = encodeURIComponent(prompt);
+
+const links = [
+	{ label: 'View as Markdown', hint: 'Open this page as plain text', href: `/${route.id}.md` },
+	{ label: 'Open in ChatGPT', hint: 'Ask questions about this page', href: `https://chatgpt.com/?hints=search&q=${q}` },
+	{ label: 'Open in Claude', hint: 'Ask questions about this page', href: `https://claude.ai/new?q=${q}` },
+	{ label: 'Open in Perplexity', hint: 'Ask questions about this page', href: `https://www.perplexity.ai/search?q=${q}` },
+];
+---
+
+<pl-copy-page class="not-content" data-md={`/${route.id}.md`}>
+	<div class="group">
+		<button type="button" class="main" data-copy>
+			<svg class="icon icon-copy" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" /></svg>
+			<svg class="icon icon-done" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+			<span data-label>Copy page</span>
+		</button>
+		<button type="button" class="toggle" aria-label="More page actions" aria-haspopup="menu" aria-expanded="false" aria-controls="pl-copy-page-menu" data-toggle>
+			<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+		</button>
+	</div>
+	<div class="menu" id="pl-copy-page-menu" role="menu" aria-label="Page actions" hidden>
+		<button type="button" role="menuitem" tabindex="-1" data-copy>
+			<span class="item-label">Copy page</span>
+			<span class="item-hint">Copy this page as Markdown for LLMs</span>
+		</button>
+		{links.map(({ label, hint, href }) => (
+			<a role="menuitem" tabindex="-1" href={href} target="_blank" rel="noopener">
+				<span class="item-label">{label}<svg class="icon icon-out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
+				<span class="item-hint">{hint}</span>
+			</a>
+		))}
+	</div>
+	<span class="sr-only" role="status" data-status></span>
+</pl-copy-page>
+
+<script>
+	class CopyPage extends HTMLElement {
+		connectedCallback() {
+			const toggle = this.querySelector<HTMLButtonElement>('[data-toggle]')!;
+			const menu = this.querySelector<HTMLElement>('[role="menu"]')!;
+			const items = () => [...menu.querySelectorAll<HTMLElement>('[role="menuitem"]')];
+			const label = this.querySelector<HTMLElement>('[data-label]')!;
+			const status = this.querySelector<HTMLElement>('[data-status]')!;
+			let reset: number | undefined;
+
+			const open = (focusIndex = 0) => {
+				menu.hidden = false;
+				toggle.setAttribute('aria-expanded', 'true');
+				items()[focusIndex]?.focus();
+			};
+			const close = (refocus = false) => {
+				if (menu.hidden) return;
+				menu.hidden = true;
+				toggle.setAttribute('aria-expanded', 'false');
+				if (refocus) toggle.focus();
+			};
+
+			const copy = async () => {
+				let message = 'Copied';
+				try {
+					// Pass a promise to ClipboardItem so Safari keeps the click's user activation
+					const text = fetch(this.dataset.md!).then((r) => {
+						if (!r.ok) throw new Error(String(r.status));
+						return r.text();
+					});
+					if (typeof ClipboardItem !== 'undefined') {
+						const blob = text.then((t) => new Blob([t], { type: 'text/plain' }));
+						await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
+					} else {
+						await navigator.clipboard.writeText(await text);
+					}
+					this.dataset.state = 'done';
+					status.textContent = 'Page copied as Markdown';
+				} catch {
+					message = 'Copy failed';
+					this.dataset.state = 'error';
+					status.textContent = 'The page could not be copied';
+				}
+				label.textContent = message;
+				clearTimeout(reset);
+				reset = window.setTimeout(() => {
+					label.textContent = 'Copy page';
+					delete this.dataset.state;
+				}, 2000);
+			};
+
+			this.querySelectorAll('[data-copy]').forEach((button) =>
+				button.addEventListener('click', () => {
+					close(true);
+					copy();
+				}),
+			);
+			toggle.addEventListener('click', () => (menu.hidden ? open() : close()));
+			toggle.addEventListener('keydown', (event) => {
+				if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+					event.preventDefault();
+					open(event.key === 'ArrowUp' ? items().length - 1 : 0);
+				}
+			});
+			menu.addEventListener('click', (event) => {
+				if ((event.target as HTMLElement).closest('a')) close();
+			});
+			menu.addEventListener('keydown', (event) => {
+				const list = items();
+				const index = list.indexOf(document.activeElement as HTMLElement);
+				const moves: Record<string, number> = {
+					ArrowDown: (index + 1) % list.length,
+					ArrowUp: (index - 1 + list.length) % list.length,
+					Home: 0,
+					End: list.length - 1,
+				};
+				if (event.key in moves) {
+					event.preventDefault();
+					list[moves[event.key]].focus();
+				} else if (event.key === 'Escape') {
+					event.preventDefault();
+					close(true);
+				} else if (event.key === 'Tab') {
+					close();
+				}
+			});
+			document.addEventListener('click', (event) => {
+				if (!this.contains(event.target as Node)) close();
+			});
+		}
+	}
+	customElements.define('pl-copy-page', CopyPage);
+</script>
+
+<style>
+	pl-copy-page {
+		position: relative;
+		display: inline-block;
+		flex-shrink: 0;
+	}
+
+	.group {
+		display: inline-flex;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: var(--pl-radius-sm);
+		background: var(--pl-surface);
+		transition: border-color var(--pl-dur-micro) var(--pl-ease-out);
+	}
+
+	.group:hover {
+		border-color: var(--sl-color-gray-4);
+	}
+
+	.group button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		border: 0;
+		background: none;
+		color: var(--sl-color-gray-2);
+		font: inherit;
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+		line-height: 1;
+		cursor: pointer;
+		transition: background-color var(--pl-dur-micro) var(--pl-ease-out), color var(--pl-dur-micro) var(--pl-ease-out);
+	}
+
+	.group button:hover {
+		background: var(--pl-surface-hover);
+		color: var(--sl-color-white);
+	}
+
+	.main {
+		padding: 0.5rem 0.75rem;
+		border-radius: calc(var(--pl-radius-sm) - 1px) 0 0 calc(var(--pl-radius-sm) - 1px);
+	}
+
+	.toggle {
+		padding: 0.5rem;
+		border-left: 1px solid var(--sl-color-gray-5) !important;
+		border-radius: 0 calc(var(--pl-radius-sm) - 1px) calc(var(--pl-radius-sm) - 1px) 0;
+	}
+
+	.icon {
+		width: 1rem;
+		height: 1rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.toggle .icon {
+		transition: transform var(--pl-dur-micro) var(--pl-ease-out);
+	}
+
+	.toggle[aria-expanded='true'] .icon {
+		transform: rotate(180deg);
+	}
+
+	.icon-done {
+		display: none;
+		color: var(--pl-teal);
+	}
+
+	pl-copy-page[data-state='done'] .icon-copy {
+		display: none;
+	}
+
+	pl-copy-page[data-state='done'] .icon-done {
+		display: block;
+	}
+
+	pl-copy-page[data-state='error'] .main {
+		color: var(--pl-red);
+	}
+
+	.menu {
+		position: absolute;
+		top: calc(100% + 0.4rem);
+		right: 0;
+		z-index: 20;
+		display: grid;
+		width: max-content;
+		min-width: 16rem;
+		max-width: calc(100vw - 2rem);
+		padding: 0.3rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: var(--pl-radius-md);
+		background: var(--pl-surface);
+		box-shadow: 0 12px 32px -12px oklch(0% 0 0 / 0.35);
+	}
+
+	/* On phones the button sits at the left edge, under the title */
+	@media (max-width: 40rem) {
+		.menu {
+			right: auto;
+			left: 0;
+		}
+	}
+
+	.menu[hidden] {
+		display: none;
+	}
+
+	.menu [role='menuitem'] {
+		display: grid;
+		gap: 0.15rem;
+		padding: 0.55rem 0.7rem;
+		border: 0;
+		border-radius: var(--pl-radius-sm);
+		background: none;
+		font: inherit;
+		text-align: start;
+		text-decoration: none;
+		cursor: pointer;
+	}
+
+	.menu [role='menuitem']:hover,
+	.menu [role='menuitem']:focus-visible {
+		background: var(--pl-surface-hover);
+		outline: none;
+	}
+
+	.item-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+	}
+
+	.item-hint {
+		color: var(--sl-color-gray-3);
+		font-size: var(--sl-text-xs);
+	}
+
+	.icon-out {
+		width: 0.8rem;
+		height: 0.8rem;
+		color: var(--sl-color-gray-3);
+	}
+</style>
