@@ -418,7 +418,7 @@ body {
   }
 }
 
-/* Homepage ecosystem: compact tiles, each package with a hexagon in its colour */
+/* Homepage ecosystem: compact tiles, each package in its colour */
 .pl-eco {
   position: relative;
   overflow: hidden;
@@ -465,6 +465,8 @@ body {
   padding: 0;
 }
 .pl-eco__tile {
+  position: relative;
+  overflow: hidden;
   display: flex;
   gap: 1rem;
   height: 100%;
@@ -474,6 +476,16 @@ body {
   background: oklch(100% 0 0 / 0.7);
   transition: transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
 }
+.pl-eco__tile::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--pkg);
+  opacity: 0.55;
+  transition: opacity var(--dur-short) var(--ease-out), width var(--dur-short) var(--ease-out);
+}
+.pl-eco__tile:hover::before { opacity: 1; width: 4px; }
 .pl-eco__tile:hover {
   transform: translateY(-3px);
   border-color: color-mix(in oklch, var(--pkg) 45%, transparent);
@@ -483,35 +495,6 @@ body {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
-.pl-eco__hex {
-  position: relative;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  width: 2.6rem;
-  height: 2.85rem;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.95rem;
-  color: var(--pkg);
-}
-.pl-eco__hex svg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  fill: color-mix(in oklch, var(--pkg) 14%, transparent);
-  stroke: var(--pkg);
-  stroke-width: 1.5;
-  transition: fill var(--dur-short) var(--ease-out);
-}
-.pl-eco__hex span {
-  position: relative;
-  filter: brightness(0.85);
-  transition: color var(--dur-short) var(--ease-out), filter var(--dur-short) var(--ease-out);
-}
-.pl-eco__tile:hover .pl-eco__hex svg { fill: var(--pkg); }
-.pl-eco__tile:hover .pl-eco__hex span { color: white; filter: none; }
 .pl-eco__body {
   display: flex;
   flex-direction: column;
@@ -528,10 +511,10 @@ body {
   color: var(--color-ink);
 }
 .pl-eco__id {
-  margin-top: 0.1rem;
+  margin-top: 0.15rem;
   font-family: var(--font-code);
   font-size: 0.75rem;
-  color: var(--color-muted);
+  color: color-mix(in oklch, var(--pkg) 75%, black);
 }
 .pl-eco__text {
   margin-top: 0.45rem;
@@ -542,7 +525,7 @@ body {
 /* Phones: two columns of compact tiles, the one-liners left to the repositories */
 @media (max-width: 40rem) {
   .pl-eco__grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-  .pl-eco__tile { flex-direction: column; gap: 0.6rem; padding: 0.9rem; }
+  .pl-eco__tile { padding: 0.9rem; }
   .pl-eco__name { flex-wrap: wrap; gap: 0.3rem 0.5rem; font-size: 1rem; }
   .pl-eco__id { overflow-wrap: anywhere; }
   .pl-eco__text { display: none; }

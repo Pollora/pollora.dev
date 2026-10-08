@@ -298,9 +298,12 @@ const packages = [
 		<!-- ═══ FEATURES — Bento grid ═══ -->
 		<section class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
-					<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
+				<div data-reveal class="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
+					<div>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
+						<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
+					</div>
+					<a href="/features/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] shrink-0">All features <span aria-hidden="true">&rarr;</span></a>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
 					<!-- PHP 8 Attributes + auto-discovery — 4 col -->
@@ -344,12 +347,6 @@ const packages = [
 							<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
 						</div>
 					</div>
-				</div>
-				<div data-reveal class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6" style="--i:5">
-					<a href="/features/" class="inline-flex items-center gap-2.5 px-7 py-3 rounded-[var(--radius-md)] border-2 border-rule text-ink text-base font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] self-start">
-						Explore every feature <span aria-hidden="true">&rarr;</span>
-					</a>
-					<p class="text-muted text-base">Typed meta, blocks, events, abilities for AI agents, Eloquent models, auth and more.</p>
 				</div>
 			</div>
 		</section>
@@ -935,10 +932,6 @@ const packages = [
 					{packages.map((pkg, i) => (
 						<li data-reveal style={`--i:${(i % 4) + 1}`}>
 							<a href={`https://github.com/Pollora/${pkg.repo}`} target="_blank" rel="noopener" class="pl-eco__tile" style={`--pkg:${pkg.color}`}>
-								<span class="pl-eco__hex" aria-hidden="true">
-									<svg viewBox="0 0 40 44"><path d="M20 1.5 37.5 11.5v21L20 42.5 2.5 32.5v-21z" /></svg>
-									<span>{pkg.name.slice(0, 2)}</span>
-								</span>
 								<span class="pl-eco__body">
 									<span class="pl-eco__name">{pkg.name}<span class:list={['pl-eco__kind', `is-${pkg.kind.toLowerCase()}`]}>{pkg.kind}</span></span>
 									<span class="pl-eco__id">{pkg.id}</span>
