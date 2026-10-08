@@ -65,6 +65,16 @@ const peekSvg = peekRaw
 	.replace(/id="g82"/, 'id="pupil-2"')
 	.replace(/id="g83"/, 'id="pupil-1"')
 	.replace('display="block"', 'display="block" class="w-full h-auto"');
+
+// "How it compares": a table from tablet width, one card per tool on phones
+const compareRows = ['Approach', 'Front end', 'Post types & hooks', 'Price'];
+const compareTools = [
+	{ name: 'Pollora', kind: 'Framework', pollora: true, cells: ['WordPress inside a Laravel app', 'Laravel routes, controllers, Blade, template hierarchy fallback', 'PHP 8 attributes, auto-discovered', 'Free, MIT'] },
+	{ name: 'Acorn + Sage', kind: 'Theme toolkit', cells: ['Laravel components inside WordPress', 'Blade theme on the template hierarchy', 'Theme or plugin code', 'Free, MIT'] },
+	{ name: 'Radicle', kind: 'Starter kit', cells: ['Roots stack starter, Laravel-powered', 'Blade theme, Laravel features', 'Configuration file', 'One-time purchase'] },
+];
+const priceRow = compareRows.indexOf('Price');
+const attributeRow = compareRows.indexOf('Post types & hooks');
 ---
 
 <html lang="en">
@@ -216,7 +226,7 @@ const peekSvg = peekRaw
 			<div class="max-w-5xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
 				<div data-reveal class="text-center mb-12" style="--i:0">
 					<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Video tour</p>
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">Pollora in <span class="text-gradient">60 seconds</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">Pollora in <span class="text-gradient">60 seconds</span></h2>
 					<p class="text-neutral text-lg max-w-[52ch] mx-auto">From one install command to your first post type — a quick tour of what changes when WordPress meets Laravel.</p>
 				</div>
 				<div data-reveal style="--i:1">
@@ -241,7 +251,7 @@ const peekSvg = peekRaw
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="max-w-3xl mx-auto text-center mb-14" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Up and running in <span class="text-gradient">one command</span></h2>
 					<p class="text-ink-2 text-lg">Install the CLI, scaffold a project, start building. WordPress + Laravel, ready in under two minutes.</p>
 				</div>
 				<div data-reveal class="max-w-3xl mx-auto relative" style="--i:1">
@@ -269,7 +279,7 @@ const peekSvg = peekRaw
 		<section class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Built for the <span class="text-gradient">modern PHP developer</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
@@ -328,51 +338,67 @@ const peekSvg = peekRaw
 		<section id="compare" class="pb-24 md:pb-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-12" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
 					<p class="text-ink-2 text-lg max-w-[60ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
 				</div>
-				<div data-reveal class="overflow-x-auto rounded-[var(--radius-lg)] border border-rule" style="--i:1">
-					<table class="w-full min-w-[44rem] text-left text-base">
-						<thead class="bg-paper-2 font-[var(--font-display)]">
+				<div data-reveal class="pl-compare" style="--i:1">
+					<table>
+						<thead>
 							<tr>
-								<th scope="col" class="p-5 font-semibold text-ink-2 w-[22%]"></th>
-								<th scope="col" class="p-5 font-bold text-ink">Pollora</th>
-								<th scope="col" class="p-5 font-semibold text-ink">Acorn + Sage</th>
-								<th scope="col" class="p-5 font-semibold text-ink">Radicle</th>
-								<th scope="col" class="p-5 font-semibold text-ink">Corcel</th>
+								<td></td>
+								{compareTools.map((tool) => (
+									<th scope="col" class:list={{ 'is-pollora': tool.pollora }}>
+										<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
+										<span class="pl-compare__kind">{tool.kind}</span>
+									</th>
+								))}
 							</tr>
 						</thead>
-						<tbody class="text-ink-2 [&_td]:p-5 [&_th]:p-5 [&_tr]:border-t [&_tr]:border-rule">
-							<tr>
-								<th scope="row" class="font-semibold text-ink">Approach</th>
-								<td>WordPress inside a Laravel app</td>
-								<td>Laravel components inside WordPress</td>
-								<td>Roots stack starter, Laravel-powered</td>
-								<td>Laravel reads the WordPress database</td>
-							</tr>
-							<tr>
-								<th scope="row" class="font-semibold text-ink">Front end</th>
-								<td>Laravel routes, controllers, Blade, template hierarchy fallback</td>
-								<td>Blade theme on the template hierarchy</td>
-								<td>Blade theme, Laravel features</td>
-								<td>Your Laravel app, no WordPress theme</td>
-							</tr>
-							<tr>
-								<th scope="row" class="font-semibold text-ink">Post types &amp; hooks</th>
-								<td>PHP 8 attributes, auto-discovered</td>
-								<td>Theme or plugin code</td>
-								<td>Configuration file</td>
-								<td>Reads existing data</td>
-							</tr>
-							<tr>
-								<th scope="row" class="font-semibold text-ink">Price</th>
-								<td>Free, MIT</td>
-								<td>Free, MIT</td>
-								<td>One-time purchase</td>
-								<td>Free, MIT</td>
-							</tr>
+						<tbody>
+							{compareRows.map((row, r) => (
+								<tr>
+									<th scope="row">{row}</th>
+									{compareTools.map((tool) => (
+										<td class:list={{ 'is-pollora': tool.pollora }}>
+											{r === priceRow ? (
+												<span class:list={['pl-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+											) : tool.pollora && r === 0 ? (
+												<strong>{tool.cells[r]}</strong>
+											) : (
+												tool.cells[r]
+											)}
+											{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
+										</td>
+									))}
+								</tr>
+							))}
 						</tbody>
 					</table>
+					<ul class="pl-compare__cards">
+						{compareTools.map((tool) => (
+							<li class:list={['pl-compare__card', { 'is-pollora': tool.pollora }]}>
+								<div class="pl-compare__head">
+									<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
+									<span class="pl-compare__kind">{tool.kind}</span>
+								</div>
+								<dl>
+									{compareRows.map((row, r) => (
+										<div>
+											<dt>{row}</dt>
+											<dd>
+												{r === priceRow ? (
+													<span class:list={['pl-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+												) : (
+													tool.cells[r]
+												)}
+												{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
+											</dd>
+										</div>
+									))}
+								</dl>
+							</li>
+						))}
+					</ul>
 				</div>
 				<a href="/compare/" class="inline-flex items-center gap-2 mt-8 text-lg font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Read the full comparison <span aria-hidden="true">&rarr;</span></a>
 			</div>
@@ -382,7 +408,7 @@ const peekSvg = peekRaw
 		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'schedules': 'a scheduled event', 'rest': 'a REST endpoint', 'ajax': 'an AJAX handler', 'cli': 'a WP-CLI command', 'abilities': 'an AI ability' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-10" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
 					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register <span x-text="subjects[tab]" class="text-gradient font-semibold">a custom post type</span>.<span class="hidden md:inline"> Left: WordPress traditional. Right: Pollora.</span></p>
 
 					<!-- Tabs -->
@@ -875,7 +901,7 @@ const peekSvg = peekRaw
 		<section id="ecosystem" class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
 				</div>
 
@@ -961,7 +987,7 @@ const peekSvg = peekRaw
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Three themes, <span class="text-gradient">three purposes</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Three themes, <span class="text-gradient">three purposes</span></h2>
 					<p class="text-ink-2 text-lg max-w-[55ch]">Start from a clean Blade default, a conversion-ready WooCommerce storefront, or a magazine built for the Site Editor. <code class="font-[var(--font-code)] text-base">pollora:make:theme</code> offers all three.</p>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1011,13 +1037,14 @@ const peekSvg = peekRaw
 				<div data-reveal class="grid md:grid-cols-[1.2fr_1fr] gap-14 md:gap-20 items-center" style="--i:0">
 					<div>
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">pollora/nectar</p>
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
 						<p class="text-ink-2 text-lg leading-relaxed mb-10 max-w-[48ch]">
-							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature.
+							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature. And before you even install, the docs are an MCP server too: your assistant searches and reads them while it answers.
 						</p>
 						<div class="flex flex-wrap gap-x-8 gap-y-3 mb-10 -mt-4">
 							<a href="/guides/ai-coding-agents-wordpress/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">AI agents for WordPress <span aria-hidden="true">&rarr;</span></a>
 							<a href="/nectar/overview/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Nectar docs <span aria-hidden="true">&rarr;</span></a>
+							<a href="/nectar/docs-mcp-server/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Docs MCP server <span aria-hidden="true">&rarr;</span></a>
 						</div>
 						<div class="grid grid-cols-2 gap-8">
 							<div>
@@ -1050,8 +1077,15 @@ const peekSvg = peekRaw
 								<span class="text-[var(--color-accent-ink)] text-lg">Any MCP-compatible agent</span>
 							</div>
 						</div>
-						<div class="mt-7 pt-6 border-t border-code-surface">
-							<code class="text-sm"><span class="token-keyword">php</span> <span class="token-function">artisan</span> <span class="token-string">nectar:mcp</span></code>
+						<div class="mt-7 pt-6 border-t border-code-surface space-y-4 text-sm">
+							<div>
+								<div class="token-comment"># Your project, live</div>
+								<code><span class="token-keyword">php</span> <span class="token-function">artisan</span> <span class="token-string">nectar:mcp</span></code>
+							</div>
+							<div>
+								<div class="token-comment"># The docs, from anywhere</div>
+								<code class="break-all"><span class="token-function">https://pollora.dev/mcp</span></code>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1068,9 +1102,9 @@ const peekSvg = peekRaw
 					</div>
 					<div>
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
 						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
-							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>.
+							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>, a Markdown copy of every page, and an <a href="/nectar/docs-mcp-server/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">MCP server</a> for your assistant.
 						</p>
 						<div class="flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
