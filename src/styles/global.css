@@ -263,7 +263,7 @@ body {
 }
 
 /* The Pollora column: one card from header to last row */
-.pl-compare .is-pollora {
+.pl-compare :is(th, td).is-pollora {
   position: relative;
   width: 24%;
   background: oklch(100% 0 0);
@@ -324,4 +324,96 @@ body {
 .pl-pill.is-paid {
   background: oklch(80% 0.15 75 / 0.2);
   color: oklch(48% 0.11 65);
+}
+
+/* Phones: one card per tool instead of a table too wide to read */
+.pl-compare__cards {
+  display: none;
+}
+@media (max-width: 47.99rem) {
+  .pl-compare {
+    overflow: visible;
+    margin-inline: 0;
+    padding: 0;
+  }
+  .pl-compare table {
+    display: none;
+  }
+  .pl-compare__cards {
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pl-compare__card {
+    position: relative;
+    padding: 1.25rem 1.25rem 0.5rem;
+    border: 1px solid var(--color-rule);
+    border-radius: var(--radius-lg);
+    background: var(--color-paper-2);
+  }
+  .pl-compare__card.is-pollora {
+    padding-top: 1.5rem;
+    background: oklch(100% 0 0);
+    border-color: oklch(65% 0.21 30 / 0.25);
+    box-shadow: 0 24px 40px -28px oklch(65% 0.21 30 / 0.45);
+  }
+  .pl-compare__card.is-pollora::before {
+    content: '';
+    position: absolute;
+    inset: -1px -1px auto;
+    height: 4px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+  }
+  .pl-compare__card.is-pollora .pl-compare__kind {
+    color: var(--color-accent);
+  }
+  .pl-compare__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.75rem;
+  }
+  .pl-compare__head .pl-compare__kind {
+    margin-top: 0;
+  }
+  .pl-compare__card dl {
+    margin: 0;
+  }
+  .pl-compare__card dl > div {
+    padding: 0.75rem 0;
+    border-top: 1px dashed var(--color-rule);
+  }
+  .pl-compare__card dt {
+    font-family: var(--font-code);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .pl-compare__card dd {
+    margin: 0.3rem 0 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--color-ink-2);
+  }
+  .pl-compare__card.is-pollora dd {
+    color: var(--color-ink);
+  }
+  .pl-compare__card code {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-code-bg);
+    color: oklch(85% 0.12 40);
+    font-family: var(--font-code);
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
 }
