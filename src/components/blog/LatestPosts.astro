@@ -1,0 +1,45 @@
+---
+// The homepage's window on the blog: the newest post as a feature, the next two as small cards.
+import CategoryPill from './CategoryPill.astro';
+import { formatDate, getPosts, postUrl, readingTime } from '../../lib/blog';
+
+const [featured, ...others] = await getPosts();
+const small = others.slice(0, 2);
+---
+
+{featured && (
+	<div class="pl-latest">
+		<article class="pl-featured pl-latest__featured">
+			<div class="gradient-bar h-[3px] absolute inset-x-0 top-0" aria-hidden="true"></div>
+			<div class="pl-featured__body">
+				<div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-5">
+					<CategoryPill category={featured.data.category} onDark link={false} />
+					{featured.data.version && <span class="pl-version pl-version--on-dark">v{featured.data.version}</span>}
+					<span class="text-sm text-[oklch(70%_0.02_295)]">
+						<time datetime={featured.data.date.toISOString()}>{formatDate(featured.data.date)}</time> · {readingTime(featured)} min read
+					</span>
+				</div>
+				<h3 class="pl-latest__featured-title">
+					<a href={postUrl(featured)} class="pl-stretched">{featured.data.title}</a>
+				</h3>
+				<p class="pl-featured__desc">{featured.data.description}</p>
+				<span class="pl-featured__cta" aria-hidden="true">
+					Read the post
+					<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+				</span>
+			</div>
+		</article>
+		{small.map((post) => (
+			<article class="pl-latest__card">
+				<div class="flex flex-wrap items-center gap-x-3 gap-y-2 mb-4">
+					<CategoryPill category={post.data.category} link={false} />
+					<time datetime={post.data.date.toISOString()} class="text-sm text-muted font-[var(--font-code)]">{formatDate(post.data.date)}</time>
+				</div>
+				<h3 class="pl-latest__title">
+					<a href={postUrl(post)} class="pl-stretched">{post.data.title}</a>
+				</h3>
+				<p class="pl-latest__desc">{post.data.description}</p>
+			</article>
+		))}
+	</div>
+)}
