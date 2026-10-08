@@ -26,7 +26,7 @@ Pollora's own WordPress models are built on **`pollora/colt`, a fork of Corcel**
 | **Post types and hooks** | PHP 8 attributes (`#[PostType]`, `#[Taxonomy]`, `#[Action]`, `#[Filter]`, `#[WpRestRoute]`, `#[Schedule]`…), auto-discovered | Your theme or plugin code | Your theme code | Post types and taxonomies in `config/post-types.php` | Read access to existing data |
 | **Blocks** | `pollora:make:block`, rendered with Blade | Your build | Your build | `make:block`, server-side rendering | n/a |
 | **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions | Your app's tests |
-| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 9 agent skills and 10 MCP tools, on Laravel Boost | | | | |
+| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 10 MCP tools, on Laravel Boost | | | | |
 | **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites | MIT, free |
 | **Maturity** (October 2026) | v13.35.2 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots | v9.0.0, about 4.8k GitHub stars |
 
