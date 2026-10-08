@@ -18,11 +18,22 @@ const site = 'https://pollora.dev';
 const ttl = 5 * 60 * 1000;
 let cache: { pages: Page[]; at: number } | undefined;
 
-/** The index of the deployment serving the request, kept for a few minutes per instance. */
-export async function loadPages(origin: string): Promise<Page[]> {
+/**
+ * The index of the deployment serving the request, kept for a few minutes per instance.
+ * Preview deployments are protected: the caller's access (Vercel cookie or bypass token)
+ * is passed on, so a preview answers whoever may open it.
+ */
+export async function loadPages(request: Request): Promise<Page[]> {
 	if (cache && Date.now() - cache.at < ttl) return cache.pages;
-	const response = await fetch(new URL('/docs-index.json', origin));
-	if (!response.ok) throw new Error(`Docs index unavailable (${response.status})`);
+	const headers = new Headers();
+	for (const name of ['cookie', 'x-vercel-protection-bypass']) {
+		const value = request.headers.get(name);
+		if (value) headers.set(name, value);
+	}
+	const response = await fetch(new URL('/docs-index.json', request.url), { headers, redirect: 'manual' });
+	if (!response.ok || !response.headers.get('content-type')?.includes('json')) {
+		throw new Error(`Docs index unavailable (${response.status})`);
+	}
 	const { pages } = (await response.json()) as { pages: Page[] };
 	cache = { pages, at: Date.now() };
 	return pages;

@@ -16,7 +16,7 @@ const instructions = [
 
 const text = (value: string) => ({ content: [{ type: 'text' as const, text: value }] });
 
-function createServer(origin: string) {
+function createServer(request: Request) {
 	const server = new McpServer({ name: 'pollora-docs', version: '1.0.0' }, { instructions });
 
 	server.registerTool(
@@ -32,7 +32,7 @@ function createServer(origin: string) {
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
 		async ({ query, limit }) => {
-			const hits = search(await loadPages(origin), query, limit);
+			const hits = search(await loadPages(request), query, limit);
 			if (!hits.length) return text(`No section of the Pollora docs matches "${query}". Try other terms, or list_pages to browse.`);
 			return text(
 				hits
@@ -59,7 +59,7 @@ function createServer(origin: string) {
 			annotations: { readOnlyHint: true, openWorldHint: false },
 		},
 		async ({ path }) => {
-			const page = findPage(await loadPages(origin), path);
+			const page = findPage(await loadPages(request), path);
 			if (!page) return { ...text(`No Pollora docs page at "${path}". Use list_pages or search_docs to find the right path.`), isError: true };
 			return text(page.markdown);
 		},
@@ -74,7 +74,7 @@ function createServer(origin: string) {
 		},
 		async () => {
 			const bySection = new Map<string, string[]>();
-			for (const page of await loadPages(origin)) {
+			for (const page of await loadPages(request)) {
 				const lines = bySection.get(page.section) ?? [];
 				lines.push(`- ${page.title} (${page.path}): ${page.description}`);
 				bySection.set(page.section, lines);
@@ -96,7 +96,7 @@ const cors = {
 
 async function handle(request: Request) {
 	const transport = new WebStandardStreamableHTTPServerTransport({ sessionIdGenerator: undefined, enableJsonResponse: true });
-	await createServer(new URL(request.url).origin).connect(transport);
+	await createServer(request).connect(transport);
 	const response = await transport.handleRequest(request);
 	const headers = new Headers(response.headers);
 	for (const [name, value] of Object.entries(cors)) headers.set(name, value);
