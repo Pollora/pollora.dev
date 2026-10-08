@@ -1,17 +1,46 @@
 ---
+import CopyPage from './CopyPage.astro';
+
 // Same id as Starlight's PAGE_TITLE_ID: the "Overview" TOC entry links to it.
 const PAGE_TITLE_ID = '_top';
-const { title, description } = Astro.locals.starlightRoute.entry.data;
+const route = Astro.locals.starlightRoute;
+const { title, description, template } = route.entry.data;
+const hasMarkdown = template !== 'splash' && route.id !== '404';
 ---
 
 <div class="pl-page-title">
-	<h1 id={PAGE_TITLE_ID}>{title}</h1>
+	<div class="pl-title-row">
+		<h1 id={PAGE_TITLE_ID}>{title}</h1>
+		{hasMarkdown && <CopyPage />}
+	</div>
 	{description && <p class="pl-lead">{description}</p>}
 </div>
 
 <style>
 	.pl-page-title {
 		margin-top: 1.25rem;
+	}
+
+	.pl-title-row {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem 1.5rem;
+	}
+
+	/* The button sits on the first line of the title, and drops under it on phones */
+	.pl-title-row > :global(pl-copy-page) {
+		margin-top: 0.6rem;
+	}
+
+	@media (max-width: 40rem) {
+		.pl-title-row {
+			flex-direction: column;
+		}
+
+		.pl-title-row > :global(pl-copy-page) {
+			margin-top: 0;
+		}
 	}
 
 	h1 {
