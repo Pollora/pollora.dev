@@ -17,20 +17,22 @@ Pollora's own WordPress models are built on **`pollora/colt`, a fork of Corcel**
 
 ## At a glance
 
-| | Pollora | Acorn | Sage | Radicle | Corcel |
-|---|---|---|---|---|---|
-| **What it is** | A framework: a Laravel application that runs WordPress | A package that brings Laravel components into WordPress | A WordPress starter theme | A WordPress starter combining the Roots stack (Acorn, Bedrock, Sage, optional Trellis) | Eloquent models over the WordPress database |
-| **Architecture** | Laravel boots first; WordPress (admin, database, plugins, REST API) runs inside the Laravel app | WordPress boots first; Acorn is booted from a theme's `functions.php` or a plugin | A theme loaded by WordPress, using Acorn | WordPress first, with Acorn, in a Bedrock layout | Your Laravel (or other PHP) app reads the WordPress tables; WordPress is not booted |
-| **Routing** | Laravel routes, `Route::wp()` on WordPress conditional tags, then the template hierarchy as fallback | Laravel routes alongside WordPress | WordPress template hierarchy, rendered with Blade | Laravel routes, through Acorn | Your application's own routes |
-| **Templating** | Blade themes with Sage Directives, Vite and Tailwind CSS; block themes also supported | Blade | Blade, Tailwind CSS, Vite | Blade, through Sage | Your own front end |
-| **Post types and hooks** | PHP 8 attributes (`#[PostType]`, `#[Taxonomy]`, `#[Action]`, `#[Filter]`, `#[WpRestRoute]`, `#[Schedule]`…), auto-discovered | Your theme or plugin code | Your theme code | Post types and taxonomies in `config/post-types.php` | Read access to existing data |
-| **Blocks** | `pollora:make:block`, rendered with Blade | Your build | Your build | `make:block`, server-side rendering | n/a |
-| **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions | Your app's tests |
-| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 10 MCP tools, on Laravel Boost | | | | |
-| **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites | MIT, free |
-| **Maturity** (October 2026) | v13.35.2 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots | v9.0.0, about 4.8k GitHub stars |
+| | Pollora | Acorn | Sage | Radicle |
+|---|---|---|---|---|
+| **What it is** | A framework: a Laravel application that runs WordPress | A package that brings Laravel components into WordPress | A WordPress starter theme | A WordPress starter combining the Roots stack (Acorn, Bedrock, Sage, optional Trellis) |
+| **Architecture** | Laravel boots first; WordPress (admin, database, plugins, REST API) runs inside the Laravel app | WordPress boots first; Acorn is booted from a theme's `functions.php` or a plugin | A theme loaded by WordPress, using Acorn | WordPress first, with Acorn, in a Bedrock layout |
+| **Routing** | Laravel routes, `Route::wp()` on WordPress conditional tags, then the template hierarchy as fallback | Laravel routes alongside WordPress | WordPress template hierarchy, rendered with Blade | Laravel routes, through Acorn |
+| **Templating** | Blade themes with Sage Directives, Vite and Tailwind CSS; block themes also supported | Blade | Blade, Tailwind CSS, Vite | Blade, through Sage |
+| **Post types and hooks** | PHP 8 attributes (`#[PostType]`, `#[Taxonomy]`, `#[Action]`, `#[Filter]`, `#[WpRestRoute]`, `#[Schedule]`…), auto-discovered | Your theme or plugin code | Your theme code | Post types and taxonomies in `config/post-types.php` |
+| **Blocks** | `pollora:make:block`, rendered with Blade | Your build | Your build | `make:block`, server-side rendering |
+| **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions |
+| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 10 MCP tools, on Laravel Boost | | | |
+| **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites |
+| **Maturity** (October 2026) | v13.35.2 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots |
 
 Sources: each project's GitHub repository, Packagist and product page (roots.io/acorn, roots.io/radicle), checked on 1 October 2026.
+
+Corcel is not in this table: it is a library of database models, not a way to build a WordPress site, so most rows would not apply. It has [its own section](#corcel-a-different-job) below.
 
 ## Pollora and Acorn
 
@@ -64,11 +66,15 @@ Radicle is the closest project to Pollora: a complete, Laravel-powered WordPress
 
 Both use a Bedrock-style layout (in Pollora, WordPress core in `public/cms` and `wp-content` in `public/content`; see [Server Configuration](/getting-started/server-configuration/)) and install WordPress core and plugins with Composer.
 
-## Pollora and Corcel
+## Corcel: a different job
 
-**Choose Corcel if** your main application is a Laravel (or other PHP) app and WordPress is only a back office: Corcel gives you Eloquent models over the WordPress tables, so you can read posts, pages, terms, users and meta from your app. It is MIT-licensed and widely used.
+Corcel is not a framework and does not build WordPress sites. It is a set of Eloquent models over the WordPress tables, for a Laravel (or other PHP) application that needs to read WordPress data. WordPress itself is never booted: no hooks, no plugins, no theme.
 
-**Pollora runs WordPress itself.** Hooks fire, plugins load, the admin and the REST API work, and the front end can still rely on the template hierarchy. Pollora's WordPress models (`Pollora\Models\Post`, `Page`, `Attachment`, `Term`, `User`, `Menu`…) are built on `pollora/colt`, a fork of Corcel, so Corcel-style queries remain available inside a Pollora app.
+**Choose Corcel if** your main application is a Laravel app and WordPress is only a back office where editors write content. Your app reads posts, pages, terms, users and meta through Corcel and renders them its own way. It is MIT-licensed, at v9.0.0, with about 4.8k GitHub stars (October 2026).
+
+**Choose Pollora if** the site itself is WordPress: you want its admin, its plugins and its editors, with Laravel routes, controllers and Blade on the front end. Hooks fire, plugins load, and the REST API and the template hierarchy keep working.
+
+The two are related rather than rivals. Pollora's WordPress models (`Pollora\Models\Post`, `Page`, `Attachment`, `Term`, `User`, `Menu`…) are built on `pollora/colt`, a fork of Corcel, so Corcel-style queries remain available inside a Pollora app.
 
 ## Coming from Sage or Acorn
 
