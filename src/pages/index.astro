@@ -798,22 +798,47 @@ const packages = [
 		</section>
 
 		<!-- ═══ NEED HELP — AmphiBee ═══ -->
-		<section id="help" class="pb-24 md:pb-32 pt-24 md:pt-32">
+		<section id="help" class="py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="pl-help" style="--i:0">
-					<div>
-						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Need a hand?</p>
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Work with the team <span class="text-gradient">behind Pollora</span></h2>
-						<p class="text-ink-2 text-lg max-w-[50ch]">Pollora is built and maintained by <strong class="text-ink">AmphiBee</strong>, a WordPress agency of 22 people who ship WordPress and Laravel projects every day. Bring us a new site, a migration or the plugin your project is missing.</p>
-						<a href="https://amphibee.fr/contact" target="_blank" rel="noopener" data-cta="Talk to AmphiBee" class="inline-flex items-center gap-2.5 mt-8 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-							Talk to AmphiBee <span aria-hidden="true">&rarr;</span>
-						</a>
+					<div class="pl-help__glow" aria-hidden="true"></div>
+					<div class="relative">
+						<p class="pl-help__kicker"><span aria-hidden="true"></span>Need a hand?</p>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.1rem,3.6vw+0.5rem,3.4rem)] leading-[1.05] tracking-tight text-[var(--color-accent-ink)] mb-6">Work with the team <span class="text-gradient">behind Pollora</span></h2>
+						<p class="text-[oklch(80%_0.02_295)] text-lg max-w-[46ch]">Pollora is built and maintained by <strong class="text-white">AmphiBee</strong>, a WordPress agency that ships WordPress and Laravel projects every day. Bring us a new site, a migration or the plugin your project is missing.</p>
+						<dl class="pl-help__stats">
+							<div><dt>WordPress experts</dt><dd>22</dd></div>
+							<div><dt>Shipping since</dt><dd>2018</dd></div>
+							<div><dt>Open-source packages</dt><dd>{packages.length}</dd></div>
+						</dl>
+						<div class="flex flex-wrap items-center gap-x-6 gap-y-4 mt-9">
+							<a href="https://amphibee.fr/contact" target="_blank" rel="noopener" data-cta="Talk to AmphiBee" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold shadow-[0_12px_30px_-10px_rgba(255,83,52,0.6)] hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Talk to AmphiBee <span aria-hidden="true">&rarr;</span>
+							</a>
+							<a href="https://amphibee.fr" target="_blank" rel="noopener" class="text-base font-semibold text-[oklch(85%_0.02_295)] hover:text-white transition-colors duration-[var(--dur-micro)]">amphibee.fr <span aria-hidden="true">&nearr;</span></a>
+						</div>
 					</div>
 					<ul class="pl-help__list" role="list">
-						<li><span class="pl-help__title">New projects</span><span class="pl-help__text">A site built on Pollora from day one, from design to production.</span></li>
-						<li><span class="pl-help__title">Migrations</span><span class="pl-help__text">From a classic theme, Sage or Acorn to a Laravel application.</span></li>
-						<li><span class="pl-help__title">Plugins and integrations</span><span class="pl-help__text">Custom plugins, and WordPress connected to your CRM, ERP or APIs.</span></li>
-						<li><span class="pl-help__title">E-commerce</span><span class="pl-help__text">WooCommerce stores built to convert, on the Apiary theme or your own.</span></li>
+						<li style="--svc:#fb196d">
+							<span class="pl-help__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.9A12.9 12.9 0 0 1 22 2c0 2.7-.8 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0"/><path d="M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5"/></svg></span>
+							<span class="pl-help__title">New projects</span>
+							<span class="pl-help__text">A site built on Pollora from day one, from design to production.</span>
+						</li>
+						<li style="--svc:#ff8c12">
+							<span class="pl-help__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></svg></span>
+							<span class="pl-help__title">Migrations</span>
+							<span class="pl-help__text">From a classic theme, Sage or Acorn to a Laravel application.</span>
+						</li>
+						<li style="--svc:#49c7b9">
+							<span class="pl-help__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8z"/></svg></span>
+							<span class="pl-help__title">Plugins and integrations</span>
+							<span class="pl-help__text">Custom plugins, and WordPress connected to your CRM, ERP or APIs.</span>
+						</li>
+						<li style="--svc:#feb017">
+							<span class="pl-help__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></span>
+							<span class="pl-help__title">E-commerce</span>
+							<span class="pl-help__text">WooCommerce stores built to convert, on the Apiary theme or your own.</span>
+						</li>
 					</ul>
 				</div>
 			</div>
