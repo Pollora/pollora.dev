@@ -1013,11 +1013,12 @@ const peekSvg = peekRaw
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">pollora/nectar</p>
 						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-6">AI-native <span class="text-gradient">development</span></h2>
 						<p class="text-ink-2 text-lg leading-relaxed mb-10 max-w-[48ch]">
-							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature.
+							Nectar gives AI coding agents deep context about your Pollora project. Built on Laravel Boost, it provides live introspection via MCP and domain-specific skills for every framework feature. And before you even install, the docs are an MCP server too: your assistant searches and reads them while it answers.
 						</p>
 						<div class="flex flex-wrap gap-x-8 gap-y-3 mb-10 -mt-4">
 							<a href="/guides/ai-coding-agents-wordpress/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">AI agents for WordPress <span aria-hidden="true">&rarr;</span></a>
 							<a href="/nectar/overview/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Nectar docs <span aria-hidden="true">&rarr;</span></a>
+							<a href="/nectar/docs-mcp-server/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Docs MCP server <span aria-hidden="true">&rarr;</span></a>
 						</div>
 						<div class="grid grid-cols-2 gap-8">
 							<div>
@@ -1050,8 +1051,15 @@ const peekSvg = peekRaw
 								<span class="text-[var(--color-accent-ink)] text-lg">Any MCP-compatible agent</span>
 							</div>
 						</div>
-						<div class="mt-7 pt-6 border-t border-code-surface">
-							<code class="text-sm"><span class="token-keyword">php</span> <span class="token-function">artisan</span> <span class="token-string">nectar:mcp</span></code>
+						<div class="mt-7 pt-6 border-t border-code-surface space-y-4 text-sm">
+							<div>
+								<div class="token-comment"># Your project, live</div>
+								<code><span class="token-keyword">php</span> <span class="token-function">artisan</span> <span class="token-string">nectar:mcp</span></code>
+							</div>
+							<div>
+								<div class="token-comment"># The docs, from anywhere</div>
+								<code class="break-all"><span class="token-function">https://pollora.dev/mcp</span></code>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -1070,7 +1078,7 @@ const peekSvg = peekRaw
 						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
 						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
 						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
-							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>.
+							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>, a Markdown copy of every page, and an <a href="/nectar/docs-mcp-server/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">MCP server</a> for your assistant.
 						</p>
 						<div class="flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
