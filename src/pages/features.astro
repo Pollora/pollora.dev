@@ -1,0 +1,498 @@
+---
+// Features: the framework's main features, one section each, grouped in chapters.
+// Code samples are taken from the docs; keep them in step when an API changes.
+import { Code } from 'astro:components';
+import BlogLayout from '../layouts/BlogLayout.astro';
+
+type Feature = {
+	id: string;
+	kicker: string;
+	title: string;
+	desc: string;
+	points: string[];
+	file: string;
+	lang: 'php' | 'blade' | 'plaintext';
+	code: string;
+	links: { label: string; href: string }[];
+	badge?: string;
+};
+type Chapter = { id: string; label: string; title: string; intro: string; accent: string; features: Feature[] };
+
+const chapters: Chapter[] = [
+	{
+		id: 'content',
+		label: 'Model your content',
+		title: 'Content as classes, not arrays',
+		intro: 'Post types, taxonomies and meta are PHP classes with attributes. Pollora reads them and does the WordPress registration for you.',
+		accent: '#fb196d',
+		features: [
+			{
+				id: 'attributes',
+				kicker: 'PHP 8 attributes',
+				title: 'Declare post types and taxonomies, never register them',
+				desc: 'A class and a few attributes replace the <code>register_post_type()</code> array. Auto-discovery finds the class and registers it: nothing to wire in a provider.',
+				points: [
+					'Slug, singular and plural come from the class name: <code>BookReview</code> gives <code>book-review</code> and “Book Reviews”.',
+					'One attribute per WordPress argument, with a full reference.',
+					'Discovery also covers hooks, REST routes and schedules, cached in production.',
+				],
+				file: 'app/Cms/PostTypes/Event.php',
+				lang: 'php',
+				code: String.raw`use Pollora\Attributes\PostType;
+use Pollora\Attributes\PostType\HasArchive;
+use Pollora\Attributes\PostType\Supports;
+
+#[PostType]
+#[HasArchive]
+#[Supports(['title', 'editor', 'thumbnail'])]
+class Event {}`,
+				links: [
+					{ label: 'Post types', href: '/content/post-types/' },
+					{ label: 'Taxonomies', href: '/content/taxonomies/' },
+					{ label: 'Auto-discovery', href: '/core-concepts/auto-discovery/' },
+				],
+			},
+			{
+				id: 'typed-meta',
+				kicker: 'Typed meta',
+				badge: 'Experimental',
+				title: 'Meta as typed properties',
+				desc: 'Declare a meta once, as a typed property marked <code>#[Meta]</code>. Pollora derives <code>register_meta()</code>, sanitization, the REST schema, and reads and writes that come back with the right type.',
+				points: [
+					'Strings, numbers, booleans, dates, backed enums, arrays and typed objects.',
+					'On posts, terms, users and comments, including post types you did not declare, such as WooCommerce products.',
+					'Laravel validation rules, <code>whereMeta()</code> queries and an audit command.',
+				],
+				file: 'app/Cms/PostTypes/Event.php',
+				lang: 'php',
+				code: String.raw`#[PostType]
+class Event
+{
+    #[Meta(showInRest: true)]
+    public int $capacity = 0;
+
+    #[Meta(showInRest: true)]
+    public EventStatus $status = EventStatus::Draft;
+}
+
+$event = Meta::of(Event::class, $postId);
+$event->capacity;   // int
+$event->status;     // EventStatus`,
+				links: [{ label: 'Typed meta', href: '/content/typed-meta/' }],
+			},
+			{
+				id: 'eloquent',
+				kicker: 'Eloquent models',
+				title: 'Query WordPress with Eloquent',
+				desc: 'Posts, pages, attachments, terms, users, comments and menus are Eloquent models over the WordPress tables, with scopes for type, status and taxonomy.',
+				points: [
+					'Built on <code>pollora/colt</code>, a fork of Corcel: Corcel-style queries keep working.',
+					'A model bound to a post type reads its typed meta as attributes.',
+					'A collection loads its meta in one query, through the WordPress cache.',
+				],
+				file: 'app/Http/Controllers/BookController.php',
+				lang: 'php',
+				code: String.raw`use Pollora\Models\Post;
+
+$books = Post::type('book')
+    ->published()
+    ->taxonomy('genre', 'fantasy')
+    ->newest()
+    ->take(12)
+    ->get();`,
+				links: [{ label: 'Post types guide', href: '/guides/custom-post-types-php-attributes/' }],
+			},
+		],
+	},
+	{
+		id: 'front-end',
+		label: 'Route and render',
+		title: 'A Laravel front end on WordPress content',
+		intro: 'Laravel routes and controllers where you need them, the template hierarchy everywhere else, Blade views, blocks and Vite.',
+		accent: '#ff5334',
+		features: [
+			{
+				id: 'routing',
+				kicker: 'Hybrid routing',
+				title: 'Laravel routes on WordPress conditional tags',
+				desc: '<code>Route::wp()</code> sends a WordPress condition to a controller. Routes you declare win; when none matches, the template hierarchy picks a Blade view.',
+				points: [
+					'Aliases (<code>single</code>, <code>page</code>) or real function names (<code>is_single</code>).',
+					'<code>WP_Post</code> and <code>WP_Query</code> injected into the controller.',
+					'Laravel middleware on WordPress routes, and <code>Route::wpMatch()</code> for HTTP verbs.',
+				],
+				file: 'routes/web.php',
+				lang: 'php',
+				code: String.raw`Route::wp('home', [BlogController::class, 'index']);
+Route::wp('single', [BlogController::class, 'show']);
+
+class BlogController extends Controller
+{
+    public function show(\WP_Post $post, \WP_Query $query)
+    {
+        return view('post', ['post' => $post, 'query' => $query]);
+    }
+}`,
+				links: [
+					{ label: 'WordPress routes', href: '/routing/wordpress-routes/' },
+					{ label: 'Controllers', href: '/routing/controllers/' },
+				],
+			},
+			{
+				id: 'blade',
+				kicker: 'Blade',
+				title: 'Every template in Blade',
+				desc: 'WordPress still chooses the template; Pollora looks for a <code>.blade.php</code> file first. Layouts, components and directives for the loop and the post data.',
+				points: [
+					'<code>@posts</code>, <code>@title</code>, <code>@content</code>, <code>@thumbnail</code>, <code>@menu</code> and more, from Sage Directives.',
+					'Custom page templates declared in a Blade comment.',
+					'Output escaped by default, views compiled and cached.',
+				],
+				file: 'resources/views/single.blade.php',
+				lang: 'blade',
+				code: String.raw`@extends('layouts.app')
+
+@section('content')
+    @posts
+        <article>
+            <h1>@title</h1>
+            @content
+        </article>
+    @endposts
+@endsection`,
+				links: [{ label: 'Blade templates', href: '/guides/blade-templates-wordpress/' }],
+			},
+			{
+				id: 'blocks',
+				kicker: 'Blocks',
+				badge: 'Bindings: experimental',
+				title: 'Gutenberg blocks in JSX and Blade',
+				desc: 'Blocks are built with Vite and JSX, rendered with Blade, and registered automatically in themes, plugins and modules. Block Bindings fill core blocks with values computed in PHP.',
+				points: [
+					'Dynamic by default, inner blocks included, no <code>register_block_type()</code>.',
+					'Four binding sources built in: post meta, term meta, author meta and options.',
+					'Generators: <code>pollora:make:block</code> and <code>pollora:make:binding</code>.',
+				],
+				file: 'app/Bindings/EventBinding.php',
+				lang: 'php',
+				code: String.raw`#[BlockBinding('acme/event', label: 'Event', postTypes: 'event')]
+final class EventBinding
+{
+    #[BindingField(label: 'Booking link', type: 'url')]
+    public function bookingUrl(BindingContext $context): string
+    {
+        return route('events.book', ['event' => $context->postId]);
+    }
+}`,
+				links: [
+					{ label: 'Gutenberg blocks', href: '/blocks/gutenberg-blocks/' },
+					{ label: 'Block Bindings', href: '/blocks/block-bindings/' },
+				],
+			},
+			{
+				id: 'assets',
+				kicker: 'Vite',
+				title: 'A modern asset pipeline',
+				desc: 'The <code>Asset</code> facade enqueues scripts and styles with Vite and hot reload, per theme, plugin or module. Tailwind values land in <code>theme.json</code> at build time.',
+				points: [
+					'Targets: front end, admin, editor, login screen and customizer.',
+					'Vite scripts enqueued as WordPress script modules.',
+					'Colors, font sizes, fonts and radii from Tailwind’s <code>@theme</code> in the editor.',
+				],
+				file: 'app/Providers/AssetServiceProvider.php',
+				lang: 'php',
+				code: String.raw`Asset::add('my-vite-asset', 'path/to/asset.js')
+    ->container('theme')
+    ->useVite()
+    ->toFrontend();`,
+				links: [{ label: 'Assets and Vite', href: '/theming/assets-vite/' }],
+			},
+		],
+	},
+	{
+		id: 'hooks',
+		label: 'React to WordPress',
+		title: 'Hooks, the Laravel way',
+		intro: 'Actions and filters as attributes, WordPress hooks as typed Laravel events, and slow work moved after the response.',
+		accent: '#49c7b9',
+		features: [
+			{
+				id: 'actions-filters',
+				kicker: 'Actions & filters',
+				title: 'Hooks on methods, events for listeners',
+				desc: 'Put <code>#[Action]</code> or <code>#[Filter]</code> on a method and it is hooked. WordPress hooks are also dispatched as typed Laravel events, for standard (and queueable) listeners.',
+				points: [
+					'Services injected into the class, priorities as named arguments.',
+					'Events for posts, users, media, comments, menus, options, plugins and more.',
+					'Facades too: <code>Action::add()</code>, <code>Filter::add()</code>.',
+				],
+				file: 'app/Hooks/ContentFilters.php',
+				lang: 'php',
+				code: String.raw`use Pollora\Attributes\Filter;
+
+class ContentFilters
+{
+    #[Filter('the_content', priority: 10)]
+    public function handleTheContent(string $content): string
+    {
+        return str_replace('ugly', 'shiny', $content);
+    }
+}`,
+				links: [
+					{ label: 'Actions & filters', href: '/hooks/actions-filters/' },
+					{ label: 'Events & listeners', href: '/hooks/events-listeners/' },
+				],
+			},
+			{
+				id: 'async',
+				kicker: 'Async actions',
+				badge: 'New in 13.35.2',
+				title: 'Slow handlers, after the response',
+				desc: 'Add <code>#[Async]</code> next to <code>#[Action]</code>, or <code>->async()</code> to a registration: the handler is queued, and a call to a CRM no longer slows down saving a post.',
+				points: [
+					'Runs through a Laravel queue worker, Action Scheduler or WP-Cron, picked automatically.',
+					'Delay, retries, uniqueness and queue options, like Laravel jobs.',
+					'<code>pollora:doctor</code> reports a declaration it had to run synchronously.',
+				],
+				file: 'app/Hooks/SyncEventToCrm.php',
+				lang: 'php',
+				code: String.raw`use Pollora\Attributes\Action;
+use Pollora\Attributes\Async;
+
+class SyncEventToCrm
+{
+    #[Action('save_post_event', priority: 20)]
+    #[Async(delay: 60, tries: 3, unique: true)]
+    public function handle(int $postId): void
+    {
+        // Runs after the request
+    }
+}`,
+				links: [{ label: 'Asynchronous actions', href: '/hooks/async-actions/' }],
+			},
+		],
+	},
+	{
+		id: 'automation',
+		label: 'Expose and automate',
+		title: 'Endpoints, commands and agents',
+		intro: 'REST routes, AJAX handlers, WP-CLI commands and cron jobs are attributes too, and your site can describe what it does to AI agents.',
+		accent: '#feb017',
+		features: [
+			{
+				id: 'endpoints',
+				kicker: 'REST, AJAX, WP-CLI, cron',
+				title: 'One attribute per entry point',
+				desc: 'A REST route, an AJAX handler, a WP-CLI command or a scheduled task is a class or a method with its attribute. Discovery registers them all.',
+				points: [
+					'REST permission classes: <code>IsAdmin</code>, <code>IsLoggedIn</code>, <code>Can</code>, or your own.',
+					'AJAX for logged-in users only, unless you open it explicitly.',
+					'Cron intervals from <code>Every::HOUR</code> to <code>Every::YEAR</code>, or a custom <code>Interval</code>.',
+				],
+				file: 'app/Api/AdminDocumentAPI.php',
+				lang: 'php',
+				code: String.raw`#[WpRestRoute(
+    namespace: 'app/v2',
+    route: 'document/(?P<documentId>\\d+)',
+    permissionCallback: IsAdmin::class
+)]
+class AdminDocumentAPI {}
+
+#[Ajax('load_more', access: AjaxAccess::ALL)]
+public function loadMore(): void
+
+#[Schedule(Every::HOUR)]
+public function pingSlack(): void`,
+				links: [
+					{ label: 'REST API', href: '/advanced/rest-api/' },
+					{ label: 'AJAX', href: '/advanced/ajax/' },
+					{ label: 'WP-CLI', href: '/advanced/wp-cli/' },
+					{ label: 'Scheduling', href: '/advanced/scheduling/' },
+				],
+			},
+			{
+				id: 'abilities',
+				kicker: 'Abilities API',
+				title: 'Abilities for AI agents',
+				desc: 'Declare what your site can do with <code>#[Ability]</code>: the WordPress Abilities API turns it into a registry that AI agents and MCP clients discover and call.',
+				points: [
+					'Typed input schemas, and permissions that refuse by default.',
+					'Reads, creates, updates or deletes, declared as a behaviour.',
+					'Published over REST, and over MCP with the MCP Adapter plugin.',
+				],
+				file: 'app/Abilities/CreatePost.php',
+				lang: 'php',
+				code: String.raw`#[Ability(
+    name: 'acme/create-post',
+    description: 'Creates a post from a title and a status.',
+    category: 'acme-content',
+    behaviour: Behaviour::Creates,
+)]
+final class CreatePost implements AbilityHandler
+{
+    public function handle(Input $input): mixed`,
+				links: [{ label: 'Abilities', href: '/advanced/abilities/' }],
+			},
+		],
+	},
+	{
+		id: 'production',
+		label: 'Build and run',
+		title: 'From first route to production',
+		intro: 'Laravel authentication on WordPress users, roles in code, a doctor for silent failures, and modules and plugins to organize the code.',
+		accent: '#ff314c',
+		features: [
+			{
+				id: 'auth',
+				kicker: 'Auth & roles',
+				title: 'Laravel Auth on WordPress users',
+				desc: 'The <code>Auth</code> facade works against WordPress accounts, and Laravel authorization answers with WordPress capabilities. Roles can be declared as classes.',
+				points: [
+					'<code>can()</code>, the <code>can:</code> middleware, <code>@can</code> and <code>@role</code> in Blade.',
+					'Meta capabilities resolved through <code>map_meta_cap()</code>.',
+					'Role declarations are experimental; capability checks are stable.',
+				],
+				file: 'app/Roles/EventManager.php',
+				lang: 'php',
+				code: String.raw`#[Role('event_manager', label: 'Event manager', inherits: 'author')]
+#[GrantsPostType(Event::class, Access::Editor)]
+#[Grants(EventCap::ExportAttendees, 'moderate_comments')]
+#[Without('publish_posts')]
+final class EventManager {}
+
+Route::get('/reports', ReportController::class)->middleware('can:manage_options');`,
+				links: [
+					{ label: 'Authentication', href: '/advanced/authentication/' },
+					{ label: 'Roles & capabilities', href: '/advanced/roles-capabilities/' },
+				],
+			},
+			{
+				id: 'doctor',
+				kicker: 'Diagnostics',
+				title: 'A doctor for silent failures',
+				desc: '<code>pollora:doctor</code> finds what fails without an error, and prints the command that fixes it. <strong>Tools › Pollora</strong> and <code>pollora:status</code> show what was discovered.',
+				points: [
+					'Core patch, caches, builds, Vite hot file, async actions and more, also in Site Health.',
+					'Exits with an error code, to gate CI or a deploy; JSON output available.',
+					'WordPress notices and deprecations logged to a Laravel channel.',
+				],
+				file: 'php artisan pollora:doctor',
+				lang: 'plaintext',
+				code: String.raw`  ✓ WordPress core patch — The core is patched, and __() is Pollora's.
+  ✗ Composer patches lock — patches.lock.json is older than the framework's patches: Composer applies the old ones, or none.
+      johnpbloch/wordpress-core: Patch __ method in l10n to stop conflicting with Laravel
+      → composer patches-relock && composer patches-repatch
+
+  1 error(s), 1 warning(s).`,
+				links: [
+					{ label: 'Dashboard & doctor', href: '/advanced/dashboard/' },
+					{ label: 'Logging', href: '/advanced/logging/' },
+				],
+			},
+			{
+				id: 'modules-plugins',
+				kicker: 'Modules & plugins',
+				title: 'Modules for the project, plugins to reuse',
+				desc: 'Group a project’s features in Laravel Modules, or build reusable WordPress plugins with the same architecture. Both get auto-discovery.',
+				points: [
+					'Providers, post types, hooks, REST routes, schedules, blocks and abilities discovered.',
+					'Plugins with their own namespace, views, routes, translations, Vite and Tailwind.',
+					'<code>module:make</code> and <code>pollora:make:plugin</code> to start one.',
+				],
+				file: 'plugins/my-awesome-plugin/app/MyPluginClass.php',
+				lang: 'php',
+				code: String.raw`use Pollora\Attributes\Action;
+
+class MyPluginClass
+{
+    #[Action('wp_enqueue_scripts', priority: 10)]
+    public function enqueueScripts(): void
+    {
+        // Enqueue scripts and styles
+    }
+}`,
+				links: [
+					{ label: 'Modules', href: '/advanced/modules/' },
+					{ label: 'Plugins', href: '/advanced/plugins/' },
+				],
+			},
+		],
+	},
+];
+---
+
+<BlogLayout
+	title="Pollora features: Laravel tooling for WordPress"
+	description="Every main feature of Pollora: post types and typed meta as PHP attributes, Laravel routes on WordPress, Blade, blocks, async actions, abilities for AI agents, auth and diagnostics."
+>
+	<header class="pt-36 md:pt-44 pb-12 md:pb-16">
+		<div class="pl-container">
+			<p class="pl-kicker"><span class="pl-kicker__dot" aria-hidden="true"></span>Features</p>
+			<h1 class="pl-index-title">Laravel, all the way <span class="text-gradient">into WordPress</span></h1>
+			<p class="pl-index-lede">Pollora runs WordPress inside a Laravel application. Here is what that gives you, from the first post type to the production deploy.</p>
+			<nav class="pl-jump" aria-label="Chapters">
+				{chapters.map((chapter, i) => (
+					<a href={`#${chapter.id}`}><span class="pl-jump__num">0{i + 1}</span>{chapter.label}</a>
+				))}
+			</nav>
+		</div>
+	</header>
+
+	{chapters.map((chapter, i) => (
+		<section id={chapter.id} class="pl-chapter" style={`--accent:${chapter.accent}`} aria-labelledby={`${chapter.id}-title`}>
+			<div class="pl-container">
+				<div class="pl-chapter__head">
+					<div>
+						<p class="pl-chapter__num" style={`color:${chapter.accent}`}>0{i + 1} · {chapter.label}</p>
+						<h2 id={`${chapter.id}-title`} class="pl-chapter__title">{chapter.title}</h2>
+					</div>
+					<p class="pl-chapter__intro">{chapter.intro}</p>
+				</div>
+				<div>
+					{chapter.features.map((feature) => (
+						<article id={feature.id} class="pl-feature">
+							<div class="pl-feature__text">
+								<p class="pl-feature__kicker">
+									{feature.kicker}
+									{feature.badge && <span class="pl-feature__badge">{feature.badge}</span>}
+								</p>
+								<h3 class="pl-feature__title">{feature.title}</h3>
+								<p class="pl-feature__desc" set:html={feature.desc} />
+								<ul class="pl-feature__points" role="list">
+									{feature.points.map((point) => <li set:html={point} />)}
+								</ul>
+								<p class="pl-feature__links">
+									{feature.links.map((link) => (
+										<a href={link.href}>{link.label} <span aria-hidden="true">&rarr;</span></a>
+									))}
+								</p>
+							</div>
+							<div class="pl-window">
+								<div class="pl-window__bar">
+									<span class="pl-window__dot"></span><span class="pl-window__dot"></span><span class="pl-window__dot"></span>
+									<span class="pl-window__file">{feature.file}</span>
+								</div>
+								<Code code={feature.code} lang={feature.lang} theme="dracula" />
+							</div>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+	))}
+
+	<section class="pl-container py-20 md:py-28">
+		<div class="pl-features-cta">
+			<div>
+				<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3vw+0.75rem,3.25rem)] leading-[1.05] tracking-tight">Try it in <span class="text-gradient">one command</span></h2>
+				<p class="mt-4 text-lg text-[oklch(80%_0.02_295)] max-w-[44ch]">A new project with WordPress, Laravel and a Blade theme, ready to run.</p>
+				<pre class="mt-6 font-[var(--font-code)] text-sm text-[oklch(85%_0.01_290)]"><code>composer global require pollora/cli
+pollora new example-app</code></pre>
+			</div>
+			<div class="flex flex-wrap gap-4">
+				<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)]">Get started <span aria-hidden="true">&rarr;</span></a>
+				<a href="/compare/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-[oklch(35%_0.03_295)] text-white text-lg font-semibold hover:border-pollora-coral/60 transition-colors duration-[var(--dur-micro)]">How it compares</a>
+			</div>
+		</div>
+	</section>
+</BlogLayout>

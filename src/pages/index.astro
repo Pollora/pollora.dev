@@ -10,10 +10,12 @@ import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
 import AnalyticsHead from '../components/AnalyticsHead.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import LatestPosts from '../components/blog/LatestPosts.astro';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/global.css';
+import '../styles/blog.css';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -75,6 +77,22 @@ const compareTools = [
 ];
 const priceRow = compareRows.indexOf('Price');
 const attributeRow = compareRows.indexOf('Post types & hooks');
+
+// "A complete ecosystem": every package as a compact tile, its hexagon in the package's colour
+const packages = [
+	{ name: 'Entity', id: 'pollora/entity', kind: 'Core', color: '#feb017', repo: 'WordPressEntity', text: 'Fluent post types and taxonomies, built on Extended CPTs.' },
+	{ name: 'Query', id: 'pollora/query', kind: 'Core', color: '#ff8c12', repo: 'Query', text: 'A fluent, typed WP_Query with IDE autocompletion.' },
+	{ name: 'Colt', id: 'pollora/colt', kind: 'Core', color: '#49c7b9', repo: 'colt', text: 'Eloquent models for posts, users, terms and options.' },
+	{ name: 'Hook', id: 'pollora/hook', kind: 'Core', color: '#fb196d', repo: 'hook', text: 'Actions and filters as objects, with reflection caching.' },
+	{ name: 'Ajax', id: 'pollora/ajax', kind: 'Core', color: '#ff314c', repo: 'ajax', text: 'AJAX actions with a fluent API, private by default.' },
+	{ name: 'Option', id: 'pollora/option', kind: 'Core', color: '#49c7b9', repo: 'option', text: 'Typed WordPress options, validated, with smart upserts.' },
+	{ name: 'Abilities', id: 'pollora/abilities', kind: 'Core', color: '#ff5334', repo: 'abilities', text: 'The WordPress Abilities API, ready for AI agents and MCP.' },
+	{ name: 'CLI', id: 'pollora/cli', kind: 'Tool', color: '#ff5334', repo: 'cli', text: 'A new project in one command, DDEV setup included.' },
+	{ name: 'Nectar', id: 'pollora/nectar', kind: 'Tool', color: '#fb196d', repo: 'nectar', text: 'AI context for coding agents: MCP tools and skills.' },
+	{ name: 'MCP Connector', id: 'pollora/mcp-connector', kind: 'Plugin', color: '#49c7b9', repo: 'McpConnector', text: 'Connect Claude and other MCP clients to WordPress by URL.' },
+	{ name: 'AI Visibility', id: 'pollora/ai-visibility', kind: 'Plugin', color: '#feb017', repo: 'AiVisibility', text: 'llms.txt, a Markdown twin of every page, AI crawler rules.' },
+	{ name: 'Portcullis', id: 'pollora/portcullis', kind: 'Plugin', color: '#ff8c12', repo: 'portcullis', text: 'A secret login URL, real 404s and brute-force lockouts.' },
+];
 ---
 
 <html lang="en">
@@ -119,6 +137,7 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
 			</a>
 			<div class="hidden md:flex items-center gap-9 font-[var(--font-body)] text-[0.95rem] font-medium text-ink-2">
+				<a href="/features/" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Features</a>
 				<a href="/getting-started/installation/" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Docs</a>
 				<a href="#ecosystem" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Ecosystem</a>
 				<a href="#nectar" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Nectar AI</a>
@@ -136,6 +155,7 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 		<!-- Mobile menu -->
 		<div x-show="open" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150 ease-in" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-6 flex flex-col gap-4 font-[var(--font-body)] text-base font-medium text-ink-2">
+				<a href="/features/" class="hover:text-ink">Features</a>
 				<a href="/getting-started/installation/" @click="open = false" class="hover:text-ink">Docs</a>
 				<a href="#ecosystem" @click="open = false" class="hover:text-ink">Ecosystem</a>
 				<a href="#nectar" @click="open = false" class="hover:text-ink">Nectar AI</a>
@@ -283,33 +303,30 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 					<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
 				</div>
 				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
-					<!-- PHP 8 Attributes — 4 col -->
+					<!-- PHP 8 Attributes + auto-discovery — 4 col -->
 					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:1">
 						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Declare, don't register</h3>
-						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, AJAX handlers, WP-CLI commands, schedules, AI abilities — all defined with PHP 8 attributes. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
+						<p class="text-ink-2 text-base mb-6 max-w-[48ch]">Post types, taxonomies, hooks, REST endpoints, WP-CLI commands, schedules: a class and an attribute. Pollora finds them and registers them for you. No more <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
 						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[PostType('product')]</span>
 <span class="token-attribute">#[HasArchive]</span>
 <span class="token-attribute">#[ShowInRest]</span>
 <span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></code></pre>
 						<a href="/guides/custom-post-types-php-attributes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Post types with attributes <span aria-hidden="true">&rarr;</span></a>
 					</div>
-					<!-- Auto-Discovery — 2 col -->
-					<div data-reveal class="md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
-						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Auto-Discovery</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Write it, it works</h3>
-						<p class="text-ink-2 text-base">No manual registration. Pollora scans your codebase and registers everything automatically. Convention over configuration.</p>
-						<a href="/core-concepts/auto-discovery/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">How auto-discovery works <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<!-- Blade Templates — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:3">
-						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade Templates</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax</h3>
-						<p class="text-ink-2 text-base">Replace PHP template files with Blade. Use directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code> for clean, readable templates.</p>
-						<a href="/guides/blade-templates-wordpress/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Blade in WordPress <span aria-hidden="true">&rarr;</span></a>
+					<!-- Async actions — 2 col -->
+					<div data-reveal class="md:col-span-2 group relative bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:2">
+						<span class="absolute top-6 right-6 px-2.5 py-1 rounded-[var(--radius-pill)] bg-pollora-teal/15 text-[oklch(45%_0.09_185)] text-xs font-semibold font-[var(--font-code)]">New in 13.35.2</span>
+						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Async actions</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Slow work, after the response</h3>
+						<p class="text-ink-2 text-base mb-6">One call moves a WordPress action to a Laravel queue, Action Scheduler or WP-Cron, with delays and retries.</p>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Action</span>::<span class="token-function">add</span>(<span class="token-string">'save_post'</span>, <span class="token-variable">$handler</span>)
+    -&gt;<span class="token-function">async</span>()
+    -&gt;<span class="token-function">tries</span>(<span class="token-attribute">3</span>);</code></pre>
+						<a href="/hooks/async-actions/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Asynchronous actions <span aria-hidden="true">&rarr;</span></a>
 					</div>
 					<!-- Hybrid Routing — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
+					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:3">
 						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
 						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Laravel routes + WordPress fallback</h3>
 						<p class="text-ink-2 text-base mb-6"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
@@ -317,19 +334,22 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 <span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
 						<a href="/routing/wordpress-routes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">WordPress routes <span aria-hidden="true">&rarr;</span></a>
 					</div>
-					<!-- Vite + Tailwind — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-orange/30 transition-all duration-[var(--dur-short)]" style="--i:5">
-						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Vite + Tailwind</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">Modern asset pipeline</h3>
-						<p class="text-ink-2 text-base">Vite with HMR, Tailwind CSS v4, and the Asset facade for script and style registration. No more enqueue headaches.</p>
-						<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
+					<!-- Blade + Vite — 3 col -->
+					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:4">
+						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade + Vite</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">WordPress data, Laravel syntax, instant reload</h3>
+						<p class="text-ink-2 text-base">Themes in Blade with directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code> and <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code>. Assets through Vite with hot reload and Tailwind CSS v4, no enqueue headaches.</p>
+						<div class="flex flex-wrap gap-x-6">
+							<a href="/guides/blade-templates-wordpress/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Blade in WordPress <span aria-hidden="true">&rarr;</span></a>
+							<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
+						</div>
 					</div>
-					<!-- Type Safety — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-red/30 transition-all duration-[var(--dur-short)]" style="--i:6">
-						<div class="text-pollora-red font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Type Safety</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3">PHPStan, types everywhere</h3>
-						<p class="text-ink-2 text-base">Constructor property promotion, explicit return types, type-hinted parameters. PHPStan level 5 enforced across the framework.</p>
-					</div>
+				</div>
+				<div data-reveal class="mt-10 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6" style="--i:5">
+					<a href="/features/" class="inline-flex items-center gap-2.5 px-7 py-3 rounded-[var(--radius-md)] border-2 border-rule text-ink text-base font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] self-start">
+						Explore every feature <span aria-hidden="true">&rarr;</span>
+					</a>
+					<p class="text-muted text-base">Typed meta, blocks, events, abilities for AI agents, Eloquent models, auth and more.</p>
 				</div>
 			</div>
 		</section>
@@ -339,7 +359,7 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-12" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
-					<p class="text-ink-2 text-lg max-w-[60ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
+					<p class="text-ink-2 text-base max-w-[68ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
 				</div>
 				<div data-reveal class="pl-compare" style="--i:1">
 					<table>
@@ -361,7 +381,7 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 									{compareTools.map((tool) => (
 										<td class:list={{ 'is-pollora': tool.pollora }}>
 											{r === priceRow ? (
-												<span class:list={['pl-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+												<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
 											) : tool.pollora && r === 0 ? (
 												<strong>{tool.cells[r]}</strong>
 											) : (
@@ -387,7 +407,7 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 											<dt>{row}</dt>
 											<dd>
 												{r === priceRow ? (
-													<span class:list={['pl-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+													<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
 												) : (
 													tool.cells[r]
 												)}
@@ -898,88 +918,36 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 		</section>
 
 		<!-- ═══ ECOSYSTEM ═══ -->
-		<section id="ecosystem" class="py-24 md:py-32">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class="mb-16" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
-					<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work independently or together. Each one solves one problem well.</p>
+		<section id="ecosystem" class="pl-eco py-24 md:py-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
+				<div data-reveal class="mb-12 grid md:grid-cols-[1fr_auto] md:items-end gap-6" style="--i:0">
+					<div>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">A complete <span class="text-gradient">ecosystem</span></h2>
+						<p class="text-ink-2 text-lg max-w-[55ch]">Modular packages that work on their own or together. The core packages power the framework, and work in any WordPress project.</p>
+					</div>
+					<ul class="pl-eco__legend" aria-label="Package kinds">
+						<li><span class="pl-eco__kind is-core">Core</span> {packages.filter((p) => p.kind === 'Core').length} packages</li>
+						<li><span class="pl-eco__kind is-tool">Tool</span> CLI and AI</li>
+						<li><span class="pl-eco__kind is-plugin">Plugin</span> ready to install</li>
+					</ul>
 				</div>
-
-				<!-- Core packages -->
-				<div data-reveal class="mb-6 flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1" style="--i:1">
-					<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Core packages</h3>
-					<p class="text-muted text-base">Power the framework — and work in any WordPress project.</p>
-				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
-					<a href="https://github.com/Pollora/WordPressEntity" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:1">
-						<div class="font-[var(--font-code)] text-pollora-amber text-sm tracking-wider uppercase font-semibold mb-3">pollora/entity</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-amber transition-colors duration-[var(--dur-micro)]">Entity</h3>
-						<p class="text-ink-2 text-base">Fluent interface for post types and taxonomies, built on Extended CPTs. Hexagonal architecture with full type safety.</p>
-					</a>
-					<a href="https://github.com/Pollora/Query" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:2">
-						<div class="font-[var(--font-code)] text-pollora-orange text-sm tracking-wider uppercase font-semibold mb-3">pollora/query</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-orange transition-colors duration-[var(--dur-micro)]">Query</h3>
-						<p class="text-ink-2 text-base">Fluent WP_Query wrapper. Type-safe method chaining with IDE autocompletion for readable post queries.</p>
-					</a>
-					<a href="https://github.com/Pollora/colt" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:3">
-						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/colt</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Colt</h3>
-						<p class="text-ink-2 text-base">Eloquent ORM models for WordPress. Access posts, users, taxonomies, and options with Laravel's query builder.</p>
-					</a>
-					<a href="https://github.com/Pollora/hook" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:4">
-						<div class="font-[var(--font-code)] text-pollora-pink text-sm tracking-wider uppercase font-semibold mb-3">pollora/hook</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-pink transition-colors duration-[var(--dur-micro)]">Hook</h3>
-						<p class="text-ink-2 text-base">Actions and filters as objects, with callback resolution and reflection caching behind a clean API.</p>
-					</a>
-					<a href="https://github.com/Pollora/ajax" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-red/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:5">
-						<div class="font-[var(--font-code)] text-pollora-red text-sm tracking-wider uppercase font-semibold mb-3">pollora/ajax</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-red transition-colors duration-[var(--dur-micro)]">Ajax</h3>
-						<p class="text-ink-2 text-base">AJAX actions with a fluent API. Logged-in users only by default — public access is an explicit opt-in.</p>
-					</a>
-					<a href="https://github.com/Pollora/option" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:6">
-						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/option</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">Option</h3>
-						<p class="text-ink-2 text-base">WordPress options with validation and immutable value objects. Typed reads, smart upserts.</p>
-					</a>
-					<a href="https://github.com/Pollora/abilities" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-2" style="--i:6">
-						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/abilities</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">Abilities</h3>
-						<p class="text-ink-2 text-base">The WordPress 6.9 Abilities API, declared fluently or with <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">#[Ability]</code>. Typed input schemas and deny-by-default permissions, ready for AI agents and MCP.</p>
-					</a>
-				</div>
-
-				<!-- Tools & plugins -->
-				<div data-reveal class="mb-6 flex flex-col sm:flex-row sm:items-baseline gap-x-4 gap-y-1" style="--i:1">
-					<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)]">Tools &amp; plugins</h3>
-					<p class="text-muted text-base">CLI, AI tooling and ready-to-install WordPress plugins.</p>
-				</div>
-				<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5">
-					<a href="https://github.com/Pollora/cli" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-coral/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:1">
-						<div class="font-[var(--font-code)] text-gradient text-sm tracking-wider uppercase font-semibold mb-3">pollora/cli</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-coral transition-colors duration-[var(--dur-micro)]">CLI</h3>
-						<p class="text-ink-2 text-base">Scaffold projects in one command. Interactive setup with optional DDEV integration. Global binary.</p>
-					</a>
-					<a href="https://github.com/Pollora/nectar" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-pink/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:2">
-						<div class="font-[var(--font-code)] text-pollora-pink text-sm tracking-wider uppercase font-semibold mb-3">pollora/nectar</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-pink transition-colors duration-[var(--dur-micro)]">Nectar</h3>
-						<p class="text-ink-2 text-base">AI-powered development context. 10 MCP tools for live introspection, 8 agent skills for domain tasks.</p>
-					</a>
-					<a href="https://github.com/Pollora/McpConnector" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-teal/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-2" style="--i:3">
-						<div class="font-[var(--font-code)] text-pollora-teal text-sm tracking-wider uppercase font-semibold mb-3">pollora/mcp-connector</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-teal transition-colors duration-[var(--dur-micro)]">MCP Connector</h3>
-						<p class="text-ink-2 text-base">Connect Claude and other MCP clients to WordPress by URL. 27 content-management tools with a built-in OAuth 2.1 provider.</p>
-					</a>
-					<a href="https://github.com/Pollora/AiVisibility" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-amber/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] lg:col-span-3" style="--i:4">
-						<div class="font-[var(--font-code)] text-pollora-amber text-sm tracking-wider uppercase font-semibold mb-3">pollora/ai-visibility</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-amber transition-colors duration-[var(--dur-micro)]">AI Visibility</h3>
-						<p class="text-ink-2 text-base">Make your site legible to AI engines: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">/llms.txt</code>, a Markdown twin of every page, AI crawler rules and discovery files.</p>
-					</a>
-					<a href="https://github.com/Pollora/portcullis" target="_blank" rel="noopener" data-reveal class="group bg-paper-2 rounded-[var(--radius-lg)] p-8 border border-rule hover:border-pollora-orange/40 transition-all duration-[var(--dur-short)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)] sm:col-span-2 lg:col-span-3" style="--i:5">
-						<div class="font-[var(--font-code)] text-pollora-orange text-sm tracking-wider uppercase font-semibold mb-3">pollora/portcullis</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] mb-3 group-hover:text-pollora-orange transition-colors duration-[var(--dur-micro)]">Portcullis</h3>
-						<p class="text-ink-2 text-base">Secure the WordPress login: a secret URL, genuine 404s on wp-login.php and wp-admin, and brute-force lockouts.</p>
-					</a>
-				</div>
+				<ul class="pl-eco__grid" role="list">
+					{packages.map((pkg, i) => (
+						<li data-reveal style={`--i:${(i % 4) + 1}`}>
+							<a href={`https://github.com/Pollora/${pkg.repo}`} target="_blank" rel="noopener" class="pl-eco__tile" style={`--pkg:${pkg.color}`}>
+								<span class="pl-eco__hex" aria-hidden="true">
+									<svg viewBox="0 0 40 44"><path d="M20 1.5 37.5 11.5v21L20 42.5 2.5 32.5v-21z" /></svg>
+									<span>{pkg.name.slice(0, 2)}</span>
+								</span>
+								<span class="pl-eco__body">
+									<span class="pl-eco__name">{pkg.name}<span class:list={['pl-eco__kind', `is-${pkg.kind.toLowerCase()}`]}>{pkg.kind}</span></span>
+									<span class="pl-eco__id">{pkg.id}</span>
+									<span class="pl-eco__text">{pkg.text}</span>
+								</span>
+							</a>
+						</li>
+					))}
+				</ul>
 			</div>
 		</section>
 
@@ -1088,6 +1056,22 @@ const attributeRow = compareRows.indexOf('Post types & hooks');
 							</div>
 						</div>
 					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ═══ BLOG ═══ -->
+		<section id="blog" class="pb-24 md:pb-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
+					<div>
+						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Blog</p>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight">News from <span class="text-gradient">the hive</span></h2>
+					</div>
+					<a href="/blog/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] shrink-0">All posts <span aria-hidden="true">&rarr;</span></a>
+				</div>
+				<div data-reveal style="--i:1">
+					<LatestPosts />
 				</div>
 			</div>
 		</section>

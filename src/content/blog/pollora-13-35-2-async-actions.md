@@ -1,6 +1,6 @@
 ---
 title: "Pollora 13.35.2: asynchronous actions"
-description: Add ->async() to an action, or #[Async] next to #[Action], and its handler runs after the request, through a Laravel queue worker, Action Scheduler or WP-Cron.
+description: "Add ->async() to an action, or #[Async] next to #[Action], and its handler runs after the request, through a Laravel queue worker, Action Scheduler or WP-Cron."
 date: 2026-10-07
 category: release
 version: 13.35.2
