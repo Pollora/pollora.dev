@@ -533,3 +533,97 @@ body {
   .pl-eco__id { overflow-wrap: anywhere; }
   .pl-eco__text { display: none; }
 }
+
+/* Site shell (SiteLayout): social icons and the footer */
+.pl-social {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  color: var(--color-ink-2);
+  transition: color var(--dur-micro) var(--ease-out), background-color var(--dur-micro) var(--ease-out);
+}
+.pl-social:hover { color: var(--color-ink); background: var(--color-paper-3); }
+.pl-social svg { width: 1.1rem; height: 1.1rem; fill: currentColor; }
+.pl-social--dark { color: oklch(72% 0.02 295); border: 1px solid var(--color-code-surface); }
+.pl-social--dark:hover { color: white; background: var(--color-code-surface); }
+.pl-footer { background: var(--color-code-bg); border-top: 1px solid var(--color-code-surface); }
+.pl-footer__title {
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: oklch(60% 0.02 295);
+}
+.pl-footer__link { color: oklch(78% 0.015 295); transition: color var(--dur-micro) var(--ease-out); }
+.pl-footer__link:hover { color: white; }
+
+/* Homepage: "Need a hand?", AmphiBee's services */
+.pl-help {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  gap: 2.5rem;
+  padding: clamp(1.75rem, 5vw, 4rem);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12) top / 100% 4px no-repeat,
+    radial-gradient(36rem 20rem at 100% 100%, oklch(80% 0.12 60 / 0.14), transparent 70%),
+    var(--color-paper-2);
+}
+@media (min-width: 64rem) {
+  .pl-help { grid-template-columns: 1.1fr 1fr; align-items: center; gap: 4rem; }
+}
+.pl-help__list { display: grid; gap: 0.75rem; list-style: none; margin: 0; padding: 0; }
+@media (min-width: 40rem) { .pl-help__list { grid-template-columns: 1fr 1fr; } }
+.pl-help__list li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  background: oklch(100% 0 0 / 0.75);
+}
+.pl-help__title { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; color: var(--color-ink); }
+.pl-help__text { font-size: 0.95rem; line-height: 1.5; color: var(--color-ink-2); }
+
+/* Homepage install: the command under the terminal, ready to copy */
+.pl-install-cmd {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding: 0.6rem 0.6rem 0.6rem 1.1rem;
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  background: oklch(100% 0 0 / 0.8);
+}
+.pl-install-cmd code {
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  color: var(--color-ink);
+}
+.pl-install-cmd button {
+  flex-shrink: 0;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-code-bg);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--dur-micro) var(--ease-out);
+}
+.pl-install-cmd button:hover { opacity: 0.85; }
+/* Clear of the mascot that hangs under the terminal */
+@media (min-width: 48rem) { .pl-install-cmd { margin-top: 4.5rem; } }

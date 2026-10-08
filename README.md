@@ -48,7 +48,9 @@ The pages that belong to the site itself, and are edited here, are `why.md`, `co
 | `src/content/docs/` | The documentation pages (see above) |
 | `src/components/`, `src/styles/` | Starlight component overrides, analytics and consent banner, CSS |
 | `astro.config.mjs` | Starlight settings: sidebar, `llms.txt`, head tags |
-| `scripts/og-image.mjs` | Generates `public/og-image.png`, the social preview (`node scripts/og-image.mjs`) |
+| `scripts/og-image.mjs` | Generates `public/og-image.png`, the fallback social preview (`node scripts/og-image.mjs`) |
+| `src/pages/og/[...slug].png.ts` | One social preview per page, rendered at build time with satori (`src/lib/og.ts`) |
+| `src/layouts/SiteLayout.astro` | Head, navigation and footer of every page outside the docs |
 
 ## Contributing
 

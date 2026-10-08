@@ -1,5 +1,5 @@
 ---
-import BlogLayout from '../../../layouts/BlogLayout.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
 import BlogIndex from '../../../components/blog/BlogIndex.astro';
 import { categories, getPosts, type Category } from '../../../lib/blog';
 
@@ -12,6 +12,6 @@ const posts = (await getPosts()).filter((p) => p.data.category === category);
 const { plural, intro } = categories[category];
 ---
 
-<BlogLayout title={`${plural} · Pollora blog`} description={`${intro} From the blog of Pollora, the Laravel framework for WordPress.`}>
+<SiteLayout title={`${plural} · Pollora blog`} description={`${intro} From the blog of Pollora, the Laravel framework for WordPress.`}>
 	<BlogIndex posts={posts} active={category} />
-</BlogLayout>
+</SiteLayout>

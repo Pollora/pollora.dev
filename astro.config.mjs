@@ -39,14 +39,17 @@ export default defineConfig({
 				{ tag: 'link', attrs: { rel: 'icon', href: '/favicon.ico', sizes: '32x32' } },
 				{ tag: 'link', attrs: { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' } },
 				{ tag: 'link', attrs: { rel: 'manifest', href: '/site.webmanifest' } },
-				// Social preview: Starlight already sets twitter:card to summary_large_image
+				// Social preview: Starlight already sets twitter:card to summary_large_image.
+				// Each page then gets its own image (src/pages/og/), swapped in by src/starlightRouteData.ts
 				{ tag: 'meta', attrs: { property: 'og:image', content: 'https://pollora.dev/og-image.png' } },
 				{ tag: 'meta', attrs: { property: 'og:image:width', content: '1200' } },
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: 'https://pollora.dev/og-image.png' } },
+				{ tag: 'meta', attrs: { name: 'twitter:site', content: '@PolloraWP' } },
 			],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/Pollora' },
+				{ icon: 'x.com', label: 'X', href: 'https://x.com/PolloraWP' },
 			],
 			logo: {
 				src: './src/assets/pollora-logo.svg',

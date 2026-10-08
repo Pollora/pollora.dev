@@ -1,4 +1,5 @@
 import { defineRouteMiddleware } from '@astrojs/starlight/route-data';
+import { ogImageFor } from './lib/og-url';
 
 /**
  * Search titles, set here rather than in frontmatter. Synced docs pages keep short titles
@@ -52,6 +53,16 @@ const searchTitles: Record<string, string> = {
 
 export const onRequest = defineRouteMiddleware((context) => {
 	const route = context.locals.starlightRoute;
+
+	// The page's own social preview (src/pages/og/), in place of the site-wide one from astro.config.mjs
+	if (route.id !== '404') {
+		const image = ogImageFor(context.url.pathname);
+		for (const entry of route.head) {
+			const key = entry.attrs?.property ?? entry.attrs?.name;
+			if (entry.tag === 'meta' && (key === 'og:image' || key === 'twitter:image')) entry.attrs!.content = image;
+		}
+	}
+
 	const title = searchTitles[route.id];
 	if (!title) return;
 	const tag = route.head.find((entry) => entry.tag === 'title');

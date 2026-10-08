@@ -1,7 +1,7 @@
 ---
 // An author's page: who they are, their path, and the posts they wrote.
 import { Image } from 'astro:assets';
-import BlogLayout from '../../../layouts/BlogLayout.astro';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
 import PostList from '../../../components/blog/PostList.astro';
 import { authors, authorUrl, getPosts, type Author } from '../../../lib/blog';
 
@@ -33,7 +33,7 @@ const structuredData = {
 };
 ---
 
-<BlogLayout title={`${name} · Pollora blog`} description={author.bio ?? `Posts by ${name} on the Pollora blog.`} structuredData={structuredData}>
+<SiteLayout title={`${name} · Pollora blog`} description={author.bio ?? `Posts by ${name} on the Pollora blog.`} structuredData={structuredData}>
 	<header class="pl-author-hero">
 		<div class="pl-container">
 			<a href="/blog/" class="pl-back">
@@ -107,4 +107,4 @@ const structuredData = {
 		<h2 id="posts" class="pl-section-title">Posts by {first} <span class="pl-section-count">{posts.length}</span></h2>
 		<PostList posts={posts} />
 	</section>
-</BlogLayout>
+</SiteLayout>

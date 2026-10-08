@@ -8,7 +8,14 @@
  * [data-consent-open] reopens the banner so visitors can change their mind.
  *
  * Site events go to the dataLayer and GTM forwards them to GA4:
- * cta_click, copy_code, search, tour_video_play, docs_feedback.
+ * cta_click, copy_code, search, tour_video_play, docs_feedback. GTM only forwards these
+ * five names, with cta_name, cta_location, link_url, code_language and search_term:
+ * a new conversion is one of them with its own parameters, not a new event name.
+ *
+ * cta_click: [data-cta="Name"] elements; links into the docs and to /features/ from the
+ * pages outside the docs; links to Pollora's GitHub and X, and to AmphiBee, from anywhere.
+ * copy_code: code blocks of the docs, the install command of the homepage, and the
+ * "Copy page" menu (page-markdown, mcp-command).
  */
 const GTM_ID = 'GTM-59HN2M7Z';
 ---
@@ -39,10 +46,11 @@ const GTM_ID = 'GTM-59HN2M7Z';
 		var sections = {
 			'getting-started': 'Getting Started', 'core-concepts': 'Core Concepts', routing: 'Routing',
 			content: 'Content', hooks: 'Hooks & Events', theming: 'Theming', blocks: 'Blocks',
-			advanced: 'Advanced', nectar: 'Nectar AI',
+			advanced: 'Advanced', nectar: 'Nectar AI', guides: 'Guides',
 		};
+		var pages = { features: 'Features', blog: 'Blog', changelog: 'Changelog', press: 'Press', why: 'About', compare: 'About', faq: 'About' };
 		var first = location.pathname.split('/')[1] || '';
-		var group = first === '' ? 'Home' : sections[first] ? 'Docs / ' + sections[first] : 'Other';
+		var group = first === '' ? 'Home' : sections[first] ? 'Docs / ' + sections[first] : pages[first] || 'Other';
 		if (/^404\b/.test(document.title)) group = 'Not found';
 		window.dataLayer.push({ content_group: group });
 
@@ -102,20 +110,26 @@ const GTM_ID = 'GTM-59HN2M7Z';
 				return;
 			}
 
-			// Links into the docs from the homepage
-			var link = target.closest('a[href^="/getting-started"]');
-			if (link && location.pathname === '/') {
-				var data = {
-					event: 'cta_click',
-					cta_name: link.textContent.trim().replace(/\s+/g, ' ').replace(/\s*→$/, '').slice(0, 60),
-					cta_location: location_of(link),
-					link_url: link.getAttribute('href'),
-				};
-				// Same-tab navigation: hand the event to the next page
-				var newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1 || link.target === '_blank';
-				if (newTab) push(data);
-				else try { sessionStorage.setItem('pollora-pending-event', JSON.stringify(data)); } catch (err) { push(data); }
+			// Conversions: explicit [data-cta], docs and features links on the pages outside the docs, outbound links
+			var marketing = document.body && document.body.hasAttribute('data-site');
+			var outbound = { 'github.com/Pollora': 'GitHub', 'x.com/PolloraWP': 'X', 'amphibee.fr': 'AmphiBee' };
+			var link = target.closest('[data-cta], a[href]');
+			if (!link) return;
+			var href = link.getAttribute('href') || '';
+			var name = link.getAttribute('data-cta');
+			if (!name) {
+				for (var key in outbound) if (href.indexOf(key) !== -1) name = outbound[key];
 			}
+			if (!name && marketing && /^\/(getting-started|features)\//.test(href)) {
+				name = link.textContent.trim().replace(/\s+/g, ' ').replace(/\s*→$/, '').slice(0, 60);
+			}
+			if (!name) return;
+			var data = { event: 'cta_click', cta_name: name, cta_location: location_of(link), link_url: href || undefined };
+			// Same-tab navigation: hand the event to the next page
+			var leaves = link.tagName === 'A' && /^(\/(?!\/)|https?:)/.test(href);
+			var newTab = e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1 || link.target === '_blank';
+			if (!leaves || newTab) push(data);
+			else try { sessionStorage.setItem('pollora-pending-event', JSON.stringify(data)); } catch (err) { push(data); }
 		}, true);
 
 		// Docs search (Pagefind): one event per settled query

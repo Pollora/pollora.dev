@@ -42,7 +42,7 @@ const installs = [
 			<span class="item-hint">Copy this page as Markdown for LLMs</span>
 		</button>
 		{links.map(({ label, hint, href }) => (
-			<a role="menuitem" tabindex="-1" href={href} target="_blank" rel="noopener">
+			<a role="menuitem" tabindex="-1" href={href} target="_blank" rel="noopener" data-cta={label}>
 				<span class="item-label">{label}<svg class="icon icon-out" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8" /></svg></span>
 				<span class="item-hint">{hint}</span>
 			</a>
@@ -53,7 +53,7 @@ const installs = [
 			<span class="item-hint">Copy the <code>claude mcp add</code> command</span>
 		</button>
 		{installs.map(({ label, hint, href }) => (
-			<a role="menuitem" tabindex="-1" href={href}>
+			<a role="menuitem" tabindex="-1" href={href} data-cta={label}>
 				<span class="item-label">{label}</span>
 				<span class="item-hint">{hint}</span>
 			</a>
@@ -107,6 +107,8 @@ const installs = [
 					}
 					this.dataset.state = 'done';
 					status.textContent = done;
+					// Conversion, see AnalyticsHead: copy_code is one of the events GTM forwards
+					window.dataLayer?.push({ event: 'copy_code', code_language: literal ? 'mcp-command' : 'page-markdown' });
 				} catch {
 					message = 'Copy failed';
 					this.dataset.state = 'error';
