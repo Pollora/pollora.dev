@@ -262,7 +262,8 @@ body {
   color: var(--color-muted);
 }
 
-/* The Pollora column: one card from header to last row */
+/* The Pollora column: one card from header to last row. Its gradient bar is the top 4px of a
+   box as tall as the corner radius, so the rounded corners clip it along the card's curve. */
 .pl-compare :is(th, td).is-pollora {
   position: relative;
   width: 30%;
@@ -282,9 +283,10 @@ body {
   content: '';
   position: absolute;
   inset: -1px -1px auto;
-  height: 4px;
+  height: var(--radius-lg);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+  background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12) top / 100% 4px no-repeat;
+  pointer-events: none;
 }
 .pl-compare thead .is-pollora .pl-compare__kind {
   color: var(--color-accent);
@@ -363,9 +365,10 @@ body {
     content: '';
     position: absolute;
     inset: -1px -1px auto;
-    height: 4px;
+    height: var(--radius-lg);
     border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+    background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12) top / 100% 4px no-repeat;
+    pointer-events: none;
   }
   .pl-compare__card.is-pollora .pl-compare__kind {
     color: var(--color-accent);
