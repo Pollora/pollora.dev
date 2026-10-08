@@ -5,6 +5,9 @@ import AnalyticsHead from '../components/AnalyticsHead.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { ogImageFor } from '../lib/og-url';
 import { social } from '../lib/site';
+// The two faces of the first screen, preloaded so the hero does not shift when they arrive
+import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import spaceGroteskFont from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
 import '@fontsource-variable/geist';
 import '@fontsource-variable/space-grotesk';
 import '@fontsource-variable/jetbrains-mono';
@@ -72,6 +75,8 @@ const footer = [
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>{title}</title>
+	<link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
+	<link rel="preload" href={spaceGroteskFont} as="font" type="font/woff2" crossorigin />
 	<meta name="description" content={description} />
 	<link rel="canonical" href={url} />
 	<link rel="sitemap" href="/sitemap-index.xml" />
@@ -184,7 +189,7 @@ const footer = [
 					</div>
 				))}
 			</div>
-			<div class="mt-14 pt-6 border-t border-code-surface flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-muted">
+			<div class="mt-14 pt-6 border-t border-code-surface flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-[oklch(72%_0.02_295)]">
 				<p>Built by <a href="https://amphibee.fr" target="_blank" rel="noopener" class="pl-footer__link">AmphiBee</a>, backed by <a href="https://rubee.group" target="_blank" rel="noopener" class="pl-footer__link">RuBee</a>.</p>
 				<div class="flex flex-wrap gap-x-6 gap-y-2">
 					<a href="mailto:support@pollora.dev" class="pl-footer__link font-[var(--font-code)]">support@pollora.dev</a>

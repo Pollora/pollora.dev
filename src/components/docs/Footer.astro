@@ -1,6 +1,18 @@
 ---
 import Default from '@astrojs/starlight/components/Footer.astro';
 import mascot from '../../assets/mascot-documentation.svg';
+import { social } from '../../lib/site';
+
+// The same destinations as the footer of the rest of the site (SiteLayout)
+const site = [
+	{ label: 'Home', href: '/' },
+	{ label: 'Features', href: '/features/' },
+	{ label: 'Blog', href: '/blog/' },
+	{ label: 'Changelog', href: '/changelog/' },
+	{ label: 'Press kit', href: '/press/' },
+	{ label: 'GitHub', href: social.github, external: true },
+	{ label: 'X', href: social.x, external: true },
+];
 
 const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encodeURIComponent(
 	`Docs: ${Astro.locals.starlightRoute.entry.data.title}`
@@ -20,7 +32,10 @@ const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encode
 
 <Default />
 
-<p class="pl-cookie-settings print:hidden"><button type="button" data-consent-open>Cookie settings</button></p>
+<nav class="pl-site-footer print:hidden" aria-label="Pollora site">
+	{site.map((l) => <a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}>{l.label}</a>)}
+	<button type="button" data-consent-open>Cookie settings</button>
+</nav>
 
 <style>
 	.pl-help {
@@ -66,21 +81,29 @@ const issueUrl = `https://github.com/Pollora/framework/issues/new?title=${encode
 		text-decoration-color: var(--sl-color-accent);
 	}
 
-	.pl-cookie-settings {
-		margin-top: 1.5rem;
-		text-align: center;
+	.pl-site-footer {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem 1.5rem;
+		margin-top: 2rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--sl-color-hairline-light);
+		font-size: var(--sl-text-sm);
 	}
 
-	.pl-cookie-settings button {
+	.pl-site-footer a,
+	.pl-site-footer button {
 		border: 0;
 		background: none;
 		color: var(--sl-color-gray-3);
 		font: inherit;
-		font-size: var(--sl-text-xs);
+		text-decoration: none;
 		cursor: pointer;
 	}
 
-	.pl-cookie-settings button:hover {
+	.pl-site-footer a:hover,
+	.pl-site-footer button:hover {
 		color: var(--sl-color-white);
 	}
 

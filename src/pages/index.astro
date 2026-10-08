@@ -9,8 +9,12 @@ import { Image } from 'astro:assets';
 import LatestPosts from '../components/blog/LatestPosts.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { social } from '../lib/site';
+import { compact, monthlyInstalls } from '../lib/stats';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+
+// Packagist installs of pollora/framework over the last 30 days, shown in the hero (null: left out)
+const installs = await monthlyInstalls();
 
 // Current release, shown in the hero badge and in the structured data
 const version = '13.35.2';
@@ -96,13 +100,19 @@ const packages = [
 		<section class="pt-36 pb-24 md:pt-44 md:pb-32 relative">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
-					<div data-reveal class="" style="--i:0">
+					<div class="pl-hero-in" style="--i:0">
 						<div class="flex flex-wrap items-center gap-3 mb-5">
 							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Modern PHP, zero compromise</p>
 							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-coral/40 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								<span class="w-2 h-2 rounded-full bg-pollora-coral" aria-hidden="true"></span>
 								v{version}
 							</a>
+							{installs && (
+								<a href="https://packagist.org/packages/pollora/framework/stats" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-teal/50 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+									<span class="w-2 h-2 rounded-full bg-pollora-teal" aria-hidden="true"></span>
+									{compact(installs)} installs / month
+								</a>
+							)}
 						</div>
 						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
 							The Laravel framework<br /><span class="text-gradient">for WordPress.</span>
@@ -124,13 +134,13 @@ const packages = [
 							<span class="font-[var(--font-code)] text-sm font-normal text-muted">1:06</span>
 						</button>
 					</div>
-					<div data-reveal class="rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
+					<div class="pl-hero-in rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
 						<div class="bg-code-bg p-6 md:p-8 pb-24 md:pb-28 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
 							<div class="flex items-center gap-2 mb-6">
 								<span class="w-3 h-3 rounded-full bg-pollora-pink"></span>
 								<span class="w-3 h-3 rounded-full bg-pollora-amber"></span>
 								<span class="w-3 h-3 rounded-full bg-pollora-teal"></span>
-								<span class="ml-4 text-sm text-muted font-[var(--font-body)]">Book.php</span>
+								<span class="ml-4 text-sm text-neutral font-[var(--font-body)]">Book.php</span>
 							</div>
 							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
 <span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType\&#123;HasArchive, Supports, ShowInRest&#125;</span>;
@@ -176,7 +186,7 @@ const packages = [
 							<span class="w-3 h-3 rounded-full bg-[#ff5f57]"></span>
 							<span class="w-3 h-3 rounded-full bg-[#febc2e]"></span>
 							<span class="w-3 h-3 rounded-full bg-[#28c840]"></span>
-							<span class="ml-3 text-sm text-muted font-[var(--font-body)]">Terminal</span>
+							<span class="ml-3 text-sm text-neutral font-[var(--font-body)]">Terminal</span>
 						</div>
 						<!-- Terminal content -->
 						<div x-ref="scroll" class="terminal-scroll px-5 md:px-7 py-5 text-[0.72rem] md:text-[0.82rem] leading-[1.6] overflow-y-auto" style="height: 420px; max-height: 55vh; font-family: 'JetBrains Mono', ui-monospace, monospace;">
@@ -198,7 +208,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ FEATURES — Bento grid ═══ -->
-		<section class="py-24 md:py-32">
+		<section class="pl-deferred py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
 					<div>
@@ -254,7 +264,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ COMPARE ═══ -->
-		<section id="compare" class="pb-24 md:pb-32">
+		<section id="compare" class="pl-deferred pb-24 md:pb-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-12" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
@@ -324,7 +334,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
-		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'rest': 'a REST endpoint', 'abilities': 'an AI ability' } }">
+		<section class="pl-deferred py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'rest': 'a REST endpoint', 'abilities': 'an AI ability' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-10" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
@@ -332,10 +342,10 @@ const packages = [
 
 					<!-- Tabs -->
 					<div class="flex flex-nowrap md:flex-wrap gap-2 overflow-x-auto md:overflow-visible -mx-[clamp(1rem,4vw,2rem)] px-[clamp(1rem,4vw,2rem)] md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist">
-						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Post Types</button>
-						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Actions &amp; Filters</button>
-						<button role="tab" :aria-selected="tab === 'rest'" @click="tab = 'rest'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'rest' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">REST API</button>
-						<button role="tab" :aria-selected="tab === 'abilities'" @click="tab = 'abilities'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'abilities' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Abilities</button>
+						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-colors duration-[var(--dur-short)]">Post Types</button>
+						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-colors duration-[var(--dur-short)]">Actions &amp; Filters</button>
+						<button role="tab" :aria-selected="tab === 'rest'" @click="tab = 'rest'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'rest' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-colors duration-[var(--dur-short)]">REST API</button>
+						<button role="tab" :aria-selected="tab === 'abilities'" @click="tab = 'abilities'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'abilities' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-colors duration-[var(--dur-short)]">Abilities</button>
 					</div>
 					<!-- Mobile: Pollora / WordPress switch -->
 					<div class="md:hidden mt-5 grid grid-cols-2 gap-1 p-1 rounded-[var(--radius-pill)] bg-code-surface border border-white/10" role="group" aria-label="Code version">
@@ -615,7 +625,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ ECOSYSTEM ═══ -->
-		<section id="ecosystem" class="pl-eco py-24 md:py-32">
+		<section id="ecosystem" class="pl-deferred pl-eco py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
 				<div data-reveal class="mb-12 grid md:grid-cols-[1fr_auto] md:items-end gap-6" style="--i:0">
 					<div>
@@ -645,7 +655,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ THEMES ═══ -->
-		<section class="py-24 md:py-32 bg-paper-2">
+		<section class="pl-deferred py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-16" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Three themes, <span class="text-gradient">three purposes</span></h2>
@@ -693,7 +703,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ NECTAR AI ═══ -->
-		<section id="nectar" class="py-24 md:py-32">
+		<section id="nectar" class="pl-deferred py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="grid md:grid-cols-[1.2fr_1fr] gap-14 md:gap-20 items-center" style="--i:0">
 					<div>
@@ -754,7 +764,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ BLOG ═══ -->
-		<section id="blog" class="pb-24 md:pb-32">
+		<section id="blog" class="pl-deferred pb-24 md:pb-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
 					<div>
@@ -770,7 +780,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ DOCUMENTATION ═══ -->
-		<section class="py-24 md:py-32 bg-paper-2">
+		<section class="pl-deferred py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="grid md:grid-cols-[1fr_1.1fr] gap-12 md:gap-20 items-center" style="--i:0">
 					<div class="flex justify-center relative">
@@ -798,7 +808,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ NEED HELP — AmphiBee ═══ -->
-		<section id="help" class="py-24 md:py-32">
+		<section id="help" class="pl-deferred py-24 md:py-32">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="pl-help" style="--i:0">
 					<div class="pl-help__glow" aria-hidden="true"></div>
@@ -845,7 +855,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ CTA ═══ -->
-		<section class="py-28 md:py-36 bg-code-bg relative overflow-hidden">
+		<section class="pl-deferred py-28 md:py-36 bg-code-bg relative overflow-hidden">
 			<div class="absolute inset-0 opacity-[0.07]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 70%)"></div>
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
 				<div data-reveal class="grid md:grid-cols-[1.2fr_1fr] gap-12 items-center" style="--i:0">

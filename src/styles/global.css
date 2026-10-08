@@ -121,6 +121,16 @@ body {
 	transform: none;
 }
 
+/* The hero is the largest paint: visible from the first frame, it only slides in.
+   ([data-reveal] would keep it transparent until the page script runs.) */
+.pl-hero-in {
+	animation: pl-hero-in 0.7s var(--ease-out) both;
+	animation-delay: calc(var(--i, 0) * 80ms);
+}
+@keyframes pl-hero-in {
+	from { transform: translateY(14px); }
+}
+
 /* x-cloak: hide Alpine-managed elements until init */
 [x-cloak] {
 	display: none !important;
@@ -168,7 +178,7 @@ body {
 .token-keyword { color: oklch(75% 0.18 330); }
 .token-attribute { color: oklch(80% 0.15 80); }
 .token-string { color: oklch(78% 0.14 155); }
-.token-comment { color: oklch(50% 0.01 290); }
+.token-comment { color: oklch(64% 0.015 290); }
 .token-class { color: oklch(82% 0.12 200); }
 .token-function { color: oklch(78% 0.16 55); }
 .token-variable { color: oklch(90% 0.01 290); }
@@ -558,6 +568,8 @@ body {
   color: oklch(60% 0.02 295);
 }
 .pl-footer__link { color: oklch(78% 0.015 295); transition: color var(--dur-micro) var(--ease-out); }
+/* A link inside a sentence must not rely on colour alone */
+.pl-footer p .pl-footer__link { text-decoration: underline; text-decoration-color: oklch(78% 0.015 295 / 0.4); text-underline-offset: 3px; }
 .pl-footer__link:hover { color: white; }
 
 /* Homepage: "Need a hand?", AmphiBee's services on a dark card with warm glows */
@@ -594,10 +606,7 @@ body {
   filter: blur(90px);
   opacity: 0.35;
   pointer-events: none;
-  animation: pl-help-spin 18s linear infinite;
 }
-@keyframes pl-help-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .pl-help__glow { animation: none; } }
 @media (min-width: 64rem) {
   .pl-help { grid-template-columns: 1.05fr 1fr; align-items: center; gap: 4.5rem; }
 }
@@ -660,7 +669,6 @@ body {
   border: 1px solid oklch(100% 0 0 / 0.1);
   border-radius: var(--radius-lg);
   background: oklch(100% 0 0 / 0.05);
-  backdrop-filter: blur(6px);
   transition: transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), background-color var(--dur-short) var(--ease-out);
 }
 .pl-help__list li:hover {
@@ -730,3 +738,10 @@ body {
 .pl-install-cmd button:hover { opacity: 0.85; }
 /* Clear of the mascot that hangs under the terminal */
 @media (min-width: 48rem) { .pl-install-cmd { margin-top: 4.5rem; } }
+
+/* Homepage: sections below the fold are laid out and painted when they come near the viewport,
+   not all at once on load. The intrinsic size keeps the scrollbar steady until then. */
+.pl-deferred {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}

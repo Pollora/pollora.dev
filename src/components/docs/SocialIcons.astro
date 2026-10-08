@@ -1,0 +1,43 @@
+---
+// The site's own pages next to the social icons of the docs header: the docs are where most
+// visitors land, and Starlight's header has no other room for links. Hidden on narrow screens,
+// where the docs footer carries them.
+import Default from '@astrojs/starlight/components/SocialIcons.astro';
+
+const links = [
+	{ label: 'Features', href: '/features/' },
+	{ label: 'Blog', href: '/blog/' },
+];
+---
+
+<nav class="pl-site-links" aria-label="Site">
+	{links.map((l) => <a href={l.href}>{l.label}</a>)}
+</nav>
+<Default />
+
+<style>
+	.pl-site-links {
+		display: none;
+		gap: 1.25rem;
+		margin-inline-end: 0.5rem;
+		padding-inline-end: 1rem;
+		border-inline-end: 1px solid var(--sl-color-hairline-light);
+	}
+
+	@media (min-width: 72rem) {
+		.pl-site-links {
+			display: flex;
+		}
+	}
+
+	a {
+		font-size: var(--sl-text-sm);
+		font-weight: 500;
+		color: var(--sl-color-gray-2);
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: var(--sl-color-white);
+	}
+</style>
