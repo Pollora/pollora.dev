@@ -71,14 +71,24 @@ const GTM_ID = 'GTM-59HN2M7Z';
 			},
 		};
 
-		(function (w, d, s, l, i) {
-			w[l] = w[l] || [];
-			w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-			var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
-			j.async = true;
-			j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
-			f.parentNode.insertBefore(j, f);
-		})(window, document, 'script', 'dataLayer', GTM_ID);
+		// GTM loads once the page is up, so its scripts do not compete with the first render.
+		// Events pushed before then wait in the dataLayer and are sent when it arrives.
+		function loadGtm() {
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || [];
+				w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+				var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+				j.async = true;
+				j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+				f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', GTM_ID);
+		}
+		function whenIdle() {
+			if ('requestIdleCallback' in window) requestIdleCallback(loadGtm, { timeout: 3000 });
+			else setTimeout(loadGtm, 1500);
+		}
+		if (document.readyState === 'complete') whenIdle();
+		else window.addEventListener('load', whenIdle, { once: true });
 	})();
 </script>
 

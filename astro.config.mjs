@@ -70,6 +70,7 @@ export default defineConfig({
 				SkipLink: './src/components/docs/SkipLink.astro',
 				PageTitle: './src/components/docs/PageTitle.astro',
 				Footer: './src/components/docs/Footer.astro',
+				SocialIcons: './src/components/docs/SocialIcons.astro',
 			},
 			// One dark theme in both modes, on the aubergine of the homepage code samples
 			expressiveCode: {
