@@ -201,3 +201,127 @@ body {
 .terminal-scroll::-webkit-scrollbar { width: 4px; }
 .terminal-scroll::-webkit-scrollbar-track { background: transparent; }
 .terminal-scroll::-webkit-scrollbar-thumb { background: oklch(30% 0.02 290); border-radius: 2px; }
+
+/* Homepage comparison: the Pollora column stands out as a raised card */
+.pl-compare {
+  overflow-x: auto;
+  margin-inline: -0.5rem;
+  padding: 1rem 0.5rem 1.5rem;
+}
+.pl-compare table {
+  width: 100%;
+  min-width: 46rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.pl-compare th,
+.pl-compare td {
+  padding: 1.1rem 1.25rem;
+  vertical-align: top;
+  color: var(--color-ink-2);
+}
+.pl-compare tbody tr + tr > * {
+  border-top: 1px dashed var(--color-rule);
+}
+.pl-compare tbody th {
+  width: 18%;
+  padding-left: 0;
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  padding-top: 1.3rem;
+}
+.pl-compare thead th {
+  padding-bottom: 1.25rem;
+  vertical-align: bottom;
+}
+.pl-compare__name {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+.pl-compare__kind {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* The Pollora column: one card from header to last row */
+.pl-compare .is-pollora {
+  position: relative;
+  width: 24%;
+  background: oklch(100% 0 0);
+  color: var(--color-ink);
+  border-inline: 1px solid oklch(65% 0.21 30 / 0.25);
+}
+.pl-compare tbody tr + tr > .is-pollora {
+  border-top-color: oklch(65% 0.21 30 / 0.2);
+}
+.pl-compare thead .is-pollora {
+  border-top: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding-top: 1.6rem;
+}
+.pl-compare thead .is-pollora::before {
+  content: '';
+  position: absolute;
+  inset: -1px -1px auto;
+  height: 4px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(90deg, #fb196d, #ff314c, #ff5334, #ff8c12);
+}
+.pl-compare thead .is-pollora .pl-compare__kind {
+  color: var(--color-accent);
+}
+.pl-compare tbody tr:last-child .is-pollora {
+  border-bottom: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: 0 24px 40px -28px oklch(65% 0.21 30 / 0.45);
+}
+.pl-compare .is-pollora strong {
+  font-weight: 600;
+}
+.pl-compare .is-pollora code {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-code-bg);
+  color: oklch(85% 0.12 40);
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.pl-pill {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pl-pill.is-free {
+  background: oklch(75% 0.11 185 / 0.16);
+  color: oklch(45% 0.09 185);
+}
+.pl-pill.is-paid {
+  background: oklch(80% 0.15 75 / 0.2);
+  color: oklch(48% 0.11 65);
+}
