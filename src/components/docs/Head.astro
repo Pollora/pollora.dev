@@ -1,16 +1,12 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro';
 import AnalyticsHead from '../AnalyticsHead.astro';
+import { sections } from '../../lib/docs';
 
 // schema.org data for docs pages: the page as a TechArticle, and its place in the site.
 const route = Astro.locals.starlightRoute;
 const site = 'https://pollora.dev';
 const url = new URL(Astro.url.pathname, site).href;
-const sections: Record<string, string> = {
-	'getting-started': 'Getting Started', 'core-concepts': 'Core Concepts', routing: 'Routing',
-	content: 'Content', hooks: 'Hooks & Events', theming: 'Theming', blocks: 'Blocks',
-	advanced: 'Advanced', nectar: 'Nectar AI', guides: 'Guides',
-};
 const first = route.id.split('/')[0];
 const section = route.id.includes('/') ? sections[first] : undefined;
 const isDocPage = route.entry.data.template !== 'splash' && route.id !== '404';

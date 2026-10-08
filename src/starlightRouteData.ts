@@ -40,6 +40,7 @@ const searchTitles: Record<string, string> = {
 	'advanced/wp-cli': 'Custom WP-CLI commands with attributes · Pollora',
 	'advanced/plugins': 'Build WordPress plugins with Laravel · Pollora',
 	'nectar/overview': 'Nectar: AI context for Pollora coding agents',
+	'nectar/docs-mcp-server': 'Pollora docs MCP server for Claude, Cursor and VS Code',
 	why: 'Why Pollora: WordPress inside a Laravel application',
 	faq: 'Pollora FAQ: the Laravel framework for WordPress',
 	compare: 'Pollora vs Acorn, Sage, Radicle and Corcel',
