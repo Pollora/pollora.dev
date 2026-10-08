@@ -1,21 +1,14 @@
 ---
-import polloraLogo from '../assets/pollora-logo.svg';
 import mascotDeveloper from '../assets/mascot-developer.svg';
 import mascotDocs from '../assets/mascot-documentation.svg';
 import mascotGithub from '../assets/mascot-github.svg';
-import videoPoster from '../assets/video-tour-poster.png';
 import themeDefault from '../assets/themes/default.png';
 import themeApiary from '../assets/themes/apiary.png';
 import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
-import AnalyticsHead from '../components/AnalyticsHead.astro';
-import ConsentBanner from '../components/ConsentBanner.astro';
 import LatestPosts from '../components/blog/LatestPosts.astro';
-import '@fontsource-variable/geist';
-import '@fontsource-variable/space-grotesk';
-import '@fontsource-variable/jetbrains-mono';
-import '../styles/global.css';
-import '../styles/blog.css';
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { social } from '../lib/site';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -23,7 +16,7 @@ import { resolve } from 'node:path';
 const version = '13.35.2';
 
 const siteUrl = 'https://pollora.dev/';
-const ogImage = new URL('/og-image.png', siteUrl).href;
+const ogImage = new URL('/og/index.png', siteUrl).href;
 const title = 'Pollora: the Laravel framework for WordPress';
 const description = "The modern PHP framework that blends Laravel's elegance with WordPress's power. PHP 8 attributes, Blade templates, auto-discovery — zero compromise.";
 const socialDescription = 'Modern PHP framework blending Laravel and WordPress. PHP 8 attributes, auto-discovery, Blade templates.';
@@ -45,6 +38,8 @@ const structuredData = {
 	sameAs: [
 		'https://github.com/Pollora/framework',
 		'https://packagist.org/packages/pollora/pollora',
+		social.github,
+		social.x,
 	],
 };
 
@@ -95,80 +90,7 @@ const packages = [
 ];
 ---
 
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>{title}</title>
-	<meta name="description" content={description} />
-	<link rel="canonical" href={siteUrl} />
-	<link rel="sitemap" href="/sitemap-index.xml" />
-	<meta property="og:title" content={title} />
-	<meta property="og:description" content={socialDescription} />
-	<meta property="og:type" content="website" />
-	<meta property="og:url" content={siteUrl} />
-	<meta property="og:site_name" content="Pollora" />
-	<meta property="og:locale" content="en" />
-	<meta property="og:image" content={ogImage} />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content="Pollora: Modern PHP, zero compromise. Laravel meets WordPress." />
-	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content={title} />
-	<meta name="twitter:description" content={socialDescription} />
-	<meta name="twitter:image" content={ogImage} />
-	<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-	<AnalyticsHead />
-	<link rel="icon" href="/favicon.ico" sizes="32x32" />
-	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-	<link rel="manifest" href="/site.webmanifest" />
-
-
-</head>
-
-<body class="bg-paper text-ink">
-
-	<!-- ═══ NAV ═══ -->
-	<nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
-		<div class="gradient-bar h-[3px]"></div>
-		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
-			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
-				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
-			</a>
-			<div class="hidden md:flex items-center gap-9 font-[var(--font-body)] text-[0.95rem] font-medium text-ink-2">
-				<a href="/features/" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Features</a>
-				<a href="/getting-started/installation/" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Docs</a>
-				<a href="#ecosystem" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Ecosystem</a>
-				<a href="#nectar" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Nectar AI</a>
-				<a href="/blog/" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">Blog</a>
-				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-ink transition-colors duration-[var(--dur-micro)]">GitHub</a>
-			</div>
-			<a href="/getting-started/installation/" class="hidden md:inline-flex items-center gap-2 px-6 py-2.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-				Get Started
-			</a>
-			<button @click="open = !open" class="md:hidden p-2 -mr-2" :aria-expanded="open" aria-label="Menu">
-				<svg x-show="!open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-				<svg x-show="open" x-cloak width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-			</button>
-		</div>
-		<!-- Mobile menu -->
-		<div x-show="open" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150 ease-in" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-6 flex flex-col gap-4 font-[var(--font-body)] text-base font-medium text-ink-2">
-				<a href="/features/" class="hover:text-ink">Features</a>
-				<a href="/getting-started/installation/" @click="open = false" class="hover:text-ink">Docs</a>
-				<a href="#ecosystem" @click="open = false" class="hover:text-ink">Ecosystem</a>
-				<a href="#nectar" @click="open = false" class="hover:text-ink">Nectar AI</a>
-				<a href="/blog/" class="hover:text-ink">Blog</a>
-				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-ink">GitHub</a>
-				<a href="/getting-started/installation/" class="inline-flex items-center justify-center gap-2 px-6 py-3 mt-2 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold">
-					Get Started
-				</a>
-			</div>
-		</div>
-	</nav>
-
-	<main>
+<SiteLayout title={title} description={description} socialDescription={socialDescription} structuredData={structuredData}>
 
 		<!-- ═══ HERO ═══ -->
 		<section class="pt-36 pb-24 md:pt-44 md:pb-32 relative">
@@ -196,7 +118,7 @@ const packages = [
 								View on GitHub
 							</a>
 						</div>
-						<button type="button" x-data @click="$store.tour.show()" class="group mt-8 inline-flex items-center gap-3 text-base font-semibold text-ink-2 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
+						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="group mt-8 inline-flex items-center gap-3 text-base font-semibold text-ink-2 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
 							<span class="grid place-items-center w-11 h-11 rounded-full bg-gradient-pollora text-white shadow-[0_0_20px_rgba(255,83,52,0.35)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-5 h-5 translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
 							Watch the 1-min tour
 							<span class="font-[var(--font-code)] text-sm font-normal text-muted">1:06</span>
@@ -240,33 +162,6 @@ const packages = [
 			</div>
 		</section>
 
-		<!-- ═══ VIDEO TOUR ═══ -->
-		<section id="tour" class="py-24 md:py-32 bg-code-bg relative overflow-hidden">
-			<div class="absolute inset-0 opacity-[0.08]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 65%)"></div>
-			<div class="max-w-5xl mx-auto px-[clamp(1rem,4vw,2rem)] relative">
-				<div data-reveal class="text-center mb-12" style="--i:0">
-					<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Video tour</p>
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">Pollora in <span class="text-gradient">60 seconds</span></h2>
-					<p class="text-neutral text-lg max-w-[52ch] mx-auto">From one install command to your first post type — a quick tour of what changes when WordPress meets Laravel.</p>
-				</div>
-				<div data-reveal style="--i:1">
-					<div x-data="{ playing: false }" class="relative aspect-video rounded-[var(--radius-lg)] overflow-hidden bg-black shadow-2xl shadow-black/40 ring-1 ring-white/10">
-						<button type="button" x-show="!playing" @click="playing = true" data-track="tour_video_play" class="group absolute inset-0 w-full h-full focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-[var(--color-focus)]" aria-label="Play the Pollora 1-minute tour video">
-							<Image src={videoPoster} alt="" widths={[640, 960, 1280]} sizes="(min-width: 1024px) 1024px, 100vw" loading="lazy" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
-							<span class="absolute inset-0 bg-black/15 group-hover:bg-black/0 transition-colors duration-[var(--dur-short)]"></span>
-							<span class="absolute inset-0 grid place-items-center">
-								<span class="grid place-items-center w-18 h-18 md:w-24 md:h-24 rounded-full bg-gradient-pollora text-white shadow-[0_0_40px_rgba(255,83,52,0.55)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-[40%] h-[40%] translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
-							</span>
-							<span class="absolute bottom-3 right-3 md:bottom-4 md:right-4 px-2.5 py-1 rounded-[var(--radius-sm)] bg-black/70 text-white text-sm font-[var(--font-code)]">1:06</span>
-						</button>
-						<template x-if="playing">
-							<iframe src={tourEmbedUrl} title="Pollora in 60 seconds" class="absolute inset-0 w-full h-full" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
-						</template>
-					</div>
-				</div>
-			</div>
-		</section>
-
 		<!-- ═══ INSTALL ═══ -->
 		<section class="py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
@@ -291,6 +186,13 @@ const packages = [
 						</div>
 					</div>
 					<img src={mascotDeveloper.src} alt="Pollora mascot" class="hidden md:block absolute -bottom-12 -right-16 lg:-right-24 w-44 lg:w-56 pointer-events-none drop-shadow-[0_0_20px_rgba(255,83,52,0.2)]" width="224" height="224" loading="lazy" />
+				</div>
+				<!-- The command itself, to copy: tracked as copy_code / install-command -->
+				<div x-data="{ copied: false }" class="pl-install-cmd max-w-3xl mx-auto">
+					<code><span class="text-pollora-teal select-none">$ </span><span x-ref="cmd">composer global require pollora/cli &amp;&amp; pollora new example-app</span></code>
+					<button type="button" @click="navigator.clipboard.writeText($refs.cmd.textContent).then(() => { copied = true; window.dataLayer?.push({ event: 'copy_code', code_language: 'install-command' }); setTimeout(() => copied = false, 2000) })" :aria-label="copied ? 'Copied' : 'Copy the install command'">
+						<span x-text="copied ? 'Copied' : 'Copy'">Copy</span>
+					</button>
 				</div>
 			</div>
 		</section>
@@ -422,7 +324,7 @@ const packages = [
 		</section>
 
 		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
-		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'schedules': 'a scheduled event', 'rest': 'a REST endpoint', 'ajax': 'an AJAX handler', 'cli': 'a WP-CLI command', 'abilities': 'an AI ability' } }">
+		<section class="py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'rest': 'a REST endpoint', 'abilities': 'an AI ability' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-10" style="--i:0">
 					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
@@ -432,10 +334,7 @@ const packages = [
 					<div class="flex flex-nowrap md:flex-wrap gap-2 overflow-x-auto md:overflow-visible -mx-[clamp(1rem,4vw,2rem)] px-[clamp(1rem,4vw,2rem)] md:mx-0 md:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" role="tablist">
 						<button role="tab" :aria-selected="tab === 'post-types'" @click="tab = 'post-types'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'post-types' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Post Types</button>
 						<button role="tab" :aria-selected="tab === 'hooks'" @click="tab = 'hooks'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'hooks' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Actions &amp; Filters</button>
-						<button role="tab" :aria-selected="tab === 'schedules'" @click="tab = 'schedules'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'schedules' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Schedules</button>
 						<button role="tab" :aria-selected="tab === 'rest'" @click="tab = 'rest'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'rest' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">REST API</button>
-						<button role="tab" :aria-selected="tab === 'ajax'" @click="tab = 'ajax'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'ajax' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">AJAX</button>
-						<button role="tab" :aria-selected="tab === 'cli'" @click="tab = 'cli'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'cli' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">WP-CLI</button>
 						<button role="tab" :aria-selected="tab === 'abilities'" @click="tab = 'abilities'; $el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })\" :class="tab === 'abilities' ? 'bg-gradient-pollora text-white' : 'bg-code-surface text-neutral hover:text-[var(--color-accent-ink)]'" class="shrink-0 whitespace-nowrap px-5 py-2.5 rounded-[var(--radius-pill)] text-sm font-semibold transition-all duration-[var(--dur-short)]">Abilities</button>
 					</div>
 					<!-- Mobile: Pollora / WordPress switch -->
@@ -552,73 +451,6 @@ const packages = [
 				</div>
 
 				<!-- Tab: Schedules -->
-				<div x-show="tab === 'schedules'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
-							<span class="text-base font-medium text-muted">WordPress — 30+ lines, fragile</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-comment">// 1. Register custom 6h interval</span>
-<span class="token-function">add_filter</span>(<span class="token-string">'cron_schedules'</span>, <span class="token-keyword">function</span>($s) <span class="token-punctuation">&#123;</span>
-    $s[<span class="token-string">'every_6h'</span>] = [
-        <span class="token-string">'interval'</span> =&gt; 21600,
-        <span class="token-string">'display'</span>  =&gt; <span class="token-string">'Every 6 hours'</span>,
-    ];
-    <span class="token-keyword">return</span> $s;
-<span class="token-punctuation">&#125;</span>);
-
-<span class="token-comment">// 2. Schedule daily cleanup</span>
-<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'daily_cleanup'</span>)) <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_schedule_event</span>(<span class="token-function">time</span>(), <span class="token-string">'daily'</span>, <span class="token-string">'daily_cleanup'</span>);
-<span class="token-punctuation">&#125;</span>
-<span class="token-function">add_action</span>(<span class="token-string">'daily_cleanup'</span>, <span class="token-string">'do_daily_cleanup'</span>);
-
-<span class="token-keyword">function</span> <span class="token-function">do_daily_cleanup</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-comment">// Clean up old data</span>
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-comment">// 3. Schedule feed check every 6h</span>
-<span class="token-keyword">if</span> (!<span class="token-function">wp_next_scheduled</span>(<span class="token-string">'check_feeds'</span>)) <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_schedule_event</span>(<span class="token-function">time</span>(), <span class="token-string">'every_6h'</span>, <span class="token-string">'check_feeds'</span>);
-<span class="token-punctuation">&#125;</span>
-<span class="token-function">add_action</span>(<span class="token-string">'check_feeds'</span>, <span class="token-string">'do_check_feeds'</span>);
-
-<span class="token-keyword">function</span> <span class="token-function">do_check_feeds</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-comment">// Check RSS feeds</span>
-<span class="token-punctuation">&#125;</span></code></pre>
-						</div>
-					</div>
-					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
-							<span class="text-base font-semibold text-gradient">Pollora — one attribute, done</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Schedule</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Every</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Schedule\Interval</span>;
-
-<span class="token-keyword">class</span> <span class="token-class">Maintenance</span>
-<span class="token-punctuation">&#123;</span>
-    <span class="token-attribute">#[Schedule(Every::DAY)]</span>
-    <span class="token-keyword">public function</span> <span class="token-function">dailyCleanup</span>(): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        <span class="token-comment">// Runs daily. Auto-registered.</span>
-    <span class="token-punctuation">&#125;</span>
-
-    <span class="token-attribute">#[Schedule(new Interval(hours: 6))]</span>
-    <span class="token-keyword">public function</span> <span class="token-function">checkFeeds</span>(): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        <span class="token-comment">// Custom interval. No cron_schedules filter.</span>
-    <span class="token-punctuation">&#125;</span>
-<span class="token-punctuation">&#125;</span></code></pre>
-						</div>
-					</div>
-				</div>
-
-
-				<!-- Tab: REST API -->
 				<div x-show="tab === 'rest'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
@@ -695,138 +527,6 @@ const packages = [
 				</div>
 
 				<!-- Tab: AJAX -->
-				<div x-show="tab === 'ajax'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
-							<span class="text-base font-medium text-muted">WordPress — one hook per audience</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-comment">// Logged-in users only</span>
-<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_subscribe'</span>, <span class="token-string">'app_subscribe'</span>);
-
-<span class="token-comment">// Everyone — two hooks to keep in sync</span>
-<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_load_more'</span>, <span class="token-string">'app_load_more'</span>);
-<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_nopriv_load_more'</span>, <span class="token-string">'app_load_more'</span>);
-
-<span class="token-comment">// Guests only</span>
-<span class="token-function">add_action</span>(<span class="token-string">'wp_ajax_nopriv_track_visit'</span>, <span class="token-string">'app_track_visit'</span>);
-
-<span class="token-keyword">function</span> <span class="token-function">app_subscribe</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_send_json_success</span>([<span class="token-string">'message'</span> =&gt; <span class="token-string">'Subscribed!'</span>]);
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-keyword">function</span> <span class="token-function">app_load_more</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-keyword">function</span> <span class="token-function">app_track_visit</span>() <span class="token-punctuation">&#123;</span>
-    <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-comment">// Forget a nopriv_ hook: silently broken for guests.</span>
-<span class="token-comment">// Add one by mistake: open to the whole internet.</span></code></pre>
-						</div>
-					</div>
-					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
-							<span class="text-base font-semibold text-gradient">Pollora — secure by default</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\Ajax</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Ajax\Domain\Model\AjaxAccess</span>;
-
-<span class="token-keyword">class</span> <span class="token-class">NewsletterHandler</span>
-<span class="token-punctuation">&#123;</span>
-    <span class="token-attribute">#[Ajax('subscribe')]</span>
-    <span class="token-keyword">public function</span> <span class="token-function">subscribe</span>(): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        <span class="token-function">wp_send_json_success</span>([<span class="token-string">'message'</span> =&gt; <span class="token-string">'Subscribed!'</span>]);
-    <span class="token-punctuation">&#125;</span>
-
-    <span class="token-attribute">#[Ajax('load_more', access: AjaxAccess::ALL)]</span>
-    <span class="token-keyword">public function</span> <span class="token-function">loadMore</span>(): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
-    <span class="token-punctuation">&#125;</span>
-
-    <span class="token-attribute">#[Ajax('track_visit', access: AjaxAccess::GUEST)]</span>
-    <span class="token-keyword">public function</span> <span class="token-function">trackVisit</span>(): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        <span class="token-function">wp_send_json_success</span>([<span class="token-comment">/* ... */</span>]);
-    <span class="token-punctuation">&#125;</span>
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-comment">// Logged-in only by default. Public is opt-in.</span></code></pre>
-						</div>
-					</div>
-				</div>
-
-				<!-- Tab: WP-CLI -->
-				<div x-show="tab === 'cli'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-neutral"></span>
-							<span class="text-base font-medium text-muted">WordPress — manual require, synopsis array</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-comment">// commands/class-greet-command.php</span>
-<span class="token-keyword">class</span> <span class="token-class">Greet_Command</span> <span class="token-punctuation">&#123;</span>
-    <span class="token-keyword">public function</span> <span class="token-function">__invoke</span>($args, $assoc_args) <span class="token-punctuation">&#123;</span>
-        $greeting = $assoc_args[<span class="token-string">'greeting'</span>] ?? <span class="token-string">'Hello'</span>;
-        <span class="token-class">WP_CLI</span>::<span class="token-function">success</span>(<span class="token-string">"&#123;$greeting&#125;, &#123;$args[0]&#125;!"</span>);
-    <span class="token-punctuation">&#125;</span>
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-comment">// functions.php</span>
-<span class="token-keyword">if</span> (<span class="token-function">defined</span>(<span class="token-string">'WP_CLI'</span>) &amp;&amp; <span class="token-class">WP_CLI</span>) <span class="token-punctuation">&#123;</span>
-    <span class="token-keyword">require_once</span> <span class="token-class">__DIR__</span> . <span class="token-string">'/commands/class-greet-command.php'</span>;
-
-    <span class="token-class">WP_CLI</span>::<span class="token-function">add_command</span>(<span class="token-string">'greet'</span>, <span class="token-string">'Greet_Command'</span>, [
-        <span class="token-string">'shortdesc'</span> =&gt; <span class="token-string">'Greets someone.'</span>,
-        <span class="token-string">'synopsis'</span>  =&gt; [
-            [
-                <span class="token-string">'type'</span> =&gt; <span class="token-string">'positional'</span>,
-                <span class="token-string">'name'</span> =&gt; <span class="token-string">'name'</span>,
-            ],
-            [
-                <span class="token-string">'type'</span>     =&gt; <span class="token-string">'assoc'</span>,
-                <span class="token-string">'name'</span>     =&gt; <span class="token-string">'greeting'</span>,
-                <span class="token-string">'optional'</span> =&gt; <span class="token-keyword">true</span>,
-            ],
-        ],
-    ]);
-<span class="token-punctuation">&#125;</span></code></pre>
-						</div>
-					</div>
-					<div class="min-w-0 flex-col md:flex" :class="side === 'pollora' ? 'flex' : 'hidden'">
-						<div class="flex items-center gap-2 mb-4">
-							<span class="w-2.5 h-2.5 rounded-full bg-pollora-coral"></span>
-							<span class="text-base font-semibold text-gradient">Pollora — one attribute, auto-discovered</span>
-						</div>
-						<div class="bg-code-surface rounded-[var(--radius-lg)] p-6 md:p-8 font-[var(--font-code)] text-[0.82rem] md:text-[0.85rem] leading-relaxed overflow-x-auto flex-1">
-							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpCli</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\WpCli\Synopsis</span>;
-
-<span class="token-attribute">#[WpCli]</span>
-<span class="token-attribute">#[Synopsis('&lt;name&gt; [--greeting=&lt;greeting&gt;]')]</span>
-<span class="token-keyword">class</span> <span class="token-class">GreetCommand</span>
-<span class="token-punctuation">&#123;</span>
-    <span class="token-keyword">public function</span> <span class="token-function">__invoke</span>(<span class="token-class">array</span> $arguments, <span class="token-class">array</span> $options): <span class="token-class">void</span>
-    <span class="token-punctuation">&#123;</span>
-        $greeting = $options[<span class="token-string">'greeting'</span>] ?? <span class="token-string">'Hello'</span>;
-        <span class="token-class">WP_CLI</span>::<span class="token-function">success</span>(<span class="token-string">"&#123;$greeting&#125;, &#123;$arguments[0]&#125;!"</span>);
-    <span class="token-punctuation">&#125;</span>
-<span class="token-punctuation">&#125;</span>
-
-<span class="token-comment">// $ wp greet John --greeting=Hi</span>
-<span class="token-comment">// Slug from the class name. No require, no guard.</span></code></pre>
-						</div>
-					</div>
-				</div>
-
-				<!-- Tab: Abilities -->
 				<div x-show="tab === 'abilities'" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					<div class="min-w-0 flex-col md:flex" :class="side === 'wp' ? 'flex' : 'hidden'">
 						<div class="flex items-center gap-2 mb-4">
@@ -1097,6 +797,28 @@ const packages = [
 			</div>
 		</section>
 
+		<!-- ═══ NEED HELP — AmphiBee ═══ -->
+		<section id="help" class="pb-24 md:pb-32 pt-24 md:pt-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="pl-help" style="--i:0">
+					<div>
+						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Need a hand?</p>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Work with the team <span class="text-gradient">behind Pollora</span></h2>
+						<p class="text-ink-2 text-lg max-w-[50ch]">Pollora is built and maintained by <strong class="text-ink">AmphiBee</strong>, a WordPress agency of 22 people who ship WordPress and Laravel projects every day. Bring us a new site, a migration or the plugin your project is missing.</p>
+						<a href="https://amphibee.fr/contact" target="_blank" rel="noopener" data-cta="Talk to AmphiBee" class="inline-flex items-center gap-2.5 mt-8 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+							Talk to AmphiBee <span aria-hidden="true">&rarr;</span>
+						</a>
+					</div>
+					<ul class="pl-help__list" role="list">
+						<li><span class="pl-help__title">New projects</span><span class="pl-help__text">A site built on Pollora from day one, from design to production.</span></li>
+						<li><span class="pl-help__title">Migrations</span><span class="pl-help__text">From a classic theme, Sage or Acorn to a Laravel application.</span></li>
+						<li><span class="pl-help__title">Plugins and integrations</span><span class="pl-help__text">Custom plugins, and WordPress connected to your CRM, ERP or APIs.</span></li>
+						<li><span class="pl-help__title">E-commerce</span><span class="pl-help__text">WooCommerce stores built to convert, on the Apiary theme or your own.</span></li>
+					</ul>
+				</div>
+			</div>
+		</section>
+
 		<!-- ═══ CTA ═══ -->
 		<section class="py-28 md:py-36 bg-code-bg relative overflow-hidden">
 			<div class="absolute inset-0 opacity-[0.07]" style="background: radial-gradient(ellipse at 50% 0%, #ff5334, transparent 70%)"></div>
@@ -1144,7 +866,6 @@ const packages = [
 			</div>
 		</section>
 
-	</main>
 
 
 	<!-- ═══ VIDEO MODAL ═══ -->
@@ -1160,25 +881,6 @@ const packages = [
 			</div>
 		</div>
 	</div>
-
-	<!-- ═══ FOOTER ═══ -->
-	<footer class="bg-code-bg border-t border-code-surface">
-		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-10 flex flex-col sm:flex-row items-center justify-between gap-5">
-			<div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-base text-muted">
-				<a href="/getting-started/installation/" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">Docs</a>
-				<a href="/blog/" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">Blog</a>
-				<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">GitHub</a>
-				<a href="/llms.txt" class="hover:text-neutral transition-colors duration-[var(--dur-micro)]">llms.txt</a>
-				<a href="mailto:support@pollora.dev" class="text-sm font-[var(--font-code)] hover:text-neutral transition-colors duration-[var(--dur-micro)]">support@pollora.dev</a>
-				<button type="button" data-consent-open class="hover:text-neutral transition-colors duration-[var(--dur-micro)] cursor-pointer">Cookie settings</button>
-			</div>
-			<div class="text-sm text-muted text-center sm:text-right space-y-1">
-				<p>Pollora is open source under the MIT license.</p>
-				<p>Built by <a href="https://amphibee.fr" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">AmphiBee</a>, backed by <a href="https://rubee.group" target="_blank" rel="noopener" class="text-neutral hover:text-[var(--color-accent-ink)] transition-colors duration-[var(--dur-micro)]">RuBee</a>.</p>
-			</div>
-		</div>
-	</footer>
-
 
 	<script define:vars={{ terminalSequence }}>
 		window.__terminalSequence = terminalSequence;
@@ -1424,8 +1126,6 @@ const packages = [
 			},
 		});
 
-		Alpine.start();
-
 		// Reveal on scroll
 		const io = new IntersectionObserver((entries) => {
 			entries.forEach((e) => {
@@ -1434,6 +1134,4 @@ const packages = [
 		}, { threshold: 0.08 });
 		document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
 	</script>
-<ConsentBanner />
-</body>
-</html>
+</SiteLayout>

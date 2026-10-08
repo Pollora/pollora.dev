@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import { Image } from 'astro:assets';
-import BlogLayout from '../../layouts/BlogLayout.astro';
+import SiteLayout from '../../layouts/SiteLayout.astro';
 import CategoryPill from '../../components/blog/CategoryPill.astro';
 import { authorOf, categories, formatDate, getPosts, postUrl, readingTime, type Post } from '../../lib/blog';
 
@@ -41,7 +41,7 @@ const structuredData = {
 };
 ---
 
-<BlogLayout title={`${post.data.title} · Pollora blog`} description={post.data.description} type="article" structuredData={structuredData}>
+<SiteLayout title={`${post.data.title} · Pollora blog`} description={post.data.description} type="article" structuredData={structuredData}>
 	<article>
 		<header class="pl-post-header">
 			<div class="pl-container">
@@ -113,4 +113,4 @@ const structuredData = {
 			)}
 		</div>
 	</section>
-</BlogLayout>
+</SiteLayout>

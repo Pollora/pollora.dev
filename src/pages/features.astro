@@ -2,7 +2,7 @@
 // Features: the framework's main features, one section each, grouped in chapters.
 // Code samples are taken from the docs; keep them in step when an API changes.
 import { Code } from 'astro:components';
-import BlogLayout from '../layouts/BlogLayout.astro';
+import SiteLayout from '../layouts/SiteLayout.astro';
 
 type Feature = {
 	id: string;
@@ -421,7 +421,7 @@ class MyPluginClass
 ];
 ---
 
-<BlogLayout
+<SiteLayout
 	title="Pollora features: Laravel tooling for WordPress"
 	description="Every main feature of Pollora: post types and typed meta as PHP attributes, Laravel routes on WordPress, Blade, blocks, async actions, abilities for AI agents, auth and diagnostics."
 >
@@ -495,4 +495,4 @@ pollora new example-app</code></pre>
 			</div>
 		</div>
 	</section>
-</BlogLayout>
+</SiteLayout>

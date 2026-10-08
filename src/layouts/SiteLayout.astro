@@ -1,0 +1,207 @@
+---
+// Shell of every page outside the docs: head, navigation and footer. The docs keep Starlight's.
+import polloraLogo from '../assets/pollora-logo.svg';
+import AnalyticsHead from '../components/AnalyticsHead.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import { ogImageFor } from '../lib/og-url';
+import { social } from '../lib/site';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/space-grotesk';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import '../styles/blog.css';
+
+interface Props {
+	title: string;
+	description: string;
+	/** og:description and twitter:description, when shorter than the meta description */
+	socialDescription?: string;
+	/** og:type, "article" for a post */
+	type?: 'website' | 'article';
+	structuredData?: object;
+}
+
+const { title, description, socialDescription = description, type = 'website', structuredData } = Astro.props;
+const site = 'https://pollora.dev';
+const url = new URL(Astro.url.pathname, site).href;
+const ogImage = ogImageFor(Astro.url.pathname);
+
+const links = [
+	{ label: 'Features', href: '/features/' },
+	{ label: 'Docs', href: '/getting-started/installation/' },
+	{ label: 'Nectar AI', href: '/#nectar' },
+	{ label: 'Blog', href: '/blog/' },
+	{ label: 'Changelog', href: '/changelog/' },
+];
+const isCurrent = (href: string) => href !== '/#nectar' && Astro.url.pathname.startsWith(href);
+
+const footer = [
+	{
+		title: 'Product',
+		links: [
+			{ label: 'Features', href: '/features/' },
+			{ label: 'How it compares', href: '/compare/' },
+			{ label: 'Nectar AI', href: '/nectar/overview/' },
+			{ label: 'Changelog', href: '/changelog/' },
+		],
+	},
+	{
+		title: 'Learn',
+		links: [
+			{ label: 'Get started', href: '/getting-started/installation/' },
+			{ label: 'Guides', href: '/guides/laravel-and-wordpress-approaches/' },
+			{ label: 'FAQ', href: '/faq/' },
+			{ label: 'Docs MCP server', href: '/nectar/docs-mcp-server/' },
+		],
+	},
+	{
+		title: 'Community',
+		links: [
+			{ label: 'Blog', href: '/blog/' },
+			{ label: 'RSS', href: '/blog/rss.xml' },
+			{ label: 'GitHub', href: social.github, external: true },
+			{ label: 'X (Twitter)', href: social.x, external: true },
+			{ label: 'Press kit', href: '/press/' },
+		],
+	},
+];
+---
+
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>{title}</title>
+	<meta name="description" content={description} />
+	<link rel="canonical" href={url} />
+	<link rel="sitemap" href="/sitemap-index.xml" />
+	<link rel="alternate" type="application/rss+xml" title="Pollora blog" href="/blog/rss.xml" />
+	<meta property="og:title" content={title} />
+	<meta property="og:description" content={socialDescription} />
+	<meta property="og:type" content={type} />
+	<meta property="og:url" content={url} />
+	<meta property="og:site_name" content="Pollora" />
+	<meta property="og:locale" content="en" />
+	<meta property="og:image" content={ogImage} />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content={title} />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@PolloraWP" />
+	<meta name="twitter:title" content={title} />
+	<meta name="twitter:description" content={socialDescription} />
+	<meta name="twitter:image" content={ogImage} />
+	{structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+	<AnalyticsHead />
+	<link rel="icon" href="/favicon.ico" sizes="32x32" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	<link rel="manifest" href="/site.webmanifest" />
+	<slot name="head" />
+</head>
+
+<!-- data-site: the pages outside the docs, for the conversion tracking of AnalyticsHead -->
+<body class="bg-paper text-ink" data-site>
+	<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[var(--z-modal)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-sm)] focus:bg-ink focus:text-paper">Skip to content</a>
+
+	<nav x-data="{ open: false }" class="fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
+		<div class="gradient-bar h-[3px]"></div>
+		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
+			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
+				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
+			</a>
+			<div class="hidden md:flex items-center gap-8 text-[0.95rem] font-medium text-ink-2">
+				{links.map((l) => (
+					<a
+						href={l.href}
+						aria-current={isCurrent(l.href) ? 'page' : undefined}
+						class:list={['hover:text-ink transition-colors duration-[var(--dur-micro)]', isCurrent(l.href) && 'text-ink']}
+					>{l.label}</a>
+				))}
+			</div>
+			<div class="hidden md:flex items-center gap-4">
+				<a href={social.github} target="_blank" rel="noopener" aria-label="Pollora on GitHub" class="pl-social">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8 0 3.2.9.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1 .9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>
+				</a>
+				<a href={social.x} target="_blank" rel="noopener" aria-label="Pollora on X" class="pl-social">
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+				</a>
+				<a href="/getting-started/installation/" data-cta="Get Started" class="inline-flex items-center gap-2 ml-2 px-6 py-2.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+					Get Started
+				</a>
+			</div>
+			<button @click="open = !open" class="md:hidden p-2 -mr-2" :aria-expanded="open" aria-label="Menu">
+				<svg x-show="!open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+				<svg x-show="open" x-cloak width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+			</button>
+		</div>
+		<div x-show="open" x-cloak x-transition:enter="transition duration-200 ease-out" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition duration-150 ease-in" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-rule bg-paper/95 backdrop-blur-xl">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] py-6 flex flex-col gap-4 text-base font-medium text-ink-2">
+				{links.map((l) => (
+					<a href={l.href} @click="open = false" class="hover:text-ink">{l.label}</a>
+				))}
+				<div class="flex gap-5 pt-1">
+					<a href={social.github} target="_blank" rel="noopener" class="hover:text-ink">GitHub</a>
+					<a href={social.x} target="_blank" rel="noopener" class="hover:text-ink">X</a>
+				</div>
+				<a href="/getting-started/installation/" data-cta="Get Started" class="inline-flex items-center justify-center gap-2 px-6 py-3 mt-2 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-sm font-semibold">
+					Get Started
+				</a>
+			</div>
+		</div>
+	</nav>
+
+	<main id="main">
+		<slot />
+	</main>
+
+	<footer class="pl-footer">
+		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 pb-10">
+			<div class="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+				<div>
+					<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" loading="lazy" />
+					<p class="mt-5 max-w-[30ch] text-base text-[oklch(72%_0.02_295)]">The Laravel framework for WordPress. Open source, MIT-licensed.</p>
+					<div class="mt-6 flex gap-3">
+						<a href={social.github} target="_blank" rel="noopener" aria-label="Pollora on GitHub" class="pl-social pl-social--dark">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8 0 3.2.9.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1 .9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>
+						</a>
+						<a href={social.x} target="_blank" rel="noopener" aria-label="Pollora on X" class="pl-social pl-social--dark">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+						</a>
+						<a href="/blog/rss.xml" aria-label="Blog RSS feed" class="pl-social pl-social--dark">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="19" r="2.5"/><path d="M2.5 9.5v3a9 9 0 0 1 9 9h3a12 12 0 0 0-12-12Zm0-7v3a16 16 0 0 1 16 16h3a19 19 0 0 0-19-19Z"/></svg>
+						</a>
+					</div>
+				</div>
+				{footer.map((column) => (
+					<div>
+						<p class="pl-footer__title">{column.title}</p>
+						<ul class="mt-4 space-y-2.5" role="list">
+							{column.links.map((l) => (
+								<li><a href={l.href} {...(l.external ? { target: '_blank', rel: 'noopener' } : {})} class="pl-footer__link">{l.label}</a></li>
+							))}
+						</ul>
+					</div>
+				))}
+			</div>
+			<div class="mt-14 pt-6 border-t border-code-surface flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm text-muted">
+				<p>Built by <a href="https://amphibee.fr" target="_blank" rel="noopener" class="pl-footer__link">AmphiBee</a>, backed by <a href="https://rubee.group" target="_blank" rel="noopener" class="pl-footer__link">RuBee</a>.</p>
+				<div class="flex flex-wrap gap-x-6 gap-y-2">
+					<a href="mailto:support@pollora.dev" class="pl-footer__link font-[var(--font-code)]">support@pollora.dev</a>
+					<a href="/llms.txt" class="pl-footer__link">llms.txt</a>
+					<button type="button" data-consent-open class="pl-footer__link cursor-pointer">Cookie settings</button>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<slot name="end" />
+
+	<script>
+		import Alpine from 'alpinejs';
+		// Started once the page's own scripts (deferred modules too) have registered their components
+		document.addEventListener('DOMContentLoaded', () => Alpine.start());
+	</script>
+	<ConsentBanner />
+</body>
+</html>
