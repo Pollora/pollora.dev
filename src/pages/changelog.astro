@@ -1,6 +1,8 @@
 ---
 // Release notes of pollora/framework, fetched from GitHub at build time.
 // A failed fetch (rate limit, network) renders a link to GitHub instead of failing the build.
+// Releases are grouped by minor line (13.35.x) and collapsed except the newest one;
+// the filter at the top narrows them by version prefix, client side, and syncs with ?v=.
 import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 
@@ -8,30 +10,58 @@ const REPO = 'Pollora/framework';
 
 type Release = { tag_name: string; name: string | null; body: string | null; published_at: string; prerelease: boolean; html_url: string };
 
+// The API caps a page at 100 releases: follow pages until a short one comes back
 let releases: Release[] = [];
 try {
 	const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
 	if (import.meta.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${import.meta.env.GITHUB_TOKEN}`;
-	const res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=30`, { headers });
-	if (res.ok) releases = await res.json();
+	for (let page = 1; page <= 10; page++) {
+		const res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=100&page=${page}`, { headers });
+		if (!res.ok) break;
+		const batch: Release[] = await res.json();
+		releases.push(...batch);
+		if (batch.length < 100) break;
+	}
 } catch {}
 
 const markdown = await createMarkdownProcessor();
 const entries = await Promise.all(
-	releases.map(async (r) => ({
-		...r,
-		html: (await markdown.render(r.body ?? '')).code,
-		date: new Date(r.published_at).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' }),
-	})),
+	releases.map(async (r) => {
+		const version = r.tag_name.replace(/^v/, '');
+		const [major, minor] = version.split(/[.-]/);
+		// Release bodies use ### sections: push them under the release <h3>, and scope their ids to the release
+		const html = (await markdown.render(r.body ?? '')).code
+			.replace(/<(\/?)h([1-6])/g, (_, slash, n) => `<${slash}h${Math.min(6, Math.max(4, Number(n) + 1))}`)
+			.replace(/<h([4-6]) id="([^"]+)"/g, (_, n, id) => `<h${n} id="${r.tag_name}-${id}"`);
+		return {
+			...r,
+			version,
+			line: `${major}.${minor}`,
+			sections: [...(r.body ?? '').matchAll(/^#{2,3}\s+(Added|Changed|Fixed|Removed|Deprecated|Security)\b/gim)].map((m) => m[1]),
+			html,
+			date: new Date(r.published_at).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' }),
+		};
+	}),
 );
+
+// Groups keep the API order (newest first)
+const groups: { line: string; releases: typeof entries }[] = [];
+for (const entry of entries) {
+	const group = groups.find((g) => g.line === entry.line);
+	if (group) group.releases.push(entry);
+	else groups.push({ line: entry.line, releases: [entry] });
+}
+
+const headings = groups.map((g) => ({ depth: 2, slug: `v${g.line}.x`, text: `${g.line}.x` }));
 ---
 
 <StarlightPage
 	frontmatter={{
 		title: 'Changelog',
 		description: 'Release notes for Pollora, the Laravel framework for WordPress: every stable and pre-release version of pollora/framework, newest first.',
-		tableOfContents: false,
+		tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
 	}}
+	headings={headings}
 >
 	<p>
 		Pollora's version numbers follow the Laravel release it is built on. The skeleton (<code>pollora/pollora</code>) is tagged
@@ -43,35 +73,229 @@ const entries = await Promise.all(
 		<p>The release notes could not be loaded. Read them on <a href={`https://github.com/${REPO}/releases`}>GitHub</a>.</p>
 	)}
 
-	{entries.map((r) => (
-		<section class="pl-release">
-			<h2 id={r.tag_name}>
-				{r.name || r.tag_name}
-				{r.prerelease && <span class="pl-release-badge">Pre-release</span>}
-			</h2>
-			<p class="pl-release-meta">
-				<time datetime={r.published_at}>{r.date}</time> · <a href={r.html_url}>View on GitHub</a>
-			</p>
-			<div set:html={r.html} />
+	{entries.length > 0 && (
+		<form class="pl-changelog-filter not-content" role="search" onsubmit="return false">
+			<label class="pl-changelog-field">
+				<span>Filter by version</span>
+				<input type="search" name="v" placeholder="13, 13.35 or 13.35.2" autocomplete="off" spellcheck="false" list="pl-changelog-lines" />
+			</label>
+			<datalist id="pl-changelog-lines">
+				{groups.map((g) => <option value={`${g.line}.x`} />)}
+			</datalist>
+			<label class="pl-changelog-check">
+				<input type="checkbox" name="pre" checked />
+				<span>Show pre-releases</span>
+			</label>
+			<p class="pl-changelog-count" aria-live="polite">{entries.length} releases</p>
+		</form>
+	)}
+
+	<p class="pl-changelog-empty" hidden>No release matches this version.</p>
+
+	{groups.map((g, gi) => (
+		<section class="pl-release-group" data-line={g.line}>
+			<h2 id={`v${g.line}.x`}>{g.line}.x</h2>
+			{g.releases.map((r, ri) => (
+				<details class="pl-release" id={r.tag_name} data-version={r.version} data-prerelease={r.prerelease ? '' : undefined} open={gi === 0 && ri === 0}>
+					<summary class="not-content">
+						<h3>{r.name || r.tag_name}</h3>
+						{r.prerelease && <span class="pl-release-badge">Pre-release</span>}
+						<span class="pl-release-meta">
+							<time datetime={r.published_at}>{r.date}</time>
+							{r.sections.length > 0 && <span class="pl-release-sections"> · {[...new Set(r.sections)].join(', ')}</span>}
+						</span>
+					</summary>
+					<div class="pl-release-body">
+						<p class="pl-release-link"><a href={r.html_url}>View on GitHub</a></p>
+						<Fragment set:html={r.html} />
+					</div>
+				</details>
+			))}
 		</section>
 	))}
 </StarlightPage>
 
+<script>
+	const form = document.querySelector<HTMLFormElement>('.pl-changelog-filter');
+	if (form) {
+		const input = form.querySelector<HTMLInputElement>('input[name="v"]')!;
+		const pre = form.querySelector<HTMLInputElement>('input[name="pre"]')!;
+		const count = form.querySelector<HTMLElement>('.pl-changelog-count')!;
+		const empty = document.querySelector<HTMLElement>('.pl-changelog-empty')!;
+		const groups = [...document.querySelectorAll<HTMLElement>('.pl-release-group')];
+		const releases = [...document.querySelectorAll<HTMLDetailsElement>('.pl-release')];
+
+		// "v13.35.x", "13.35.*" and "13.35." all mean the 13.35 line
+		const normalize = (value: string) => value.trim().toLowerCase().replace(/^v/, '').replace(/(\.(x|\*))+$|\.+$/, '');
+		// A prefix matches whole segments: 13.3 is not 13.35, and 13.34.0 includes its betas
+		const matches = (version: string, query: string) =>
+			!query || version === query || version.startsWith(`${query}.`) || version.startsWith(`${query}-`);
+
+		const apply = (syncUrl = true) => {
+			const query = normalize(input.value);
+			const visible = releases.filter((r) => {
+				const show = matches(r.dataset.version!, query) && (pre.checked || !('prerelease' in r.dataset));
+				r.hidden = !show;
+				return show;
+			});
+			for (const group of groups) group.hidden = !group.querySelector('.pl-release:not([hidden])');
+			// A filter down to one release opens it
+			if (visible.length === 1) visible[0].open = true;
+			empty.hidden = visible.length > 0;
+			count.textContent = visible.length === releases.length ? `${releases.length} releases` : `${visible.length} of ${releases.length} releases`;
+
+			if (syncUrl) {
+				const url = new URL(location.href);
+				if (query) url.searchParams.set('v', query);
+				else url.searchParams.delete('v');
+				if (pre.checked) url.searchParams.delete('pre');
+				else url.searchParams.set('pre', '0');
+				history.replaceState(null, '', url);
+			}
+		};
+
+		// A link to a release (#v13.34.2) opens it, and drops a filter that would hide it
+		const reveal = () => {
+			const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+			if (!target) return;
+			const release = target.closest<HTMLDetailsElement>('.pl-release');
+			const group = target.closest<HTMLElement>('.pl-release-group');
+			if ((release ?? group)?.closest('[hidden]')) {
+				input.value = '';
+				pre.checked = true;
+				apply();
+			}
+			if (release) release.open = true;
+			target.scrollIntoView();
+		};
+
+		const params = new URLSearchParams(location.search);
+		input.value = params.get('v') ?? '';
+		pre.checked = params.get('pre') !== '0';
+		apply(false);
+		reveal();
+
+		input.addEventListener('input', () => apply());
+		pre.addEventListener('change', () => apply());
+		window.addEventListener('hashchange', reveal);
+	}
+</script>
+
 <style>
+	.pl-changelog-filter {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: end;
+		gap: 0.75rem 1.5rem;
+		margin-block: 1.5rem 0.5rem;
+		padding: 1rem;
+		border: 1px solid var(--sl-color-hairline-light);
+		border-radius: 0.5rem;
+		font-size: var(--sl-text-sm);
+	}
+	.pl-changelog-field {
+		display: flex;
+		flex-direction: column;
+		gap: 0.35rem;
+		flex: 1 1 14rem;
+		color: var(--sl-color-gray-2);
+	}
+	.pl-changelog-field input {
+		width: 100%;
+		padding: 0.45rem 0.7rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.375rem;
+		background: var(--sl-color-black);
+		color: var(--sl-color-white);
+		font: inherit;
+	}
+	.pl-changelog-field input:focus-visible {
+		outline: 2px solid var(--sl-color-accent);
+		outline-offset: 1px;
+	}
+	.pl-changelog-check {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		padding-block: 0.45rem;
+		color: var(--sl-color-gray-2);
+		cursor: pointer;
+	}
+	.pl-changelog-check input {
+		accent-color: var(--sl-color-accent);
+	}
+	.pl-changelog-count {
+		margin: 0;
+		margin-inline-start: auto;
+		padding-block: 0.45rem;
+		color: var(--sl-color-gray-3);
+		font-variant-numeric: tabular-nums;
+	}
+	.pl-release-group[hidden],
+	.pl-release[hidden] {
+		display: none;
+	}
+	.pl-release {
+		padding: 0;
+		border: 0;
+		border-bottom: 1px solid var(--sl-color-hairline-light);
+	}
+	.pl-release summary {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.75rem;
+		padding-block: 0.75rem;
+		cursor: pointer;
+		list-style: none;
+	}
+	.pl-release summary::-webkit-details-marker {
+		display: none;
+	}
+	.pl-release summary::before {
+		content: '';
+		flex: none;
+		align-self: center;
+		width: 0.45rem;
+		height: 0.45rem;
+		border-right: 2px solid var(--sl-color-gray-3);
+		border-bottom: 2px solid var(--sl-color-gray-3);
+		transform: rotate(-45deg);
+		transition: transform 0.15s ease;
+	}
+	.pl-release[open] > summary::before {
+		transform: rotate(45deg);
+	}
+	.pl-release summary h3 {
+		margin: 0;
+		font-size: var(--sl-text-h4);
+		color: var(--sl-color-white);
+	}
+	.pl-release summary:hover h3 {
+		color: var(--sl-color-accent-high);
+	}
 	.pl-release-badge {
-		margin-inline-start: 0.6rem;
 		padding: 0.15rem 0.6rem;
 		border: 1px solid var(--sl-color-hairline-light);
 		border-radius: 999px;
-		font-family: var(--sl-font);
 		font-size: var(--sl-text-xs);
 		font-weight: 500;
-		letter-spacing: 0;
 		color: var(--sl-color-gray-3);
-		vertical-align: middle;
 	}
 	.pl-release-meta {
 		font-size: var(--sl-text-sm);
 		color: var(--sl-color-gray-3);
+	}
+	.pl-release-body {
+		padding-block-end: 1.25rem;
+		padding-inline-start: 1.2rem;
+	}
+	.pl-release-link {
+		font-size: var(--sl-text-sm);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.pl-release summary::before {
+			transition: none;
+		}
 	}
 </style>
