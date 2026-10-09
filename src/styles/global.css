@@ -544,6 +544,23 @@ body {
   .pl-eco__text { display: none; }
 }
 
+/* Site shell (SiteLayout): the fixed nav hides on scroll down, shows on scroll up (script in SiteLayout) */
+.pl-nav {
+  transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+}
+.pl-nav[data-hidden] { transform: translateY(-100%); }
+/* On mobile the nav sits on the content edge to edge: a hairline and a soft shadow set it apart */
+@media (max-width: 47.99rem) {
+  .pl-nav[data-scrolled] {
+    box-shadow: 0 1px 0 var(--color-rule), 0 8px 20px -12px oklch(25% 0.04 295 / 0.35);
+  }
+}
+/* Its shadow would otherwise peek below the top edge once it has slid away */
+.pl-nav[data-hidden] { box-shadow: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pl-nav { transition: none; }
+}
+
 /* Site shell (SiteLayout): social icons and the footer */
 .pl-social {
   display: grid;
@@ -556,6 +573,8 @@ body {
 }
 .pl-social:hover { color: var(--color-ink); background: var(--color-paper-3); }
 .pl-social svg { width: 1.1rem; height: 1.1rem; fill: currentColor; }
+.pl-social--outline { width: 2.75rem; height: 2.75rem; border: 1px solid var(--color-rule); }
+.pl-social--outline svg { width: 1.25rem; height: 1.25rem; }
 .pl-social--dark { color: oklch(72% 0.02 295); border: 1px solid var(--color-code-surface); }
 .pl-social--dark:hover { color: white; background: var(--color-code-surface); }
 .pl-footer { background: var(--color-code-bg); border-top: 1px solid var(--color-code-surface); }
