@@ -103,6 +103,7 @@ export default defineConfig({
 						{ label: 'Why Pollora', link: '/why/' },
 						{ label: 'How Pollora compares', link: '/compare/' },
 						{ label: 'FAQ', link: '/faq/' },
+						{ label: 'Roadmap', link: '/roadmap/' },
 						{ label: 'Changelog', link: '/changelog/' },
 						{ label: 'Blog', link: '/blog/' },
 					],

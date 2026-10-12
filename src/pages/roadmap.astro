@@ -1,0 +1,1096 @@
+---
+// Roadmap: where Pollora is going, in three undated horizons.
+// The source is the roadmap document kept with the project; keep this page in step when it moves.
+// Line styles carry the horizon everywhere on the page: solid = exists, short term = filled,
+// mid term = dashed, long term = dotted (the package map's legend spells it out).
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const FROM_VERSION = '13.35.5';
+
+type Horizon = { id: string; num: string; label: string; when: string; status: string; title: string; intro: string; accent: string };
+
+const horizons: Horizon[] = [
+	{
+		id: 'short-term',
+		num: '01',
+		label: 'Short term',
+		when: 'The next 13.x releases',
+		status: 'Planned',
+		title: 'Foundations, and the gaps you notice first',
+		intro: 'Discovery and attributes leave the framework first: the rest of the roadmap builds on them. Alongside, Pollora fills three everyday gaps: block variations and styles, menus and widgets.',
+		accent: '#fb196d',
+	},
+	{
+		id: 'mid-term',
+		num: '02',
+		label: 'Mid term',
+		when: 'Once the foundations are out',
+		status: 'Planned, order may change',
+		title: 'WordPress integrations, one package each',
+		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
+		accent: '#ff8c12',
+	},
+	{
+		id: 'long-term',
+		num: '03',
+		label: 'Long term',
+		when: 'Pollora without Laravel',
+		status: 'Direction, under study',
+		title: 'Pollora in a classic WordPress or a Bedrock',
+		intro: 'In time, Pollora ships as a mu-plugin that embeds the framework. Each port picks its adapter from what is present: Laravel in a Pollora application, native WordPress elsewhere. Your code stays the same.',
+		accent: '#49c7b9',
+	},
+];
+const [short, mid, long] = horizons;
+
+const principles = [
+	{ title: 'One package per job', text: 'Discovery, attributes and each WordPress integration become packages you can install on their own.' },
+	{ title: 'The framework assembles', text: '<code>pollora/framework</code> keeps what belongs to Laravel (routing, Eloquent, auth, queues) and wires the packages together.' },
+	{ title: 'Same code everywhere', text: 'A <code>#[PostType]</code> or an <code>#[Action]</code> reads the same in a Laravel app, a classic WordPress or a Bedrock.' },
+	{ title: 'Third-party plugins stay outside', text: 'ACF or Meta Box support comes as a companion package, never inside the framework.' },
+];
+
+const attributeNames = ['#[PostType]', '#[Taxonomy]', '#[Action]', '#[Filter]', '#[Meta]', '#[Role]', '#[Schedule]', '#[WpRestRoute]', '#[Ajax]', '#[Ability]', '#[BlockBinding]', '#[SkipDiscovery]', 'WP-CLI attributes'];
+
+type Gap = { title: string; href?: string; today: string; planned: string[] };
+const gaps: Gap[] = [
+	{
+		title: 'Block variations',
+		href: '/blocks/gutenberg-blocks/',
+		today: 'Nothing dedicated',
+		planned: ['A fluent API and an attribute, for theme blocks and <code>core/*</code> blocks alike'],
+	},
+	{
+		title: 'Block styles',
+		href: '/blocks/gutenberg-blocks/',
+		today: 'Nothing dedicated',
+		planned: ['A fluent API and an attribute, the stylesheet served by Vite'],
+	},
+	{
+		title: 'Block categories',
+		today: 'Set in the configuration, undocumented',
+		planned: ['Documented first, then a fluent API and an attribute'],
+	},
+	{
+		title: 'Menus',
+		href: '/theming/menus/',
+		today: 'Locations in the theme configuration; rendering rules (<code>link_config</code>, <code>item_config</code>, <code>submenu_config</code>) passed to <code>wp_nav_menu()</code>',
+		planned: [
+			'Locations declared with a fluent API and an attribute, like post types',
+			'A Blade component that renders a menu, keeping the existing class and attribute rules',
+			'The docs page listed for what it covers: navigation menus, not admin menus',
+		],
+	},
+	{
+		title: 'Widgets and widget areas',
+		today: 'Areas declared in the theme’s <code>config/sidebars.php</code>, no other API',
+		planned: ['Widget areas with a fluent API and an attribute', 'A widget as a class with an attribute, rendered in Blade'],
+	},
+];
+
+type Extraction = { feature: string; pkg: string; solve: string; href: string; needs?: string };
+const extractions: Extraction[] = [
+	{ feature: 'Typed meta', pkg: 'pollora/meta', solve: 'Split the WordPress registration from the Eloquent accessors, which stay in the framework.', href: '/content/typed-meta/' },
+	{ feature: 'Block Bindings', pkg: 'pollora/block-bindings', solve: 'Read which options are bindable without Laravel’s <code>config/</code>.', href: '/blocks/block-bindings/', needs: 'pollora/meta' },
+	{ feature: 'Roles & capabilities', pkg: 'pollora/roles', solve: 'Keep the Laravel authorization bridge (<code>$user->can()</code>, <code>@can</code>) in the framework.', href: '/advanced/roles-capabilities/' },
+	{ feature: 'Scheduled tasks', pkg: 'pollora/schedule', solve: 'Ship WP-Cron only in the package.', href: '/advanced/scheduling/' },
+	{ feature: 'WordPress REST routes', pkg: 'pollora/wp-rest', solve: 'Dependency injection without the Laravel container.', href: '/advanced/rest-api/' },
+	{ feature: 'WP-CLI commands', pkg: 'pollora/wp-cli', solve: 'Already close to WordPress; mostly waits on discovery.', href: '/advanced/wp-cli/' },
+	{ feature: 'Assets & Vite', pkg: 'pollora/assets', solve: 'Resolve the Vite manifest and HMR without Laravel, useful to any classic theme.', href: '/theming/assets-vite/' },
+	{ feature: 'Blade blocks & patterns', pkg: 'pollora/blocks', solve: 'Standalone Blade (<code>illuminate/view</code> alone); the editor runtime and <code>&lt;InnerBlocks /&gt;</code> unchanged.', href: '/blocks/patterns/' },
+];
+
+const newApis = [
+	{ title: 'Allowed blocks per post type', planned: 'Restrict or hide blocks, <code>core/*</code> included, per post type' },
+	{ title: 'Block Hooks', planned: 'Insert a block automatically before, after or inside another' },
+	{ title: 'Admin pages & settings', planned: 'Pages and settings declared as attributes, with fields typed like meta' },
+	{ title: 'Image sizes', planned: 'A fluent API and an attribute instead of <code>config/images.php</code>, then an image manipulation module' },
+	{ title: 'Post statuses', planned: 'Custom statuses declared the way post types are' },
+	{ title: 'Shortcodes', planned: 'A class with an attribute, rendered in Blade' },
+	{ title: 'Dashboard widgets', planned: 'A class with an attribute, rendered in Blade' },
+	{ title: 'Admin notices', planned: 'A fluent API, targeted by screen and by capability' },
+];
+
+const muPlugin = [
+	'The framework loads as it is: only the adapters change with the environment.',
+	'Discovery and attributes plug into the active theme and plugins.',
+	'Blade stays available for blocks and patterns.',
+	'Install by dropping the mu-plugin into a classic WordPress, or with Composer in a Bedrock.',
+];
+
+const ports = [
+	{ port: 'Cache', detail: 'discovery, results', laravel: 'Laravel cache', wordpress: 'Transients or the WordPress object cache' },
+	{ port: 'Async actions', detail: 'deferred hooks', laravel: 'Laravel queue', wordpress: 'Action Scheduler, else WP-Cron' },
+	{ port: 'Logs', detail: 'notices, errors', laravel: 'Laravel logs', wordpress: 'WordPress <code>debug.log</code>' },
+	{ port: 'Configuration', detail: 'settings', laravel: 'The <code>config/</code> folder', wordpress: 'Theme configuration and WordPress filters' },
+	{ port: 'Commands', detail: 'console', laravel: 'Artisan', wordpress: 'WP-CLI' },
+];
+
+const laravelOnly = [
+	{ label: 'Laravel routing', code: 'Route::wp()' },
+	{ label: 'Eloquent', code: 'pollora/colt' },
+	{ label: 'Authentication' },
+	{ label: 'Modules' },
+];
+
+// Package map: `stage` drives the border style, see the legend
+type Stage = 'exists' | 'short' | 'mid' | 'long';
+const wpPackages: { name: string; stage: Stage }[] = [
+	{ name: 'pollora/hook', stage: 'exists' },
+	{ name: 'pollora/ajax', stage: 'exists' },
+	{ name: 'pollora/abilities', stage: 'exists' },
+	{ name: 'pollora/option', stage: 'exists' },
+	{ name: 'pollora/meta', stage: 'mid' },
+	{ name: 'pollora/block-bindings', stage: 'mid' },
+	{ name: 'pollora/roles', stage: 'mid' },
+	{ name: 'pollora/schedule', stage: 'mid' },
+	{ name: 'pollora/wp-rest', stage: 'mid' },
+	{ name: 'pollora/wp-cli', stage: 'mid' },
+	{ name: 'pollora/assets', stage: 'mid' },
+	{ name: 'pollora/blocks', stage: 'mid' },
+];
+const legend: { stage: Stage; label: string }[] = [
+	{ stage: 'exists', label: 'Exists today' },
+	{ stage: 'short', label: 'Short term' },
+	{ stage: 'mid', label: 'Mid term' },
+	{ stage: 'long', label: 'Long term' },
+];
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'WebPage',
+	name: 'Pollora roadmap',
+	url: 'https://pollora.dev/roadmap/',
+	description: 'Where Pollora is going: reusable packages, fuller WordPress coverage, then Pollora without Laravel.',
+	isPartOf: { '@type': 'WebSite', name: 'Pollora', url: 'https://pollora.dev/' },
+};
+---
+
+<SiteLayout
+	title="Pollora roadmap: packages, WordPress coverage, and beyond Laravel"
+	description="Where Pollora is going: discovery and attributes as standalone packages, block variations, menus and widgets, each WordPress integration in its own package, then Pollora as a mu-plugin in classic WordPress and Bedrock."
+	socialDescription="Reusable packages, fuller WordPress coverage, then Pollora without Laravel: the roadmap in three horizons."
+	structuredData={structuredData}
+>
+	<!-- ─── Hero ──────────────────────────────────────────────────────── -->
+	<header class="rm-hero">
+		<div class="pl-container">
+			<p class="pl-kicker"><span class="pl-kicker__dot" aria-hidden="true"></span>Roadmap</p>
+			<h1 class="pl-index-title rm-hero__title">Where Pollora <span class="text-gradient">is going</span></h1>
+			<p class="pl-index-lede">
+				Pollora is splitting into packages you can use on their own, filling in what it still misses of WordPress
+				(blocks, menus, widgets), and heading toward a Pollora that runs without Laravel, in a classic WordPress or a Bedrock.
+			</p>
+
+			<!-- The three horizons on one track, from the current release -->
+			<ol class="rm-track" role="list" aria-label="Three horizons">
+				<li class="rm-track__start" aria-hidden="true">
+					<span class="rm-track__pin"></span>
+					<span class="rm-track__here">You are here</span>
+					<span class="rm-track__version">v{FROM_VERSION}</span>
+				</li>
+				{horizons.map((h, i) => (
+					<li class={`rm-track__stop rm-track__stop--${i + 1}`} style={`--accent:${h.accent}`}>
+						<a href={`#${h.id}`} class="rm-stop">
+							<span class="rm-stop__num">{h.num}</span>
+							<span class="rm-stop__label">{h.label}</span>
+							<span class="rm-stop__title">{h.title}</span>
+							<span class="rm-stop__status">{h.status}</span>
+						</a>
+					</li>
+				))}
+			</ol>
+			<p class="rm-hero__note">
+				<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 5.5V10l3 2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+				The horizons are not dated: they set an order of priority, not a calendar.
+			</p>
+		</div>
+	</header>
+
+	<!-- Sticky progress through the horizons; the active one is lit by the script below -->
+	<nav class="rm-sticky" aria-label="Roadmap sections" data-rm-sticky>
+		<div class="pl-container rm-sticky__inner">
+			<a href="#vision" data-rm-link="vision">Vision</a>
+			{horizons.map((h) => (
+				<a href={`#${h.id}`} data-rm-link={h.id} style={`--accent:${h.accent}`}><span class="rm-sticky__dot" aria-hidden="true"></span>{h.label}</a>
+			))}
+			<a href="#package-map" data-rm-link="package-map">Package map</a>
+		</div>
+		<div class="rm-sticky__progress" aria-hidden="true"><span data-rm-progress></span></div>
+	</nav>
+
+	<!-- ─── Vision ────────────────────────────────────────────────────── -->
+	<section id="vision" class="rm-section" aria-labelledby="vision-title" data-rm-section>
+		<div class="pl-container">
+			<div class="pl-chapter__head">
+				<div>
+					<p class="pl-chapter__num text-accent">The vision</p>
+					<h2 id="vision-title" class="pl-chapter__title">Building blocks, not a monolith</h2>
+				</div>
+				<p class="pl-chapter__intro">
+					Today most of Pollora lives in one package, <code>pollora/framework</code>, which assumes Laravel. Some pieces are already out:
+					<code>pollora/hook</code> works in a classic WordPress plugin or theme, and <code>pollora/helper-overrider</code> has no
+					Laravel dependency at all. The goal is to make that the rule.
+				</p>
+			</div>
+			<ol class="rm-principles" role="list">
+				{principles.map((p, i) => (
+					<li data-reveal style={`--i:${i}`}>
+						<span class="rm-principles__num">0{i + 1}</span>
+						<h3>{p.title}</h3>
+						<p set:html={p.text} />
+					</li>
+				))}
+			</ol>
+		</div>
+	</section>
+
+	<!-- ─── Short term ────────────────────────────────────────────────── -->
+	<section id={short.id} class="rm-section rm-horizon" style={`--accent:${short.accent}`} aria-labelledby={`${short.id}-title`} data-rm-section>
+		<div class="pl-container">
+			<div class="rm-horizon__head">
+				<p class="rm-horizon__eyebrow"><span class="rm-horizon__num">{short.num}</span>{short.label} · {short.when}<span class="rm-status rm-status--short">{short.status}</span></p>
+				<h2 id={`${short.id}-title`} class="pl-chapter__title">{short.title}</h2>
+				<p class="pl-chapter__intro">{short.intro}</p>
+			</div>
+
+			<h3 class="rm-subhead">The foundations <span>Everything else depends on these two</span></h3>
+			<div class="rm-foundations">
+				<article class="rm-card rm-card--foundation" data-reveal style="--i:0">
+					<p class="rm-card__pkg">pollora/discovery</p>
+					<h4 class="rm-card__title">Extract discovery</h4>
+					<p class="rm-card__text">
+						Discovery scans themes, plugins and modules for classes that carry attributes. Its contracts
+						(<code>Pollora\Discovery\Domain\Contracts\*</code>) are already documented as a stable public API: the best candidate to go first.
+					</p>
+					<ul class="rm-checks" role="list">
+						<li>Laravel’s cache replaced by a standard cache interface (PSR-16), with a Laravel adapter in the framework.</li>
+						<li>Explicit registration instead of a scan of the Laravel container, usable with any PSR-11 container.</li>
+						<li><code>discovery:run</code> and <code>discovery:clear</code> stay in the framework; the package gets WP-CLI equivalents.</li>
+					</ul>
+					<a class="rm-card__link" href="/core-concepts/auto-discovery/">How discovery works today <span aria-hidden="true">&rarr;</span></a>
+				</article>
+				<article class="rm-card rm-card--foundation" data-reveal style="--i:1">
+					<p class="rm-card__pkg">pollora/attributes</p>
+					<h4 class="rm-card__title">Extract the attributes</h4>
+					<p class="rm-card__text">
+						The attribute declarations move to a package with no dependencies. Processing each attribute stays in the package of its feature.
+					</p>
+					<ul class="rm-chips" role="list" aria-label="Attributes moving to pollora/attributes">
+						{attributeNames.map((name) => <li><code>{name}</code></li>)}
+					</ul>
+					<p class="rm-card__payoff">
+						<strong>What it unlocks:</strong> a plugin declares its attributes without installing the framework, and an IDE or a static analyser can read them on their own.
+					</p>
+				</article>
+			</div>
+
+			<h3 class="rm-subhead">The everyday gaps <span>Blocks, menus and widgets</span></h3>
+			<div class="rm-gaps">
+				{gaps.map((gap, i) => (
+					<article class="rm-gap" data-reveal style={`--i:${i % 3}`}>
+						<h4 class="rm-gap__title">
+							{gap.href ? <a href={gap.href}>{gap.title}</a> : gap.title}
+						</h4>
+						<div class="rm-gap__today">
+							<span class="rm-gap__tag">Today</span>
+							<p set:html={gap.today} />
+						</div>
+						<div class="rm-gap__planned">
+							<span class="rm-gap__tag">Planned</span>
+							<ul role="list">
+								{gap.planned.map((item) => <li set:html={item} />)}
+							</ul>
+						</div>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<!-- ─── Mid term ──────────────────────────────────────────────────── -->
+	<section id={mid.id} class="rm-section rm-horizon" style={`--accent:${mid.accent}`} aria-labelledby={`${mid.id}-title`} data-rm-section>
+		<div class="pl-container">
+			<div class="rm-horizon__head">
+				<p class="rm-horizon__eyebrow"><span class="rm-horizon__num">{mid.num}</span>{mid.label} · {mid.when}<span class="rm-status rm-status--mid">{mid.status}</span></p>
+				<h2 id={`${mid.id}-title`} class="pl-chapter__title">{mid.title}</h2>
+				<p class="pl-chapter__intro">{mid.intro}</p>
+			</div>
+
+			<h3 class="rm-subhead">Features leaving the framework <span>What each one has to solve first</span></h3>
+			<div class="rm-extract">
+				{extractions.map((e, i) => (
+					<article class="rm-extract__item" data-reveal style={`--i:${i % 4}`}>
+						<p class="rm-extract__from">{e.feature}</p>
+						<p class="rm-extract__pkg"><span aria-hidden="true">&rarr;</span> {e.pkg}</p>
+						<p class="rm-extract__solve" set:html={e.solve} />
+						{e.needs && <p class="rm-extract__needs">Needs <code>{e.needs}</code></p>}
+						<a href={e.href} class="rm-extract__docs" aria-label={`${e.feature} docs`}>Docs <span aria-hidden="true">&rarr;</span></a>
+					</article>
+				))}
+			</div>
+
+			<h3 class="rm-subhead">New WordPress APIs <span>Nothing dedicated today; each gets a fluent API and an attribute</span></h3>
+			<ul class="rm-apis" role="list">
+				{newApis.map((api, i) => (
+					<li data-reveal style={`--i:${i % 4}`}>
+						<h4>{api.title}</h4>
+						<p set:html={api.planned} />
+					</li>
+				))}
+			</ul>
+
+			<aside class="rm-companion" data-reveal>
+				<p class="rm-companion__kicker">Companion packages</p>
+				<p class="rm-companion__text">
+					Third-party plugin integrations live outside the framework. The first one planned is <strong>Meta Box</strong>, to declare its fields in code:
+					an existing AmphiBee package joins the Pollora organization under a new name.
+				</p>
+			</aside>
+		</div>
+	</section>
+
+	<!-- ─── Long term ─────────────────────────────────────────────────── -->
+	<section id={long.id} class="rm-section rm-horizon rm-horizon--dark" style={`--accent:${long.accent}`} aria-labelledby={`${long.id}-title`} data-rm-section>
+		<div class="pl-container">
+			<div class="rm-horizon__head">
+				<p class="rm-horizon__eyebrow"><span class="rm-horizon__num">{long.num}</span>{long.label} · {long.when}<span class="rm-status rm-status--long">{long.status}</span></p>
+				<h2 id={`${long.id}-title`} class="pl-chapter__title">{long.title}</h2>
+				<p class="pl-chapter__intro">{long.intro}</p>
+			</div>
+
+			<div class="rm-mu">
+				<div>
+					<h3 class="rm-subhead">A mu-plugin that embeds the framework</h3>
+					<ul class="rm-checks rm-checks--dark" role="list">
+						{muPlugin.map((item) => <li>{item}</li>)}
+					</ul>
+					<div class="rm-only">
+						<p class="rm-only__label">Stays in Laravel applications</p>
+						<ul role="list">
+							{laravelOnly.map((item) => <li>{item.label}{item.code && <code>{item.code}</code>}</li>)}
+						</ul>
+					</div>
+				</div>
+
+				<!-- Ports and adapters: the switch lights the adapter each environment would use -->
+				<div class="rm-ports" x-data="{ env: 'laravel' }">
+					<div class="rm-ports__head">
+						<p>Same port, the adapter that fits</p>
+						<div class="rm-switch" role="radiogroup" aria-label="Environment">
+							<button type="button" role="radio" :aria-checked="env === 'laravel'" aria-checked="true" @click="env = 'laravel'">Laravel app</button>
+							<button type="button" role="radio" :aria-checked="env === 'wordpress'" aria-checked="false" @click="env = 'wordpress'">WordPress · Bedrock</button>
+						</div>
+					</div>
+					<ul class="rm-ports__list" role="list" :data-env="env" data-env="laravel">
+						{ports.map((p) => (
+							<li class="rm-port">
+								<span class="rm-port__side rm-port__side--laravel" set:html={p.laravel} />
+								<span class="rm-port__plug">
+									<strong>{p.port}</strong>
+									<small>{p.detail}</small>
+								</span>
+								<span class="rm-port__side rm-port__side--wordpress" set:html={p.wordpress} />
+							</li>
+						))}
+					</ul>
+					<p class="rm-ports__foot">Your code calls the port. Which side answers depends on where Pollora runs.</p>
+				</div>
+			</div>
+
+			<aside class="rm-announced">
+				<p class="rm-announced__kicker">Already announced</p>
+				<p>
+					The <code>resources/blocks</code> folder is still read, with a warning, until <strong>Pollora v15</strong>.
+					Move your blocks to <code>resources/views/blocks</code>.
+				</p>
+			</aside>
+		</div>
+	</section>
+
+	<!-- ─── Package map ───────────────────────────────────────────────── -->
+	<section id="package-map" class="rm-section" aria-labelledby="package-map-title" data-rm-section>
+		<div class="pl-container">
+			<div class="pl-chapter__head">
+				<div>
+					<p class="pl-chapter__num text-accent">Package map</p>
+					<h2 id="package-map-title" class="pl-chapter__title">Everything rests on two packages</h2>
+				</div>
+				<p class="pl-chapter__intro">
+					Discovery and attributes are the base. The WordPress packages build on them, and the framework assembles them, whether a Laravel
+					application loads it or, in time, the mu-plugin.
+				</p>
+			</div>
+
+			<figure class="rm-map">
+				<div class="rm-map__layer rm-map__hosts">
+					<div class="rm-map__box" data-stage="exists">
+						<strong>Laravel application</strong>
+						<span>Routing, Eloquent (colt), auth, modules</span>
+					</div>
+					<div class="rm-map__box" data-stage="long">
+						<strong>Pollora mu-plugin</strong>
+						<span>Classic WordPress or Bedrock, no Laravel</span>
+					</div>
+				</div>
+				<div class="rm-map__links rm-map__links--two" aria-hidden="true"><span>loads</span><span>will embed</span></div>
+				<div class="rm-map__layer">
+					<div class="rm-map__box rm-map__box--wide" data-stage="exists">
+						<strong>pollora/framework</strong>
+						<span>Ports and adapters: Laravel when present, WordPress otherwise (Action Scheduler, transients, WP-CLI)</span>
+					</div>
+				</div>
+				<div class="rm-map__links" aria-hidden="true"><span>assembles</span></div>
+				<div class="rm-map__layer rm-map__group">
+					<p class="rm-map__group-label">WordPress packages</p>
+					<ul class="rm-map__grid" role="list">
+						{wpPackages.map((p) => <li class="rm-map__chip" data-stage={p.stage}><code>{p.name}</code></li>)}
+					</ul>
+				</div>
+				<div class="rm-map__links" aria-hidden="true"><span>build on</span></div>
+				<div class="rm-map__layer rm-map__base">
+					<div class="rm-map__box" data-stage="short">
+						<strong>pollora/discovery</strong>
+						<span>Finds the classes that carry attributes</span>
+					</div>
+					<div class="rm-map__box" data-stage="short">
+						<strong>pollora/attributes</strong>
+						<span>Attribute declarations, no dependencies</span>
+					</div>
+				</div>
+				<figcaption>
+					<ul class="rm-legend" role="list">
+						{legend.map((l) => <li><span class="rm-legend__swatch" data-stage={l.stage}></span>{l.label}</li>)}
+					</ul>
+					<p>
+						<code>pollora/helper-overrider</code>, already standalone, stays apart: it lets Laravel’s and WordPress’s <code>__()</code> functions live side by side.
+					</p>
+				</figcaption>
+			</figure>
+		</div>
+	</section>
+
+	<!-- ─── Contribute ────────────────────────────────────────────────── -->
+	<section class="pl-container pb-20 md:pb-28">
+		<div class="pl-features-cta rm-cta">
+			<div>
+				<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3vw+0.75rem,3.25rem)] leading-[1.05] tracking-tight">Shape <span class="text-gradient">what comes next</span></h2>
+				<p class="mt-4 text-lg text-[oklch(80%_0.02_295)] max-w-[48ch]">
+					An idea, a need, a priority you would move up? Open an issue. Shipped work lands in the changelog, and designs in progress on the blog.
+				</p>
+			</div>
+			<div class="flex flex-wrap gap-4">
+				<a href="https://github.com/Pollora/framework/issues" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)]">Open an issue <span aria-hidden="true">&rarr;</span></a>
+				<a href="/changelog/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-[oklch(35%_0.03_295)] text-white text-lg font-semibold hover:border-pollora-coral/60 transition-colors duration-[var(--dur-micro)]">Changelog</a>
+				<a href="https://github.com/Pollora/.github/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-[oklch(35%_0.03_295)] text-white text-lg font-semibold hover:border-pollora-coral/60 transition-colors duration-[var(--dur-micro)]">How to contribute</a>
+			</div>
+		</div>
+		<p class="rm-source">Starting point: <a href="/changelog/">pollora/framework {FROM_VERSION}</a> and the <a href="/getting-started/installation/">published documentation</a>. Designs in progress: <a href="/blog/category/roadmap/">roadmap posts</a>.</p>
+	</section>
+</SiteLayout>
+
+<script>
+	// Cards fade in as they come into view
+	const reveal = new IntersectionObserver((entries) => {
+		for (const e of entries) {
+			if (e.isIntersecting) { e.target.classList.add('shown'); reveal.unobserve(e.target); }
+		}
+	}, { rootMargin: '0px 0px -8% 0px' });
+	document.querySelectorAll('[data-reveal]').forEach((el) => reveal.observe(el));
+
+	// The sticky bar lights the section being read, and fills as the reader goes down the page
+	const links = new Map([...document.querySelectorAll<HTMLAnchorElement>('[data-rm-link]')].map((a) => [a.dataset.rmLink!, a]));
+	const sections = [...document.querySelectorAll<HTMLElement>('[data-rm-section]')];
+	const bar = document.querySelector<HTMLElement>('[data-rm-progress]');
+	let ticking = false;
+	const update = () => {
+		ticking = false;
+		const line = window.innerHeight * 0.35;
+		let current: string | undefined;
+		for (const s of sections) if (s.getBoundingClientRect().top <= line) current = s.id;
+		for (const [id, a] of links) {
+			if (id === current) a.setAttribute('aria-current', 'true');
+			else a.removeAttribute('aria-current');
+		}
+		if (bar && sections.length) {
+			const first = sections[0].getBoundingClientRect().top + window.scrollY;
+			const last = sections[sections.length - 1];
+			const end = last.getBoundingClientRect().bottom + window.scrollY - window.innerHeight;
+			const ratio = Math.min(1, Math.max(0, (window.scrollY - first + line) / Math.max(1, end - first + line)));
+			bar.style.transform = `scaleX(${ratio})`;
+		}
+	};
+	window.addEventListener('scroll', () => {
+		if (!ticking) { ticking = true; requestAnimationFrame(update); }
+	}, { passive: true });
+	update();
+</script>
+
+<style>
+	/* Inline code across the page; set:html content is not scoped, hence :global */
+	.rm-hero :global(code), .rm-section :global(code) {
+		font-family: var(--font-code);
+		font-size: 0.85em;
+		padding: 0.08rem 0.35rem;
+		border-radius: var(--radius-sm);
+		background: var(--color-paper-3);
+		overflow-wrap: anywhere;
+	}
+	.text-accent { color: var(--color-accent); }
+
+	/* ─── Hero and its track ─────────────────────────────── */
+	.rm-hero {
+		position: relative;
+		padding-block: clamp(8.5rem, 14vw, 11rem) clamp(3rem, 6vw, 4.5rem);
+		background:
+			radial-gradient(40rem 22rem at 85% 0%, oklch(75% 0.15 30 / 0.16), transparent 70%),
+			radial-gradient(30rem 20rem at 0% 100%, oklch(80% 0.1 185 / 0.12), transparent 70%);
+	}
+	.rm-hero__title { max-width: 12ch; }
+
+	.rm-track {
+		position: relative;
+		display: grid;
+		gap: 1rem;
+		margin-top: clamp(2.5rem, 5vw, 4rem);
+	}
+	/* The rail: a gradient line from the current release to the farthest horizon */
+	.rm-track::before {
+		content: '';
+		position: absolute;
+		left: 0.6rem;
+		top: 0.6rem;
+		bottom: 1.5rem;
+		width: 3px;
+		border-radius: 3px;
+		background: linear-gradient(180deg, var(--color-ink) 0 2.5rem, #fb196d 2.5rem, #ff8c12 60%, #49c7b9);
+	}
+	.rm-track__start {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding-left: 2.25rem;
+		font-family: var(--font-code);
+		font-size: 0.8rem;
+	}
+	.rm-track__pin {
+		position: absolute;
+		left: 0;
+		top: calc(50% - 0.675rem);
+		width: 1.35rem;
+		height: 1.35rem;
+		border-radius: 999px;
+		background: var(--color-ink);
+		box-shadow: 0 0 0 5px var(--color-paper), 0 0 0 7px oklch(17% 0.03 290 / 0.15);
+	}
+	.rm-track__pin::after {
+		content: '';
+		position: absolute;
+		inset: -7px;
+		border-radius: 999px;
+		border: 2px solid oklch(65% 0.21 30 / 0.5);
+		animation: rm-ping 2.4s var(--ease-out) infinite;
+	}
+	@keyframes rm-ping {
+		from { transform: scale(0.6); opacity: 1; }
+		to { transform: scale(1.6); opacity: 0; }
+	}
+	.rm-track__here { text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-ink-2); }
+	.rm-track__version {
+		padding: 0.2rem 0.6rem;
+		border-radius: var(--radius-pill);
+		background: var(--color-ink);
+		color: var(--color-paper);
+		font-weight: 600;
+	}
+	.rm-track__stop { position: relative; padding-left: 2.25rem; }
+	.rm-track__stop::before {
+		content: '';
+		position: absolute;
+		left: 0.15rem;
+		top: 1.6rem;
+		width: 1rem;
+		height: 1rem;
+		border-radius: 999px;
+		background: var(--color-paper);
+		border: 3px solid var(--accent);
+	}
+	.rm-stop {
+		display: grid;
+		gap: 0.35rem;
+		height: 100%;
+		padding: 1.25rem 1.4rem 1.4rem;
+		border: 1.5px solid var(--color-rule);
+		border-radius: var(--radius-lg);
+		background: oklch(100% 0 0 / 0.7);
+		backdrop-filter: blur(6px);
+		transition: transform var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out);
+	}
+	/* Firmness of the commitment, as on the package map: solid, dashed, dotted */
+	.rm-track__stop--1 .rm-stop { border-color: color-mix(in oklch, var(--accent) 55%, transparent); border-width: 2px; }
+	.rm-track__stop--2 .rm-stop { border-style: dashed; border-color: color-mix(in oklch, var(--accent) 60%, transparent); }
+	.rm-track__stop--3 .rm-stop { border-style: dotted; border-width: 2px; border-color: color-mix(in oklch, var(--accent) 70%, transparent); }
+	.rm-stop:hover { transform: translateY(-3px); box-shadow: 0 20px 40px -28px oklch(17% 0.03 290 / 0.45); }
+	.rm-stop:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+	.rm-stop__num { font-family: var(--font-display); font-weight: 700; font-size: 2.5rem; line-height: 1; color: var(--accent); }
+	.rm-stop__label { font-family: var(--font-code); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-ink-2); }
+	.rm-stop__title { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+	.rm-stop__status {
+		justify-self: start;
+		margin-top: 0.4rem;
+		padding: 0.15rem 0.6rem;
+		border-radius: var(--radius-pill);
+		background: color-mix(in oklch, var(--accent) 14%, transparent);
+		color: color-mix(in oklch, var(--accent) 70%, black);
+		font-size: 0.8rem;
+		font-weight: 600;
+	}
+	/* Wide screens: the rail turns horizontal, "You are here" above its start, a dot per stop on it */
+	@media (min-width: 64rem) {
+		.rm-track {
+			--rail: 2.6rem;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 1.25rem;
+			padding-top: 4rem;
+		}
+		.rm-track::before {
+			top: var(--rail);
+			left: 0.6rem;
+			right: 0;
+			bottom: auto;
+			width: auto;
+			height: 3px;
+			background: linear-gradient(90deg, var(--color-ink) 0 4rem, #fb196d 8rem, #ff8c12 55%, #49c7b9 88%, transparent);
+		}
+		/* Out of flow, so the three stops share the columns */
+		.rm-track__start { position: absolute; top: 0; left: 0; padding-left: 0; }
+		.rm-track__pin { top: calc(var(--rail) + 1.5px - 0.675rem); }
+		.rm-track__stop { padding-left: 0; }
+		.rm-track__stop::before { left: calc(50% - 0.5rem); top: calc(var(--rail) - 4rem + 1.5px - 0.5rem); }
+	}
+	.rm-hero__note {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
+		margin-top: 1.75rem;
+		font-size: 0.95rem;
+		color: var(--color-ink-2);
+	}
+	.rm-hero__note svg { width: 1.15rem; height: 1.15rem; flex: none; color: var(--color-accent); }
+
+	/* ─── Sticky section bar ─────────────────────────────── */
+	.rm-sticky {
+		position: sticky;
+		top: calc(4.5rem + 3px);
+		z-index: var(--z-raised);
+		border-block: 1px solid var(--color-rule);
+		background: oklch(98% 0.008 30 / 0.88);
+		backdrop-filter: blur(14px);
+		transition: top var(--dur-short) var(--ease-out);
+	}
+	:global(html[data-nav-hidden]) .rm-sticky { top: 0; }
+	.rm-sticky__inner {
+		display: flex;
+		gap: 0.25rem;
+		overflow-x: auto;
+		scrollbar-width: none;
+		padding-block: 0.55rem;
+	}
+	.rm-sticky__inner a {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.45rem;
+		flex: none;
+		padding: 0.4rem 0.85rem;
+		border-radius: var(--radius-pill);
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--color-ink-2);
+		transition: background var(--dur-micro) var(--ease-out), color var(--dur-micro) var(--ease-out);
+	}
+	.rm-sticky__inner a:hover { color: var(--color-ink); background: var(--color-paper-3); }
+	.rm-sticky__inner a[aria-current] { color: var(--color-paper); background: var(--color-ink); }
+	.rm-sticky__dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: var(--accent); }
+	.rm-sticky__progress { height: 2px; background: transparent; }
+	.rm-sticky__progress span {
+		display: block;
+		height: 100%;
+		transform: scaleX(0);
+		transform-origin: left;
+		background: linear-gradient(90deg, #fb196d, #ff8c12, #49c7b9);
+	}
+
+	/* ─── Sections ───────────────────────────────────────── */
+	.rm-section { padding-block: clamp(4rem, 8vw, 7rem); scroll-margin-top: 7.5rem; }
+	.rm-horizon:nth-of-type(odd):not(.rm-horizon--dark) { background: var(--color-paper-2); }
+	.rm-horizon__head { max-width: 52rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+	.rm-horizon__head .pl-chapter__intro { margin-top: 1.25rem; max-width: 46rem; }
+	.rm-horizon__eyebrow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5rem 0.9rem;
+		font-family: var(--font-code);
+		font-size: 0.85rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+	.rm-horizon__num {
+		display: inline-grid;
+		place-items: center;
+		width: 2.4rem;
+		height: 2.4rem;
+		border-radius: 999px;
+		background: var(--accent);
+		color: white;
+		font-family: var(--font-display);
+		font-size: 1rem;
+		letter-spacing: 0;
+	}
+	.rm-status {
+		padding: 0.2rem 0.65rem;
+		border-radius: var(--radius-pill);
+		font-family: var(--font-body);
+		font-size: 0.78rem;
+		letter-spacing: 0;
+		text-transform: none;
+		border: 1.5px solid currentColor;
+	}
+	.rm-status--mid { border-style: dashed; }
+	.rm-status--long { border-style: dotted; border-width: 2px; }
+
+	.rm-subhead {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0.25rem 0.9rem;
+		margin: clamp(2.5rem, 5vw, 3.5rem) 0 1.25rem;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: clamp(1.35rem, 1vw + 1rem, 1.7rem);
+		letter-spacing: -0.02em;
+	}
+	.rm-horizon__head + .rm-subhead { margin-top: 0; }
+	.rm-subhead span { font-family: var(--font-body); font-weight: 400; font-size: 1rem; letter-spacing: 0; color: var(--color-muted); }
+
+	/* Vision */
+	.rm-principles { display: grid; gap: 1rem; }
+	@media (min-width: 40rem) { .rm-principles { grid-template-columns: 1fr 1fr; } }
+	@media (min-width: 64rem) { .rm-principles { grid-template-columns: repeat(4, 1fr); } }
+	.rm-principles li {
+		padding: 1.5rem;
+		border: 1px solid var(--color-rule);
+		border-radius: var(--radius-lg);
+		background: white;
+	}
+	.rm-principles__num { font-family: var(--font-code); font-size: 0.8rem; font-weight: 600; color: var(--color-accent); }
+	.rm-principles h3 { margin-top: 0.75rem; font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; line-height: 1.2; letter-spacing: -0.015em; }
+	.rm-principles p { margin-top: 0.6rem; line-height: 1.55; color: var(--color-ink-2); }
+
+	/* Cards */
+	.rm-foundations { display: grid; gap: 1.25rem; }
+	@media (min-width: 64rem) { .rm-foundations { grid-template-columns: 1fr 1fr; } }
+	.rm-card {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: clamp(1.5rem, 3vw, 2.25rem);
+		border: 1px solid var(--color-rule);
+		border-radius: var(--radius-lg);
+		background: white;
+		overflow: hidden;
+	}
+	.rm-card--foundation::before {
+		content: '';
+		position: absolute;
+		inset: 0 0 auto;
+		height: 4px;
+		background: linear-gradient(90deg, #fb196d, #ff5334);
+	}
+	.rm-card__pkg { font-family: var(--font-code); font-size: 0.85rem; font-weight: 600; color: var(--accent); }
+	.rm-card__title { margin-top: 0.5rem; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 1vw + 1.1rem, 1.9rem); letter-spacing: -0.025em; }
+	.rm-card__text { margin-top: 0.75rem; line-height: 1.65; color: var(--color-ink-2); }
+	.rm-card__payoff {
+		margin-top: auto;
+		padding: 1rem 1.15rem;
+		border-radius: var(--radius-md);
+		background: color-mix(in oklch, var(--accent) 7%, white);
+		line-height: 1.55;
+		color: var(--color-ink-2);
+	}
+	.rm-card__payoff strong { color: var(--color-ink); }
+	.rm-card__link { margin-top: 1.25rem; font-weight: 600; }
+	.rm-card__link:hover { color: var(--accent); }
+
+	.rm-checks { display: grid; gap: 0.65rem; margin-block: 1.25rem; }
+	.rm-checks li { position: relative; padding-left: 1.6rem; line-height: 1.55; color: var(--color-ink-2); }
+	.rm-checks li::before {
+		content: '';
+		position: absolute;
+		left: 0.2rem;
+		top: 0.55em;
+		width: 0.65rem;
+		height: 0.38rem;
+		border-left: 2px solid var(--accent);
+		border-bottom: 2px solid var(--accent);
+		transform: rotate(-45deg);
+	}
+	.rm-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-block: 1.25rem 1.5rem; }
+	.rm-chips :global(code) { padding: 0.3rem 0.6rem !important; font-size: 0.8rem !important; background: var(--color-paper-2) !important; border: 1px solid var(--color-rule); }
+
+	/* Gaps: today, then what is planned */
+	.rm-gaps { display: grid; gap: 1.25rem; }
+	@media (min-width: 48rem) { .rm-gaps { grid-template-columns: 1fr 1fr; } }
+	/* Three block cards, then menus and widgets sharing the row */
+	@media (min-width: 72rem) {
+		.rm-gaps { grid-template-columns: repeat(6, 1fr); }
+		.rm-gap { grid-column: span 2; }
+		.rm-gap:nth-child(n + 4) { grid-column: span 3; }
+	}
+	.rm-gap { display: flex; flex-direction: column; border: 1px solid var(--color-rule); border-radius: var(--radius-lg); background: white; overflow: hidden; }
+	.rm-gap__title { padding: 1.25rem 1.4rem 0; font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; letter-spacing: -0.015em; }
+	.rm-gap__title a { text-decoration: underline; text-decoration-color: color-mix(in oklch, var(--accent) 40%, transparent); text-underline-offset: 4px; }
+	.rm-gap__title a:hover { color: var(--accent); }
+	.rm-gap__tag { display: inline-block; font-family: var(--font-code); font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+	.rm-gap__today { padding: 0.9rem 1.4rem 1rem; color: var(--color-muted); font-size: 0.95rem; line-height: 1.5; }
+	.rm-gap__today .rm-gap__tag { color: var(--color-muted); }
+	.rm-gap__today p { margin-top: 0.3rem; }
+	.rm-gap__planned {
+		position: relative;
+		flex: 1;
+		padding: 1rem 1.4rem 1.3rem;
+		border-top: 1px dashed var(--color-rule);
+		background: color-mix(in oklch, var(--accent) 5%, white);
+	}
+	/* The arrow from today to planned, on the seam */
+	.rm-gap__planned::before {
+		content: '↓';
+		position: absolute;
+		top: -0.8rem;
+		left: 1.4rem;
+		display: grid;
+		place-items: center;
+		width: 1.6rem;
+		height: 1.6rem;
+		border-radius: 999px;
+		background: var(--accent);
+		color: white;
+		font-size: 0.85rem;
+		font-weight: 700;
+	}
+	.rm-gap__planned .rm-gap__tag { margin-left: 2.1rem; color: var(--accent); }
+	.rm-gap__planned ul { display: grid; gap: 0.5rem; margin-top: 0.6rem; }
+	.rm-gap__planned li { position: relative; padding-left: 1rem; line-height: 1.5; }
+	.rm-gap__planned li::before { content: ''; position: absolute; left: 0; top: 0.6em; width: 0.4rem; height: 0.4rem; border-radius: 999px; background: var(--accent); }
+
+	/* Extractions */
+	.rm-extract { display: grid; gap: 1rem; }
+	@media (min-width: 40rem) { .rm-extract { grid-template-columns: 1fr 1fr; } }
+	@media (min-width: 72rem) { .rm-extract { grid-template-columns: repeat(4, 1fr); } }
+	.rm-extract__item {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		padding: 1.25rem 1.3rem;
+		border: 1.5px dashed color-mix(in oklch, var(--accent) 45%, transparent);
+		border-radius: var(--radius-lg);
+		background: white;
+		transition: border-color var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+	}
+	.rm-extract__item:hover { border-color: var(--accent); transform: translateY(-2px); }
+	.rm-extract__from { font-weight: 600; }
+	.rm-extract__pkg { margin-top: 0.2rem; font-family: var(--font-code); font-size: 0.85rem; font-weight: 600; color: color-mix(in oklch, var(--accent) 75%, black); }
+	.rm-extract__solve { margin-top: 0.75rem; font-size: 0.93rem; line-height: 1.5; color: var(--color-ink-2); }
+	.rm-extract__needs { margin-top: 0.75rem; font-size: 0.82rem; color: var(--color-muted); }
+	.rm-extract__docs { margin-top: auto; padding-top: 0.9rem; font-size: 0.85rem; font-weight: 600; color: var(--color-ink-2); }
+	.rm-extract__docs:hover { color: var(--accent); }
+
+	/* New APIs */
+	.rm-apis { display: grid; gap: 0; border: 1px solid var(--color-rule); border-radius: var(--radius-lg); background: white; overflow: hidden; }
+	@media (min-width: 40rem) { .rm-apis { grid-template-columns: 1fr 1fr; } }
+	@media (min-width: 72rem) { .rm-apis { grid-template-columns: repeat(4, 1fr); } }
+	.rm-apis li { padding: 1.25rem 1.3rem; border-bottom: 1px solid var(--color-rule-2); border-right: 1px solid var(--color-rule-2); }
+	.rm-apis h4 { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+	.rm-apis h4::before { content: '+'; display: grid; place-items: center; flex: none; width: 1.3rem; height: 1.3rem; border-radius: 6px; background: color-mix(in oklch, var(--accent) 16%, transparent); color: color-mix(in oklch, var(--accent) 75%, black); font-family: var(--font-code); font-size: 0.85rem; }
+	.rm-apis p { margin-top: 0.45rem; font-size: 0.93rem; line-height: 1.5; color: var(--color-ink-2); }
+
+	.rm-companion {
+		display: grid;
+		gap: 0.5rem;
+		margin-top: 1.5rem;
+		padding: 1.4rem 1.5rem;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--color-rule);
+		background: var(--color-paper);
+	}
+	@media (min-width: 48rem) { .rm-companion { grid-template-columns: 12rem 1fr; gap: 1.5rem; align-items: baseline; } }
+	.rm-companion__kicker { font-family: var(--font-code); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+	.rm-companion__text { line-height: 1.6; color: var(--color-ink-2); }
+	.rm-companion__text strong { color: var(--color-ink); }
+
+	/* ─── Long term, on the dark aubergine ───────────────── */
+	.rm-horizon--dark {
+		background:
+			radial-gradient(48rem 28rem at 100% 0%, oklch(55% 0.1 185 / 0.22), transparent 65%),
+			radial-gradient(40rem 24rem at 0% 100%, oklch(45% 0.17 25 / 0.25), transparent 65%),
+			var(--color-code-bg);
+		color: oklch(96% 0.006 30);
+	}
+	.rm-horizon--dark .pl-chapter__intro, .rm-horizon--dark .rm-checks li { color: oklch(80% 0.02 295); }
+	.rm-horizon--dark :global(code) { background: oklch(28% 0.03 290); color: oklch(90% 0.02 295); }
+	.rm-mu { display: grid; gap: 2.5rem; }
+	@media (min-width: 64rem) { .rm-mu { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: 4rem; align-items: start; } }
+	.rm-mu .rm-subhead { margin-top: 0; }
+	.rm-only { margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid oklch(30% 0.03 290); }
+	.rm-only__label { font-family: var(--font-code); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: oklch(70% 0.02 295); }
+	.rm-only ul { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+	.rm-only li { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.35rem 0.8rem; border: 1px solid oklch(32% 0.03 290); border-radius: var(--radius-pill); font-size: 0.9rem; }
+
+	.rm-ports {
+		padding: clamp(1.25rem, 3vw, 1.75rem);
+		border: 1px solid oklch(30% 0.03 290);
+		border-radius: var(--radius-lg);
+		background: oklch(20% 0.03 290 / 0.8);
+	}
+	.rm-ports__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+	.rm-ports__head p { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+	.rm-switch { display: inline-flex; padding: 0.25rem; border-radius: var(--radius-pill); background: oklch(26% 0.03 290); }
+	.rm-switch button {
+		padding: 0.4rem 0.9rem;
+		border-radius: var(--radius-pill);
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: oklch(75% 0.02 295);
+		cursor: pointer;
+		transition: background var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+	}
+	.rm-switch button[aria-checked='true'] { background: white; color: var(--color-ink); }
+	.rm-switch button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+	.rm-ports__list { display: grid; gap: 0.6rem; margin-top: 1.25rem; }
+	.rm-port {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+		align-items: center;
+		gap: 0.6rem;
+	}
+	.rm-port__plug {
+		display: grid;
+		justify-items: center;
+		min-width: 7.5rem;
+		padding: 0.55rem 0.8rem;
+		border-radius: var(--radius-md);
+		background: oklch(30% 0.035 290);
+		text-align: center;
+	}
+	.rm-port__plug strong { font-size: 0.92rem; }
+	.rm-port__plug small { font-size: 0.72rem; color: oklch(70% 0.02 295); }
+	.rm-port__side {
+		position: relative;
+		padding: 0.55rem 0.75rem;
+		border: 1.5px solid oklch(32% 0.03 290);
+		border-radius: var(--radius-md);
+		font-size: 0.85rem;
+		line-height: 1.35;
+		color: oklch(62% 0.02 295);
+		transition: border-color var(--dur-long) var(--ease-out), color var(--dur-long) var(--ease-out), background var(--dur-long) var(--ease-out), opacity var(--dur-long) var(--ease-out);
+		opacity: 0.6;
+	}
+	.rm-port__side--laravel { text-align: right; }
+	.rm-ports__list[data-env='laravel'] .rm-port__side--laravel,
+	.rm-ports__list[data-env='wordpress'] .rm-port__side--wordpress {
+		opacity: 1;
+		color: white;
+		border-color: var(--side);
+		background: color-mix(in oklch, var(--side) 18%, transparent);
+	}
+	.rm-port__side--laravel { --side: #ff5334; }
+	.rm-port__side--wordpress { --side: #49c7b9; border-style: dotted; border-width: 2px; }
+	.rm-ports__foot { margin-top: 1rem; font-size: 0.88rem; color: oklch(72% 0.02 295); }
+	@media (max-width: 30rem) {
+		.rm-port { grid-template-columns: 1fr 1fr; }
+		.rm-port__plug { grid-column: 1 / -1; justify-items: start; grid-row: 1; text-align: left; }
+		.rm-port__side--laravel { text-align: left; }
+	}
+
+	.rm-announced {
+		display: grid;
+		gap: 0.4rem;
+		margin-top: clamp(2.5rem, 5vw, 3.5rem);
+		padding: 1.2rem 1.4rem;
+		border-left: 4px solid #feb017;
+		border-radius: var(--radius-md);
+		background: oklch(26% 0.03 290);
+		line-height: 1.6;
+		color: oklch(85% 0.015 295);
+	}
+	@media (min-width: 48rem) { .rm-announced { grid-template-columns: 12rem 1fr; gap: 1.5rem; align-items: baseline; } }
+	.rm-announced__kicker { font-family: var(--font-code); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #feb017; }
+	.rm-announced strong { color: white; }
+
+	/* ─── Package map ────────────────────────────────────── */
+	.rm-map {
+		padding: clamp(1.25rem, 3vw, 2.5rem);
+		border: 1px solid var(--color-rule);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(circle at 1px 1px, oklch(85% 0.01 30) 1px, transparent 0) 0 0 / 22px 22px,
+			white;
+	}
+	.rm-map__layer { display: grid; gap: 1rem; }
+	@media (min-width: 40rem) { .rm-map__hosts, .rm-map__base { grid-template-columns: 1fr 1fr; } }
+	.rm-map__box {
+		display: grid;
+		gap: 0.2rem;
+		padding: 1rem 1.15rem;
+		border-radius: var(--radius-md);
+		background: white;
+	}
+	.rm-map__box strong { font-family: var(--font-code); font-size: 0.95rem; }
+	.rm-map__hosts strong { font-family: var(--font-body); }
+	.rm-map__box span { font-size: 0.88rem; line-height: 1.45; color: var(--color-ink-2); }
+	.rm-map__group { padding: 1rem; border: 1px solid var(--color-rule); border-radius: var(--radius-md); background: oklch(100% 0 0 / 0.75); }
+	.rm-map__group-label { font-weight: 600; }
+	.rm-map__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr)); gap: 0.6rem; }
+	.rm-map__chip { padding: 0.5rem 0.6rem; border-radius: 8px; text-align: center; background: white; }
+	.rm-map__chip :global(code) { background: none !important; padding: 0 !important; font-size: 0.82rem !important; }
+	/* Stage → border, shared by boxes, chips and the legend swatches */
+	[data-stage='exists'] { border: 1.5px solid oklch(60% 0.02 290); }
+	[data-stage='short'] { border: 2px solid #fb196d; background: color-mix(in oklch, #fb196d 9%, white); }
+	[data-stage='mid'] { border: 1.5px dashed #ff8c12; }
+	[data-stage='long'] { border: 2px dotted #49c7b9; }
+	.rm-map__links { display: grid; justify-items: center; padding-block: 0.35rem; }
+	/* Each arrow under the centre of its host box */
+	@media (min-width: 40rem) { .rm-map__links--two { grid-template-columns: 1fr 1fr; column-gap: 1rem; } }
+	@media (max-width: 39.99rem) { .rm-map__links--two span + span { display: none; } }
+	.rm-map__links span {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		font-family: var(--font-code);
+		font-size: 0.75rem;
+		color: var(--color-muted);
+	}
+	.rm-map__links span::before, .rm-map__links span::after { content: ''; width: 1.5px; height: 0.7rem; background: oklch(70% 0.01 290); }
+	.rm-map__links span::after { height: 0; width: 0; border: 5px solid transparent; border-top: 6px solid oklch(70% 0.01 290); border-bottom: 0; background: none; }
+	.rm-map figcaption { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--color-rule-2); font-size: 0.93rem; line-height: 1.55; color: var(--color-ink-2); }
+	.rm-legend { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; margin-bottom: 0.85rem; }
+	.rm-legend li { display: inline-flex; align-items: center; gap: 0.5rem; }
+	.rm-legend__swatch { width: 1.6rem; height: 0.95rem; border-radius: 4px; background: white; }
+
+	/* Three buttons: below the text, not beside it */
+	.rm-cta { grid-template-columns: 1fr; }
+	.rm-cta h2 + p { max-width: 60ch; }
+
+	.rm-source { margin-top: 1.25rem; font-size: 0.9rem; color: var(--color-muted); }
+	.rm-source a { text-decoration: underline; text-underline-offset: 3px; }
+	.rm-source a:hover { color: var(--color-ink); }
+
+	@media (prefers-reduced-motion: reduce) {
+		.rm-track__pin::after { animation: none; }
+		.rm-stop:hover, .rm-extract__item:hover { transform: none; }
+	}
+</style>
