@@ -10,6 +10,7 @@ export const getStaticPaths = (async () => {
 		features: { kicker: 'Features', title: 'Laravel, all the way into WordPress' },
 		blog: { kicker: 'Blog', title: 'News from the hive' },
 		changelog: { kicker: 'Changelog', title: 'Every Pollora release, newest first' },
+		roadmap: { kicker: 'Roadmap', title: 'Where Pollora is going' },
 		press: { kicker: 'Press kit', title: 'Logos, screenshots and facts about Pollora' },
 	};
 	for (const c of Object.keys(categories) as Category[]) {
