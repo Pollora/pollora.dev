@@ -472,18 +472,34 @@ const structuredData = {
 
 	<!-- ─── Contribute ────────────────────────────────────────────────── -->
 	<section class="pl-container pb-20 md:pb-28">
-		<div class="pl-features-cta rm-cta">
-			<div>
-				<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3vw+0.75rem,3.25rem)] leading-[1.05] tracking-tight">Shape <span class="text-gradient">what comes next</span></h2>
-				<p class="mt-4 text-lg text-[oklch(80%_0.02_295)] max-w-[48ch]">
-					An idea, a need, a priority you would move up? Open an issue. Shipped work lands in the changelog, and designs in progress on the blog.
+		<div class="rm-cta">
+			<div class="rm-cta__intro">
+				<p class="rm-cta__kicker">Not set in stone</p>
+				<h2 class="rm-cta__title">Shape <span class="text-gradient">what comes next</span></h2>
+				<p class="rm-cta__text">
+					No dates means the order can still move. If one of these items would unblock a project of yours, or something you need is missing, tell us why.
 				</p>
 			</div>
-			<div class="flex flex-wrap gap-4">
-				<a href="https://github.com/Pollora/framework/issues" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)]">Open an issue <span aria-hidden="true">&rarr;</span></a>
-				<a href="/changelog/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-[oklch(35%_0.03_295)] text-white text-lg font-semibold hover:border-pollora-coral/60 transition-colors duration-[var(--dur-micro)]">Changelog</a>
-				<a href="https://github.com/Pollora/.github/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-[oklch(35%_0.03_295)] text-white text-lg font-semibold hover:border-pollora-coral/60 transition-colors duration-[var(--dur-micro)]">How to contribute</a>
-			</div>
+			<ul class="rm-cta__links" role="list">
+				<li>
+					<a href="https://github.com/Pollora/framework/issues" target="_blank" rel="noopener" class="rm-cta__link rm-cta__link--primary">
+						<span><strong>Open an issue</strong><small>An idea, a need, a priority to move up</small></span>
+						<span class="rm-cta__arrow" aria-hidden="true">&rarr;</span>
+					</a>
+				</li>
+				<li>
+					<a href="/changelog/" class="rm-cta__link">
+						<span><strong>Changelog</strong><small>What has shipped, release by release</small></span>
+						<span class="rm-cta__arrow" aria-hidden="true">&rarr;</span>
+					</a>
+				</li>
+				<li>
+					<a href="https://github.com/Pollora/.github/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener" class="rm-cta__link">
+						<span><strong>How to contribute</strong><small>Propose code or documentation</small></span>
+						<span class="rm-cta__arrow" aria-hidden="true">&rarr;</span>
+					</a>
+				</li>
+			</ul>
 		</div>
 		<p class="rm-source">Starting point: <a href="/changelog/">pollora/framework {FROM_VERSION}</a> and the <a href="/getting-started/installation/">published documentation</a>. Designs in progress: <a href="/blog/category/roadmap/">roadmap posts</a>.</p>
 	</section>
@@ -1081,9 +1097,52 @@ const structuredData = {
 	.rm-legend li { display: inline-flex; align-items: center; gap: 0.5rem; }
 	.rm-legend__swatch { width: 1.6rem; height: 0.95rem; border-radius: 4px; background: white; }
 
-	/* Three buttons: below the text, not beside it */
-	.rm-cta { grid-template-columns: 1fr; }
-	.rm-cta h2 + p { max-width: 60ch; }
+	/* Contribute: the pitch on the left, three described links on the right */
+	.rm-cta {
+		display: grid;
+		gap: 2rem;
+		padding: clamp(1.75rem, 5vw, 3.5rem);
+		border-radius: var(--radius-lg);
+		background:
+			radial-gradient(44rem 24rem at 105% 115%, oklch(45% 0.17 25 / 0.5), transparent 60%),
+			radial-gradient(30rem 18rem at -5% -10%, oklch(55% 0.1 185 / 0.2), transparent 60%),
+			var(--color-code-bg);
+		color: oklch(96% 0.006 30);
+	}
+	@media (min-width: 64rem) { .rm-cta { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 4rem; align-items: center; } }
+	.rm-cta__kicker { font-family: var(--font-code); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #feb017; }
+	.rm-cta__title {
+		margin-top: 0.75rem;
+		font-family: var(--font-display);
+		font-weight: 700;
+		font-size: clamp(2.25rem, 3.5vw + 0.75rem, 3.75rem);
+		line-height: 1.02;
+		letter-spacing: -0.035em;
+		text-wrap: balance;
+	}
+	.rm-cta__text { margin-top: 1.25rem; max-width: 46ch; font-size: 1.1rem; line-height: 1.6; color: oklch(80% 0.02 295); }
+	.rm-cta__links { display: grid; gap: 0.75rem; }
+	.rm-cta__link {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding: 1.05rem 1.25rem;
+		border: 1px solid oklch(32% 0.03 290);
+		border-radius: var(--radius-md);
+		background: oklch(22% 0.03 290 / 0.7);
+		transition: border-color var(--dur-short) var(--ease-out), background var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out);
+	}
+	.rm-cta__link > span:first-child { display: grid; gap: 0.15rem; }
+	.rm-cta__link strong { font-size: 1.1rem; color: white; }
+	.rm-cta__link small { font-size: 0.9rem; color: oklch(72% 0.02 295); }
+	.rm-cta__link:hover { border-color: oklch(65% 0.21 30 / 0.7); background: oklch(25% 0.035 290); transform: translateX(3px); }
+	.rm-cta__link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+	.rm-cta__link--primary { border: 0; background: linear-gradient(135deg, #fb196d 0%, #ff314c 25%, #ff5334 50%, #ff8c12 100%); }
+	.rm-cta__link--primary small { color: oklch(97% 0.02 30 / 0.85); }
+	.rm-cta__link--primary:hover { background: linear-gradient(135deg, #fb196d 0%, #ff314c 25%, #ff5334 50%, #ff8c12 100%); opacity: 0.92; }
+	.rm-cta__arrow { flex: none; font-size: 1.25rem; color: white; }
+	@media (prefers-reduced-motion: reduce) { .rm-cta__link:hover { transform: none; } }
 
 	.rm-source { margin-top: 1.25rem; font-size: 0.9rem; color: var(--color-muted); }
 	.rm-source a { text-decoration: underline; text-underline-offset: 3px; }
