@@ -5,7 +5,7 @@
 // mid term = dashed, long term = dotted (the package map's legend spells it out).
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const FROM_VERSION = '13.35.5';
+const FROM_VERSION = '13.36.0';
 
 type Horizon = { id: string; num: string; label: string; when: string; status: string; title: string; intro: string; accent: string };
 
@@ -15,9 +15,9 @@ const horizons: Horizon[] = [
 		num: '01',
 		label: 'Short term',
 		when: 'The next 13.x releases',
-		status: 'Planned',
+		status: 'Foundations shipped in 13.36',
 		title: 'Foundations, and the gaps you notice first',
-		intro: 'Discovery and attributes leave the framework first: the rest of the roadmap builds on them. Alongside, Pollora fills three everyday gaps: block variations and styles, menus and widgets.',
+		intro: 'Discovery and attributes left the framework in 13.36: the rest of the roadmap builds on them. Next, Pollora fills three everyday gaps: block variations and styles, menus and widgets.',
 		accent: '#fb196d',
 	},
 	{
@@ -27,7 +27,7 @@ const horizons: Horizon[] = [
 		when: 'Once the foundations are out',
 		status: 'Planned, order may change',
 		title: 'WordPress integrations, one package each',
-		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
+		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn: scheduled tasks, REST routes and WP-CLI commands already have, in 13.36. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
 		accent: '#ff8c12',
 	},
 	{
@@ -93,9 +93,6 @@ const extractions: Extraction[] = [
 	{ feature: 'Typed meta', pkg: 'pollora/meta', solve: 'Split the WordPress registration from the Eloquent accessors, which stay in the framework.', href: '/content/typed-meta/' },
 	{ feature: 'Block Bindings', pkg: 'pollora/block-bindings', solve: 'Read which options are bindable without Laravel’s <code>config/</code>.', href: '/blocks/block-bindings/', needs: 'pollora/meta' },
 	{ feature: 'Roles & capabilities', pkg: 'pollora/roles', solve: 'Keep the Laravel authorization bridge (<code>$user->can()</code>, <code>@can</code>) in the framework.', href: '/advanced/roles-capabilities/' },
-	{ feature: 'Scheduled tasks', pkg: 'pollora/schedule', solve: 'Ship WP-Cron only in the package.', href: '/advanced/scheduling/' },
-	{ feature: 'WordPress REST routes', pkg: 'pollora/wp-rest', solve: 'Dependency injection without the Laravel container.', href: '/advanced/rest-api/' },
-	{ feature: 'WP-CLI commands', pkg: 'pollora/wp-cli', solve: 'Already close to WordPress; mostly waits on discovery.', href: '/advanced/wp-cli/' },
 	{ feature: 'Assets & Vite', pkg: 'pollora/assets', solve: 'Resolve the Vite manifest and HMR without Laravel, useful to any classic theme.', href: '/theming/assets-vite/' },
 	{ feature: 'Blade blocks & patterns', pkg: 'pollora/blocks', solve: 'Standalone Blade (<code>illuminate/view</code> alone); the editor runtime and <code>&lt;InnerBlocks /&gt;</code> unchanged.', href: '/blocks/patterns/' },
 ];
@@ -143,9 +140,9 @@ const wpPackages: { name: string; stage: Stage }[] = [
 	{ name: 'pollora/meta', stage: 'mid' },
 	{ name: 'pollora/block-bindings', stage: 'mid' },
 	{ name: 'pollora/roles', stage: 'mid' },
-	{ name: 'pollora/schedule', stage: 'mid' },
-	{ name: 'pollora/wp-rest', stage: 'mid' },
-	{ name: 'pollora/wp-cli', stage: 'mid' },
+	{ name: 'pollora/schedule', stage: 'exists' },
+	{ name: 'pollora/wp-rest', stage: 'exists' },
+	{ name: 'pollora/wp-cli', stage: 'exists' },
 	{ name: 'pollora/assets', stage: 'mid' },
 	{ name: 'pollora/blocks', stage: 'mid' },
 ];
@@ -254,33 +251,33 @@ const structuredData = {
 				<p class="pl-chapter__intro">{short.intro}</p>
 			</div>
 
-			<h3 class="rm-subhead">The foundations <span>Everything else depends on these two</span></h3>
+			<h3 class="rm-subhead">The foundations <span>Shipped in 13.36, everything else depends on these two</span></h3>
 			<div class="rm-foundations">
 				<article class="rm-card rm-card--foundation" data-reveal style="--i:0">
 					<p class="rm-card__pkg">pollora/discovery</p>
-					<h4 class="rm-card__title">Extract discovery</h4>
+					<h4 class="rm-card__title">Discovery is a package</h4>
 					<p class="rm-card__text">
-						Discovery scans themes, plugins and modules for classes that carry attributes. Its contracts
-						(<code>Pollora\Discovery\Domain\Contracts\*</code>) are already documented as a stable public API: the best candidate to go first.
+						Discovery scans themes, plugins and modules for classes that carry attributes. It now lives in <code>pollora/discovery</code>, which the framework requires,
+						and its contracts (<code>Pollora\Discovery\Domain\Contracts\*</code>) are a stable public API.
 					</p>
 					<ul class="rm-checks" role="list">
-						<li>Laravel’s cache replaced by a standard cache interface (PSR-16), with a Laravel adapter in the framework.</li>
-						<li>Explicit registration instead of a scan of the Laravel container, usable with any PSR-11 container.</li>
-						<li><code>discovery:run</code> and <code>discovery:clear</code> stay in the framework; the package gets WP-CLI equivalents.</li>
+						<li>Runs without Laravel’s application: <code>new DiscoveryEngine()</code> takes no argument, and any PSR-16 cache stores the scans.</li>
+						<li>The environment plugs in through two contracts: one builds the classes discovery needs (Laravel’s container in Pollora), the other adds its discoveries before each run.</li>
+						<li><code>discovery:run</code> and <code>discovery:clear</code> stay in the framework, with the Laravel adapters.</li>
 					</ul>
-					<a class="rm-card__link" href="/core-concepts/auto-discovery/">How discovery works today <span aria-hidden="true">&rarr;</span></a>
+					<a class="rm-card__link" href="/core-concepts/auto-discovery/">How discovery works <span aria-hidden="true">&rarr;</span></a>
 				</article>
 				<article class="rm-card rm-card--foundation" data-reveal style="--i:1">
 					<p class="rm-card__pkg">pollora/attributes</p>
-					<h4 class="rm-card__title">Extract the attributes</h4>
+					<h4 class="rm-card__title">The attributes are a package</h4>
 					<p class="rm-card__text">
-						The attribute declarations move to a package with no dependencies. Processing each attribute stays in the package of its feature.
+						Every attribute declaration lives in <code>pollora/attributes</code>, which reaches neither Laravel nor the framework. Processing each attribute stays in the package of its feature.
 					</p>
-					<ul class="rm-chips" role="list" aria-label="Attributes moving to pollora/attributes">
+					<ul class="rm-chips" role="list" aria-label="Attributes in pollora/attributes">
 						{attributeNames.map((name) => <li><code>{name}</code></li>)}
 					</ul>
 					<p class="rm-card__payoff">
-						<strong>What it unlocks:</strong> a plugin declares its attributes without installing the framework, and an IDE or a static analyser can read them on their own.
+						<strong>What it unlocks:</strong> a plugin can declare its attributes without installing the framework, and an IDE or a static analyser can read them on their own.
 					</p>
 				</article>
 			</div>
