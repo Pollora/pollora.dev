@@ -106,9 +106,13 @@ async function handle(request: Request) {
 export const POST = handle;
 export const DELETE = handle;
 
-// A browser opening the URL gets a pointer instead of a protocol error
+// A browser opening the URL gets a pointer instead of a protocol error.
+// Clients asking for the standalone SSE stream get a 405, which the spec allows for a server that never
+// pushes notifications: this one is stateless, and an open stream would keep the function (and its memory) running for nothing.
 export function GET(request: Request) {
-	if (request.headers.get('accept')?.includes('text/event-stream')) return handle(request);
+	if (request.headers.get('accept')?.includes('text/event-stream')) {
+		return new Response(null, { status: 405, headers: { Allow: 'POST, DELETE, OPTIONS', ...cors } });
+	}
 	return new Response(
 		'Pollora docs MCP server. Add https://pollora.dev/mcp to your AI assistant as a remote (Streamable HTTP) MCP server.\nSetup: https://pollora.dev/nectar/docs-mcp-server/\n',
 		{ headers: { 'Content-Type': 'text/plain; charset=utf-8', ...cors } },
