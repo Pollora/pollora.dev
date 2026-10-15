@@ -99,7 +99,7 @@ class UserCreateCommand
 
 ## Command Suites (Subcommands)
 
-WP-CLI automatically registers all **public methods** as subcommands. Method names are converted to kebab-case.
+WP-CLI automatically registers all **public methods** as subcommands, under the method name as written: `listUsers()` answers to `listUsers`. For a kebab-case name, put `#[Command]` on the method: with no argument it derives `list-users` from the method name (see [Custom Subcommand Names](#custom-subcommand-names-with-command)).
 
 ```php
 <?php
@@ -144,7 +144,7 @@ class UserManagementCommand
 ```bash
 wp user-management create
 wp user-management delete
-wp user-management list-users
+wp user-management listUsers
 ```
 
 ### Custom Subcommand Names with #[Command]
@@ -211,6 +211,8 @@ The "Command" suffix is automatically removed:
 | `CacheHelper` | `cache-helper` |
 
 ### Method Name → Subcommand Slug
+
+With `#[Command]` and no argument, the slug is derived from the method name; without `#[Command]`, WP-CLI uses the method name as written.
 
 | Method Name | Generated Slug |
 |-------------|----------------|
@@ -527,6 +529,8 @@ public function __invoke(array $arguments, array $options): void
 ```
 
 ### Service Injection
+
+The command class is built with its constructor dependencies, and that instance runs the command and every subcommand. This needs `pollora/wp-cli` 0.1.1 or later (Pollora 13.36): before it, WP-CLI built the class itself, without arguments.
 
 ```php
 class MyCommand
