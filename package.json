@@ -6,6 +6,9 @@
     "dev": "astro dev",
     "start": "astro dev",
     "sync-docs": "bash scripts/sync-docs.sh",
+    "release": "node scripts/release.mjs",
+    "check-release": "node scripts/release.mjs --check",
+    "prebuild": "node scripts/release.mjs --check",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
