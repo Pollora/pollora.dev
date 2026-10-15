@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import tailwindcss from '@tailwindcss/vite';
 import starlightLlmsTxt from 'starlight-llms-txt';
+import release from './src/data/release.json' with { type: 'json' };
 
 // https://astro.build/config
 export default defineConfig({
@@ -22,8 +23,8 @@ export default defineConfig({
 						'- The front end uses Laravel routing, controllers, Blade and Eloquent; the WordPress admin, database, editors and plugins keep working.',
 						'- Hooks, post types, taxonomies, REST routes, WP-CLI commands and schedules are declared with PHP 8 attributes and registered by auto-discovery.',
 						'- `Route::wp()` matches Laravel routes on WordPress conditional tags, with the template hierarchy as a fallback.',
-						'- Current release: v13.35.0 (stable). Version numbers follow the Laravel release Pollora is built on.',
-						'- Requirements for a new project: PHP 8.4+, Laravel 13.35, WordPress 7.1+, Composer 2.',
+						`- Current release: v${release.version} (stable). Version numbers follow the Laravel release Pollora is built on.`,
+						`- Requirements for a new project: PHP 8.4+, Laravel ${release.laravel}, WordPress 7.1+, Composer 2.`,
 						'- Install: `composer global require pollora/cli` then `pollora new example-app` (or `composer create-project pollora/pollora example-app`).',
 						'- License: MIT (pollora/framework, pollora/pollora, pollora/cli, and Nectar, the AI context package for coding agents).',
 						'- Docs MCP server (remote, Streamable HTTP, no auth): https://pollora.dev/mcp with search_docs, get_page and list_pages. Every docs page is also served as Markdown at its path + `.md`.',

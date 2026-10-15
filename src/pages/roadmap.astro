@@ -5,7 +5,8 @@
 // mid term = dashed, long term = dotted (the package map's legend spells it out).
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const FROM_VERSION = '13.35.5';
+import release from '../data/release.json';
+const FROM_VERSION = release.version;
 
 type Horizon = { id: string; num: string; label: string; when: string; status: string; title: string; intro: string; accent: string };
 
