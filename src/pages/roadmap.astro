@@ -28,7 +28,7 @@ const horizons: Horizon[] = [
 		when: 'Once the foundations are out',
 		status: 'Planned, order may change',
 		title: 'WordPress integrations, one package each',
-		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn: scheduled tasks, REST routes and WP-CLI commands already have, in 13.36. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
+		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn: scheduled tasks, REST routes and WP-CLI commands left in 13.36, then typed meta, roles, Block Bindings and assets in 13.36.1. Blade blocks and patterns are next. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
 		accent: '#ff8c12',
 	},
 	{
@@ -91,10 +91,6 @@ const gaps: Gap[] = [
 
 type Extraction = { feature: string; pkg: string; solve: string; href: string; needs?: string };
 const extractions: Extraction[] = [
-	{ feature: 'Typed meta', pkg: 'pollora/meta', solve: 'Split the WordPress registration from the Eloquent accessors, which stay in the framework.', href: '/content/typed-meta/' },
-	{ feature: 'Block Bindings', pkg: 'pollora/block-bindings', solve: 'Read which options are bindable without Laravel’s <code>config/</code>.', href: '/blocks/block-bindings/', needs: 'pollora/meta' },
-	{ feature: 'Roles & capabilities', pkg: 'pollora/roles', solve: 'Keep the Laravel authorization bridge (<code>$user->can()</code>, <code>@can</code>) in the framework.', href: '/advanced/roles-capabilities/' },
-	{ feature: 'Assets & Vite', pkg: 'pollora/assets', solve: 'Resolve the Vite manifest and HMR without Laravel, useful to any classic theme.', href: '/theming/assets-vite/' },
 	{ feature: 'Blade blocks & patterns', pkg: 'pollora/blocks', solve: 'Standalone Blade (<code>illuminate/view</code> alone); the editor runtime and <code>&lt;InnerBlocks /&gt;</code> unchanged.', href: '/blocks/patterns/' },
 ];
 
@@ -138,13 +134,13 @@ const wpPackages: { name: string; stage: Stage }[] = [
 	{ name: 'pollora/ajax', stage: 'exists' },
 	{ name: 'pollora/abilities', stage: 'exists' },
 	{ name: 'pollora/option', stage: 'exists' },
-	{ name: 'pollora/meta', stage: 'mid' },
-	{ name: 'pollora/block-bindings', stage: 'mid' },
-	{ name: 'pollora/roles', stage: 'mid' },
+	{ name: 'pollora/meta', stage: 'exists' },
+	{ name: 'pollora/block-bindings', stage: 'exists' },
+	{ name: 'pollora/roles', stage: 'exists' },
 	{ name: 'pollora/schedule', stage: 'exists' },
 	{ name: 'pollora/wp-rest', stage: 'exists' },
 	{ name: 'pollora/wp-cli', stage: 'exists' },
-	{ name: 'pollora/assets', stage: 'mid' },
+	{ name: 'pollora/assets', stage: 'exists' },
 	{ name: 'pollora/blocks', stage: 'mid' },
 ];
 const legend: { stage: Stage; label: string }[] = [
@@ -315,7 +311,7 @@ const structuredData = {
 				<p class="pl-chapter__intro">{mid.intro}</p>
 			</div>
 
-			<h3 class="rm-subhead">Features leaving the framework <span>What each one has to solve first</span></h3>
+			<h3 class="rm-subhead">Next to leave the framework <span>What it has to solve first</span></h3>
 			<div class="rm-extract">
 				{extractions.map((e, i) => (
 					<article class="rm-extract__item" data-reveal style={`--i:${i % 4}`}>
