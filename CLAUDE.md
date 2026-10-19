@@ -25,7 +25,8 @@ Le numéro de la release courante vit à un seul endroit : `src/data/release.jso
 Définis dans `vercel.json` (`headers`, source `/(.*)`), donc versionnés avec le site et
 appliqués aussi à `/mcp` : `X-Frame-Options`, `Content-Security-Policy: frame-ancestors 'none'`
 (anti-clickjacking), `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, et la
-politique complète dans `Content-Security-Policy-Report-Only` (voir l'état ci-dessous).
+politique complète dans `Content-Security-Policy-Report-Only` (mode rapport : rien n'est bloqué
+tant que le passage en `Content-Security-Policy` n'est pas fait).
 
 - **Autoriser un nouveau service externe** (script, image, iframe, API) : ajouter son origine à la
   directive qui le charge dans le CSP de `vercel.json` (`script-src`, `img-src`, `connect-src`,
@@ -40,8 +41,8 @@ politique complète dans `Content-Security-Policy-Report-Only` (voir l'état ci-
   affiche le hachage à ajouter si une mise à jour de Starlight change l'un de ces scripts, ou si
   une page contient un script en ligne ou un gestionnaire `on…=` non autorisé.
 - **Concessions connues** : `'unsafe-eval'` pour Alpine.js (le build standard évalue les expressions
-  des attributs ; le build `@alpinejs/csp` l'éviterait, au prix de réécrire la quarantaine
-  d'attributs `x-data`/`@click`), `'wasm-unsafe-eval'` pour Pagefind, `style-src 'unsafe-inline'`
+  des attributs ; le build `@alpinejs/csp` l'éviterait, au prix de réécrire la
+  quatre-vingtaine d'attributs `x-data`/`@click`/`x-show`), `'wasm-unsafe-eval'` pour Pagefind, `style-src 'unsafe-inline'`
   pour les attributs `style=` d'Expressive Code.
 - **Pourquoi pas `security.csp` d'Astro** : il hache aussi les styles, ce qui interdit les attributs
   `style=`, et il écrit une balise `<meta>`, qui est toujours appliquée (pas de mode rapport) et ne
