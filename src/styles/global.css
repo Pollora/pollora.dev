@@ -234,7 +234,7 @@ body {
   color: var(--color-ink-2);
 }
 .pl-compare tbody tr + tr > * {
-  border-top: 1px dashed var(--color-rule);
+  border-top: 1px dashed color-mix(in oklch, var(--color-ink) 28%, transparent);
 }
 .pl-compare tbody th {
   width: 20%;
@@ -279,13 +279,13 @@ body {
   width: 30%;
   background: oklch(100% 0 0);
   color: var(--color-ink);
-  border-inline: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-inline: 1px solid oklch(65% 0.21 30 / 0.45);
 }
 .pl-compare tbody tr + tr > .is-pollora {
-  border-top-color: oklch(65% 0.21 30 / 0.2);
+  border-top-color: oklch(65% 0.21 30 / 0.35);
 }
 .pl-compare thead .is-pollora {
-  border-top: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-top: 1px solid oklch(65% 0.21 30 / 0.45);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   padding-top: 1.6rem;
 }
