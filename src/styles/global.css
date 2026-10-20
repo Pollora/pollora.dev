@@ -984,3 +984,48 @@ body {
 .fs-rail a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .fs-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 2px solid color-mix(in oklch, var(--color-paper) 70%, transparent); transition: background 0.3s, border-color 0.3s; }
 .fs-rail a[aria-current] .fs-dot { background: var(--color-pollora-amber); border-color: var(--color-pollora-amber); }
+
+/* ── Home hero: dark stage and the line-art ghost ────────────────────────────────────────────── */
+.pl-hero-dark {
+	background:
+		radial-gradient(44rem 44rem at 76% 52%, oklch(62% 0.25 12 / 0.13), oklch(72% 0.17 60 / 0.04) 46%, transparent 70%),
+		var(--color-code-bg);
+	color: var(--color-paper);
+}
+.ghost-host {
+	--halo: drop-shadow(0 0 4px rgb(251 25 109 / 0.36)) drop-shadow(0 0 16px rgb(255 120 30 / 0.2));
+	position: relative;
+	width: min(100%, 36rem);
+	aspect-ratio: 1;
+	margin-inline: auto;
+	filter: var(--halo);
+}
+.ghost-poster, .ghost-canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
+.ghost-poster { transition: opacity 0.15s linear; }
+.ghost-host[data-ghost='ready'] .ghost-poster { opacity: 0; }
+.ghost-canvas { touch-action: pan-y; }
+/* A click on the ghost: the glow flares and fades */
+@keyframes ghost-pulse {
+	0% { filter: var(--halo); }
+	22% { filter: drop-shadow(0 0 8px rgb(251 25 109 / 0.85)) drop-shadow(0 0 34px rgb(255 120 30 / 0.55)); }
+	100% { filter: var(--halo); }
+}
+.ghost-pulse { animation: ghost-pulse 1.1s ease-out; }
+@media (max-width: 47.99rem) {
+	.ghost-host { width: min(78%, 20rem); margin-top: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.ghost-pulse { animation: none; }
+}
+
+/* The fixed nav over the dark hero (SiteLayout sets data-on-dark while the hero is behind it) */
+.pl-nav { transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), background-color 0.25s ease; }
+.pl-nav .pl-logo { color: var(--color-ink); transition: color 0.25s ease; }
+.pl-nav[data-on-dark] { background-color: oklch(17% 0.03 290 / 0.55); color: var(--color-paper); }
+.pl-nav[data-on-dark] .pl-logo { color: var(--color-paper); }
+.pl-nav[data-on-dark] .text-ink-2 { color: oklch(84% 0.015 295); }
+.pl-nav[data-on-dark] .text-ink, .pl-nav[data-on-dark] .hover\:text-ink:hover { color: var(--color-paper); }
+.pl-nav[data-on-dark] .pl-social { color: oklch(84% 0.015 295); }
+.pl-nav[data-on-dark] .pl-social:hover { color: white; background: oklch(100% 0 0 / 0.1); }
+.pl-nav[data-on-dark] .border-rule { border-color: oklch(100% 0 0 / 0.12); }
+.pl-nav[data-on-dark] .bg-paper\/95 { background-color: oklch(17% 0.03 290 / 0.96); }

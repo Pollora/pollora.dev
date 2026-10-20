@@ -1,6 +1,7 @@
 ---
 // Shell of every page outside the docs: head, navigation and footer. The docs keep Starlight's.
 import polloraLogo from '../assets/pollora-logo.svg';
+import polloraLogoRaw from '../assets/pollora-logo.svg?raw';
 import AnalyticsHead from '../components/AnalyticsHead.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { ogImageFor } from '../lib/og-url';
@@ -22,9 +23,13 @@ interface Props {
 	/** og:type, "article" for a post */
 	type?: 'website' | 'article';
 	structuredData?: object;
+	/** the first screen is dark: the nav starts light-on-dark and switches back once it is scrolled past */
+	darkHero?: boolean;
 }
 
-const { title, description, socialDescription = description, type = 'website', structuredData } = Astro.props;
+const { title, description, socialDescription = description, type = 'website', structuredData, darkHero = false } = Astro.props;
+// The logo inlined, so that its lettering can follow the nav colour
+const logoInline = polloraLogoRaw.replace('fill="#1d142a"', 'fill="currentColor"').replace('<svg ', '<svg class="pl-logo h-9 w-auto" role="img" aria-label="Pollora" width="173" height="70" ');
 const site = 'https://pollora.dev';
 const url = new URL(Astro.url.pathname, site).href;
 const ogImage = ogImageFor(Astro.url.pathname);
@@ -111,11 +116,11 @@ const footer = [
 <body class="bg-paper text-ink" data-site>
 	<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[var(--z-modal)] focus:px-4 focus:py-2 focus:rounded-[var(--radius-sm)] focus:bg-ink focus:text-paper">Skip to content</a>
 
-	<nav x-data="{ open: false }" data-site-nav class="pl-nav fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
+	<nav x-data="{ open: false }" data-site-nav {...(darkHero ? { 'data-on-dark': '' } : {})} class="pl-nav fixed top-0 left-0 right-0 z-[var(--z-sticky)] bg-paper/90 backdrop-blur-xl">
 		<div class="gradient-bar h-[3px]"></div>
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
 			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
-				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
+				<Fragment set:html={logoInline} />
 			</a>
 			<div class="hidden md:flex items-center gap-8 text-[0.95rem] font-medium text-ink-2">
 				{links.map((l) => (
@@ -217,6 +222,7 @@ const footer = [
 		// It stays put near the top of the page, while its menu is open, and while it holds focus.
 		// data-scrolled adds its shadow; data-nav-hidden on <html> lets sticky elements move up into the space.
 		const nav = document.querySelector<HTMLElement>('[data-site-nav]');
+		const darkZone = document.querySelector<HTMLElement>('[data-nav-dark]');
 		if (nav) {
 			const THRESHOLD = 8;
 			let anchorY = window.scrollY;
@@ -234,6 +240,7 @@ const footer = [
 				ticking = false;
 				const y = Math.max(0, window.scrollY);
 				nav.toggleAttribute('data-scrolled', y > 0);
+				if (darkZone) nav.toggleAttribute('data-on-dark', darkZone.getBoundingClientRect().bottom > nav.offsetHeight);
 				const pinned = y <= nav.offsetHeight || nav.querySelector('[aria-expanded="true"]') || nav.contains(document.activeElement);
 				if (pinned) {
 					setHidden(false);
