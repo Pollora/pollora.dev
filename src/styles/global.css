@@ -842,11 +842,12 @@ body {
 	to { --p: 1; }
 }
 .fs {
-	--c-media: oklch(26% 0.12 5);
-	--c-abilities: oklch(25% 0.06 200);
-	--c-difference: oklch(26% 0.06 70);
-	--c-blocks: oklch(25% 0.07 255);
-	--c-async: oklch(25% 0.07 150);
+	/* The charter's dark violet, warmed toward one brand color per chapter */
+	--c-media: color-mix(in oklab, var(--color-pollora-pink) 24%, var(--color-code-bg));
+	--c-abilities: color-mix(in oklab, var(--color-pollora-teal) 17%, var(--color-code-bg));
+	--c-difference: color-mix(in oklab, var(--color-pollora-amber) 15%, var(--color-code-bg));
+	--c-blocks: color-mix(in oklch, var(--color-pollora-pink) 21%, var(--color-code-bg));
+	--c-async: color-mix(in oklab, var(--color-pollora-orange) 17%, var(--color-code-bg));
 	--stage: var(--c-media);
 	position: relative;
 	background-color: var(--color-code-bg);
@@ -869,7 +870,7 @@ body {
 	box-shadow: 0 0 0 100vmax var(--tint);
 	clip-path: inset(0 -100vmax);
 }
-.fs-head-m { order: calc(var(--o) * 3); padding-top: 4.5rem; }
+.fs-head-m { order: calc(var(--o) * 3); padding-top: 6.5rem; }
 .fs-panel { order: calc(var(--o) * 3 + 1); position: relative; display: grid; place-items: center; padding-block: 2rem 1rem; }
 .fs-chapter { order: calc(var(--o) * 3 + 2); padding-block: 1rem 4.5rem; }
 .fs-rail, .fs-head-d { display: none; }
@@ -960,7 +961,7 @@ body {
 	padding-block: 2rem;
 	opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / var(--w, 0.17), 1));
 }
-.fs-live .fs-chapter[data-n='1'] .fs-step { justify-content: flex-start; opacity: 1; }
+.fs-live .fs-chapter[data-n='1'] .fs-step { justify-content: flex-start; opacity: 1; padding-top: 22svh; }
 .fs-live .fs-chapter[data-n='1'] .fs-step-in { position: sticky; top: max(6rem, 18svh); }
 
 /* The rail: one dot per chapter, the current one lit */
