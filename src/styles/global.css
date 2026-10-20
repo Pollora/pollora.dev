@@ -764,3 +764,63 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* Homepage bento: each card plays once, when it comes on screen ([data-reveal] gets .shown) */
+.pl-seq > *,
+.pl-seq li { opacity: 0; transform: translateY(6px); }
+[data-reveal].shown .pl-seq > *,
+[data-reveal].shown .pl-seq li {
+	animation: pl-seq-in 0.5s var(--ease-out) both;
+	animation-delay: calc(var(--s, 0) * 160ms + 300ms);
+}
+@keyframes pl-seq-in { to { opacity: 1; transform: none; } }
+
+.pl-glow-border {
+	border: 1.5px solid transparent;
+	background:
+		linear-gradient(var(--color-paper-2), var(--color-paper-2)) padding-box,
+		linear-gradient(135deg, #fb196d, #ff314c 30%, #ff5334 60%, #ff8c12) border-box;
+}
+
+/* Async: the response leaves first, the work follows on the queue */
+.pl-flow { display: flex; align-items: center; gap: 0.5rem; font: 600 0.78rem/1 var(--font-code); }
+.pl-flow-node { padding: 0.45rem 0.7rem; border-radius: var(--radius-pill); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-flow-q { border-color: color-mix(in oklch, var(--color-pollora-teal) 60%, transparent); color: oklch(42% 0.09 185); }
+.pl-flow-track { position: relative; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--color-rule) 0 6px, transparent 6px 10px); container-type: inline-size; }
+.pl-flow-dot { position: absolute; left: 0; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-pollora-teal); }
+[data-reveal].shown .pl-flow-dot { animation: pl-travel 2.8s var(--ease-in-out) 0.6s infinite; }
+@keyframes pl-travel {
+	0% { transform: translateX(0); opacity: 0; }
+	15% { opacity: 1; }
+	80% { transform: translateX(calc(100cqw - 10px)); opacity: 1; }
+	100% { transform: translateX(calc(100cqw - 10px)); opacity: 0; }
+}
+
+/* Routing: two requests, two lanes, one after the other */
+.pl-lanes { display: grid; gap: 0.5rem; }
+.pl-lane { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-lane b { font-weight: 600; color: var(--color-ink-2); }
+.pl-lane-a b { color: oklch(45% 0.2 15); }
+[data-reveal].shown .pl-lane-a { animation: pl-lane 5s var(--ease-in-out) 0.8s infinite; }
+[data-reveal].shown .pl-lane-b { animation: pl-lane 5s var(--ease-in-out) 3.3s infinite; }
+@keyframes pl-lane {
+	0%, 40%, 100% { border-color: var(--color-rule); box-shadow: none; }
+	8%, 32% { border-color: var(--color-pollora-pink); box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-pollora-pink) 18%, transparent); }
+}
+
+/* Blade + Vite: a save, then the page changes without reloading */
+.pl-hmr { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.pl-hmr-save, .pl-hmr-page { padding: 0.45rem 0.7rem; border-radius: var(--radius-md); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-hmr-arrow { width: 1.4rem; height: 2px; background: var(--color-rule); }
+[data-reveal].shown .pl-hmr-page { animation: pl-flash 4s var(--ease-out) 1s infinite; }
+@keyframes pl-flash {
+	0%, 70%, 100% { background: var(--color-paper); border-color: var(--color-rule); }
+	10%, 30% { background: color-mix(in oklch, var(--color-pollora-amber) 28%, var(--color-paper)); border-color: var(--color-pollora-amber); }
+}
+
+/* Reduced motion: the cards are static and complete */
+@media (prefers-reduced-motion: reduce) {
+	.pl-seq > *, .pl-seq li { opacity: 1; transform: none; animation: none !important; }
+	.pl-flow-dot { display: none; }
+	.pl-flow-dot, .pl-lane, .pl-hmr-page { animation: none !important; }
+}
