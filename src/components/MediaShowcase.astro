@@ -93,7 +93,7 @@ MEDIA_URL=https://media.client.fr`),
 
 	<div class="absolute inset-x-0 top-0 h-px bg-gradient-pollora opacity-70" aria-hidden="true"></div>
 
-	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-28 md:pt-40 pb-16 md:pb-24">
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-28 md:pt-40 pb-12 lg:pb-0 relative z-[3]">
 		<div data-reveal class="max-w-5xl" style="--i:0">
 			<p class="flex flex-wrap items-center gap-3 font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-7">
 				<span class="text-pollora-amber">pollora/media</span>
@@ -202,7 +202,7 @@ MEDIA_URL=https://media.client.fr`),
 		</div>
 	</div>
 
-	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 md:pt-24 pb-24 md:pb-32">
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 md:pt-24 pb-24 md:pb-32 relative z-[3]">
 		<div data-reveal class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8" style="--i:0">
 			<a href="https://github.com/Pollora/media" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">pollora/media on GitHub <span aria-hidden="true">&rarr;</span></a>
 			<p class="text-paper/70 max-w-[52ch]">Without <code class="font-[var(--font-code)] text-[0.9em]">media.disk</code> the module is off and WordPress keeps its own folder. It also runs in a classic theme, a plugin or Bedrock.</p>
@@ -298,6 +298,13 @@ MEDIA_URL=https://media.client.fr`),
 				opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / 0.17, 1));
 			}
 			@media (min-width: 64rem) {
+				/* The first and last steps are centered in a full screen: on a tall window that leaves a hole
+				   above and below. Pull the track under the header and the call to action; only the
+				   transparent margins of the scene overlap, never its content. */
+				.plm-track {
+					margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - 6rem));
+					margin-bottom: calc(-1 * max(0px, (100svh - 30rem) / 2 - 4rem));
+				}
 				.plm-scene { height: 100svh; background: none; padding-block: 0; display: grid; place-items: center; }
 				.plm-stage { height: auto; width: min(100%, 86svh, 44rem); }
 				.plm-step { min-height: 100svh; }
