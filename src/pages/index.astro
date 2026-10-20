@@ -222,194 +222,6 @@ const packages = [
 			</div>
 		</section>
 
-		<!-- ═══ MEDIA — pollora/media, pinned scene ═══ -->
-		<MediaShowcase />
-
-		<!-- ═══ FEATURES — Bento grid ═══ -->
-		<section class="pl-deferred py-24 md:py-32">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
-					<div>
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.5rem,5vw+0.5rem,4.5rem)] leading-[1] tracking-tight mb-5">Declare it.<br /><span class="text-gradient">Pollora does the rest.</span></h2>
-						<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
-					</div>
-					<a href="/features/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] shrink-0">All features <span aria-hidden="true">&rarr;</span></a>
-				</div>
-				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
-					<!-- PHP 8 Attributes + auto-discovery — 4 col, dark -->
-					<div data-reveal class="md:col-span-4 group bg-code-bg text-paper rounded-[var(--radius-lg)] p-8 md:p-10 border border-code-surface" style="--i:1">
-						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] leading-[1.05] mb-4">Declare, don't register</h3>
-						<p class="text-paper/75 text-base mb-7 max-w-[52ch]">Post types, taxonomies, hooks, REST endpoints, WP-CLI commands, schedules: a class and an attribute. Pollora finds them and registers them for you. No more <code class="font-[var(--font-code)] text-[0.85em] bg-code-surface px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
-						<div class="grid md:grid-cols-[1fr_auto] gap-5 items-end">
-							<pre class="bg-code-surface rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.95rem] font-[var(--font-code)] overflow-x-auto"><code class="pl-seq"><span style="--s:0" class="block"><span class="token-attribute">#[PostType('product')]</span></span><span style="--s:1" class="block"><span class="token-attribute">#[HasArchive]</span></span><span style="--s:2" class="block"><span class="token-attribute">#[ShowInRest]</span></span><span style="--s:3" class="block"><span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></span></code></pre>
-							<p class="pl-seq font-[var(--font-code)] text-sm"><span style="--s:5" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-[var(--radius-pill)] bg-pollora-teal/15 text-pollora-teal"><span aria-hidden="true">&#10003;</span> registered, nothing to call</span></p>
-						</div>
-						<a href="/guides/custom-post-types-php-attributes/" class="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-paper hover:text-pollora-amber transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Post types with attributes <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<!-- Fluent roles — 2 col, new in 13.37 -->
-					<div data-reveal class="md:col-span-2 group relative pl-glow-border rounded-[var(--radius-lg)] p-8 md:p-10" style="--i:2">
-						<span class="absolute top-6 right-6 px-2.5 py-1 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-xs font-semibold font-[var(--font-code)]">New in 13.37</span>
-						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Fluent roles</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Roles, in one chain</h3>
-						<p class="text-ink-2 text-base mb-6">Who can do what, written where you read it. A mistake is refused with the call that caused it.</p>
-						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.78rem] md:text-[0.82rem] leading-relaxed font-[var(--font-code)] overflow-x-auto"><code class="pl-seq"><span style="--s:0" class="block"><span class="token-class">Role</span>::<span class="token-function">make</span>(<span class="token-string">'event_manager'</span>)</span><span style="--s:1" class="block">    -&gt;<span class="token-function">inherits</span>(<span class="token-string">'author'</span>)</span><span style="--s:2" class="block">    -&gt;<span class="token-function">grantsPostType</span>(<span class="token-class">Event</span>::<span class="token-keyword">class</span>)</span><span style="--s:3" class="block">    -&gt;<span class="token-function">without</span>(<span class="token-string">'publish_posts'</span>);</span></code></pre>
-						<a href="/advanced/roles-capabilities/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Roles <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<!-- Async actions — 2 col -->
-					<div data-reveal class="md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:3">
-						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Async actions</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Slow work, after the response</h3>
-						<p class="text-ink-2 text-base mb-6">One call moves a WordPress action to a Laravel queue, Action Scheduler or WP-Cron, with delays and retries.</p>
-						<div class="pl-flow mb-6" aria-hidden="true">
-							<span class="pl-flow-node">response</span>
-							<span class="pl-flow-track"><i class="pl-flow-dot"></i></span>
-							<span class="pl-flow-node pl-flow-q">queue</span>
-						</div>
-						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.78rem] md:text-[0.82rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Action</span>::<span class="token-function">add</span>(<span class="token-string">'save_post'</span>, <span class="token-variable">$handler</span>)
-    -&gt;<span class="token-function">async</span>()
-    -&gt;<span class="token-function">tries</span>(<span class="token-attribute">3</span>);</code></pre>
-						<a href="/hooks/async-actions/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Asynchronous actions <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<!-- Hybrid Routing — 4 col -->
-					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
-						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] leading-[1.05] mb-4">Laravel routes + WordPress fallback</h3>
-						<p class="text-ink-2 text-base mb-6 max-w-[55ch]"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
-						<div class="pl-lanes mb-6 font-[var(--font-code)] text-sm" aria-hidden="true">
-							<div class="pl-lane pl-lane-a"><span>/checkout</span><b>Laravel route</b></div>
-							<div class="pl-lane pl-lane-b"><span>/hello-world</span><b>template hierarchy</b></div>
-						</div>
-						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'single'</span>, [<span class="token-class">PostController</span>::<span class="token-keyword">class</span>, <span class="token-string">'show'</span>]);
-<span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
-						<a href="/routing/wordpress-routes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">WordPress routes <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<!-- Blade + Vite — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:5">
-						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade + Vite</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">WordPress data, Laravel syntax, instant reload</h3>
-						<p class="text-ink-2 text-base">Themes in Blade with directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code> and <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code>. Assets through Vite with hot reload and Tailwind CSS v4, no enqueue headaches.</p>
-						<div class="pl-hmr mt-6 font-[var(--font-code)] text-sm" aria-hidden="true">
-							<span class="pl-hmr-save">single.blade.php saved</span>
-							<span class="pl-hmr-arrow"></span>
-							<span class="pl-hmr-page">updated, no reload</span>
-						</div>
-						<div class="flex flex-wrap gap-x-6">
-							<a href="/guides/blade-templates-wordpress/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Blade in WordPress <span aria-hidden="true">&rarr;</span></a>
-							<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
-						</div>
-					</div>
-					<!-- pollora:doctor — 3 col -->
-					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:6">
-						<div class="text-pollora-coral font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">pollora:doctor</div>
-						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Not what is there. Whether it works.</h3>
-						<p class="text-ink-2 text-base mb-6">Things that fail silently get named, with the command that fixes them: an ignored attribute, a disk that refuses a file, a binding with no value.</p>
-						<div class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] text-paper">
-							<p class="mb-3"><span class="token-comment">$</span> php artisan pollora:doctor</p>
-							<ul class="pl-seq grid gap-1.5">
-								<li style="--s:1"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> media disk takes a file</li>
-								<li style="--s:2"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> asynchronous actions</li>
-								<li style="--s:3"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> block bindings</li>
-								<li style="--s:4"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> role declarations</li>
-							</ul>
-						</div>
-						<a href="/advanced/dashboard/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Dashboard and doctor <span aria-hidden="true">&rarr;</span></a>
-					</div>
-				</div>
-				<!-- Also: two smaller ones, same family -->
-				<div class="grid md:grid-cols-2 gap-5 mt-5">
-					<div data-reveal class="rounded-[var(--radius-lg)] p-8 border border-rule" style="--i:1">
-						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-3">Block Bindings</div>
-						<p class="text-ink-2 text-base mb-5 max-w-[48ch]">Fill core blocks with values computed on the server, from a class.</p>
-						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.8rem] md:text-[0.85rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[BlockBinding('acme/event',
-    label: 'Event', postTypes: 'event')]</span>
-<span class="token-keyword">final class</span> <span class="token-class">EventBinding</span></code></pre>
-						<a href="/blocks/block-bindings/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Block Bindings <span aria-hidden="true">&rarr;</span></a>
-					</div>
-					<div data-reveal class="rounded-[var(--radius-lg)] p-8 border border-rule" style="--i:2">
-						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-3">Typed meta</div>
-						<p class="text-ink-2 text-base mb-5 max-w-[48ch]">A meta is a typed PHP property. Registration, sanitization and the REST schema follow.</p>
-						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.8rem] md:text-[0.85rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[Meta(showInRest: true)]</span>
-<span class="token-keyword">public int</span> <span class="token-variable">$capacity</span> = <span class="token-attribute">0</span>;</code></pre>
-						<a href="/content/typed-meta/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Typed meta <span aria-hidden="true">&rarr;</span></a>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- ═══ BLADE BLOCKS — pinned scene ═══ -->
-		<BladeShowcase />
-
-		<!-- ═══ COMPARE ═══ -->
-		<section id="compare" class="pl-deferred pt-24 md:pt-32 pb-24 md:pb-32">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class="mb-12" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
-					<p class="text-ink-2 text-base max-w-[68ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
-				</div>
-				<div data-reveal class="pl-compare" style="--i:1">
-					<table>
-						<thead>
-							<tr>
-								<td></td>
-								{compareTools.map((tool) => (
-									<th scope="col" class:list={{ 'is-pollora': tool.pollora }}>
-										<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
-										<span class="pl-compare__kind">{tool.kind}</span>
-									</th>
-								))}
-							</tr>
-						</thead>
-						<tbody>
-							{compareRows.map((row, r) => (
-								<tr>
-									<th scope="row">{row}</th>
-									{compareTools.map((tool) => (
-										<td class:list={{ 'is-pollora': tool.pollora }}>
-											{r === priceRow ? (
-												<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
-											) : tool.pollora && r === 0 ? (
-												<strong>{tool.cells[r]}</strong>
-											) : (
-												tool.cells[r]
-											)}
-											{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
-										</td>
-									))}
-								</tr>
-							))}
-						</tbody>
-					</table>
-					<ul class="pl-compare__cards">
-						{compareTools.map((tool) => (
-							<li class:list={['pl-compare__card', { 'is-pollora': tool.pollora }]}>
-								<div class="pl-compare__head">
-									<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
-									<span class="pl-compare__kind">{tool.kind}</span>
-								</div>
-								<dl>
-									{compareRows.map((row, r) => (
-										<div>
-											<dt>{row}</dt>
-											<dd>
-												{r === priceRow ? (
-													<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
-												) : (
-													tool.cells[r]
-												)}
-												{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
-											</dd>
-										</div>
-									))}
-								</dl>
-							</li>
-						))}
-					</ul>
-				</div>
-				<a href="/compare/" class="inline-flex items-center gap-2 mt-8 text-lg font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Read the full comparison <span aria-hidden="true">&rarr;</span></a>
-			</div>
-		</section>
-
 		<!-- ═══ THE DIFFERENCE — pinned morph, then the tabbed comparison ═══ -->
 		<DiffShowcase />
 
@@ -703,6 +515,194 @@ const packages = [
 				</div>
 			</div>
 		</section>
+
+		<!-- ═══ FEATURES — Bento grid ═══ -->
+		<section class="pl-deferred py-24 md:py-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-5" style="--i:0">
+					<div>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2.5rem,5vw+0.5rem,4.5rem)] leading-[1] tracking-tight mb-5">Declare it.<br /><span class="text-gradient">Pollora does the rest.</span></h2>
+						<p class="text-ink-2 text-lg max-w-[55ch]">Everything you need to build WordPress sites with the tooling you already know and love.</p>
+					</div>
+					<a href="/features/" class="inline-flex items-center gap-1.5 text-base font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] shrink-0">All features <span aria-hidden="true">&rarr;</span></a>
+				</div>
+				<div class="grid grid-cols-1 md:grid-cols-6 gap-5">
+					<!-- PHP 8 Attributes + auto-discovery — 4 col, dark -->
+					<div data-reveal class="md:col-span-4 group bg-code-bg text-paper rounded-[var(--radius-lg)] p-8 md:p-10 border border-code-surface" style="--i:1">
+						<div class="text-gradient font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">PHP 8 Attributes</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] leading-[1.05] mb-4">Declare, don't register</h3>
+						<p class="text-paper/75 text-base mb-7 max-w-[52ch]">Post types, taxonomies, hooks, REST endpoints, WP-CLI commands, schedules: a class and an attribute. Pollora finds them and registers them for you. No more <code class="font-[var(--font-code)] text-[0.85em] bg-code-surface px-1.5 py-0.5 rounded-[var(--radius-sm)]">register_post_type()</code> calls.</p>
+						<div class="grid md:grid-cols-[1fr_auto] gap-5 items-end">
+							<pre class="bg-code-surface rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.95rem] font-[var(--font-code)] overflow-x-auto"><code class="pl-seq"><span style="--s:0" class="block"><span class="token-attribute">#[PostType('product')]</span></span><span style="--s:1" class="block"><span class="token-attribute">#[HasArchive]</span></span><span style="--s:2" class="block"><span class="token-attribute">#[ShowInRest]</span></span><span style="--s:3" class="block"><span class="token-keyword">class</span> <span class="token-class">Product</span> <span class="token-punctuation">&#123;&#125;</span></span></code></pre>
+							<p class="pl-seq font-[var(--font-code)] text-sm"><span style="--s:5" class="inline-flex items-center gap-2 px-3 py-1.5 rounded-[var(--radius-pill)] bg-pollora-teal/15 text-pollora-teal"><span aria-hidden="true">&#10003;</span> registered, nothing to call</span></p>
+						</div>
+						<a href="/guides/custom-post-types-php-attributes/" class="inline-flex items-center gap-1.5 mt-6 text-sm font-semibold text-paper hover:text-pollora-amber transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Post types with attributes <span aria-hidden="true">&rarr;</span></a>
+					</div>
+					<!-- Fluent roles — 2 col, new in 13.37 -->
+					<div data-reveal class="md:col-span-2 group relative pl-glow-border rounded-[var(--radius-lg)] p-8 md:p-10" style="--i:2">
+						<span class="absolute top-6 right-6 px-2.5 py-1 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-xs font-semibold font-[var(--font-code)]">New in 13.37</span>
+						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Fluent roles</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Roles, in one chain</h3>
+						<p class="text-ink-2 text-base mb-6">Who can do what, written where you read it. A mistake is refused with the call that caused it.</p>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.78rem] md:text-[0.82rem] leading-relaxed font-[var(--font-code)] overflow-x-auto"><code class="pl-seq"><span style="--s:0" class="block"><span class="token-class">Role</span>::<span class="token-function">make</span>(<span class="token-string">'event_manager'</span>)</span><span style="--s:1" class="block">    -&gt;<span class="token-function">inherits</span>(<span class="token-string">'author'</span>)</span><span style="--s:2" class="block">    -&gt;<span class="token-function">grantsPostType</span>(<span class="token-class">Event</span>::<span class="token-keyword">class</span>)</span><span style="--s:3" class="block">    -&gt;<span class="token-function">without</span>(<span class="token-string">'publish_posts'</span>);</span></code></pre>
+						<a href="/advanced/roles-capabilities/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Roles <span aria-hidden="true">&rarr;</span></a>
+					</div>
+					<!-- Async actions — 2 col -->
+					<div data-reveal class="md:col-span-2 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-teal/30 transition-all duration-[var(--dur-short)]" style="--i:3">
+						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Async actions</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Slow work, after the response</h3>
+						<p class="text-ink-2 text-base mb-6">One call moves a WordPress action to a Laravel queue, Action Scheduler or WP-Cron, with delays and retries.</p>
+						<div class="pl-flow mb-6" aria-hidden="true">
+							<span class="pl-flow-node">response</span>
+							<span class="pl-flow-track"><i class="pl-flow-dot"></i></span>
+							<span class="pl-flow-node pl-flow-q">queue</span>
+						</div>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.78rem] md:text-[0.82rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Action</span>::<span class="token-function">add</span>(<span class="token-string">'save_post'</span>, <span class="token-variable">$handler</span>)
+    -&gt;<span class="token-function">async</span>()
+    -&gt;<span class="token-function">tries</span>(<span class="token-attribute">3</span>);</code></pre>
+						<a href="/hooks/async-actions/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Asynchronous actions <span aria-hidden="true">&rarr;</span></a>
+					</div>
+					<!-- Hybrid Routing — 4 col -->
+					<div data-reveal class="md:col-span-4 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-pink/30 transition-all duration-[var(--dur-short)]" style="--i:4">
+						<div class="text-pollora-pink font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Hybrid Routing</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-2xl)] leading-[1.05] mb-4">Laravel routes + WordPress fallback</h3>
+						<p class="text-ink-2 text-base mb-6 max-w-[55ch]"><code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">Route::wp()</code> maps WordPress conditions to controllers. Custom routes take priority; the template hierarchy handles the rest.</p>
+						<div class="pl-lanes mb-6 font-[var(--font-code)] text-sm" aria-hidden="true">
+							<div class="pl-lane pl-lane-a"><span>/checkout</span><b>Laravel route</b></div>
+							<div class="pl-lane pl-lane-b"><span>/hello-world</span><b>template hierarchy</b></div>
+						</div>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'single'</span>, [<span class="token-class">PostController</span>::<span class="token-keyword">class</span>, <span class="token-string">'show'</span>]);
+<span class="token-class">Route</span>::<span class="token-function">wp</span>(<span class="token-string">'page'</span>, <span class="token-string">'contact'</span>, [<span class="token-class">ContactController</span>::<span class="token-keyword">class</span>, <span class="token-string">'index'</span>]);</code></pre>
+						<a href="/routing/wordpress-routes/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">WordPress routes <span aria-hidden="true">&rarr;</span></a>
+					</div>
+					<!-- Blade + Vite — 3 col -->
+					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-amber/30 transition-all duration-[var(--dur-short)]" style="--i:5">
+						<div class="text-pollora-amber font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">Blade + Vite</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">WordPress data, Laravel syntax, instant reload</h3>
+						<p class="text-ink-2 text-base">Themes in Blade with directives like <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@posts</code>, <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@title</code> and <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@content</code>. Assets through Vite with hot reload and Tailwind CSS v4, no enqueue headaches.</p>
+						<div class="pl-hmr mt-6 font-[var(--font-code)] text-sm" aria-hidden="true">
+							<span class="pl-hmr-save">single.blade.php saved</span>
+							<span class="pl-hmr-arrow"></span>
+							<span class="pl-hmr-page">updated, no reload</span>
+						</div>
+						<div class="flex flex-wrap gap-x-6">
+							<a href="/guides/blade-templates-wordpress/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Blade in WordPress <span aria-hidden="true">&rarr;</span></a>
+							<a href="/theming/assets-vite/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Assets and Vite <span aria-hidden="true">&rarr;</span></a>
+						</div>
+					</div>
+					<!-- pollora:doctor — 3 col -->
+					<div data-reveal class="md:col-span-3 group bg-paper-2 rounded-[var(--radius-lg)] p-8 md:p-10 border border-rule hover:border-pollora-coral/30 transition-all duration-[var(--dur-short)]" style="--i:6">
+						<div class="text-pollora-coral font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-4">pollora:doctor</div>
+						<h3 class="font-[var(--font-display)] font-bold text-[var(--text-xl)] leading-[1.1] mb-3">Not what is there. Whether it works.</h3>
+						<p class="text-ink-2 text-base mb-6">Things that fail silently get named, with the command that fixes them: an ignored attribute, a disk that refuses a file, a binding with no value.</p>
+						<div class="bg-code-bg rounded-[var(--radius-md)] p-5 text-[0.85rem] md:text-[0.9rem] font-[var(--font-code)] text-paper">
+							<p class="mb-3"><span class="token-comment">$</span> php artisan pollora:doctor</p>
+							<ul class="pl-seq grid gap-1.5">
+								<li style="--s:1"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> media disk takes a file</li>
+								<li style="--s:2"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> asynchronous actions</li>
+								<li style="--s:3"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> block bindings</li>
+								<li style="--s:4"><span class="text-pollora-teal" aria-hidden="true">&#10003;</span> role declarations</li>
+							</ul>
+						</div>
+						<a href="/advanced/dashboard/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Dashboard and doctor <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</div>
+				<!-- Also: two smaller ones, same family -->
+				<div class="grid md:grid-cols-2 gap-5 mt-5">
+					<div data-reveal class="rounded-[var(--radius-lg)] p-8 border border-rule" style="--i:1">
+						<div class="text-pollora-orange font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-3">Block Bindings</div>
+						<p class="text-ink-2 text-base mb-5 max-w-[48ch]">Fill core blocks with values computed on the server, from a class.</p>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.8rem] md:text-[0.85rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[BlockBinding('acme/event',
+    label: 'Event', postTypes: 'event')]</span>
+<span class="token-keyword">final class</span> <span class="token-class">EventBinding</span></code></pre>
+						<a href="/blocks/block-bindings/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Block Bindings <span aria-hidden="true">&rarr;</span></a>
+					</div>
+					<div data-reveal class="rounded-[var(--radius-lg)] p-8 border border-rule" style="--i:2">
+						<div class="text-pollora-teal font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-3">Typed meta</div>
+						<p class="text-ink-2 text-base mb-5 max-w-[48ch]">A meta is a typed PHP property. Registration, sanitization and the REST schema follow.</p>
+						<pre class="bg-code-bg rounded-[var(--radius-md)] p-4 text-[0.8rem] md:text-[0.85rem] font-[var(--font-code)] overflow-x-auto"><code><span class="token-attribute">#[Meta(showInRest: true)]</span>
+<span class="token-keyword">public int</span> <span class="token-variable">$capacity</span> = <span class="token-attribute">0</span>;</code></pre>
+						<a href="/content/typed-meta/" class="inline-flex items-center gap-1.5 mt-5 text-sm font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Typed meta <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ═══ MEDIA — pollora/media, pinned scene ═══ -->
+		<MediaShowcase />
+
+		<!-- ═══ COMPARE ═══ -->
+		<section id="compare" class="pl-deferred pt-24 md:pt-32 pb-24 md:pb-32">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="mb-12" style="--i:0">
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">How it <span class="text-gradient">compares</span></h2>
+					<p class="text-ink-2 text-base max-w-[68ch]">Roots and Corcel opened the way for Laravel in WordPress, and Pollora builds on their work: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">@roots/vite-plugin</code>, the Bedrock layout, Sage Directives, and a fork of Corcel for its models. What Pollora adds is the inverse arrangement: WordPress running inside a full Laravel application.</p>
+				</div>
+				<div data-reveal class="pl-compare" style="--i:1">
+					<table>
+						<thead>
+							<tr>
+								<td></td>
+								{compareTools.map((tool) => (
+									<th scope="col" class:list={{ 'is-pollora': tool.pollora }}>
+										<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
+										<span class="pl-compare__kind">{tool.kind}</span>
+									</th>
+								))}
+							</tr>
+						</thead>
+						<tbody>
+							{compareRows.map((row, r) => (
+								<tr>
+									<th scope="row">{row}</th>
+									{compareTools.map((tool) => (
+										<td class:list={{ 'is-pollora': tool.pollora }}>
+											{r === priceRow ? (
+												<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+											) : tool.pollora && r === 0 ? (
+												<strong>{tool.cells[r]}</strong>
+											) : (
+												tool.cells[r]
+											)}
+											{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
+										</td>
+									))}
+								</tr>
+							))}
+						</tbody>
+					</table>
+					<ul class="pl-compare__cards">
+						{compareTools.map((tool) => (
+							<li class:list={['pl-compare__card', { 'is-pollora': tool.pollora }]}>
+								<div class="pl-compare__head">
+									<span class="pl-compare__name">{tool.pollora && <img src="/favicon.svg" alt="" width="22" height="22" />}{tool.name}</span>
+									<span class="pl-compare__kind">{tool.kind}</span>
+								</div>
+								<dl>
+									{compareRows.map((row, r) => (
+										<div>
+											<dt>{row}</dt>
+											<dd>
+												{r === priceRow ? (
+													<span class:list={['pl-compare-pill', tool.cells[r].startsWith('Free') ? 'is-free' : 'is-paid']}>{tool.cells[r]}</span>
+												) : (
+													tool.cells[r]
+												)}
+												{tool.pollora && r === attributeRow && <code>#[PostType('book')]</code>}
+											</dd>
+										</div>
+									))}
+								</dl>
+							</li>
+						))}
+					</ul>
+				</div>
+				<a href="/compare/" class="inline-flex items-center gap-2 mt-8 text-lg font-semibold text-ink hover:text-pollora-coral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">Read the full comparison <span aria-hidden="true">&rarr;</span></a>
+			</div>
+		</section>
+
+		<!-- ═══ BLADE BLOCKS — pinned scene ═══ -->
+		<BladeShowcase />
 
 		<!-- ═══ ECOSYSTEM ═══ -->
 		<section id="ecosystem" class="pl-deferred pl-eco py-24 md:py-32">
