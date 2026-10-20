@@ -1020,9 +1020,7 @@ body {
 
 /* The fixed nav over the dark hero (SiteLayout sets data-on-dark while the hero is behind it) */
 .pl-nav { transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), background-color 0.25s ease; }
-.pl-nav .pl-logo { color: var(--color-ink); transition: color 0.25s ease; }
 .pl-nav[data-on-dark] { background-color: oklch(17% 0.03 290 / 0.55); color: var(--color-paper); }
-.pl-nav[data-on-dark] .pl-logo { color: var(--color-paper); }
 .pl-nav[data-on-dark] .text-ink-2 { color: oklch(84% 0.015 295); }
 .pl-nav[data-on-dark] .text-ink, .pl-nav[data-on-dark] .hover\:text-ink:hover { color: var(--color-paper); }
 .pl-nav[data-on-dark] .pl-social { color: oklch(84% 0.015 295); }

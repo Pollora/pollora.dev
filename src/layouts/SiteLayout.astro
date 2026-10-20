@@ -1,7 +1,6 @@
 ---
 // Shell of every page outside the docs: head, navigation and footer. The docs keep Starlight's.
 import polloraLogo from '../assets/pollora-logo.svg';
-import polloraLogoRaw from '../assets/pollora-logo.svg?raw';
 import AnalyticsHead from '../components/AnalyticsHead.astro';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import { ogImageFor } from '../lib/og-url';
@@ -28,8 +27,6 @@ interface Props {
 }
 
 const { title, description, socialDescription = description, type = 'website', structuredData, darkHero = false } = Astro.props;
-// The logo inlined, so that its lettering can follow the nav colour
-const logoInline = polloraLogoRaw.replace('fill="#1d142a"', 'fill="currentColor"').replace('<svg ', '<svg class="pl-logo h-9 w-auto" role="img" aria-label="Pollora" width="173" height="70" ');
 const site = 'https://pollora.dev';
 const url = new URL(Astro.url.pathname, site).href;
 const ogImage = ogImageFor(Astro.url.pathname);
@@ -120,7 +117,7 @@ const footer = [
 		<div class="gradient-bar h-[3px]"></div>
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] h-18 flex items-center justify-between">
 			<a href="/" class="flex items-center gap-2" aria-label="Pollora home">
-				<Fragment set:html={logoInline} />
+				<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" />
 			</a>
 			<div class="hidden md:flex items-center gap-8 text-[0.95rem] font-medium text-ink-2">
 				{links.map((l) => (

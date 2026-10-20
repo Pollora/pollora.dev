@@ -36,6 +36,7 @@ const TOP = 1.6;
 const BOT = -0.95;
 const ROWS = 40;
 const COLS = 144;
+const SIL = 240; // samples along a silhouette meridian: the dome bends fast near the top
 const radAt = (y: number) => (y > 0.55 ? Math.sqrt(Math.max(0, 1 - ((y - 0.55) / 1.05) ** 2)) : 1.0 + 0.13 * Math.pow((0.55 - y) / 1.5, 1.4));
 const lobe = (th: number) => Math.sqrt(Math.cos(LOBES * th + 0.4) ** 2 + 0.012);
 const surf = (t: number, th: number) => {
@@ -275,8 +276,8 @@ export function mountGhost(host: HTMLElement): Ghost | null {
 		const list: Vector3[] = [];
 		for (const a of [th, th + Math.PI]) {
 			let prev: Vector3 | null = null;
-			for (let i = 0; i <= ROWS; i++) {
-				const v = surf(Math.max(i / ROWS, 0.0008), a);
+			for (let i = 0; i <= SIL; i++) {
+				const v = surf(i / SIL, a); // row 0 is the apex itself: the two meridians meet there
 				if (prev) list.push(prev, v);
 				prev = v;
 			}
