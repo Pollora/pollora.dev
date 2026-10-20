@@ -3,8 +3,10 @@ title: "Pollora 13.37: your media library on any disk, and image sizes declared 
 description: "Two settings move the WordPress media library to S3, R2 or any Laravel disk, and an ImageSize facade declares the sizes your design uses. Roles get a fluent API too."
 date: 2026-10-20
 category: release
-version: 13.37.0
+version: 13.37.1
 ---
+
+**Update, 13.37.1.** v13.37.0 still accepted Laravel 13.36, although its version number follows the Laravel release it is built on. 13.37.1 requires Laravel 13.37 (`illuminate/*` `^13.37`). Install 13.37.1 rather than 13.37.0: nothing else changed.
 
 A WordPress media library lives in one folder of one server. That is fine until the site grows, runs on two servers, or has to put its images behind a CDN. Pollora 13.37 moves the library to any Laravel disk, local, S3, R2, Scaleway or MinIO, with two settings, and lets you say which image sizes your design uses instead of leaving WordPress to make all of them for every image.
 
@@ -66,5 +68,7 @@ The names are those of the attributes and of their arguments, and the same code 
 composer update pollora/framework --with-dependencies
 php artisan pollora:doctor
 ```
+
+The update brings Laravel to 13.37, which 13.37.1 requires.
 
 The media module is off until you set `media.disk`. Read [Media storage](/advanced/media/) before moving a library, and [Roles & capabilities](/advanced/roles-capabilities/) for the facade.
