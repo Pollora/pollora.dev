@@ -893,7 +893,7 @@ body {
 			   above and below. Pull the track under the header and the call to action; only the
 			   transparent margins of the scene overlap, never its content. */
 			.pin-track {
-				margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - 6rem));
+				margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - var(--pull, 6rem)));
 				margin-bottom: calc(-1 * max(0px, (100svh - 30rem) / 2 - 4rem));
 			}
 			.pin-scene { height: 100svh; background: none; padding-block: 0; }

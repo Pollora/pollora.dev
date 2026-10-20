@@ -18,9 +18,10 @@ interface Props {
 	steps: Step[];
 	flip?: boolean;
 	glow?: string;
+	gap?: number; // rem kept between the header and the scene's content; raise it when the scene fills its top
 	cta?: { href: string; label: string; text: string };
 }
-const { id, kicker, badge, title, intro, steps, flip = false, glow, cta } = Astro.props;
+const { id, kicker, badge, title, intro, steps, flip = false, glow, gap, cta } = Astro.props;
 const last = Math.max(steps.length - 1, 1);
 ---
 
@@ -38,7 +39,7 @@ const last = Math.max(steps.length - 1, 1);
 		</div>
 	</div>
 
-	<div class:list={['pin-track max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]', { 'pin-flip': flip }]} style={`--w:${(0.68 / last).toFixed(3)}${glow ? `;--glow:${glow}` : ''}`}>
+	<div class:list={['pin-track max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]', { 'pin-flip': flip }]} style={`--w:${(0.68 / last).toFixed(3)}${glow ? `;--glow:${glow}` : ''}${gap ? `;--pull:${gap}rem` : ''}`}>
 		<div class="pin-scene" aria-hidden="true">
 			<div class="pin-glow"></div>
 			<div class="pin-stage">
