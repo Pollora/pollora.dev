@@ -10,6 +10,7 @@ import LatestPosts from '../components/blog/LatestPosts.astro';
 import AbilitiesShowcase from '../components/AbilitiesShowcase.astro';
 import AsyncShowcase from '../components/AsyncShowcase.astro';
 import BladeShowcase from '../components/BladeShowcase.astro';
+import DiffShowcase from '../components/DiffShowcase.astro';
 import MediaShowcase from '../components/MediaShowcase.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { social } from '../lib/site';
@@ -409,11 +410,14 @@ const packages = [
 			</div>
 		</section>
 
+		<!-- ═══ THE DIFFERENCE — pinned morph, then the tabbed comparison ═══ -->
+		<DiffShowcase />
+
 		<!-- ═══ CODE COMPARISON — Tabbed ═══ -->
-		<section class="pl-deferred py-24 md:py-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'rest': 'a REST endpoint', 'abilities': 'an AI ability' } }">
+		<section class="pl-deferred pt-16 md:pt-24 pb-24 md:pb-32 bg-code-bg" x-data="{ tab: 'post-types', side: 'pollora', subjects: { 'post-types': 'a custom post type', 'hooks': 'a hook', 'rest': 'a REST endpoint', 'abilities': 'an AI ability' } }">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="mb-10" style="--i:0">
-					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">The difference is <span class="text-gradient">visible</span></h2>
+					<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight text-[var(--color-accent-ink)] mb-5">Hooks, REST, abilities: <span class="text-gradient">same story</span></h2>
 					<p class="text-neutral text-lg max-w-[55ch] mb-8">Register <span x-text="subjects[tab]" class="text-gradient font-semibold">a custom post type</span>.<span class="hidden md:inline"> Left: WordPress traditional. Right: Pollora.</span></p>
 
 					<!-- Tabs -->
