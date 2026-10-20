@@ -7,6 +7,7 @@ import themeApiary from '../assets/themes/apiary.png';
 import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
 import FeatureScene from '../components/FeatureScene.astro';
+import GhostHero from '../components/GhostHero.astro';
 import LatestPosts from '../components/blog/LatestPosts.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { social } from '../lib/site';
@@ -54,21 +55,6 @@ const youtubeId = 'Wk1VzPapqM8';
 const tourEmbedUrl = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&playsinline=1`;
 
 const terminalSequence = JSON.parse(readFileSync(resolve('sources/terminal-sequence.json'), 'utf-8'));
-const peekRaw = readFileSync(resolve('src/assets/mascot-peek.svg'), 'utf-8');
-// Crop to top portion (eyes area) and clean up Inkscape metadata
-const peekSvg = peekRaw
-	.replace(/viewBox="[^"]*"/, 'viewBox="100 50 1900 850"')
-	.replace(/<sodipodi:namedview[\s\S]*?\/>/g, '')
-	.replace(/<\?xml[^>]*\?>/g, '')
-	.replace(/xmlns:inkscape="[^"]*"/g, '')
-	.replace(/xmlns:sodipodi="[^"]*"/g, '')
-	.replace(/inkscape:[a-z-]+="[^"]*"/g, '')
-	.replace(/sodipodi:[a-z-]+="[^"]*"/g, '')
-	.replace(/id="svg82"/, 'id="mascot-peek"')
-	.replace(/id="g82"/, 'id="pupil-2"')
-	.replace(/id="g83"/, 'id="pupil-1"')
-	.replace('display="block"', 'display="block" class="w-full h-auto"');
-
 // "How it compares": a table from tablet width, one card per tool on phones
 const compareRows = ['Approach', 'Front end', 'Post types & hooks', 'Price'];
 const compareTools = [
@@ -106,79 +92,48 @@ const packages = [
 ];
 ---
 
-<SiteLayout title={title} description={description} socialDescription={socialDescription} structuredData={structuredData}>
+<SiteLayout title={title} description={description} socialDescription={socialDescription} structuredData={structuredData} darkHero>
 
 		<!-- ═══ HERO ═══ -->
-		<section class="pt-36 pb-24 md:pt-44 md:pb-32 relative">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div class="grid md:grid-cols-[1.2fr_1fr] gap-12 md:gap-20 items-start">
+		<section class="pl-hero-dark relative overflow-hidden pt-32 pb-16 md:pt-36 md:pb-20 md:min-h-[min(100svh,58rem)] md:flex md:items-center" data-nav-dark>
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] w-full">
+				<div class="grid md:grid-cols-[1.1fr_1fr] gap-10 md:gap-12 items-center">
 					<div class="pl-hero-in" style="--i:0">
 						<div class="flex flex-wrap items-center gap-3 mb-5">
 							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Modern PHP, zero compromise</p>
-							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-coral/40 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-white/15 bg-white/[0.06] text-sm font-semibold font-[var(--font-code)] text-paper/85 hover:border-pollora-coral/60 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								<span class="w-2 h-2 rounded-full bg-pollora-coral" aria-hidden="true"></span>
 								v{version}
 							</a>
 							{installs && (
-								<a href="https://packagist.org/packages/pollora/framework/stats" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-rule bg-paper-2 text-sm font-semibold font-[var(--font-code)] text-ink-2 hover:border-pollora-teal/50 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								<a href="https://packagist.org/packages/pollora/framework/stats" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-white/15 bg-white/[0.06] text-sm font-semibold font-[var(--font-code)] text-paper/85 hover:border-pollora-teal/60 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 									<span class="w-2 h-2 rounded-full bg-pollora-teal" aria-hidden="true"></span>
 									{compact(installs)} installs / month
 								</a>
 							)}
 						</div>
-						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-ink mb-8" style="overflow-wrap:anywhere;min-width:0">
+						<h1 class="font-[var(--font-display)] font-bold text-[clamp(3rem,4vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-paper mb-8" style="overflow-wrap:anywhere;min-width:0">
 							The Laravel framework<br /><span class="text-gradient">for WordPress.</span>
 						</h1>
-						<p class="text-lg text-ink-2 max-w-[50ch] leading-relaxed mb-12">
+						<p class="text-lg text-paper/80 max-w-[50ch] leading-relaxed mb-12">
 							WordPress runs inside a Laravel app: routing, controllers, Blade and Eloquent on the front end, the admin and plugins untouched. PHP 8 attributes and auto-discovery do the registering.
 						</p>
 						<div class="flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								Get Started <span aria-hidden="true">&rarr;</span>
 							</a>
-							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-rule text-ink text-lg font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-white/25 text-paper text-lg font-semibold hover:border-pollora-coral/70 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								View on GitHub
 							</a>
 						</div>
-						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="group mt-8 inline-flex items-center gap-3 text-base font-semibold text-ink-2 hover:text-ink transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
+						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="group mt-8 inline-flex items-center gap-3 text-base font-semibold text-paper/80 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
 							<span class="grid place-items-center w-11 h-11 rounded-full bg-gradient-pollora text-white shadow-[0_0_20px_rgba(255,83,52,0.35)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-5 h-5 translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
 							Watch the 1-min tour
-							<span class="font-[var(--font-code)] text-sm font-normal text-muted">1:06</span>
+							<span class="font-[var(--font-code)] text-sm font-normal text-paper/60">1:06</span>
 						</button>
 					</div>
-					<div class="pl-hero-in rounded-[var(--radius-lg)] overflow-hidden shadow-2xl shadow-pollora-dark/10" style="--i:1">
-						<div class="bg-code-bg p-6 md:p-8 pb-24 md:pb-28 font-[var(--font-code)] text-[0.9rem] md:text-base leading-relaxed">
-							<div class="flex items-center gap-2 mb-6">
-								<span class="w-3 h-3 rounded-full bg-pollora-pink"></span>
-								<span class="w-3 h-3 rounded-full bg-pollora-amber"></span>
-								<span class="w-3 h-3 rounded-full bg-pollora-teal"></span>
-								<span class="ml-4 text-sm text-neutral font-[var(--font-body)]">Book.php</span>
-							</div>
-							<pre><code><span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType</span>;
-<span class="token-keyword">use</span> <span class="token-class">Pollora\Attributes\PostType\&#123;HasArchive, Supports, ShowInRest&#125;</span>;
-
-<span class="token-attribute">#[PostType('book')]</span>
-<span class="token-attribute">#[HasArchive]</span>
-<span class="token-attribute">#[Supports(['title', 'editor', 'thumbnail'])]</span>
-<span class="token-attribute">#[ShowInRest]</span>
-<span class="token-keyword">class</span> <span class="token-class">Book</span> <span class="token-punctuation">&#123;&#125;</span>
-
-<span class="token-comment">// That's it. Auto-discovered, registered, ready.</span></code></pre>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Mascot peek — absolute, bottom-right of hero -->
-			<div x-data="polloraPeek()" @mousemove.window="track($event)" class="absolute bottom-0 right-0 z-10 pointer-events-none w-full" aria-hidden="true">
-				<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-					<div class="grid md:grid-cols-[1.2fr_1fr]">
-						<div></div>
-						<div class="flex justify-end">
-							<div class="w-80 md:w-120 lg:w-140">
-								<Fragment set:html={peekSvg} />
-							</div>
-						</div>
+					<div>
+						<GhostHero />
 					</div>
 				</div>
 			</div>
@@ -704,32 +659,6 @@ const packages = [
 		import Alpine from 'alpinejs';
 
 		// Pollora peek — eye tracking
-		Alpine.data('polloraPeek', () => ({
-			track(e) {
-				const svg = document.getElementById('mascot-peek');
-				if (!svg) return;
-
-				const rect = svg.getBoundingClientRect();
-				const svgCX = rect.left + rect.width / 2;
-				const svgCY = rect.top + rect.height / 2;
-
-				const dx = e.clientX - svgCX;
-				const dy = e.clientY - svgCY;
-				const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-				const nx = dx / dist;
-				const ny = dy / dist;
-
-				const maxMove = 18;
-				const factor = Math.min(dist / 300, 1);
-				const moveX = nx * maxMove * factor;
-				const moveY = ny * maxMove * factor;
-
-				const p1 = document.getElementById('pupil-1');
-				const p2 = document.getElementById('pupil-2');
-				if (p1) p1.setAttribute('transform', `translate(${moveX}, ${moveY})`);
-				if (p2) p2.setAttribute('transform', `translate(${moveX}, ${moveY})`);
-			}
-		}));
 
 		// Terminal animation
 		Alpine.data('terminalAnim', () => ({
