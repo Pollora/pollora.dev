@@ -824,3 +824,81 @@ body {
 	.pl-flow-dot { display: none; }
 	.pl-flow-dot, .pl-lane, .pl-hmr-page { animation: none !important; }
 }
+
+/* ── Pinned story: a scene that sticks while the steps scroll ─────────────────────────────────
+   One animated number, --p (0 to 1, the scroll position through .pin-track), is read by every
+   descendant. Step i of n is centered on screen at p = i / (n - 1). Without scroll-driven
+   animations, or with reduced motion, --p stays at 1 and the page is a plain column. */
+@property --p {
+	syntax: '<number>';
+	inherits: true;
+	initial-value: 1;
+}
+@keyframes pin-progress {
+	from { --p: 0; }
+	to { --p: 1; }
+}
+.pin-track { --p: 1; display: grid; grid-template-columns: minmax(0, 1fr); }
+.pin-scene { position: relative; display: grid; place-items: center; padding-block: 1.5rem; }
+.pin-glow {
+	position: absolute;
+	inset: 8% 4%;
+	background: radial-gradient(closest-side, color-mix(in oklch, var(--glow, var(--color-pollora-coral)) 30%, transparent), transparent);
+	pointer-events: none;
+}
+.pin-stage { position: relative; width: min(100%, 38rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+.pin-panel { position: relative; aspect-ratio: 1; container-type: size; width: 100%; }
+.pin-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+.pin-step { padding-block: 2.5rem; }
+.pin-step .token-comment { color: oklch(80% 0.015 290); }
+
+@media (min-width: 64rem) {
+	.pin-track { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(2rem, 5vw, 5rem); }
+	.pin-scene { grid-column: 2; grid-row: 1; align-self: start; }
+	.pin-steps { grid-column: 1; grid-row: 1; }
+	.pin-flip .pin-scene { grid-column: 1; }
+	.pin-flip .pin-steps { grid-column: 2; }
+}
+
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.pin-track {
+			animation: pin-progress linear both;
+			animation-timeline: view();
+			animation-range: contain 0% contain 100%;
+		}
+		/* Phones: the scene sticks on top, the steps scroll under it */
+		.pin-scene {
+			position: sticky;
+			top: 0;
+			z-index: 2;
+			height: 46svh;
+			padding-block: 0.5rem;
+			background: linear-gradient(var(--color-code-bg) 88%, transparent);
+		}
+		.pin-glow { inset: 0; }
+		.pin-stage { height: 100%; width: auto; aspect-ratio: 1; max-width: 100%; display: block; }
+		.pin-panel { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; opacity: var(--v, 1); }
+		.pin-steps { gap: 0; }
+		.pin-step {
+			min-height: 58svh;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding-block: 0;
+			opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / var(--w, 0.17), 1));
+		}
+		@media (min-width: 64rem) {
+			/* The first and last steps are centered in a full screen: on a tall window that leaves a hole
+			   above and below. Pull the track under the header and the call to action; only the
+			   transparent margins of the scene overlap, never its content. */
+			.pin-track {
+				margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - 6rem));
+				margin-bottom: calc(-1 * max(0px, (100svh - 30rem) / 2 - 4rem));
+			}
+			.pin-scene { height: 100svh; background: none; padding-block: 0; }
+			.pin-stage { height: auto; width: min(100%, 86svh, 44rem); }
+			.pin-step { min-height: 100svh; }
+		}
+	}
+}

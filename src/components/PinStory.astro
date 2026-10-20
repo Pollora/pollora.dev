@@ -1,0 +1,72 @@
+---
+// The frame shared by the homepage showcases: a dark section with a header, a pinned scene
+// (the default slot, drawn by each showcase) and the steps that scroll next to it.
+// The scroll mechanics live in global.css (.pin-*); the steps' code is highlighted by the caller.
+interface Step {
+	kicker: string;
+	title: string;
+	text: string;
+	code?: string;
+	note?: string;
+}
+interface Props {
+	id: string;
+	kicker: string;
+	badge?: string;
+	title: string; // HTML: may carry the gradient span
+	intro: string;
+	steps: Step[];
+	flip?: boolean;
+	glow?: string;
+	cta?: { href: string; label: string; text: string };
+}
+const { id, kicker, badge, title, intro, steps, flip = false, glow, cta } = Astro.props;
+const last = Math.max(steps.length - 1, 1);
+---
+
+<section id={id} class="relative bg-code-bg text-paper" aria-labelledby={`${id}-title`}>
+	<div class="absolute inset-x-0 top-0 h-px bg-gradient-pollora opacity-70" aria-hidden="true"></div>
+
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-28 md:pt-40 pb-12 lg:pb-0 relative z-[3]">
+		<div data-reveal class="max-w-5xl" style="--i:0">
+			<p class="flex flex-wrap items-center gap-3 font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-7">
+				<span class="text-pollora-amber">{kicker}</span>
+				{badge && <span class="px-2.5 py-1 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-xs normal-case tracking-normal">{badge}</span>}
+			</p>
+			<h2 id={`${id}-title`} class="font-[var(--font-display)] font-bold text-[clamp(2.75rem,7vw+0.5rem,7rem)] leading-[0.96] tracking-tight [overflow-wrap:anywhere]" set:html={title} />
+			<p class="mt-8 text-[var(--text-md)] md:text-[var(--text-lg)] leading-snug text-paper/75 max-w-[40ch]">{intro}</p>
+		</div>
+	</div>
+
+	<div class:list={['pin-track max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]', { 'pin-flip': flip }]} style={`--w:${(0.68 / last).toFixed(3)}${glow ? `;--glow:${glow}` : ''}`}>
+		<div class="pin-scene" aria-hidden="true">
+			<div class="pin-glow"></div>
+			<div class="pin-stage">
+				<slot />
+			</div>
+		</div>
+
+		<div class="pin-steps">
+			{steps.map((s, i) => (
+				<article class="pin-step" style={`--c:${(i / last).toFixed(3)}`}>
+					<p class="font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold text-pollora-amber mb-4">
+						<span class="text-paper/80">0{i + 1}</span> &nbsp;{s.kicker}
+					</p>
+					<h3 class="font-[var(--font-display)] font-bold text-[clamp(1.75rem,2.6vw+0.5rem,2.75rem)] leading-[1.05] tracking-tight mb-5">{s.title}</h3>
+					<p class="text-paper/85 text-base md:text-[var(--text-md)] leading-relaxed mb-7 max-w-[46ch]">{s.text}</p>
+					{s.code && <pre class="bg-code-surface rounded-[var(--radius-md)] p-5 text-[0.8rem] md:text-[0.88rem] leading-relaxed font-[var(--font-code)] overflow-x-auto"><code set:html={s.code} /></pre>}
+					{s.note && <p class="mt-4 text-sm text-paper/80 max-w-[46ch]">{s.note}</p>}
+				</article>
+			))}
+		</div>
+	</div>
+
+	{cta && (
+		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 md:pt-24 pb-24 md:pb-32 relative z-[3]">
+			<div data-reveal class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8" style="--i:0">
+				<a href={cta.href} class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">{cta.label} <span aria-hidden="true">&rarr;</span></a>
+				<p class="text-paper/80 max-w-[52ch]" set:html={cta.text} />
+			</div>
+		</div>
+	)}
+</section>

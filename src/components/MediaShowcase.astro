@@ -1,31 +1,8 @@
 ---
-// pollora/media, the headline of 13.37.
-// A pinned scene driven by the scroll (CSS only: one animated number, --p, from 0 to 1) tells the story
-// in five beats. Browsers without scroll-driven animations, and visitors who ask for less motion,
-// get the same content as a static column: steps on one side, the final state of each scene on the other.
+// pollora/media, the headline of 13.37: five beats, drawn by the scroll (see PinStory and global.css).
 // Every snippet below comes from media.md (Pollora/documentation) or the package README.
-
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const LIT = /('[^']*')|(\/\/.*$)|(\b[A-Z]\w*(?=::))|(->|::)(\w+)|(\b\d+\b)/gm;
-function php(src: string): string {
-	let out = '';
-	let last = 0;
-	for (const m of src.matchAll(LIT)) {
-		out += esc(src.slice(last, m.index));
-		if (m[1]) out += `<span class="token-string">${esc(m[1])}</span>`;
-		else if (m[2]) out += `<span class="token-comment">${esc(m[2])}</span>`;
-		else if (m[3]) out += `<span class="token-class">${m[3]}</span>`;
-		else if (m[4]) out += `${esc(m[4])}<span class="${/^[A-Z]/.test(m[5]) ? 'token-variable' : 'token-function'}">${m[5]}</span>`;
-		else out += `<span class="token-attribute">${m[6]}</span>`;
-		last = (m.index ?? 0) + m[0].length;
-	}
-	return out + esc(src.slice(last));
-}
-const env = (src: string) =>
-	src
-		.split('\n')
-		.map((l) => l.replace(/^(\w+)=(.*)$/, (_, k, v) => `<span class="token-attribute">${k}</span>=<span class="token-string">${esc(v)}</span>`))
-		.join('\n');
+import PinStory from './PinStory.astro';
+import { env, php } from '../lib/highlight';
 
 const steps = [
 	{
@@ -71,9 +48,22 @@ MEDIA_URL=https://media.client.fr`),
 ];
 ---
 
-<section id="media" class="plm relative bg-code-bg text-paper" aria-labelledby="media-title">
-	<!-- The artwork every thumbnail is cut from (one source, cropped differently by each box) -->
-	<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+<PinStory
+	id="media"
+	kicker="pollora/media"
+	badge="New in 13.37"
+	title='Your media library, on <span class="text-gradient">any disk.</span>'
+	intro="Sizes declared in PHP. Files stored on S3, R2 or whatever Laravel can reach. WordPress never notices."
+	steps={steps}
+	cta={{
+		href: 'https://github.com/Pollora/media',
+		label: 'pollora/media on GitHub',
+		text: 'Without <code class="font-[var(--font-code)] text-[0.9em]">media.disk</code> the module is off and WordPress keeps its own folder. It also runs in a classic theme, a plugin or Bedrock.',
+	}}
+>
+	<div class="plm-vars">
+		<!-- The artwork every thumbnail is cut from (one source, cropped differently by each box) -->
+		<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
 		<defs>
 			<linearGradient id="plm-sky" x1="0" y1="0" x2="0" y2="1">
 				<stop offset="0" style="stop-color:var(--color-pollora-dark)"></stop>
@@ -91,29 +81,8 @@ MEDIA_URL=https://media.client.fr`),
 		</defs>
 	</svg>
 
-	<div class="absolute inset-x-0 top-0 h-px bg-gradient-pollora opacity-70" aria-hidden="true"></div>
-
-	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-28 md:pt-40 pb-12 lg:pb-0 relative z-[3]">
-		<div data-reveal class="max-w-5xl" style="--i:0">
-			<p class="flex flex-wrap items-center gap-3 font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-7">
-				<span class="text-pollora-amber">pollora/media</span>
-				<span class="px-2.5 py-1 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-xs normal-case tracking-normal">New in 13.37</span>
-			</p>
-			<h2 id="media-title" class="font-[var(--font-display)] font-bold text-[clamp(2.75rem,7vw+0.5rem,7rem)] leading-[0.96] tracking-tight [overflow-wrap:anywhere]">
-				Your media library, on <span class="text-gradient">any disk.</span>
-			</h2>
-			<p class="mt-8 text-[var(--text-md)] md:text-[var(--text-lg)] leading-snug text-paper/75 max-w-[40ch]">
-				Sizes declared in PHP. Files stored on S3, R2 or whatever Laravel can reach. WordPress never notices.
-			</p>
-		</div>
-	</div>
-
-	<div class="plm-track max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-		<div class="plm-scene" aria-hidden="true">
-			<div class="plm-glow"></div>
-			<div class="plm-stage">
-				<!-- Panel A: from one photo to files on a disk -->
-				<div class="plm-panel plm-a">
+		<!-- Panel A: from one photo to files on a disk -->
+				<div class="pin-panel plm-panel plm-a">
 					<div class="plm-photo">
 						<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><use href="#plm-art"></use></svg>
 						<span class="plm-cut plm-cut-1"></span><span class="plm-cut plm-cut-2"></span>
@@ -144,7 +113,7 @@ MEDIA_URL=https://media.client.fr`),
 				</div>
 
 				<!-- Panel B: the first request, and the services -->
-				<div class="plm-panel plm-b">
+				<div class="pin-panel plm-panel plm-b">
 					<ol class="plm-log">
 						<li style="--n:0"><b>GET</b> /2026/10/photo-card-600x400-&#123;signature&#125;.webp</li>
 						<li style="--n:1" class="plm-warn">no file on the disk → sent to PHP</li>
@@ -161,7 +130,7 @@ MEDIA_URL=https://media.client.fr`),
 				</div>
 
 				<!-- Panel C: anchor, private, migrate -->
-				<div class="plm-panel plm-c">
+				<div class="pin-panel plm-panel plm-c">
 					<div class="plm-row">
 						<div class="plm-anchor">
 							<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><use href="#plm-art"></use></svg>
@@ -184,47 +153,11 @@ MEDIA_URL=https://media.client.fr`),
 						<p><b>--execute</b><span>dry run until then</span></p>
 					</div>
 				</div>
-			</div>
-		</div>
-
-		<div class="plm-steps">
-			{steps.map((s, i) => (
-				<article class="plm-step" style={`--c:${i * 0.25}`}>
-					<p class="font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold text-pollora-amber mb-4">
-						<span class="text-paper/80">0{i + 1}</span> &nbsp;{s.kicker}
-					</p>
-					<h3 class="font-[var(--font-display)] font-bold text-[clamp(1.75rem,2.6vw+0.5rem,2.75rem)] leading-[1.05] tracking-tight mb-5">{s.title}</h3>
-					<p class="text-paper/85 text-base md:text-[var(--text-md)] leading-relaxed mb-7 max-w-[46ch]">{s.text}</p>
-					<pre class="bg-code-surface rounded-[var(--radius-md)] p-5 text-[0.8rem] md:text-[0.88rem] leading-relaxed font-[var(--font-code)] overflow-x-auto"><code set:html={s.code} /></pre>
-					{s.note && <p class="mt-4 text-sm text-paper/80 max-w-[46ch]">{s.note}</p>}
-				</article>
-			))}
-		</div>
 	</div>
-
-	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 md:pt-24 pb-24 md:pb-32 relative z-[3]">
-		<div data-reveal class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8" style="--i:0">
-			<a href="https://github.com/Pollora/media" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">pollora/media on GitHub <span aria-hidden="true">&rarr;</span></a>
-			<p class="text-paper/70 max-w-[52ch]">Without <code class="font-[var(--font-code)] text-[0.9em]">media.disk</code> the module is off and WordPress keeps its own folder. It also runs in a classic theme, a plugin or Bedrock.</p>
-		</div>
-	</div>
-</section>
+</PinStory>
 
 <style>
-	/* The scroll position, as a number from 0 to 1, available to every descendant.
-	   Without scroll-driven animations it stays at 1: the end state of every scene. */
-	@property --p {
-		syntax: '<number>';
-		inherits: true;
-		initial-value: 1;
-	}
-	@keyframes plm-progress {
-		from { --p: 0; }
-		to { --p: 1; }
-	}
-
-	.plm-track {
-		--p: 1;
+	.plm-vars {
 		/* Panel A: the photo splits (a1), formats and name (a2), files go to the disk (a3) */
 		--a1: clamp(0, var(--p) / 0.14, 1);
 		--k1: clamp(0, var(--a1) * 1.6, 1);
@@ -242,77 +175,12 @@ MEDIA_URL=https://media.client.fr`),
 		--b1: clamp(0, (var(--p) - 0.62) / 0.07, 1);
 		--b2: clamp(0, (var(--p) - 0.68) / 0.08, 1);
 		--c1: clamp(0, (var(--p) - 0.86) / 0.12, 1);
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
+		display: contents;
 	}
 
-	/* ── Layout ─────────────────────────────────────────────── */
-	.plm-scene { position: relative; display: grid; place-items: center; padding-block: 1.5rem; }
-	.plm-glow {
-		position: absolute;
-		inset: 8% 4%;
-		background: radial-gradient(closest-side, color-mix(in oklch, var(--color-pollora-coral) 30%, transparent), transparent);
-		pointer-events: none;
-	}
-	.plm-stage { position: relative; width: min(100%, 38rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-	.plm-panel { position: relative; aspect-ratio: 1; container-type: size; width: 100%; }
-	.plm-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-	.plm-step { padding-block: 2.5rem; }
-
-	@media (min-width: 64rem) {
-		.plm-track { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(2rem, 5vw, 5rem); }
-		.plm-scene { grid-column: 2; grid-row: 1; align-self: start; }
-		.plm-steps { grid-column: 1; grid-row: 1; }
-	}
-
-	/* ── Pinned, scrubbed by the scroll ─────────────────────── */
-	@supports (animation-timeline: view()) {
-		@media (prefers-reduced-motion: no-preference) {
-			.plm-track {
-				animation: plm-progress linear both;
-				animation-timeline: view();
-				animation-range: contain 0% contain 100%;
-			}
-			/* Mobile: the scene sticks on top, the steps scroll under it */
-			.plm-scene {
-				position: sticky;
-				top: 0;
-				z-index: 2;
-				height: 46svh;
-				padding-block: 0.5rem;
-				background: linear-gradient(var(--color-code-bg) 88%, transparent);
-			}
-			.plm-glow { inset: 0; }
-			.plm-stage { height: 100%; width: auto; aspect-ratio: 1; max-width: 100%; display: block; }
-			.plm-panel { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
-			.plm-a { opacity: var(--vA); }
-			.plm-b { opacity: var(--vB); }
-			.plm-c { opacity: var(--vC); }
-			.plm-steps { gap: 0; }
-			.plm-step {
-				min-height: 58svh;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				padding-block: 0;
-				opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / 0.17, 1));
-			}
-			@media (min-width: 64rem) {
-				/* The first and last steps are centered in a full screen: on a tall window that leaves a hole
-				   above and below. Pull the track under the header and the call to action; only the
-				   transparent margins of the scene overlap, never its content. */
-				.plm-track {
-					margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - 6rem));
-					margin-bottom: calc(-1 * max(0px, (100svh - 30rem) / 2 - 4rem));
-				}
-				.plm-scene { height: 100svh; background: none; padding-block: 0; display: grid; place-items: center; }
-				.plm-stage { height: auto; width: min(100%, 86svh, 44rem); }
-				.plm-step { min-height: 100svh; }
-			}
-		}
-	}
-
-	.plm-step :global(.token-comment) { color: oklch(80% 0.015 290); }
+	.plm-a { --v: var(--vA); }
+	.plm-b { --v: var(--vB); }
+	.plm-c { --v: var(--vC); }
 
 	/* ── Scene: shared pieces (1cqw = 1/100 of the panel) ──── */
 	.plm-chip {
