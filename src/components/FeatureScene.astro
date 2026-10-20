@@ -57,7 +57,7 @@ const chapters = [
 </section>
 
 <script>
-	// Marks the chapter that crosses the middle of the screen: the CSS turns that into the background tint,
+	// Marks the chapter at the middle of the screen: the CSS turns that into the background tint,
 	// the picture on the frame and the dot on the rail. Pure presentation: without it the first chapter shows.
 	const root = document.querySelector<HTMLElement>('#features-scene');
 	if (root) {
@@ -77,14 +77,24 @@ const chapters = [
 				else a.removeAttribute('aria-current');
 			}
 		};
-		if ('IntersectionObserver' in window) {
-			const io = new IntersectionObserver(
-				(entries) => {
-					for (const e of entries) if (e.isIntersecting) show(e.target.id);
-				},
-				{ rootMargin: '-50% 0px -50% 0px' },
-			);
-			root.querySelectorAll('.fs-chapter').forEach((c) => io.observe(c));
-		}
+		// The current chapter is the last one whose top has passed the middle of the screen
+		const chapters = [...root.querySelectorAll<HTMLElement>('.fs-chapter')];
+		let queued = false;
+		const update = () => {
+			queued = false;
+			const mid = innerHeight / 2;
+			let current = chapters[0];
+			for (const c of chapters) if (c.getBoundingClientRect().top <= mid) current = c;
+			if (root.dataset.chapter !== current.id) show(current.id);
+		};
+		const onScroll = () => {
+			if (!queued) {
+				queued = true;
+				requestAnimationFrame(update);
+			}
+		};
+		addEventListener('scroll', onScroll, { passive: true });
+		addEventListener('resize', onScroll, { passive: true });
+		update();
 	}
 </script>

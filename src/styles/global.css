@@ -872,7 +872,7 @@ body {
 }
 .fs-head-m { order: calc(var(--o) * 3); padding-top: 6.5rem; }
 .fs-panel { order: calc(var(--o) * 3 + 1); position: relative; display: grid; place-items: center; padding-block: 2rem 1rem; }
-.fs-chapter { order: calc(var(--o) * 3 + 2); padding-block: 1rem 4.5rem; }
+.fs-chapter { order: calc(var(--o) * 3 + 2); padding-block: 1rem 6rem; }
 .fs-rail, .fs-head-d { display: none; }
 
 .fs-glow {
@@ -922,6 +922,7 @@ body {
 	grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
 	column-gap: clamp(2rem, 5vw, 5rem);
 }
+.fs-live .fs-track { padding-bottom: 8rem; }
 .fs-live .fs-head-m { display: none; }
 .fs-live .fs-head-d { display: block; }
 .fs-live .fs-panel, .fs-live .fs-chapter, .fs-live .fs-rail { background: none; box-shadow: none; clip-path: none; order: 0; }
