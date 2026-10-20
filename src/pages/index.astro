@@ -866,36 +866,8 @@ const packages = [
 			</div>
 		</section>
 
-		<!-- ═══ DOCUMENTATION ═══ -->
-		<section class="pl-deferred py-24 md:py-32 bg-paper-2">
-			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
-				<div data-reveal class="grid md:grid-cols-[1fr_1.1fr] gap-12 md:gap-20 items-center" style="--i:0">
-					<div class="flex justify-center relative">
-						<div class="absolute inset-0 rounded-full blur-3xl opacity-10" style="background: radial-gradient(circle, #fb196d 0%, #ff8c12 40%, transparent 70%)"></div>
-						<img src={mascotDocs.src} alt="Pollora documentation mascot" class="relative w-full max-w-sm md:max-w-md" width="400" height="400" loading="lazy" />
-					</div>
-					<div>
-						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
-						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
-						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
-							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>, a Markdown copy of every page, and an <a href="/nectar/docs-mcp-server/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">MCP server</a> for your assistant.
-						</p>
-						<div class="flex flex-wrap gap-4">
-							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-								Read the Docs <span aria-hidden="true">&rarr;</span>
-							</a>
-							<a href="/why/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-rule text-ink text-lg font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-								Why Pollora
-							</a>
-						</div>
-						<p class="mt-6 text-ink-2 text-base">Also: <a href="/faq/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">FAQ</a> · <a href="/guides/how-pollora-runs-wordpress-inside-laravel/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">How it works</a> · <a href="/changelog/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">Changelog</a></p>
-					</div>
-				</div>
-			</div>
-		</section>
-
 		<!-- ═══ NEED HELP — AmphiBee ═══ -->
-		<section id="help" class="pl-deferred py-24 md:py-32">
+		<section id="help" class="pl-deferred pl-help-band py-28 md:py-40">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
 				<div data-reveal class="pl-help" style="--i:0">
 					<div class="pl-help__glow" aria-hidden="true"></div>
@@ -937,6 +909,34 @@ const packages = [
 							<span class="pl-help__text">WooCommerce stores built to convert, on the Apiary theme or your own.</span>
 						</li>
 					</ul>
+				</div>
+			</div>
+		</section>
+
+		<!-- ═══ DOCUMENTATION ═══ -->
+		<section class="pl-deferred py-24 md:py-32 bg-paper-2">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<div data-reveal class="grid md:grid-cols-[1fr_1.1fr] gap-12 md:gap-20 items-center" style="--i:0">
+					<div class="flex justify-center relative">
+						<div class="absolute inset-0 rounded-full blur-3xl opacity-10" style="background: radial-gradient(circle, #fb196d 0%, #ff8c12 40%, transparent 70%)"></div>
+						<img src={mascotDocs.src} alt="Pollora documentation mascot" class="relative w-full max-w-sm md:max-w-md" width="400" height="400" loading="lazy" />
+					</div>
+					<div>
+						<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient mb-5">Documentation</p>
+						<h2 class="font-[var(--font-display)] font-bold text-[clamp(2rem,3.5vw+0.5rem,3rem)] leading-[1.1] tracking-tight mb-5">Everything you need, <span class="text-gradient">explained</span></h2>
+						<p class="text-ink-2 text-lg leading-relaxed mb-8 max-w-[48ch]">
+							From installation to advanced plugin development — comprehensive guides, API references, and real code examples. Searchable, and AI-ready: <code class="font-[var(--font-code)] text-[0.85em] bg-paper-3 px-1.5 py-0.5 rounded-[var(--radius-sm)]">llms.txt</code>, a Markdown copy of every page, and an <a href="/nectar/docs-mcp-server/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">MCP server</a> for your assistant.
+						</p>
+						<div class="flex flex-wrap gap-4">
+							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Read the Docs <span aria-hidden="true">&rarr;</span>
+							</a>
+							<a href="/why/" class="inline-flex items-center gap-2.5 px-8 py-3.5 rounded-[var(--radius-md)] border-2 border-rule text-ink text-lg font-semibold hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								Why Pollora
+							</a>
+						</div>
+						<p class="mt-6 text-ink-2 text-base">Also: <a href="/faq/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">FAQ</a> · <a href="/guides/how-pollora-runs-wordpress-inside-laravel/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">How it works</a> · <a href="/changelog/" class="font-semibold text-ink underline decoration-pollora-coral/40 underline-offset-4 hover:decoration-pollora-coral">Changelog</a></p>
+					</div>
 				</div>
 			</div>
 		</section>
