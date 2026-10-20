@@ -234,7 +234,7 @@ body {
   color: var(--color-ink-2);
 }
 .pl-compare tbody tr + tr > * {
-  border-top: 1px dashed var(--color-rule);
+  border-top: 1px dashed color-mix(in oklch, var(--color-ink) 28%, transparent);
 }
 .pl-compare tbody th {
   width: 20%;
@@ -279,13 +279,13 @@ body {
   width: 30%;
   background: oklch(100% 0 0);
   color: var(--color-ink);
-  border-inline: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-inline: 1px solid oklch(65% 0.21 30 / 0.45);
 }
 .pl-compare tbody tr + tr > .is-pollora {
-  border-top-color: oklch(65% 0.21 30 / 0.2);
+  border-top-color: oklch(65% 0.21 30 / 0.35);
 }
 .pl-compare thead .is-pollora {
-  border-top: 1px solid oklch(65% 0.21 30 / 0.25);
+  border-top: 1px solid oklch(65% 0.21 30 / 0.45);
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   padding-top: 1.6rem;
 }
@@ -436,9 +436,9 @@ body {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(40rem 22rem at 100% 0%, oklch(80% 0.12 60 / 0.16), transparent 70%),
-    radial-gradient(36rem 20rem at 0% 100%, oklch(70% 0.18 350 / 0.1), transparent 70%),
-    var(--color-paper);
+    radial-gradient(42rem 24rem at 100% 0%, oklch(82% 0.13 75 / 0.55), transparent 70%),
+    radial-gradient(38rem 22rem at 0% 100%, oklch(76% 0.15 5 / 0.35), transparent 70%),
+    oklch(93% 0.05 60);
 }
 .pl-eco__legend {
   display: flex;
@@ -592,21 +592,17 @@ body {
 .pl-footer__link:hover { color: white; }
 
 /* Homepage: "Need a hand?", AmphiBee's services on a dark card with warm glows */
-.pl-help {
+/* "Need a hand?": a full-width band, not a card lost in a white section */
+.pl-help-band {
   position: relative;
   overflow: hidden;
-  display: grid;
-  gap: 3rem;
-  padding: clamp(1.75rem, 5vw, 4.5rem);
-  border-radius: calc(var(--radius-lg) + 8px);
-  background:
-    radial-gradient(42rem 26rem at 105% 115%, oklch(55% 0.2 35 / 0.55), transparent 62%),
-    radial-gradient(34rem 22rem at -5% -15%, oklch(48% 0.2 355 / 0.45), transparent 60%),
-    var(--color-code-bg);
-  box-shadow: 0 40px 80px -40px oklch(30% 0.12 330 / 0.55);
   isolation: isolate;
+  background:
+    radial-gradient(48rem 28rem at 100% 100%, oklch(55% 0.2 35 / 0.55), transparent 62%),
+    radial-gradient(40rem 24rem at 0% 0%, oklch(48% 0.2 355 / 0.45), transparent 60%),
+    var(--color-code-bg);
 }
-.pl-help::before {
+.pl-help-band::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -614,6 +610,11 @@ body {
   background-image: radial-gradient(oklch(100% 0 0 / 0.07) 1px, transparent 1px);
   background-size: 22px 22px;
   mask-image: linear-gradient(120deg, black, transparent 70%);
+}
+.pl-help {
+  position: relative;
+  display: grid;
+  gap: 3rem;
 }
 .pl-help__glow {
   position: absolute;
@@ -764,3 +765,222 @@ body {
   content-visibility: auto;
   contain-intrinsic-size: auto 900px;
 }
+
+/* Homepage bento: each card plays once, when it comes on screen ([data-reveal] gets .shown) */
+.pl-seq > *,
+.pl-seq li { opacity: 0; transform: translateY(6px); }
+[data-reveal].shown .pl-seq > *,
+[data-reveal].shown .pl-seq li {
+	animation: pl-seq-in 0.5s var(--ease-out) both;
+	animation-delay: calc(var(--s, 0) * 160ms + 300ms);
+}
+@keyframes pl-seq-in { to { opacity: 1; transform: none; } }
+
+.pl-glow-border {
+	border: 1.5px solid transparent;
+	background:
+		linear-gradient(var(--color-paper-2), var(--color-paper-2)) padding-box,
+		linear-gradient(135deg, #fb196d, #ff314c 30%, #ff5334 60%, #ff8c12) border-box;
+}
+
+/* Async: the response leaves first, the work follows on the queue */
+.pl-flow { display: flex; align-items: center; gap: 0.5rem; font: 600 0.78rem/1 var(--font-code); }
+.pl-flow-node { padding: 0.45rem 0.7rem; border-radius: var(--radius-pill); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-flow-q { border-color: color-mix(in oklch, var(--color-pollora-teal) 60%, transparent); color: oklch(42% 0.09 185); }
+.pl-flow-track { position: relative; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--color-rule) 0 6px, transparent 6px 10px); container-type: inline-size; }
+.pl-flow-dot { position: absolute; left: 0; top: -4px; width: 10px; height: 10px; border-radius: 50%; background: var(--color-pollora-teal); }
+[data-reveal].shown .pl-flow-dot { animation: pl-travel 2.8s var(--ease-in-out) 0.6s infinite; }
+@keyframes pl-travel {
+	0% { transform: translateX(0); opacity: 0; }
+	15% { opacity: 1; }
+	80% { transform: translateX(calc(100cqw - 10px)); opacity: 1; }
+	100% { transform: translateX(calc(100cqw - 10px)); opacity: 0; }
+}
+
+/* Routing: two requests, two lanes, one after the other */
+.pl-lanes { display: grid; gap: 0.5rem; }
+.pl-lane { display: flex; justify-content: space-between; gap: 1rem; padding: 0.7rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-lane b { font-weight: 600; color: var(--color-ink-2); }
+.pl-lane-a b { color: oklch(45% 0.2 15); }
+[data-reveal].shown .pl-lane-a { animation: pl-lane 5s var(--ease-in-out) 0.8s infinite; }
+[data-reveal].shown .pl-lane-b { animation: pl-lane 5s var(--ease-in-out) 3.3s infinite; }
+@keyframes pl-lane {
+	0%, 40%, 100% { border-color: var(--color-rule); box-shadow: none; }
+	8%, 32% { border-color: var(--color-pollora-pink); box-shadow: 0 0 0 3px color-mix(in oklch, var(--color-pollora-pink) 18%, transparent); }
+}
+
+/* Blade + Vite: a save, then the page changes without reloading */
+.pl-hmr { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.pl-hmr-save, .pl-hmr-page { padding: 0.45rem 0.7rem; border-radius: var(--radius-md); border: 1px solid var(--color-rule); background: var(--color-paper); }
+.pl-hmr-arrow { width: 1.4rem; height: 2px; background: var(--color-rule); }
+[data-reveal].shown .pl-hmr-page { animation: pl-flash 4s var(--ease-out) 1s infinite; }
+@keyframes pl-flash {
+	0%, 70%, 100% { background: var(--color-paper); border-color: var(--color-rule); }
+	10%, 30% { background: color-mix(in oklch, var(--color-pollora-amber) 28%, var(--color-paper)); border-color: var(--color-pollora-amber); }
+}
+
+/* Reduced motion: the cards are static and complete */
+@media (prefers-reduced-motion: reduce) {
+	.pl-seq > *, .pl-seq li { opacity: 1; transform: none; animation: none !important; }
+	.pl-flow-dot { display: none; }
+	.pl-flow-dot, .pl-lane, .pl-hmr-page { animation: none !important; }
+}
+
+/* ── Features scene: one pinned frame, chapters that scroll by, a background that changes tint ─
+   Each chapter is a copy block (.fs-chapter) and a panel (.fs-panel, the picture). Their progress,
+   --p (0 to 1), comes from the chapter's own scroll through the screen and is read by every scene
+   with calc(). Without scroll-driven animations, with reduced motion or on a phone, --p stays at 1,
+   nothing is pinned and the chapters stack, each on its own tint (the .fs-live class, set in
+   FeatureScene.astro, turns the pinned layout on). */
+@property --p {
+	syntax: '<number>';
+	inherits: true;
+	initial-value: 1;
+}
+@keyframes pin-progress {
+	from { --p: 0; }
+	to { --p: 1; }
+}
+.fs {
+	/* The charter's dark violet, warmed toward one brand color per chapter */
+	--c-media: color-mix(in oklab, var(--color-pollora-pink) 24%, var(--color-code-bg));
+	--c-abilities: color-mix(in oklab, var(--color-pollora-teal) 17%, var(--color-code-bg));
+	--c-difference: color-mix(in oklab, var(--color-pollora-amber) 15%, var(--color-code-bg));
+	--c-blocks: color-mix(in oklch, var(--color-pollora-pink) 21%, var(--color-code-bg));
+	--c-async: color-mix(in oklab, var(--color-pollora-orange) 17%, var(--color-code-bg));
+	--stage: var(--c-media);
+	position: relative;
+	background-color: var(--color-code-bg);
+	color: var(--color-paper);
+}
+.fs[data-chapter='abilities'] { --stage: var(--c-abilities); }
+.fs[data-chapter='difference'] { --stage: var(--c-difference); }
+.fs[data-chapter='blocks'] { --stage: var(--c-blocks); }
+.fs[data-chapter='async'] { --stage: var(--c-async); }
+
+/* Stacked: copy, picture, copy, picture... each block on the tint of its chapter, full width */
+.fs-track {
+	--p: 1;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	padding-inline: max(clamp(1rem, 4vw, 2rem), calc((100% - 80rem) / 2 + clamp(1rem, 4vw, 2rem)));
+}
+.fs-head-m, .fs-panel, .fs-chapter {
+	background: var(--tint);
+	box-shadow: 0 0 0 100vmax var(--tint);
+	clip-path: inset(0 -100vmax);
+}
+.fs-head-m { order: calc(var(--o) * 3); padding-top: 6.5rem; }
+.fs-panel { order: calc(var(--o) * 3 + 1); position: relative; display: grid; place-items: center; padding-block: 2rem 1rem; }
+.fs-chapter { order: calc(var(--o) * 3 + 2); padding-block: 1rem 6rem; }
+.fs-rail, .fs-head-d { display: none; }
+
+.fs-glow {
+	position: absolute;
+	inset: 6% 2%;
+	background: radial-gradient(closest-side, color-mix(in oklch, var(--glow, var(--color-pollora-coral)) 30%, transparent), transparent);
+	pointer-events: none;
+}
+.fs-stage { position: relative; width: min(100%, 30rem); aspect-ratio: 1; }
+.fs-stage .pin-panel { position: absolute; inset: 0; width: auto; height: auto; aspect-ratio: auto; container-type: size; opacity: var(--v, 1); }
+
+.fs-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 0 0 1.25rem; font: 600 0.875rem / 1.2 var(--font-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-pollora-amber); }
+.fs-badge { padding: 0.25rem 0.65rem; border-radius: var(--radius-pill); background: var(--gradient-pollora, linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange))); color: white; font-size: 0.75rem; letter-spacing: normal; text-transform: none; }
+.fs-title { margin: 0; font: 700 clamp(2.25rem, 3.4vw + 1rem, 4.5rem) / 1 var(--font-display); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.fs-intro { margin: 1.25rem 0 0; max-width: 40ch; font-size: var(--text-md); line-height: 1.35; color: color-mix(in oklch, var(--color-paper) 80%, transparent); }
+.fs-head-m { padding-bottom: 0.5rem; }
+.fs-step-in { display: grid; grid-template-columns: minmax(0, 1fr); }
+.fs-head-d { margin-bottom: 2rem; }
+.fs-skick { margin: 0 0 1rem; font: 600 0.875rem / 1.2 var(--font-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-pollora-amber); }
+.fs-skick span { color: color-mix(in oklch, var(--color-paper) 80%, transparent); }
+.fs-stitle { margin: 0 0 1.25rem; font: 700 clamp(1.75rem, 2.2vw + 0.75rem, 2.5rem) / 1.08 var(--font-display); letter-spacing: -0.015em; }
+.fs-text { margin: 0 0 1.5rem; max-width: 46ch; font-size: var(--text-md); line-height: 1.55; color: color-mix(in oklch, var(--color-paper) 88%, transparent); }
+.fs-code { margin: 0; padding: 1.1rem 1.25rem; border-radius: var(--radius-md); background: color-mix(in oklch, var(--color-code-bg) 70%, black); overflow-x: auto; font: 400 0.84rem / 1.6 var(--font-code); }
+.fs-code .token-comment { color: oklch(80% 0.015 290); }
+.fs-note { margin: 1rem 0 0; max-width: 46ch; font-size: 0.875rem; line-height: 1.5; color: color-mix(in oklch, var(--color-paper) 82%, transparent); }
+.fs-link-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin: 1.75rem 0 0; }
+.fs-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: var(--radius-pill); background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange)); color: white; font-weight: 600; transition: opacity var(--dur-micro); }
+.fs-link:hover { opacity: 0.9; }
+.fs-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.fs-link-text { max-width: 44ch; font-size: 0.9rem; line-height: 1.5; color: color-mix(in oklch, var(--color-paper) 82%, transparent); }
+.fs-link-text a { text-decoration: underline; text-underline-offset: 4px; }
+
+/* Phones and the fallback: the picture plays as it crosses the screen */
+@supports (animation-timeline: view()) {
+	@media (prefers-reduced-motion: no-preference) {
+		.fs:not(.fs-live) .fs-panel {
+			animation: pin-progress linear both;
+			animation-timeline: view();
+			animation-range: cover 8% cover 62%;
+		}
+	}
+}
+
+/* ── Pinned: wide screens with scroll-driven animations ─────────────────────────────────────── */
+.fs-live { background-color: var(--stage); transition: background-color 0.6s ease; }
+.fs-live .fs-track {
+	grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+	column-gap: clamp(2rem, 5vw, 5rem);
+}
+.fs-live .fs-track { padding-bottom: 8rem; }
+.fs-live .fs-head-m { display: none; }
+.fs-live .fs-head-d { display: block; }
+.fs-live .fs-panel, .fs-live .fs-chapter, .fs-live .fs-rail { background: none; box-shadow: none; clip-path: none; order: 0; }
+
+.fs-live .fs-chapter { grid-column: 1; padding-block: 0; min-height: calc(var(--h) * 100svh); display: grid; grid-template-columns: minmax(0, 1fr); animation: pin-progress linear both; animation-timeline: var(--tl); animation-range: var(--range); }
+.fs-live .fs-panel {
+	grid-column: 2;
+	grid-row: 1 / span var(--rows);
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	padding: 0;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.6s ease;
+	animation: pin-progress linear both;
+	animation-timeline: var(--tl);
+	animation-range: var(--range);
+}
+.fs-live .fs-stage { width: min(100%, 78svh, 44rem); }
+.fs-live[data-chapter='media'] .fs-panel[data-ch='media'],
+.fs-live[data-chapter='abilities'] .fs-panel[data-ch='abilities'],
+.fs-live[data-chapter='difference'] .fs-panel[data-ch='difference'],
+.fs-live[data-chapter='blocks'] .fs-panel[data-ch='blocks'],
+.fs-live[data-chapter='async'] .fs-panel[data-ch='async'] { opacity: 1; }
+
+/* Where the chapter's progress runs, as a share of its scroll through the screen (cover = top enters to bottom leaves) */
+.fs-live .fs-chapter, .fs-live .fs-panel {
+	--range: cover calc((0.5 + var(--h) * var(--u0)) / (1 + var(--h)) * 100%) cover calc((0.5 + var(--h) * var(--u1)) / (1 + var(--h)) * 100%);
+}
+
+.fs-live .fs-step {
+	min-height: calc(var(--h) * 100svh / var(--n));
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-block: 2rem;
+	opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / var(--w, 0.17), 1));
+}
+.fs-live .fs-chapter[data-n='1'] .fs-step { justify-content: flex-start; opacity: 1; padding-top: 22svh; }
+.fs-live .fs-chapter[data-n='1'] .fs-step-in { position: sticky; top: max(6rem, 18svh); }
+
+/* The rail: one dot per chapter, the current one lit */
+.fs-live .fs-rail {
+	display: block;
+	grid-column: 2;
+	grid-row: 1 / span var(--rows);
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	z-index: 4;
+	pointer-events: none;
+}
+.fs-rail nav { position: absolute; left: 50%; bottom: 1.25rem; translate: -50% 0; pointer-events: auto; max-width: 100%; }
+.fs-rail ol { list-style: none; margin: 0; padding: 0.25rem 0.5rem; display: flex; gap: 0.25rem; border-radius: var(--radius-pill); background: color-mix(in oklch, var(--color-code-bg) 55%, transparent); }
+.fs-rail a { display: flex; align-items: center; gap: 0.5rem; min-height: 2.25rem; padding-inline: 0.65rem; border-radius: var(--radius-pill); color: color-mix(in oklch, var(--color-paper) 82%, transparent); font: 600 0.75rem / 1 var(--font-code); white-space: nowrap; transition: color 0.3s, background 0.3s; }
+.fs-rail a:hover, .fs-rail a[aria-current] { color: var(--color-paper); }
+.fs-rail a[aria-current] { background: color-mix(in oklch, var(--color-paper) 14%, transparent); }
+.fs-rail a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.fs-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 2px solid color-mix(in oklch, var(--color-paper) 70%, transparent); transition: background 0.3s, border-color 0.3s; }
+.fs-rail a[aria-current] .fs-dot { background: var(--color-pollora-amber); border-color: var(--color-pollora-amber); }
