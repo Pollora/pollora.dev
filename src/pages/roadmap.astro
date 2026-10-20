@@ -28,7 +28,7 @@ const horizons: Horizon[] = [
 		when: 'Once the foundations are out',
 		status: 'Planned, order may change',
 		title: 'WordPress integrations, one package each',
-		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn: scheduled tasks, REST routes and WP-CLI commands left in 13.36, then typed meta, roles, Block Bindings and assets in 13.36.1. Blade blocks and patterns are next. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
+		intro: 'With discovery and attributes standing alone, each feature that mostly talks to WordPress can leave the framework in turn: scheduled tasks, REST routes and WP-CLI commands left in 13.36, then typed meta, roles, Block Bindings and assets in 13.36.1, and the media library, with its image sizes, in 13.37. Blade blocks and patterns are next. In parallel, Pollora covers new WordPress APIs, always in two forms: a fluent API and an attribute.',
 		accent: '#ff8c12',
 	},
 	{
@@ -98,7 +98,6 @@ const newApis = [
 	{ title: 'Allowed blocks per post type', planned: 'Restrict or hide blocks, <code>core/*</code> included, per post type' },
 	{ title: 'Block Hooks', planned: 'Insert a block automatically before, after or inside another' },
 	{ title: 'Admin pages & settings', planned: 'Pages and settings declared as attributes, with fields typed like meta' },
-	{ title: 'Image sizes', planned: 'A fluent API and an attribute instead of <code>config/images.php</code>, then an image manipulation module' },
 	{ title: 'Post statuses', planned: 'Custom statuses declared the way post types are' },
 	{ title: 'Shortcodes', planned: 'A class with an attribute, rendered in Blade' },
 	{ title: 'Dashboard widgets', planned: 'A class with an attribute, rendered in Blade' },
@@ -141,6 +140,7 @@ const wpPackages: { name: string; stage: Stage }[] = [
 	{ name: 'pollora/wp-rest', stage: 'exists' },
 	{ name: 'pollora/wp-cli', stage: 'exists' },
 	{ name: 'pollora/assets', stage: 'exists' },
+	{ name: 'pollora/media', stage: 'exists' },
 	{ name: 'pollora/blocks', stage: 'mid' },
 ];
 const legend: { stage: Stage; label: string }[] = [
