@@ -1,0 +1,529 @@
+---
+// pollora/media, the headline of 13.37.
+// A pinned scene driven by the scroll (CSS only: one animated number, --p, from 0 to 1) tells the story
+// in five beats. Browsers without scroll-driven animations, and visitors who ask for less motion,
+// get the same content as a static column: steps on one side, the final state of each scene on the other.
+// Every snippet below comes from media.md (Pollora/documentation) or the package README.
+
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const LIT = /('[^']*')|(\/\/.*$)|(\b[A-Z]\w*(?=::))|(->|::)(\w+)|(\b\d+\b)/gm;
+function php(src: string): string {
+	let out = '';
+	let last = 0;
+	for (const m of src.matchAll(LIT)) {
+		out += esc(src.slice(last, m.index));
+		if (m[1]) out += `<span class="token-string">${esc(m[1])}</span>`;
+		else if (m[2]) out += `<span class="token-comment">${esc(m[2])}</span>`;
+		else if (m[3]) out += `<span class="token-class">${m[3]}</span>`;
+		else if (m[4]) out += `${esc(m[4])}<span class="${/^[A-Z]/.test(m[5]) ? 'token-variable' : 'token-function'}">${m[5]}</span>`;
+		else out += `<span class="token-attribute">${m[6]}</span>`;
+		last = (m.index ?? 0) + m[0].length;
+	}
+	return out + esc(src.slice(last));
+}
+const env = (src: string) =>
+	src
+		.split('\n')
+		.map((l) => l.replace(/^(\w+)=(.*)$/, (_, k, v) => `<span class="token-attribute">${k}</span>=<span class="token-string">${esc(v)}</span>`))
+		.join('\n');
+
+const steps = [
+	{
+		kicker: 'Declare',
+		title: 'Say which sizes you use. Not how to make them.',
+		text: 'The URL, the width, the height and the srcset are worked out from the image’s metadata. Rendering a page never touches the disk.',
+		code: php(`ImageSize::add('card')->cover(600, 400)->webp(75);
+ImageSize::add('hero')
+    ->scale(width: 1920)->webp(70)
+    ->widths([640, 1024, 1440]);
+ImageSize::add('thumb')->cover(150, 150)->eager();`),
+	},
+	{
+		kicker: 'Sign',
+		title: 'A URL that can never go stale.',
+		text: 'The file name carries an HMAC of the original and of the size. Change a size, the name changes: no cache ever holds an old file.',
+		code: `<span class="token-variable">photo-card-600x400-</span><span class="plm-sig">{signature}</span><span class="token-variable">.webp</span>`,
+		note: 'WebP by default, AVIF with ->avif(). GD and Imagick write WebP; AVIF depends on the server.',
+	},
+	{
+		kicker: 'Store',
+		title: 'One disk. Two settings.',
+		text: 'Local, S3, R2, Scaleway, MinIO. WordPress keeps using its own file functions, so Gutenberg, ACF and WooCommerce follow without any adaptation. No media.disk, nothing changes.',
+		code: env(`MEDIA_DISK=media
+MEDIA_URL=https://media.client.fr`),
+	},
+	{
+		kicker: 'Serve',
+		title: 'Made on first request, or by a service.',
+		text: 'A size is made the first time its URL is asked for, at that exact path, then served as a plain file for a year. For a huge library, let Bunny or imgproxy do it with signed URLs: no file at all.',
+		code: php(`'thumbnails' => [
+    // pollora | bunny | imgproxy
+    'driver' => env('MEDIA_THUMBNAILS_DRIVER', 'pollora'),
+],`),
+	},
+	{
+		kicker: 'Control',
+		title: 'Crop where it counts. Lock what is private. Move without fear.',
+		text: 'Nine anchors for a cover. Private media get signed URLs that expire, on every size and every srcset source. Moving disks is a dry run until you say --execute.',
+		code: `${php(`ImageSize::add('portrait')
+    ->cover(400, 500, Anchor::Top);`)}\n\n<span class="token-comment">$</span> php artisan pollora:media:migrate \\\n    --from=uploads --to=media --execute`,
+	},
+];
+---
+
+<section id="media" class="plm relative bg-code-bg text-paper" aria-labelledby="media-title">
+	<!-- The artwork every thumbnail is cut from (one source, cropped differently by each box) -->
+	<svg width="0" height="0" class="absolute" aria-hidden="true" focusable="false">
+		<defs>
+			<linearGradient id="plm-sky" x1="0" y1="0" x2="0" y2="1">
+				<stop offset="0" style="stop-color:var(--color-pollora-dark)"></stop>
+				<stop offset="0.38" style="stop-color:var(--color-pollora-pink)"></stop>
+				<stop offset="0.62" style="stop-color:var(--color-pollora-coral)"></stop>
+				<stop offset="0.8" style="stop-color:var(--color-pollora-amber)"></stop>
+			</linearGradient>
+			<g id="plm-art">
+				<rect width="400" height="300" fill="url(#plm-sky)"></rect>
+				<circle cx="292" cy="158" r="36" style="fill:var(--color-paper)" opacity="0.92"></circle>
+				<path d="M0 214 Q92 156 196 200 T400 184 V300 H0Z" style="fill:color-mix(in oklch, var(--color-pollora-dark) 78%, var(--color-pollora-pink))"></path>
+				<path d="M0 252 Q124 204 244 246 T400 232 V300 H0Z" style="fill:var(--color-pollora-dark)"></path>
+				<path d="M96 196 l16 -26 l16 26z M100 196 h24 v22 h-24z" style="fill:var(--color-pollora-dark)" opacity="0.9"></path>
+			</g>
+		</defs>
+	</svg>
+
+	<div class="absolute inset-x-0 top-0 h-px bg-gradient-pollora opacity-70" aria-hidden="true"></div>
+
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-28 md:pt-40 pb-16 md:pb-24">
+		<div data-reveal class="max-w-5xl" style="--i:0">
+			<p class="flex flex-wrap items-center gap-3 font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-7">
+				<span class="text-pollora-amber">pollora/media</span>
+				<span class="px-2.5 py-1 rounded-[var(--radius-pill)] bg-gradient-pollora text-white text-xs normal-case tracking-normal">New in 13.37</span>
+			</p>
+			<h2 id="media-title" class="font-[var(--font-display)] font-bold text-[clamp(2.75rem,7vw+0.5rem,7rem)] leading-[0.96] tracking-tight [overflow-wrap:anywhere]">
+				Your media library, on <span class="text-gradient">any disk.</span>
+			</h2>
+			<p class="mt-8 text-[var(--text-md)] md:text-[var(--text-lg)] leading-snug text-paper/75 max-w-[40ch]">
+				Sizes declared in PHP. Files stored on S3, R2 or whatever Laravel can reach. WordPress never notices.
+			</p>
+		</div>
+	</div>
+
+	<div class="plm-track max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+		<div class="plm-scene" aria-hidden="true">
+			<div class="plm-glow"></div>
+			<div class="plm-stage">
+				<!-- Panel A: from one photo to files on a disk -->
+				<div class="plm-panel plm-a">
+					<div class="plm-photo">
+						<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><use href="#plm-art"></use></svg>
+						<span class="plm-cut plm-cut-1"></span><span class="plm-cut plm-cut-2"></span>
+						<span class="plm-chip">photo.jpg</span>
+					</div>
+
+					<div class="plm-thumb plm-t1"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><use href="#plm-art"></use></svg><span class="plm-chip">card · cover</span></div>
+					<div class="plm-thumb plm-t2"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet"><use href="#plm-art"></use></svg><span class="plm-chip">hero · scale</span></div>
+					<div class="plm-thumb plm-t3"><svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet"><use href="#plm-art"></use></svg><span class="plm-chip">contain</span></div>
+
+					<div class="plm-formats">
+						<span class="plm-fmt plm-f1">JPEG</span><i class="plm-arrow plm-f2"></i>
+						<span class="plm-fmt plm-f2">WebP</span><i class="plm-arrow plm-f3"></i>
+						<span class="plm-fmt plm-f3">AVIF</span>
+					</div>
+					<div class="plm-name"><span class="plm-name-in">photo-card-600x400-<b class="plm-sig">&#123;signature&#125;</b>.webp</span></div>
+
+					<div class="plm-disk">
+						<span class="plm-disk-glow"></span>
+						<div class="plm-disk-head">
+							<span class="plm-cyl"></span>
+							<span class="plm-disk-title">media.disk</span>
+						</div>
+						<div class="plm-tiles"><i></i><i></i><i></i></div>
+						<span class="plm-disk-sub">S3 · R2 · Scaleway · MinIO · local</span>
+					</div>
+					<i class="plm-ghost plm-g1"></i><i class="plm-ghost plm-g2"></i><i class="plm-ghost plm-g3"></i>
+				</div>
+
+				<!-- Panel B: the first request, and the services -->
+				<div class="plm-panel plm-b">
+					<ol class="plm-log">
+						<li style="--n:0"><b>GET</b> /2026/10/photo-card-600x400-&#123;signature&#125;.webp</li>
+						<li style="--n:1" class="plm-warn">no file on the disk → sent to PHP</li>
+						<li style="--n:2">size made at the exact path of its URL</li>
+						<li style="--n:3" class="plm-ok"><b>200</b> Cache-Control: public, max-age=31536000, immutable</li>
+						<li style="--n:4" class="plm-dim">next request: the web server or the CDN serves a file</li>
+					</ol>
+					<p class="plm-label">…or a service makes them, and no file exists</p>
+					<ul class="plm-drivers">
+						<li style="--n:0"><b>pollora</b><span>photo-card-600x400-&#123;signature&#125;.webp</span></li>
+						<li style="--n:1"><b>bunny</b><span>photo.jpg?class=card&amp;v=3f9a1c2b</span></li>
+						<li style="--n:2"><b>imgproxy</b><span>&#123;imgproxy&#125;/&#123;signature&#125;/card/plain/&#123;source&#125;@webp?v=3f9a1c2b</span></li>
+					</ul>
+				</div>
+
+				<!-- Panel C: anchor, private, migrate -->
+				<div class="plm-panel plm-c">
+					<div class="plm-row">
+						<div class="plm-anchor">
+							<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice"><use href="#plm-art"></use></svg>
+							<span class="plm-crop"></span>
+						</div>
+						<div class="plm-grid9">
+							<i></i><i class="plm-top"></i><i></i>
+							<i></i><i class="plm-mid"></i><i></i>
+							<i></i><i></i><i></i>
+						</div>
+						<p><b>Anchor::Top</b><span>nine positions</span></p>
+					</div>
+					<div class="plm-row">
+						<svg class="plm-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+						<div class="plm-expiry"><span class="plm-expiry-bar"></span></div>
+						<p><b>signed URL</b><span>expires, size by size</span></p>
+					</div>
+					<div class="plm-row">
+						<div class="plm-copy"><span class="plm-copy-bar"></span></div>
+						<p><b>--execute</b><span>dry run until then</span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="plm-steps">
+			{steps.map((s, i) => (
+				<article class="plm-step" style={`--c:${i * 0.25}`}>
+					<p class="font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold text-pollora-amber mb-4">
+						<span class="text-paper/80">0{i + 1}</span> &nbsp;{s.kicker}
+					</p>
+					<h3 class="font-[var(--font-display)] font-bold text-[clamp(1.75rem,2.6vw+0.5rem,2.75rem)] leading-[1.05] tracking-tight mb-5">{s.title}</h3>
+					<p class="text-paper/85 text-base md:text-[var(--text-md)] leading-relaxed mb-7 max-w-[46ch]">{s.text}</p>
+					<pre class="bg-code-surface rounded-[var(--radius-md)] p-5 text-[0.8rem] md:text-[0.88rem] leading-relaxed font-[var(--font-code)] overflow-x-auto"><code set:html={s.code} /></pre>
+					{s.note && <p class="mt-4 text-sm text-paper/80 max-w-[46ch]">{s.note}</p>}
+				</article>
+			))}
+		</div>
+	</div>
+
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 md:pt-24 pb-24 md:pb-32">
+		<div data-reveal class="flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8" style="--i:0">
+			<a href="https://github.com/Pollora/media" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-[var(--radius-pill)] bg-gradient-pollora text-white font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">pollora/media on GitHub <span aria-hidden="true">&rarr;</span></a>
+			<p class="text-paper/70 max-w-[52ch]">Without <code class="font-[var(--font-code)] text-[0.9em]">media.disk</code> the module is off and WordPress keeps its own folder. It also runs in a classic theme, a plugin or Bedrock.</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	/* The scroll position, as a number from 0 to 1, available to every descendant.
+	   Without scroll-driven animations it stays at 1: the end state of every scene. */
+	@property --p {
+		syntax: '<number>';
+		inherits: true;
+		initial-value: 1;
+	}
+	@keyframes plm-progress {
+		from { --p: 0; }
+		to { --p: 1; }
+	}
+
+	.plm-track {
+		--p: 1;
+		/* Panel A: the photo splits (a1), formats and name (a2), files go to the disk (a3) */
+		--a1: clamp(0, var(--p) / 0.14, 1);
+		--k1: clamp(0, var(--a1) * 1.6, 1);
+		--k2: clamp(0, var(--a1) * 1.6 - 0.3, 1);
+		--k3: clamp(0, var(--a1) * 1.6 - 0.6, 1);
+		--a2: clamp(0, (var(--p) - 0.14) / 0.2, 1);
+		--a3: clamp(0, (var(--p) - 0.38) / 0.2, 1);
+		--g1: clamp(0, var(--a3) * 1.5, 1);
+		--g2: clamp(0, var(--a3) * 1.5 - 0.25, 1);
+		--g3: clamp(0, var(--a3) * 1.5 - 0.5, 1);
+		/* Which panel is on stage */
+		--vA: calc(1 - clamp(0, (var(--p) - 0.6) / 0.06, 1));
+		--vB: calc(clamp(0, (var(--p) - 0.6) / 0.06, 1) - clamp(0, (var(--p) - 0.84) / 0.06, 1));
+		--vC: clamp(0, (var(--p) - 0.84) / 0.06, 1);
+		--b1: clamp(0, (var(--p) - 0.62) / 0.07, 1);
+		--b2: clamp(0, (var(--p) - 0.68) / 0.08, 1);
+		--c1: clamp(0, (var(--p) - 0.86) / 0.12, 1);
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	/* ── Layout ─────────────────────────────────────────────── */
+	.plm-scene { position: relative; display: grid; place-items: center; padding-block: 1.5rem; }
+	.plm-glow {
+		position: absolute;
+		inset: 8% 4%;
+		background: radial-gradient(closest-side, color-mix(in oklch, var(--color-pollora-coral) 30%, transparent), transparent);
+		pointer-events: none;
+	}
+	.plm-stage { position: relative; width: min(100%, 38rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+	.plm-panel { position: relative; aspect-ratio: 1; container-type: size; width: 100%; }
+	.plm-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+	.plm-step { padding-block: 2.5rem; }
+
+	@media (min-width: 64rem) {
+		.plm-track { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(2rem, 5vw, 5rem); }
+		.plm-scene { grid-column: 2; grid-row: 1; align-self: start; }
+		.plm-steps { grid-column: 1; grid-row: 1; }
+	}
+
+	/* ── Pinned, scrubbed by the scroll ─────────────────────── */
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.plm-track {
+				animation: plm-progress linear both;
+				animation-timeline: view();
+				animation-range: contain 0% contain 100%;
+			}
+			/* Mobile: the scene sticks on top, the steps scroll under it */
+			.plm-scene {
+				position: sticky;
+				top: 0;
+				z-index: 2;
+				height: 46svh;
+				padding-block: 0.5rem;
+				background: linear-gradient(var(--color-code-bg) 88%, transparent);
+			}
+			.plm-glow { inset: 0; }
+			.plm-stage { height: 100%; width: auto; aspect-ratio: 1; max-width: 100%; display: block; }
+			.plm-panel { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; }
+			.plm-a { opacity: var(--vA); }
+			.plm-b { opacity: var(--vB); }
+			.plm-c { opacity: var(--vC); }
+			.plm-steps { gap: 0; }
+			.plm-step {
+				min-height: 58svh;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				padding-block: 0;
+				opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / 0.17, 1));
+			}
+			@media (min-width: 64rem) {
+				.plm-scene { height: 100svh; background: none; padding-block: 0; display: grid; place-items: center; }
+				.plm-stage { height: auto; width: min(100%, 86svh, 44rem); }
+				.plm-step { min-height: 100svh; }
+			}
+		}
+	}
+
+	.plm-step :global(.token-comment) { color: oklch(80% 0.015 290); }
+
+	/* ── Scene: shared pieces (1cqw = 1/100 of the panel) ──── */
+	.plm-chip {
+		position: absolute;
+		left: 4%;
+		bottom: 5%;
+		padding: 0.15em 0.55em;
+		border-radius: var(--radius-pill);
+		background: color-mix(in oklch, var(--color-code-bg) 72%, transparent);
+		color: var(--color-paper);
+		font: 600 max(9.5px, 2.1cqw) / 1.3 var(--font-code);
+		white-space: nowrap;
+	}
+	.plm-photo, .plm-thumb, .plm-anchor {
+		position: absolute;
+		overflow: hidden;
+		border-radius: 1.4cqw;
+		background: var(--color-code-surface);
+		outline: 1px solid color-mix(in oklch, var(--color-paper) 18%, transparent);
+	}
+	.plm-photo svg, .plm-thumb svg, .plm-anchor svg { display: block; width: 100%; height: 100%; }
+
+	/* ── Panel A ────────────────────────────────────────────── */
+	.plm-photo {
+		width: 46cqw;
+		height: 34.5cqw;
+		left: calc(27cqw - 21cqw * var(--a1));
+		top: calc(32cqw - 24cqw * var(--a1));
+	}
+	.plm-cut {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		border-left: 2px dashed var(--color-paper);
+		opacity: calc(var(--a1) * (1 - var(--a1)) * 4);
+	}
+	.plm-cut-1 { left: 33%; }
+	.plm-cut-2 { left: 66%; }
+
+	.plm-thumb {
+		opacity: var(--k);
+		scale: calc(0.7 + 0.3 * var(--k));
+		translate: 0 calc((1 - var(--k)) * -14cqw);
+	}
+	.plm-t1 { --k: var(--k1); left: 6cqw; top: 52cqw; width: 40cqw; height: 26.7cqw; }
+	.plm-t2 { --k: var(--k2); left: 50cqw; top: 52cqw; width: 30cqw; height: 22.5cqw; }
+	.plm-t3 {
+		--k: var(--k3);
+		left: 84cqw;
+		top: 52cqw;
+		width: 12cqw;
+		height: 12cqw;
+		outline-style: dashed;
+		background: repeating-linear-gradient(45deg, transparent 0 4px, color-mix(in oklch, var(--color-paper) 12%, transparent) 4px 5px);
+	}
+	.plm-t3 .plm-chip { left: auto; right: 0; bottom: -4.2cqw; background: none; color: color-mix(in oklch, var(--color-paper) 75%, transparent); }
+	.plm-t1 .plm-chip, .plm-t2 .plm-chip { bottom: 6%; }
+
+	.plm-formats {
+		position: absolute;
+		left: 6cqw;
+		top: 83cqw;
+		display: flex;
+		align-items: center;
+		gap: 1.6cqw;
+		opacity: var(--k3);
+		font: 700 max(10px, 2.3cqw) / 1 var(--font-code);
+	}
+	.plm-fmt {
+		padding: 0.55em 0.9em;
+		border-radius: var(--radius-pill);
+		border: 1px solid color-mix(in oklch, var(--color-paper) 30%, transparent);
+	}
+	.plm-arrow { width: 3cqw; height: 2px; background: color-mix(in oklch, var(--color-paper) 35%, transparent); }
+	.plm-f1 { opacity: calc(0.4 + 0.6 * clamp(0, var(--a2) * 6, 1)); }
+	.plm-f2 { opacity: calc(0.3 + 0.7 * clamp(0, var(--a2) * 3 - 1, 1)); }
+	.plm-f3 {
+		opacity: calc(0.3 + 0.7 * clamp(0, var(--a2) * 3 - 2, 1));
+	}
+	.plm-fmt.plm-f3 {
+		border-color: transparent;
+		background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange));
+		color: white;
+	}
+
+	.plm-name {
+		position: absolute;
+		left: 6cqw;
+		top: 91.5cqw;
+		font: 500 max(10.5px, 2.5cqw) / 1 var(--font-code);
+		white-space: nowrap;
+		opacity: var(--k3);
+	}
+	.plm-name-in {
+		display: inline-block;
+		clip-path: inset(-0.3em calc((1 - var(--a2)) * 100%) -0.3em 0);
+	}
+	:global(.plm-sig) {
+		font-weight: 700;
+		background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+
+	.plm-disk {
+		position: absolute;
+		left: 58cqw;
+		top: 6cqw;
+		width: 36cqw;
+		height: 34.5cqw;
+		padding: 3cqw;
+		border-radius: 2cqw;
+		border: 1px solid color-mix(in oklch, var(--color-paper) 25%, transparent);
+		background: color-mix(in oklch, var(--color-code-surface) 80%, transparent);
+		opacity: calc(var(--k2) * (0.4 + 0.6 * var(--a3)));
+	}
+	.plm-disk-glow {
+		position: absolute;
+		inset: -1px;
+		border-radius: inherit;
+		box-shadow: 0 0 0 1.5px var(--color-pollora-coral), 0 0 5cqw color-mix(in oklch, var(--color-pollora-coral) 60%, transparent);
+		opacity: var(--a3);
+	}
+	.plm-disk-head { display: flex; align-items: center; gap: 1.6cqw; }
+	.plm-cyl {
+		width: 5cqw;
+		height: 5cqw;
+		border-radius: 50% / 22%;
+		background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange));
+		box-shadow: inset 0 1.2cqw 0 color-mix(in oklch, white 40%, transparent);
+	}
+	.plm-disk-title { font: 700 max(11px, 2.9cqw) / 1 var(--font-code); }
+	.plm-tiles { position: absolute; left: 4cqw; top: 11.5cqw; display: flex; gap: 2cqw; }
+	.plm-tiles i {
+		width: 8cqw;
+		height: 8cqw;
+		border-radius: 1cqw;
+		background: linear-gradient(160deg, var(--color-pollora-pink), var(--color-pollora-amber));
+	}
+	.plm-tiles i:nth-child(1) { opacity: var(--g1); }
+	.plm-tiles i:nth-child(2) { opacity: var(--g2); }
+	.plm-tiles i:nth-child(3) { opacity: var(--g3); }
+	.plm-disk-sub {
+		position: absolute;
+		left: 3cqw;
+		right: 3cqw;
+		bottom: 2.6cqw;
+		font: 500 max(9px, 1.9cqw) / 1.3 var(--font-code);
+		color: color-mix(in oklch, var(--color-paper) 70%, transparent);
+	}
+
+	.plm-ghost {
+		position: absolute;
+		width: 5cqw;
+		height: 5cqw;
+		border-radius: 0.8cqw;
+		background: linear-gradient(160deg, var(--color-pollora-pink), var(--color-pollora-amber));
+		opacity: calc(min(var(--g) * 10, 1) * min((1 - var(--g)) * 10, 1));
+	}
+	.plm-g1 { --g: var(--g1); left: calc(23.5cqw + 40cqw * var(--g1)); top: calc(62.8cqw - 36.3cqw * var(--g1)); }
+	.plm-g2 { --g: var(--g2); left: calc(62.5cqw + 11cqw * var(--g2)); top: calc(60.5cqw - 34cqw * var(--g2)); }
+	.plm-g3 { --g: var(--g3); left: calc(87.5cqw - 4cqw * var(--g3)); top: calc(55.5cqw - 29cqw * var(--g3)); }
+
+	/* ── Panel B ────────────────────────────────────────────── */
+	.plm-b { display: flex; flex-direction: column; justify-content: center; gap: 4cqw; padding: 0 5cqw; font-family: var(--font-code); }
+	.plm-log, .plm-drivers { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.2cqw; font-size: max(10.5px, 2.7cqw); line-height: 1.4; overflow-wrap: anywhere; }
+	.plm-log li {
+		opacity: clamp(0, var(--b1) * 5 - var(--n), 1);
+		translate: 0 calc((1 - clamp(0, var(--b1) * 5 - var(--n), 1)) * 2cqw);
+	}
+	.plm-log b { color: var(--color-pollora-amber); }
+	.plm-warn { color: var(--color-pollora-orange); }
+	.plm-ok, .plm-ok b { color: var(--color-pollora-teal); }
+	.plm-dim { color: color-mix(in oklch, var(--color-paper) 60%, transparent); }
+	.plm-label {
+		margin: 2cqw 0 0;
+		font: 600 max(10px, 2.2cqw) / 1.3 var(--font-body);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-pollora-amber);
+		opacity: clamp(0, var(--b2) * 6, 1);
+	}
+	.plm-drivers li {
+		display: grid;
+		grid-template-columns: 7.5em minmax(0, 1fr);
+		gap: 1.6cqw;
+		padding-bottom: 2cqw;
+		border-bottom: 1px solid color-mix(in oklch, var(--color-paper) 14%, transparent);
+		opacity: clamp(0, var(--b2) * 5 - var(--n), 1);
+	}
+	.plm-drivers b { color: var(--color-pollora-coral); }
+	.plm-drivers span { color: color-mix(in oklch, var(--color-paper) 85%, transparent); }
+
+	/* ── Panel C ────────────────────────────────────────────── */
+	.plm-c { display: flex; flex-direction: column; justify-content: center; gap: 6cqw; padding: 0 5cqw; }
+	.plm-row { display: flex; align-items: center; gap: 4cqw; min-height: 24cqw; border-bottom: 1px solid color-mix(in oklch, var(--color-paper) 14%, transparent); padding-bottom: 5cqw; }
+	.plm-row:last-child { border-bottom: 0; }
+	.plm-row p { margin: 0; display: grid; gap: 0.6cqw; font: 700 max(11px, 3cqw) / 1.2 var(--font-code); }
+	.plm-row p span { font: 500 max(10px, 2.3cqw) / 1.3 var(--font-body); color: color-mix(in oklch, var(--color-paper) 65%, transparent); }
+	.plm-anchor { position: relative; flex: none; width: 34cqw; height: 25.5cqw; }
+	.plm-crop {
+		position: absolute;
+		left: 30%;
+		top: 0;
+		width: 40%;
+		height: 54%;
+		border: 2px solid var(--color-paper);
+		box-shadow: 0 0 0 100cqw color-mix(in oklch, var(--color-code-bg) 55%, transparent);
+		translate: 0 calc((1 - var(--c1)) * 6.5cqw);
+	}
+	.plm-grid9 { flex: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1cqw; width: 11cqw; }
+	.plm-grid9 i { aspect-ratio: 1; border-radius: 50%; background: color-mix(in oklch, var(--color-paper) 28%, transparent); }
+	.plm-grid9 .plm-mid { background: var(--color-pollora-coral); opacity: calc(1 - var(--c1)); }
+	.plm-grid9 .plm-top { background: var(--color-pollora-coral); box-shadow: 0 0 0 1.2cqw color-mix(in oklch, var(--color-pollora-coral) 35%, transparent); opacity: calc(0.28 + 0.72 * var(--c1)); }
+	.plm-lock { flex: none; width: 9cqw; height: 9cqw; color: var(--color-pollora-amber); }
+	.plm-expiry, .plm-copy { flex: none; width: 34cqw; height: 2.2cqw; border-radius: 9px; background: color-mix(in oklch, var(--color-paper) 16%, transparent); overflow: hidden; }
+	.plm-expiry-bar, .plm-copy-bar { display: block; height: 100%; width: 100%; border-radius: inherit; transform-origin: left; }
+	.plm-expiry-bar { background: linear-gradient(90deg, var(--color-pollora-amber), var(--color-pollora-coral)); transform: scaleX(calc(1 - 0.85 * var(--c1))); }
+	.plm-copy-bar { background: linear-gradient(90deg, var(--color-pollora-pink), var(--color-pollora-orange)); transform: scaleX(var(--c1)); }
+</style>
