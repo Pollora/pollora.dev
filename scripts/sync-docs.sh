@@ -51,6 +51,7 @@ rewrite_links() {
     -e 's|(modules\.md\(#[^)]*\)\?)|(/advanced/modules/\1)|g' \
     -e 's|(auth\.md\(#[^)]*\)\?)|(/advanced/authentication/\1)|g' \
     -e 's|(roles\.md\(#[^)]*\)\?)|(/advanced/roles-capabilities/\1)|g' \
+    -e 's|(media\.md\(#[^)]*\)\?)|(/advanced/media/\1)|g' \
     -e 's|(ajax\.md\(#[^)]*\)\?)|(/advanced/ajax/\1)|g' \
     -e 's|(dashboard\.md\(#[^)]*\)\?)|(/advanced/dashboard/\1)|g' \
     -e 's|(debugging\.md\(#[^)]*\)\?)|(/advanced/debugging/\1)|g' \
@@ -139,9 +140,10 @@ sync_file "patterns.md" "blocks/patterns.md" "Block Patterns" "Register WordPres
 sync_file "wp-rest-api.md" "advanced/rest-api.md" "REST API" "Build WordPress REST API endpoints in Pollora with the WpRestRoute attribute: define routes and methods, and control access with permission classes." 1
 sync_file "abilities.md" "advanced/abilities.md" "Abilities" "Declare WordPress abilities in Pollora with an attribute or a facade, with permissions and input schemas, so AI agents and MCP clients can use your site." 2
 sync_file "schedule-events.md" "advanced/scheduling.md" "Scheduling" "Schedule recurring WordPress tasks in Pollora with PHP attributes: the Every enum, custom intervals, hook names and arguments, without WP-Cron boilerplate." 3
+sync_file "media.md" "advanced/media.md" "Media Storage" "Keep the WordPress media library on any Laravel disk (S3, R2, Scaleway, MinIO) in Pollora, declare image sizes in PHP, serve them on demand or from Bunny or imgproxy, and sign private files." 3.5
 sync_file "modules.md" "advanced/modules.md" "Modules" "Organize a Pollora project with Laravel Modules: when to choose a module over a WordPress plugin, and how to create, enable and auto-discover modules." 4
 sync_file "auth.md" "advanced/authentication.md" "Authentication" "Use Laravel's Auth facade with WordPress users in Pollora: the WordPress guard lets the standard Auth methods work against WordPress accounts." 5
-sync_file "roles.md" "advanced/roles-capabilities.md" "Roles & Capabilities" "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole]." 6
+sync_file "roles.md" "advanced/roles-capabilities.md" "Roles & Capabilities" "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole] or the fluent Role facade." 6
 sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle WordPress AJAX requests in Pollora with an attribute or a facade, understand the security model, and call your handlers from frontend JavaScript." 7
 sync_file "dashboard.md" "advanced/dashboard.md" "Dashboard & Status" "Check a Pollora installation from the WordPress admin dashboard or the CLI, see discovered components and diagnose a project with pollora:doctor." 8
 sync_file "debugging.md" "advanced/debugging.md" "Debugging" "See WordPress queries, hooks, the template or route that answered and REST calls in Laravel Debugbar with pollora/debugbar, and add your own tabs." 9
