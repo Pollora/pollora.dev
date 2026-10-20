@@ -436,9 +436,9 @@ body {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(40rem 22rem at 100% 0%, oklch(80% 0.12 60 / 0.16), transparent 70%),
-    radial-gradient(36rem 20rem at 0% 100%, oklch(70% 0.18 350 / 0.1), transparent 70%),
-    var(--color-paper);
+    radial-gradient(42rem 24rem at 100% 0%, oklch(82% 0.13 75 / 0.55), transparent 70%),
+    radial-gradient(38rem 22rem at 0% 100%, oklch(76% 0.15 5 / 0.35), transparent 70%),
+    oklch(93% 0.05 60);
 }
 .pl-eco__legend {
   display: flex;
