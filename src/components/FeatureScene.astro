@@ -1,0 +1,90 @@
+---
+// The headline features as one pinned scene: a frame that stays on screen while the chapters scroll by,
+// and a background that changes tint with each chapter. The chapters are the showcase components below;
+// the mechanics (.fs-*) live in global.css. Below 64rem, without scroll-driven animations or with
+// reduced motion, nothing is pinned: the chapters stack, each on its own tint.
+import MediaShowcase from './MediaShowcase.astro';
+import AbilitiesShowcase from './AbilitiesShowcase.astro';
+import DiffShowcase from './DiffShowcase.astro';
+import BladeShowcase from './BladeShowcase.astro';
+import AsyncShowcase from './AsyncShowcase.astro';
+
+const chapters = [
+	{ id: 'media', label: 'Media' },
+	{ id: 'abilities', label: 'Abilities' },
+	{ id: 'difference', label: 'Attributes' },
+	{ id: 'blocks', label: 'Blade blocks' },
+	{ id: 'async', label: 'Async actions' },
+];
+---
+
+<section id="features-scene" class="fs" data-chapter="media" aria-labelledby="fs-title">
+	<!-- Runs before the section is painted, so the pinned layout never flashes in as a stack -->
+	<script is:inline>
+		(function () {
+			try {
+				var s = document.currentScript.parentElement;
+				if (CSS.supports('animation-timeline: view()') && CSS.supports('timeline-scope: --x') && matchMedia('(min-width: 64rem)').matches && matchMedia('(prefers-reduced-motion: no-preference)').matches) s.classList.add('fs-live');
+			} catch (e) {}
+		})();
+	</script>
+	<div class="absolute inset-x-0 top-0 h-px bg-gradient-pollora opacity-70" aria-hidden="true"></div>
+
+	<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-24 md:pt-32 pb-8 md:pb-12 relative z-[3]">
+		<div data-reveal class="max-w-5xl" style="--i:0">
+			<p class="font-[var(--font-code)] text-sm tracking-wider uppercase font-semibold mb-6 text-pollora-amber">What Pollora does</p>
+			<h2 id="fs-title" class="font-[var(--font-display)] font-bold text-[clamp(2.5rem,6vw+0.5rem,6rem)] leading-[0.98] tracking-tight [overflow-wrap:anywhere]">What ships <span class="text-gradient">in the box.</span></h2>
+		</div>
+	</div>
+
+	<div class="fs-track" style={`--rows:${chapters.length};timeline-scope:${chapters.map((c) => `--ch-${c.id}`).join(',')}`}>
+		<div class="fs-rail">
+			<nav aria-label="Features">
+				<ol>
+					{chapters.map((c, i) => (
+						<li><a href={`#${c.id}`} data-to={c.id} aria-current={i === 0 ? 'true' : undefined}><span class="fs-dot"></span><span class="fs-rail-label">{c.label}</span></a></li>
+					))}
+				</ol>
+			</nav>
+		</div>
+
+		<MediaShowcase order={0} />
+		<AbilitiesShowcase order={1} />
+		<DiffShowcase order={2} />
+		<BladeShowcase order={3} />
+		<AsyncShowcase order={4} />
+	</div>
+</section>
+
+<script>
+	// Marks the chapter that crosses the middle of the screen: the CSS turns that into the background tint,
+	// the picture on the frame and the dot on the rail. Pure presentation: without it the first chapter shows.
+	const root = document.querySelector<HTMLElement>('#features-scene');
+	if (root) {
+		const wide = matchMedia('(min-width: 64rem)');
+		const calm = matchMedia('(prefers-reduced-motion: no-preference)');
+		const capable = CSS.supports('animation-timeline: view()') && CSS.supports('timeline-scope: --x');
+		const sync = () => root.classList.toggle('fs-live', capable && wide.matches && calm.matches);
+		wide.addEventListener('change', sync);
+		calm.addEventListener('change', sync);
+		sync();
+
+		const links = [...root.querySelectorAll<HTMLAnchorElement>('.fs-rail a')];
+		const show = (id: string) => {
+			root.dataset.chapter = id;
+			for (const a of links) {
+				if (a.dataset.to === id) a.setAttribute('aria-current', 'true');
+				else a.removeAttribute('aria-current');
+			}
+		};
+		if ('IntersectionObserver' in window) {
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const e of entries) if (e.isIntersecting) show(e.target.id);
+				},
+				{ rootMargin: '-50% 0px -50% 0px' },
+			);
+			root.querySelectorAll('.fs-chapter').forEach((c) => io.observe(c));
+		}
+	}
+</script>

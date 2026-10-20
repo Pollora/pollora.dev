@@ -826,10 +826,12 @@ body {
 	.pl-flow-dot, .pl-lane, .pl-hmr-page { animation: none !important; }
 }
 
-/* ── Pinned story: a scene that sticks while the steps scroll ─────────────────────────────────
-   One animated number, --p (0 to 1, the scroll position through .pin-track), is read by every
-   descendant. Step i of n is centered on screen at p = i / (n - 1). Without scroll-driven
-   animations, or with reduced motion, --p stays at 1 and the page is a plain column. */
+/* ── Features scene: one pinned frame, chapters that scroll by, a background that changes tint ─
+   Each chapter is a copy block (.fs-chapter) and a panel (.fs-panel, the picture). Their progress,
+   --p (0 to 1), comes from the chapter's own scroll through the screen and is read by every scene
+   with calc(). Without scroll-driven animations, with reduced motion or on a phone, --p stays at 1,
+   nothing is pinned and the chapters stack, each on its own tint (the .fs-live class, set in
+   FeatureScene.astro, turns the pinned layout on). */
 @property --p {
 	syntax: '<number>';
 	inherits: true;
@@ -839,67 +841,144 @@ body {
 	from { --p: 0; }
 	to { --p: 1; }
 }
-.pin-track { --p: 1; display: grid; grid-template-columns: minmax(0, 1fr); }
-.pin-scene { position: relative; display: grid; place-items: center; padding-block: 1.5rem; }
-.pin-glow {
+.fs {
+	--c-media: oklch(26% 0.12 5);
+	--c-abilities: oklch(25% 0.06 200);
+	--c-difference: oklch(26% 0.06 70);
+	--c-blocks: oklch(25% 0.07 255);
+	--c-async: oklch(25% 0.07 150);
+	--stage: var(--c-media);
+	position: relative;
+	background-color: var(--color-code-bg);
+	color: var(--color-paper);
+}
+.fs[data-chapter='abilities'] { --stage: var(--c-abilities); }
+.fs[data-chapter='difference'] { --stage: var(--c-difference); }
+.fs[data-chapter='blocks'] { --stage: var(--c-blocks); }
+.fs[data-chapter='async'] { --stage: var(--c-async); }
+
+/* Stacked: copy, picture, copy, picture... each block on the tint of its chapter, full width */
+.fs-track {
+	--p: 1;
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	padding-inline: max(clamp(1rem, 4vw, 2rem), calc((100% - 80rem) / 2 + clamp(1rem, 4vw, 2rem)));
+}
+.fs-head-m, .fs-panel, .fs-chapter {
+	background: var(--tint);
+	box-shadow: 0 0 0 100vmax var(--tint);
+	clip-path: inset(0 -100vmax);
+}
+.fs-head-m { order: calc(var(--o) * 3); padding-top: 4.5rem; }
+.fs-panel { order: calc(var(--o) * 3 + 1); position: relative; display: grid; place-items: center; padding-block: 2rem 1rem; }
+.fs-chapter { order: calc(var(--o) * 3 + 2); padding-block: 1rem 4.5rem; }
+.fs-rail, .fs-head-d { display: none; }
+
+.fs-glow {
 	position: absolute;
-	inset: 8% 4%;
+	inset: 6% 2%;
 	background: radial-gradient(closest-side, color-mix(in oklch, var(--glow, var(--color-pollora-coral)) 30%, transparent), transparent);
 	pointer-events: none;
 }
-.pin-stage { position: relative; width: min(100%, 38rem); display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
-.pin-panel { position: relative; aspect-ratio: 1; container-type: size; width: 100%; }
-.pin-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-.pin-step { padding-block: 2.5rem; }
-.pin-step .token-comment { color: oklch(80% 0.015 290); }
+.fs-stage { position: relative; width: min(100%, 30rem); aspect-ratio: 1; }
+.fs-stage .pin-panel { position: absolute; inset: 0; width: auto; height: auto; aspect-ratio: auto; container-type: size; opacity: var(--v, 1); }
 
-@media (min-width: 64rem) {
-	.pin-track { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(2rem, 5vw, 5rem); }
-	.pin-scene { grid-column: 2; grid-row: 1; align-self: start; }
-	.pin-steps { grid-column: 1; grid-row: 1; }
-	.pin-flip .pin-scene { grid-column: 1; }
-	.pin-flip .pin-steps { grid-column: 2; }
-}
+.fs-kicker { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin: 0 0 1.25rem; font: 600 0.875rem / 1.2 var(--font-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-pollora-amber); }
+.fs-badge { padding: 0.25rem 0.65rem; border-radius: var(--radius-pill); background: var(--gradient-pollora, linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange))); color: white; font-size: 0.75rem; letter-spacing: normal; text-transform: none; }
+.fs-title { margin: 0; font: 700 clamp(2.25rem, 3.4vw + 1rem, 4.5rem) / 1 var(--font-display); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.fs-intro { margin: 1.25rem 0 0; max-width: 40ch; font-size: var(--text-md); line-height: 1.35; color: color-mix(in oklch, var(--color-paper) 80%, transparent); }
+.fs-head-m { padding-bottom: 0.5rem; }
+.fs-step-in { display: grid; grid-template-columns: minmax(0, 1fr); }
+.fs-head-d { margin-bottom: 2rem; }
+.fs-skick { margin: 0 0 1rem; font: 600 0.875rem / 1.2 var(--font-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-pollora-amber); }
+.fs-skick span { color: color-mix(in oklch, var(--color-paper) 80%, transparent); }
+.fs-stitle { margin: 0 0 1.25rem; font: 700 clamp(1.75rem, 2.2vw + 0.75rem, 2.5rem) / 1.08 var(--font-display); letter-spacing: -0.015em; }
+.fs-text { margin: 0 0 1.5rem; max-width: 46ch; font-size: var(--text-md); line-height: 1.55; color: color-mix(in oklch, var(--color-paper) 88%, transparent); }
+.fs-code { margin: 0; padding: 1.1rem 1.25rem; border-radius: var(--radius-md); background: color-mix(in oklch, var(--color-code-bg) 70%, black); overflow-x: auto; font: 400 0.84rem / 1.6 var(--font-code); }
+.fs-code .token-comment { color: oklch(80% 0.015 290); }
+.fs-note { margin: 1rem 0 0; max-width: 46ch; font-size: 0.875rem; line-height: 1.5; color: color-mix(in oklch, var(--color-paper) 82%, transparent); }
+.fs-link-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin: 1.75rem 0 0; }
+.fs-link { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.4rem; border-radius: var(--radius-pill); background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange)); color: white; font-weight: 600; transition: opacity var(--dur-micro); }
+.fs-link:hover { opacity: 0.9; }
+.fs-link:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.fs-link-text { max-width: 44ch; font-size: 0.9rem; line-height: 1.5; color: color-mix(in oklch, var(--color-paper) 82%, transparent); }
+.fs-link-text a { text-decoration: underline; text-underline-offset: 4px; }
 
+/* Phones and the fallback: the picture plays as it crosses the screen */
 @supports (animation-timeline: view()) {
 	@media (prefers-reduced-motion: no-preference) {
-		.pin-track {
+		.fs:not(.fs-live) .fs-panel {
 			animation: pin-progress linear both;
 			animation-timeline: view();
-			animation-range: contain 0% contain 100%;
-		}
-		/* Phones: the scene sticks on top, the steps scroll under it */
-		.pin-scene {
-			position: sticky;
-			top: 0;
-			z-index: 2;
-			height: 46svh;
-			padding-block: 0.5rem;
-			background: linear-gradient(var(--color-code-bg) 88%, transparent);
-		}
-		.pin-glow { inset: 0; }
-		.pin-stage { height: 100%; width: auto; aspect-ratio: 1; max-width: 100%; display: block; }
-		.pin-panel { position: absolute; inset: 0; height: 100%; aspect-ratio: auto; opacity: var(--v, 1); }
-		.pin-steps { gap: 0; }
-		.pin-step {
-			min-height: 58svh;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			padding-block: 0;
-			opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / var(--w, 0.17), 1));
-		}
-		@media (min-width: 64rem) {
-			/* The first and last steps are centered in a full screen: on a tall window that leaves a hole
-			   above and below. Pull the track under the header and the call to action; only the
-			   transparent margins of the scene overlap, never its content. */
-			.pin-track {
-				margin-top: calc(-1 * max(0px, (100svh - 21rem) / 2 - var(--pull, 6rem)));
-				margin-bottom: calc(-1 * max(0px, (100svh - 30rem) / 2 - 4rem));
-			}
-			.pin-scene { height: 100svh; background: none; padding-block: 0; }
-			.pin-stage { height: auto; width: min(100%, 86svh, 44rem); }
-			.pin-step { min-height: 100svh; }
+			animation-range: cover 8% cover 62%;
 		}
 	}
 }
+
+/* ── Pinned: wide screens with scroll-driven animations ─────────────────────────────────────── */
+.fs-live { background-color: var(--stage); transition: background-color 0.6s ease; }
+.fs-live .fs-track {
+	grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+	column-gap: clamp(2rem, 5vw, 5rem);
+}
+.fs-live .fs-head-m { display: none; }
+.fs-live .fs-head-d { display: block; }
+.fs-live .fs-panel, .fs-live .fs-chapter, .fs-live .fs-rail { background: none; box-shadow: none; clip-path: none; order: 0; }
+
+.fs-live .fs-chapter { grid-column: 1; padding-block: 0; min-height: calc(var(--h) * 100svh); display: grid; grid-template-columns: minmax(0, 1fr); animation: pin-progress linear both; animation-timeline: var(--tl); animation-range: var(--range); }
+.fs-live .fs-panel {
+	grid-column: 2;
+	grid-row: 1 / span var(--rows);
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	padding: 0;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.6s ease;
+	animation: pin-progress linear both;
+	animation-timeline: var(--tl);
+	animation-range: var(--range);
+}
+.fs-live .fs-stage { width: min(100%, 78svh, 44rem); }
+.fs-live[data-chapter='media'] .fs-panel[data-ch='media'],
+.fs-live[data-chapter='abilities'] .fs-panel[data-ch='abilities'],
+.fs-live[data-chapter='difference'] .fs-panel[data-ch='difference'],
+.fs-live[data-chapter='blocks'] .fs-panel[data-ch='blocks'],
+.fs-live[data-chapter='async'] .fs-panel[data-ch='async'] { opacity: 1; }
+
+/* Where the chapter's progress runs, as a share of its scroll through the screen (cover = top enters to bottom leaves) */
+.fs-live .fs-chapter, .fs-live .fs-panel {
+	--range: cover calc((0.5 + var(--h) * var(--u0)) / (1 + var(--h)) * 100%) cover calc((0.5 + var(--h) * var(--u1)) / (1 + var(--h)) * 100%);
+}
+
+.fs-live .fs-step {
+	min-height: calc(var(--h) * 100svh / var(--n));
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-block: 2rem;
+	opacity: calc(0.78 + 0.22 * clamp(0, 1 - max(var(--p) - var(--c), var(--c) - var(--p)) / var(--w, 0.17), 1));
+}
+.fs-live .fs-chapter[data-n='1'] .fs-step { justify-content: flex-start; opacity: 1; }
+.fs-live .fs-chapter[data-n='1'] .fs-step-in { position: sticky; top: max(6rem, 18svh); }
+
+/* The rail: one dot per chapter, the current one lit */
+.fs-live .fs-rail {
+	display: block;
+	grid-column: 2;
+	grid-row: 1 / span var(--rows);
+	position: sticky;
+	top: 0;
+	height: 100svh;
+	z-index: 4;
+	pointer-events: none;
+}
+.fs-rail nav { position: absolute; left: 50%; bottom: 1.25rem; translate: -50% 0; pointer-events: auto; max-width: 100%; }
+.fs-rail ol { list-style: none; margin: 0; padding: 0.25rem 0.5rem; display: flex; gap: 0.25rem; border-radius: var(--radius-pill); background: color-mix(in oklch, var(--color-code-bg) 55%, transparent); }
+.fs-rail a { display: flex; align-items: center; gap: 0.5rem; min-height: 2.25rem; padding-inline: 0.65rem; border-radius: var(--radius-pill); color: color-mix(in oklch, var(--color-paper) 82%, transparent); font: 600 0.75rem / 1 var(--font-code); white-space: nowrap; transition: color 0.3s, background 0.3s; }
+.fs-rail a:hover, .fs-rail a[aria-current] { color: var(--color-paper); }
+.fs-rail a[aria-current] { background: color-mix(in oklch, var(--color-paper) 14%, transparent); }
+.fs-rail a:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.fs-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 2px solid color-mix(in oklch, var(--color-paper) 70%, transparent); transition: background 0.3s, border-color 0.3s; }
+.fs-rail a[aria-current] .fs-dot { background: var(--color-pollora-amber); border-color: var(--color-pollora-amber); }

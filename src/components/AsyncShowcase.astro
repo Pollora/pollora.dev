@@ -1,46 +1,32 @@
 ---
 // Asynchronous actions, since 13.35.2: the same slow handler, once inside the request and once after it.
 // The text and the snippets come from the 13.35.2 release post and async-actions.md.
-import PinStory from './PinStory.astro';
-import { php, shell } from '../lib/highlight';
+import Chapter from './Chapter.astro';
+import { php } from '../lib/highlight';
 
 const steps = [
 	{
-		kicker: 'The problem',
-		title: 'The editor should not wait for your CRM.',
-		text: 'A handler attached to save_post runs inside the request that fires it. When it calls a CRM, an ERP or an email API, the editor waits, and when that service fails, the save fails with it.',
-		code: php(`#[Action('save_post_event', priority: 20)]
-public function handle(int $postId, CrmClient $crm): void`),
-	},
-	{
-		kicker: 'One line',
-		title: 'Add #[Async]. Nothing else changes.',
 		text: 'The handler runs after the request. Its arguments travel with the job: a WP_Post, a WP_User or an Eloquent model goes by ID and is reloaded when the handler runs. Remove the attribute and it is synchronous again.',
 		code: php(`#[Action('save_post_event', priority: 20)]
 #[Async(tries: 3, unique: true)]
 public function handle(int $postId, CrmClient $crm): void`),
-		note: 'On the facade: Action::add(…)->async()->delay(60)->tries(3).',
-	},
-	{
-		kicker: 'Three drivers',
-		title: 'One setting picks where it runs.',
-		text: 'The default driver, auto, uses the Laravel queue once a connection names a worker, then Action Scheduler when a plugin bundles it, then WP-Cron. pollora:doctor flags what fails silently: an ignored #[Async], an unavailable driver, jobs waiting for a worker.',
-		code: shell(`$ php artisan pollora:async:list`),
+		note: 'The default driver, auto, uses the Laravel queue once a connection names a worker, then Action Scheduler, then WP-Cron. pollora:doctor flags what fails silently.',
 	},
 ];
+const { order } = Astro.props;
 ---
 
-<PinStory
+<Chapter
 	id="async"
+	order={order}
+	len={1.25}
 	kicker="Asynchronous actions"
 	badge="Since 13.35.2"
 	title='Slow work, <span class="text-gradient">after the response.</span>'
 	intro="Move a WordPress action to a Laravel queue, Action Scheduler or WP-Cron, with delays and retries."
 	steps={steps}
-	flip
-	gap={9}
 	glow="var(--color-pollora-teal)"
-	cta={{
+	link={{
 		href: '/hooks/async-actions/',
 		label: 'Asynchronous actions',
 		text: 'Test it with <code class="font-[var(--font-code)] text-[0.9em]">Async::fake()</code>, which records what would be queued, with <code class="font-[var(--font-code)] text-[0.9em]">assertDispatched()</code> and <code class="font-[var(--font-code)] text-[0.9em]">runDispatched()</code>.',
@@ -85,7 +71,7 @@ public function handle(int $postId, CrmClient $crm): void`),
 		</div>
 	</div>
 	</div>
-</PinStory>
+</Chapter>
 
 <style>
 	.pas-vars {

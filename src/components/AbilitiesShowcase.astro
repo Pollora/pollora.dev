@@ -1,14 +1,12 @@
 ---
 // Abilities: what a site can do, declared once, usable by an AI client. In the first stable release, 13.34 (pollora/abilities).
 // The snippets come from abilities.md. The conversation is an illustration, not a recording.
-import PinStory from './PinStory.astro';
+import Chapter from './Chapter.astro';
 import { php } from '../lib/highlight';
 
 const steps = [
 	{
-		kicker: 'Declare',
-		title: 'An attribute is all it takes.',
-		text: 'The WordPress Abilities API (6.9 and later) is a registry of what a site can do, in a machine-readable form: inputs, outputs, permissions, behaviour. Pollora fills it from an #[Ability] class.',
+		text: 'Registered abilities are published over the Model Context Protocol by the MCP Adapter plugin, and by core at /wp-json/wp-abilities/v1/abilities. Permission checks default to refusing: an ability that forgets one is inert, not open.',
 		code: php(`#[Ability(
     name: 'acme/create-post',
     description: 'Creates a post from a title and a status.',
@@ -17,40 +15,21 @@ const steps = [
 )]
 final class CreatePost implements AbilityHandler`),
 	},
-	{
-		kicker: 'Call',
-		title: 'Any MCP client can use it.',
-		text: 'Registered abilities are published over the Model Context Protocol by the MCP Adapter plugin, and by core at /wp-json/wp-abilities/v1/abilities. You declare the ability once; whatever consumes abilities picks it up, with its typed input.',
-		code: php(`$schema->string('title', 'Title of the post to create.',
-    required: true);
-$schema->enum('status', 'Publication status.',
-    ['draft', 'publish'], default: 'draft');`),
-	},
-	{
-		kicker: 'Protect',
-		title: 'Refused, unless you say yes.',
-		text: 'Permission checks default to refusing: an ability that forgets one is inert, not open. The check gets the same input as the body, and the behaviour (reads, creates, updates, deletes) tells the client how much ceremony a call deserves.',
-		code: php(`public function authorize(Input $input): mixed
-{
-    return current_user_can('edit_posts')
-        ?: new WP_Error('forbidden',
-            'You cannot create posts.', ['status' => 403]);
-}`),
-	},
 ];
+const { order } = Astro.props;
 ---
 
-<PinStory
+<Chapter
 	id="abilities"
+	order={order}
+	len={1.4}
 	kicker="pollora/abilities"
 	badge="Since 13.34"
 	title='Your site, <span class="text-gradient">operable by AI.</span>'
 	intro="Declare what your site can do. Claude or any MCP client discovers it and calls it, and WordPress still decides who is allowed."
 	steps={steps}
-	flip
-	gap={15}
 	glow="var(--color-pollora-amber)"
-	cta={{
+	link={{
 		href: '/advanced/abilities/',
 		label: 'Abilities',
 		text: 'Not to be confused with <a class="underline underline-offset-4 hover:text-pollora-amber" href="/nectar/overview/">Nectar</a>: Nectar helps an AI write your code, abilities let an AI operate your site.',
@@ -82,7 +61,7 @@ $schema->enum('status', 'Publication status.',
 		</div>
 	</div>
 	</div>
-</PinStory>
+</Chapter>
 
 <style>
 	/* 8 chat items appear one after the other; --s(n) = how far item n has come */

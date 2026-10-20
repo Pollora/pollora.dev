@@ -1,46 +1,34 @@
 ---
 // Gutenberg blocks in Blade, with <InnerBlocks />, in the first stable release, 13.34.
 // The text and the snippets come from the tutorial "Build a Gutenberg block in Blade, inner blocks included".
-import PinStory from './PinStory.astro';
-import { blade, php, shell } from '../lib/highlight';
+import Chapter from './Chapter.astro';
+import { blade } from '../lib/highlight';
 
 const steps = [
 	{
-		kicker: 'Scaffold',
-		title: 'One command, one folder.',
-		text: 'A custom block usually means two renderings of the same markup: a React component for the editor, a PHP template for the page. They drift apart. Pollora renders dynamic blocks with Blade.',
-		code: shell(`$ php artisan pollora:make:block card \\
-    --theme --inner-blocks --category=design`),
-		note: 'No service provider to write: Pollora registers the blocks of every theme, plugin and module by itself.',
-	},
-	{
-		kicker: 'One template',
-		title: 'The template is also the editor’s preview.',
-		text: 'Each change of the title re-renders the template on the server, so what editors see in the editor is always the real markup of the site.',
+		text: 'A custom block usually means two renderings of the same markup: a React component for the editor, a PHP template for the page. They drift apart. Pollora renders dynamic blocks with Blade, and where the inner blocks go you write <InnerBlocks />, the tag ACF users already know.',
 		code: blade(`<article {!! get_block_wrapper_attributes(['class' => 'card']) !!}>
     <h3 class="card__title">{{ $attributes['title'] ?? '' }}</h3>
 
     <InnerBlocks class="card__body" />
 </article>`),
-	},
-	{
-		kicker: 'Inner blocks',
-		title: 'Editors write inside the block.',
-		text: 'Where the inner blocks should go, write <InnerBlocks />, the tag ACF users already know. The editor view is one line: a component that previews the Blade template and makes the tag editable.',
-		code: php(`const Preview = window.pollora.blocks.bladeEdit(metadata);`),
+		note: 'One command scaffolds it: php artisan pollora:make:block card --theme --inner-blocks. The editor view is one line, window.pollora.blocks.bladeEdit(metadata).',
 	},
 ];
+const { order } = Astro.props;
 ---
 
-<PinStory
+<Chapter
 	id="blocks"
+	order={order}
+	len={1.25}
 	kicker="Blade blocks"
 	badge="Since 13.34"
 	title='One template. <span class="text-gradient">Two views.</span>'
 	intro="Dynamic Gutenberg blocks written once, in Blade. The editor previews the real render, and editors write inside it."
 	steps={steps}
 	glow="var(--color-pollora-pink)"
-	cta={{
+	link={{
 		href: '/blog/blade-blocks-with-inner-blocks/',
 		label: 'Build a block, step by step',
 		text: 'Coming from ACF blocks? The tutorial ends with what changes, and what does not.',
@@ -82,7 +70,7 @@ const steps = [
 		</div>
 	</div>
 	</div>
-</PinStory>
+</Chapter>
 
 <style>
 	.pab-vars {

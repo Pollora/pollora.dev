@@ -1,8 +1,7 @@
 ---
 // "Watch what disappears": the book post type written for WordPress, then for Pollora, as one piece of code
-// that changes with the scroll. The two versions are the ones of the tabbed comparison below, so the
-// counts are real: 16 lines of WordPress, 8 of Pollora (imports included).
-import PinStory from './PinStory.astro';
+// that changes with the scroll. The counts are real: 16 lines of WordPress, 8 of Pollora (imports included).
+import Chapter from './Chapter.astro';
 import { php } from '../lib/highlight';
 
 type Kind = 'glue' | 'keep';
@@ -38,29 +37,20 @@ class Book {}`;
 
 const steps = [
 	{
-		kicker: 'WordPress',
-		title: 'Sixteen lines to say one thing.',
-		text: 'There is a post type called book. Around that sentence: a function to wrap it, a hook to call the function, and a labels array that spells out what the name already says.',
-	},
-	{
-		kicker: 'The glue',
-		title: 'Most of it carries no decision.',
-		text: 'Pollora generates the labels from the class name and finds the class on its own: no function, no add_action. What stays is what you decided: the name, public, the archive, REST, supports.',
-	},
-	{
-		kicker: 'Pollora',
-		title: 'Eight lines, imports included.',
-		text: 'The same post type, as attributes on a class. Auto-discovered, auto-registered.',
+		text: 'The same post type, written for WordPress and written for Pollora: sixteen lines against eight, imports included. Most of the WordPress version carries no decision. Pollora generates the labels from the class name and finds the class on its own: no function, no add_action. What stays is what you decided.',
 		code: php(pollora),
 	},
 ];
+const { order } = Astro.props;
 ---
 
-<PinStory
+<Chapter
 	id="difference"
+	order={order}
+	len={1.25}
 	kicker="The difference, line by line"
 	title='Watch what <span class="text-gradient">disappears.</span>'
-	intro="The same post type, written for WordPress and written for Pollora."
+	intro="Watch the same post type lose everything that was only glue."
 	steps={steps}
 	glow="var(--color-pollora-amber)"
 >
@@ -84,7 +74,7 @@ const steps = [
 			<p class="pdf-legend"><span class="pdf-k-glue">glue</span><span class="pdf-k-keep">a decision</span></p>
 		</div>
 	</div>
-</PinStory>
+</Chapter>
 
 <style>
 	.pdf-vars {

@@ -1,42 +1,27 @@
 ---
-// pollora/media, the headline of 13.37: five beats, drawn by the scroll (see PinStory and global.css).
+// pollora/media, the headline of 13.37: three beats, drawn by the scroll (see Chapter, FeatureScene and global.css).
 // Every snippet below comes from media.md (Pollora/documentation) or the package README.
-import PinStory from './PinStory.astro';
+import Chapter from './Chapter.astro';
 import { env, php } from '../lib/highlight';
 
 const steps = [
 	{
-		kicker: 'Declare',
+		kicker: 'Declare and sign',
 		title: 'Say which sizes you use. Not how to make them.',
-		text: 'The URL, the width, the height and the srcset are worked out from the image’s metadata. Rendering a page never touches the disk.',
+		text: 'The URL, the width, the height and the srcset are worked out from the image’s metadata, and rendering a page never touches the disk. The file name carries an HMAC of the original and of the size: change a size, the name changes, and no cache ever holds an old file.',
 		code: php(`ImageSize::add('card')->cover(600, 400)->webp(75);
 ImageSize::add('hero')
     ->scale(width: 1920)->webp(70)
     ->widths([640, 1024, 1440]);
 ImageSize::add('thumb')->cover(150, 150)->eager();`),
-	},
-	{
-		kicker: 'Sign',
-		title: 'A URL that can never go stale.',
-		text: 'The file name carries an HMAC of the original and of the size. Change a size, the name changes: no cache ever holds an old file.',
-		code: `<span class="token-variable">photo-card-600x400-</span><span class="plm-sig">{signature}</span><span class="token-variable">.webp</span>`,
 		note: 'WebP by default, AVIF with ->avif(). GD and Imagick write WebP; AVIF depends on the server.',
 	},
 	{
-		kicker: 'Store',
-		title: 'One disk. Two settings.',
-		text: 'Local, S3, R2, Scaleway, MinIO. WordPress keeps using its own file functions, so Gutenberg, ACF and WooCommerce follow without any adaptation. No media.disk, nothing changes.',
+		kicker: 'Store and serve',
+		title: 'One disk. Made on first request, or by a service.',
+		text: 'Local, S3, R2, Scaleway, MinIO: WordPress keeps using its own file functions, so Gutenberg, ACF and WooCommerce follow without any adaptation. A size is made the first time its URL is asked for, then served as a plain file for a year. For a huge library, let Bunny or imgproxy do it with signed URLs.',
 		code: env(`MEDIA_DISK=media
 MEDIA_URL=https://media.client.fr`),
-	},
-	{
-		kicker: 'Serve',
-		title: 'Made on first request, or by a service.',
-		text: 'A size is made the first time its URL is asked for, at that exact path, then served as a plain file for a year. For a huge library, let Bunny or imgproxy do it with signed URLs: no file at all.',
-		code: php(`'thumbnails' => [
-    // pollora | bunny | imgproxy
-    'driver' => env('MEDIA_THUMBNAILS_DRIVER', 'pollora'),
-],`),
 	},
 	{
 		kicker: 'Control',
@@ -46,16 +31,20 @@ MEDIA_URL=https://media.client.fr`),
     ->cover(400, 500, Anchor::Top);`)}\n\n<span class="token-comment">$</span> php artisan pollora:media:migrate \\\n    --from=uploads --to=media --execute`,
 	},
 ];
+const { order } = Astro.props;
 ---
 
-<PinStory
+<Chapter
 	id="media"
+	order={order}
+	len={3}
 	kicker="pollora/media"
 	badge="New in 13.37"
 	title='Your media library, on <span class="text-gradient">any disk.</span>'
 	intro="Sizes declared in PHP. Files stored on S3, R2 or whatever Laravel can reach. WordPress never notices."
 	steps={steps}
-	cta={{
+	glow="var(--color-pollora-coral)"
+	link={{
 		href: 'https://github.com/Pollora/media',
 		label: 'pollora/media on GitHub',
 		text: 'Without <code class="font-[var(--font-code)] text-[0.9em]">media.disk</code> the module is off and WordPress keeps its own folder. It also runs in a classic theme, a plugin or Bedrock.',
@@ -154,7 +143,7 @@ MEDIA_URL=https://media.client.fr`),
 					</div>
 				</div>
 	</div>
-</PinStory>
+</Chapter>
 
 <style>
 	.plm-vars {
