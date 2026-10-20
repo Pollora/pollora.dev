@@ -1,0 +1,94 @@
+<!doctype html><meta charset="utf-8"><style>
+ body{margin:0;overflow:hidden;background:radial-gradient(40rem 40rem at 50% 52%, rgba(251,25,109,.11), rgba(255,140,18,.035) 45%, transparent 70%), #1d142a}
+ canvas{display:block;filter:drop-shadow(0 0 4px rgba(251,25,109,.36)) drop-shadow(0 0 16px rgba(255,120,30,.20))}
+</style>
+<body>
+<script type="importmap">{"imports":{"three":"./three.module.js"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { LineSegments2 } from './lines/LineSegments2.js';
+import { LineSegmentsGeometry } from './lines/LineSegmentsGeometry.js';
+import { LineMaterial } from './lines/LineMaterial.js';
+const q = new URLSearchParams(location.search);
+const live = q.has('live'); const W = live ? innerWidth : 800, H = live ? innerHeight : 800;
+const BG = new THREE.Color('#1d142a');
+const r = new THREE.WebGLRenderer({ antialias: true, alpha: true }); r.setSize(W, H); r.setPixelRatio(Math.min(devicePixelRatio, 2)); r.setClearColor(0x000000, 0); document.body.append(r.domElement); if (q.get('g') === '0') r.domElement.style.filter = 'none';
+const scene = new THREE.Scene(); 
+const cam = new THREE.PerspectiveCamera(32, W / H, 0.1, 100); cam.position.set(0, 0.1, 8.2);
+const root = new THREE.Group(); scene.add(root);
+const mat = new LineMaterial({ vertexColors: true, linewidth: +(q.get('w') || 2.4), side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+const occl = new THREE.MeshBasicMaterial({ color: BG, colorWrite: false, polygonOffset: true, polygonOffsetFactor: 2, polygonOffsetUnits: 2, side: THREE.DoubleSide });
+const cA = new THREE.Color('#fb196d'), cB = new THREE.Color('#ff9a14');
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+// segments accumulate here, transformed by an optional matrix
+let segs = [], faint = [], solid = []; let target = segs;
+const addPoly = (pts, closed = false, m) => { const p = m ? pts.map(v => v.clone().applyMatrix4(m)) : pts; for (let i = 0; i < p.length - 1; i++) target.push(p[i], p[i + 1]); if (closed) target.push(p[p.length - 1], p[0]); };
+const addMesh = (geo, m) => { const g = geo.clone(); if (m) g.applyMatrix4(m); root.add(new THREE.Mesh(g, occl)); };
+// --- the ghost of the logo: a dome head, nearly straight flanks, a scalloped hem
+const LOBES = 4, TOP = 1.6, BOT = -0.95, ROWS = 40, COLS = 144;
+const radAt = (y) => y > 0.55 ? Math.sqrt(Math.max(0, 1 - ((y - 0.55) / 1.05) ** 2)) : 1.0 + 0.13 * Math.pow((0.55 - y) / 1.5, 1.4);
+const sm = (a, b, x) => { const t = THREE.MathUtils.clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
+const surf = (t, th) => { const y0 = TOP - t * (TOP - BOT); const hem = sm(0.78, 1, t) * 0.42 * Math.pow(Math.sqrt(Math.cos(LOBES * th + 0.4) ** 2 + 0.012), 0.62); const y = y0 + (t > 0.78 ? -hem + 0.2 * Math.cos(th) ** 2 * sm(0.78, 1, t) : 0); const rr = radAt(y0) * (1 - 0.015 * sm(0.9, 1, t) * (1 - Math.sqrt(Math.cos(LOBES * th + 0.4) ** 2 + 0.012))); return V3(Math.cos(th) * rr, y, Math.sin(th) * rr); };
+const grid = []; for (let i = 0; i <= ROWS; i++) { const row = []; for (let k = 0; k < COLS; k++) row.push(surf(Math.max(i / ROWS, 0.0008), k / COLS * Math.PI * 2)); grid.push(row); }
+{ const pos = [], idx = []; grid.forEach(rw => rw.forEach(v => pos.push(v.x, v.y, v.z)));
+  for (let i = 0; i < ROWS; i++) for (let k = 0; k < COLS; k++) { const a0 = i * COLS + k, a1 = i * COLS + (k + 1) % COLS, b0 = (i + 1) * COLS + k, b1 = (i + 1) * COLS + (k + 1) % COLS; idx.push(a0, b0, a1, a1, b0, b1); }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); g.setIndex(idx); addMesh(g); }
+const lensFrame = (x) => { const yy = 0.52; const rr = radAt(yy); const zs = Math.sqrt(Math.max(0.01, rr * rr - x * x)); const tilt = Math.atan2(x, zs);
+  return new THREE.Matrix4().makeTranslation(x, yy, zs + 0.04).multiply(new THREE.Matrix4().makeRotationY(tilt)); };
+const LX = 0.42; const frames = [lensFrame(-LX), lensFrame(LX)]; const inv = frames.map(f => f.clone().invert());
+const inLens = (v) => inv.some(m => { const l = v.clone().applyMatrix4(m); return Math.hypot(l.x, l.y) < 0.4 && l.z > -0.5; });
+const addClipped = (pts, closed) => { let run = []; const flush = () => { if (run.length > 1) addPoly(run); run = []; }; const all = closed ? [...pts, pts[0]] : pts; for (const v of all) { if (inLens(v)) flush(); else run.push(v); } flush(); };
+target = faint;
+for (let i = 2; i <= 31; i += 2) addClipped(grid[i], true);
+for (let k = 0; k < COLS; k += 4) addClipped(grid.map(rw => rw[k]), false);
+target = solid;
+{ const hemLine = []; for (let k = 0; k < 480; k++) hemLine.push(surf(1, k / 480 * Math.PI * 2)); addPoly(hemLine, true); }
+target = segs;
+// --- big round glasses, thick rims, solid pupils
+const bold = []; const addBold = (pts, closed = false, m) => { const p = m ? pts.map(v => v.clone().applyMatrix4(m)) : pts; for (let i = 0; i < p.length - 1; i++) bold.push(p[i], p[i + 1]); if (closed) bold.push(p[p.length - 1], p[0]); };
+const pupils = [];
+const lens = (m, x) => {
+  addMesh(new THREE.TorusGeometry(0.32, 0.06, 12, 48), m);
+  const c = []; for (let k = 0; k < 64; k++) { const a = k / 64 * Math.PI * 2; c.push(V3(Math.cos(a) * 0.345, Math.sin(a) * 0.345, 0.08)); } addBold(c, true, m);
+  pupils.push({ m, base: V3(-Math.sign(x) * 0.15, -0.01, 0.004) }); };
+lens(frames[0], -0.46); lens(frames[1], 0.46);
+{ const pl = V3(0.345, 0, 0.08).applyMatrix4(frames[0]), pr = V3(-0.345, 0, 0.08).applyMatrix4(frames[1]); const br = []; for (let k = 0; k <= 8; k++) br.push(pl.clone().lerp(pr, k / 8)); addBold(br); }
+const smile = []; for (let k = 0; k <= 14; k++) { const a = Math.PI * (0.1 + 0.8 * k / 14); smile.push(V3(Math.cos(a) * 0.17, 0.02 - Math.sin(a) * 0.1, Math.sqrt(Math.max(0.01, radAt(0.0) ** 2 - 0.03)) + 0.04)); } addBold(smile);
+
+const t = new THREE.Color();
+const tint = (v) => { const u = THREE.MathUtils.clamp(((TOP - v.y) / (TOP - BOT)) * 0.65 + ((v.x + 1.2) / 2.4) * 0.35, 0, 1); return t.copy(cA).lerp(cB, u).clone(); };
+const build = (list) => { const arr = [], cols = []; for (const v of list) { arr.push(v.x, v.y, v.z); const c = tint(v); cols.push(c.r, c.g, c.b); } const g = new LineSegmentsGeometry().setPositions(arr); g.setColors(cols); return g; };
+const lg = build(segs);
+const bmat = new LineMaterial({ vertexColors: true, linewidth: 5.6, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+const smat = new LineMaterial({ vertexColors: true, linewidth: 3.0, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+const fmat = new LineMaterial({ vertexColors: true, linewidth: 1.5, transparent: true, opacity: +(q.get('fo') || 0.15), depthWrite: false, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+const mk = (geo, material, order = 0) => { const l = new LineSegments2(geo, material); l.frustumCulled = false; l.renderOrder = order; root.add(l); return l; };
+mk(build(faint), fmat, 1); mk(build(solid), smat, 2); mk(build(bold), bmat, 3);
+const silmat = new LineMaterial({ vertexColors: true, linewidth: 3.0, depthTest: false, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) }); const sil = mk(build([]), silmat, 2);
+const dmat = new LineMaterial({ vertexColors: true, linewidth: 0.17, worldUnits: true, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+const lidmat = new LineMaterial({ vertexColors: true, linewidth: 5.6, side: THREE.DoubleSide, resolution: new THREE.Vector2(W, H) });
+for (const p of pupils) {
+  const g = new THREE.Group(); g.matrixAutoUpdate = false; g.matrix.copy(p.m); root.add(g);
+  const c = tint(V3(0, 0, 0).applyMatrix4(p.m)); const col = [c.r, c.g, c.b, c.r, c.g, c.b];
+  const dg = new LineSegmentsGeometry().setPositions([0, 0, 0, 0.0005, 0, 0]); dg.setColors(col);
+  p.dot = new LineSegments2(dg, dmat); p.dot.frustumCulled = false; p.dot.position.copy(p.base); g.add(p.dot);
+  const lg2 = new LineSegmentsGeometry().setPositions([-0.11, 0, 0, 0.11, 0, 0]); lg2.setColors(col);
+  p.lid = new LineSegments2(lg2, lidmat); p.lid.frustumCulled = false; p.lid.position.copy(p.base); p.lid.visible = false; g.add(p.lid);
+}
+// the silhouette follows the view: the meridians seen edge-on
+const updateSil = () => { const th = root.rotation.y; const list = []; for (const a of [th, th + Math.PI]) { let prev = null; for (let i = 0; i <= ROWS; i++) { const v = surf(Math.max(i / ROWS, 0.0008), a); if (prev) list.push(prev, v); prev = v; } }
+  const old = sil.geometry; sil.geometry = build(list); old.dispose(); };
+const set = (ry, rx) => { root.rotation.y = ry; root.rotation.x = rx; };
+set(THREE.MathUtils.degToRad(+(q.get('ry') || 0)), THREE.MathUtils.degToRad(+(q.get('rx') || 0)));
+updateSil(); r.render(scene, cam); window.__done = [segs.length / 2, sil.geometry.instanceCount, sil.visible, bold.length / 2];
+if (live) { let tx = 0, ty = 0, cx = 0, cy = 0, gx = 0, gy = 0, blinkAt = 2500, blinkEnd = 0;
+  addEventListener('pointermove', (e) => { tx = (e.clientX / innerWidth - 0.5) * 2; ty = (e.clientY / innerHeight - 0.5) * 2; });
+  const loop = (ms) => { cx += (tx - cx) * 0.06; cy += (ty - cy) * 0.06; gx += (tx - gx) * 0.14; gy += (ty - gy) * 0.14;
+    set(cx * 0.9 + Math.sin(ms / 2800) * 0.12, cy * 0.3 + Math.sin(ms / 3600) * 0.03);
+    root.position.y = -0.2 + Math.sin(ms / 1100) * 0.06;
+    if (ms > blinkAt) { blinkEnd = ms + 150; blinkAt = ms + 2600 + Math.random() * 3200; }
+    const closed = ms < blinkEnd;
+    for (const p of pupils) { p.dot.visible = !closed; p.lid.visible = closed; const px = p.base.x + gx * 0.09, py = p.base.y - gy * 0.07; p.dot.position.set(px, py, p.base.z); p.lid.position.set(p.base.x, p.base.y, p.base.z); }
+    updateSil(); r.render(scene, cam); requestAnimationFrame(loop); };
+  requestAnimationFrame(loop); }
+</script>
