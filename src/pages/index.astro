@@ -7,6 +7,9 @@ import themeApiary from '../assets/themes/apiary.png';
 import themeBuzz from '../assets/themes/buzz.png';
 import { Image } from 'astro:assets';
 import LatestPosts from '../components/blog/LatestPosts.astro';
+import AbilitiesShowcase from '../components/AbilitiesShowcase.astro';
+import AsyncShowcase from '../components/AsyncShowcase.astro';
+import BladeShowcase from '../components/BladeShowcase.astro';
 import MediaShowcase from '../components/MediaShowcase.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { social } from '../lib/site';
@@ -332,6 +335,9 @@ const packages = [
 				</div>
 			</div>
 		</section>
+
+		<!-- ═══ BLADE BLOCKS — pinned scene ═══ -->
+		<BladeShowcase />
 
 		<!-- ═══ COMPARE ═══ -->
 		<section id="compare" class="pl-deferred pb-24 md:pb-32">
@@ -724,6 +730,9 @@ const packages = [
 			</div>
 		</section>
 
+		<!-- ═══ ASYNC ACTIONS — pinned scene ═══ -->
+		<AsyncShowcase />
+
 		<!-- ═══ THEMES ═══ -->
 		<section class="pl-deferred py-24 md:py-32 bg-paper-2">
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
@@ -832,6 +841,9 @@ const packages = [
 				</div>
 			</div>
 		</section>
+
+		<!-- ═══ ABILITIES — pinned scene ═══ -->
+		<AbilitiesShowcase />
 
 		<!-- ═══ BLOG ═══ -->
 		<section id="blog" class="pl-deferred pb-24 md:pb-32">

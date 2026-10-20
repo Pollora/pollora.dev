@@ -1,0 +1,156 @@
+---
+// Abilities: what a site can do, declared once, usable by an AI client. Since 13.32.0-beta (pollora/abilities).
+// The snippets come from abilities.md. The conversation is an illustration, not a recording.
+import PinStory from './PinStory.astro';
+import { php } from '../lib/highlight';
+
+const steps = [
+	{
+		kicker: 'Declare',
+		title: 'An attribute is all it takes.',
+		text: 'The WordPress Abilities API (6.9 and later) is a registry of what a site can do, in a machine-readable form: inputs, outputs, permissions, behaviour. Pollora fills it from an #[Ability] class.',
+		code: php(`#[Ability(
+    name: 'acme/create-post',
+    description: 'Creates a post from a title and a status.',
+    category: 'acme-content',
+    behaviour: Behaviour::Creates,
+)]
+final class CreatePost implements AbilityHandler`),
+	},
+	{
+		kicker: 'Call',
+		title: 'Any MCP client can use it.',
+		text: 'Registered abilities are published over the Model Context Protocol by the MCP Adapter plugin, and by core at /wp-json/wp-abilities/v1/abilities. You declare the ability once; whatever consumes abilities picks it up, with its typed input.',
+		code: php(`$schema->string('title', 'Title of the post to create.',
+    required: true);
+$schema->enum('status', 'Publication status.',
+    ['draft', 'publish'], default: 'draft');`),
+	},
+	{
+		kicker: 'Protect',
+		title: 'Refused, unless you say yes.',
+		text: 'Permission checks default to refusing: an ability that forgets one is inert, not open. The check gets the same input as the body, and the behaviour (reads, creates, updates, deletes) tells the client how much ceremony a call deserves.',
+		code: php(`public function authorize(Input $input): mixed
+{
+    return current_user_can('edit_posts')
+        ?: new WP_Error('forbidden',
+            'You cannot create posts.', ['status' => 403]);
+}`),
+	},
+];
+---
+
+<PinStory
+	id="abilities"
+	kicker="pollora/abilities"
+	badge="Since 13.32.0-beta"
+	title='Your site, <span class="text-gradient">operable by AI.</span>'
+	intro="Declare what your site can do. Claude or any MCP client discovers it and calls it, and WordPress still decides who is allowed."
+	steps={steps}
+	flip
+	glow="var(--color-pollora-amber)"
+	cta={{
+		href: '/advanced/abilities/',
+		label: 'Abilities',
+		text: 'Not to be confused with <a class="underline underline-offset-4 hover:text-pollora-amber" href="/nectar/overview/">Nectar</a>: Nectar helps an AI write your code, abilities let an AI operate your site.',
+	}}
+>
+	<div class="pai-vars pin-panel pai-panel">
+		<div class="pai-in">
+		<div class="pai-bar"><i class="pai-dot"></i><b>Assistant</b><span>over MCP · illustrated conversation</span></div>
+		<div class="pai-view">
+			<div class="pai-chat">
+				<p class="pai-msg pai-user" style="--n:0">Create a draft post called “Summer launch”.</p>
+				<p class="pai-msg pai-bot" style="--n:1">This site has an ability for that.</p>
+				<div class="pai-tool" style="--n:2">
+					<p class="pai-tool-head"><b>acme/create-post</b><span>creates</span></p>
+					<p class="pai-line pai-l1">title: “Summer launch”, status: draft</p>
+					<p class="pai-line pai-l2 pai-ok">✓ current_user_can('edit_posts')</p>
+					<p class="pai-line pai-l3 pai-ok">→ &#123; "id": 128 &#125;</p>
+				</div>
+				<p class="pai-msg pai-bot pai-late" style="--n:3">Done. “Summer launch” is saved as a draft.</p>
+
+				<p class="pai-sep" style="--n:4"><span>same request, from a subscriber account</span></p>
+				<p class="pai-msg pai-user" style="--n:5">Create a draft post called “Summer launch”.</p>
+				<div class="pai-tool pai-tool-no" style="--n:6">
+					<p class="pai-tool-head"><b>acme/create-post</b><span>creates</span></p>
+					<p class="pai-line pai-l4 pai-bad">✗ forbidden (403): You cannot create posts.</p>
+				</div>
+				<p class="pai-msg pai-bot" style="--n:7">I couldn’t: this account is not allowed to create posts.</p>
+			</div>
+		</div>
+	</div>
+	</div>
+</PinStory>
+
+<style>
+	/* 8 chat items appear one after the other; --s(n) = how far item n has come */
+	.pai-vars {
+		--k: clamp(0, (var(--p) - 0.02) / 0.9 * 8, 8);
+		container-type: inline-size;
+		aspect-ratio: auto;
+	}
+	.pai-in {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 2cqw;
+		font: 500 max(10.5px, 2.5cqw) / 1.35 var(--font-body);
+	}
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.pai-vars { container-type: size; }
+			.pai-view { overflow: hidden; min-height: 0; flex: 1 1 auto; }
+			/* on a narrow stage the chat is longer than the window: it scrolls up with the conversation */
+			@container (max-width: 25rem) {
+				.pai-chat { translate: 0 calc(clamp(0, (var(--p) - 0.5) / 0.4, 1) * -36cqw); }
+			}
+		}
+	}
+
+	.pai-bar {
+		display: flex;
+		align-items: center;
+		gap: 2cqw;
+		padding: 2cqw 3cqw;
+		border-radius: 2cqw;
+		background: var(--color-code-surface);
+		outline: 1px solid color-mix(in oklch, var(--color-paper) 16%, transparent);
+	}
+	.pai-bar span { margin-left: auto; font-size: 0.85em; color: color-mix(in oklch, var(--color-paper) 70%, transparent); }
+	.pai-dot { width: 2.4cqw; height: 2.4cqw; border-radius: 50%; background: var(--color-pollora-teal); }
+
+	.pai-chat { display: grid; gap: 2cqw; padding: 1cqw 0 3cqw; }
+	.pai-msg, .pai-tool, .pai-sep {
+		--s: clamp(0, var(--k) - var(--n), 1);
+		margin: 0;
+		opacity: var(--s);
+		translate: 0 calc((1 - var(--s)) * 3cqw);
+	}
+	.pai-msg { max-width: 82%; padding: 1.6cqw 2.6cqw; border-radius: 2.4cqw; }
+	.pai-user { justify-self: end; background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange)); color: white; font-weight: 600; border-bottom-right-radius: 0.6cqw; }
+	.pai-bot { justify-self: start; background: var(--color-code-surface); border-bottom-left-radius: 0.6cqw; }
+	.pai-tool {
+		justify-self: start;
+		width: 88%;
+		padding: 2cqw 2.6cqw;
+		border-radius: 1.6cqw;
+		border: 1px solid color-mix(in oklch, var(--color-pollora-amber) 55%, transparent);
+		font-family: var(--font-code);
+		font-size: 0.92em;
+	}
+	.pai-tool-no { border-color: color-mix(in oklch, var(--color-pollora-red) 70%, transparent); }
+	.pai-tool-head { display: flex; align-items: center; justify-content: space-between; margin: 0 0 1.2cqw; }
+	.pai-tool-head span { padding: 0.1em 0.7em; border-radius: var(--radius-pill); background: color-mix(in oklch, var(--color-pollora-amber) 22%, transparent); font-size: 0.85em; }
+	.pai-line { margin: 0.6cqw 0 0; color: color-mix(in oklch, var(--color-paper) 85%, transparent); overflow-wrap: anywhere; }
+	.pai-ok { color: var(--color-pollora-teal); }
+	.pai-bad { color: oklch(78% 0.14 20); }
+	/* the checks inside a tool call come in as the call runs */
+	.pai-l1 { opacity: clamp(0, (var(--k) - 2) * 3, 1); }
+	.pai-l2 { opacity: clamp(0, (var(--k) - 2.35) * 3, 1); }
+	.pai-l3 { opacity: clamp(0, (var(--k) - 2.7) * 3, 1); }
+	.pai-l4 { opacity: clamp(0, (var(--k) - 6.35) * 3, 1); }
+	.pai-sep { display: flex; align-items: center; gap: 2cqw; font-size: 0.85em; color: color-mix(in oklch, var(--color-paper) 70%, transparent); }
+	.pai-sep::before, .pai-sep::after { content: ''; flex: 1; height: 1px; background: color-mix(in oklch, var(--color-paper) 22%, transparent); }
+</style>

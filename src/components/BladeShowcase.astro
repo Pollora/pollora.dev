@@ -1,0 +1,165 @@
+---
+// Gutenberg blocks in Blade, with <InnerBlocks />, since 13.32.0-beta.9.
+// The text and the snippets come from the tutorial "Build a Gutenberg block in Blade, inner blocks included".
+import PinStory from './PinStory.astro';
+import { blade, php, shell } from '../lib/highlight';
+
+const steps = [
+	{
+		kicker: 'Scaffold',
+		title: 'One command, one folder.',
+		text: 'A custom block usually means two renderings of the same markup: a React component for the editor, a PHP template for the page. They drift apart. Pollora renders dynamic blocks with Blade.',
+		code: shell(`$ php artisan pollora:make:block card \\
+    --theme --inner-blocks --category=design`),
+		note: 'No service provider to write: Pollora registers the blocks of every theme, plugin and module by itself.',
+	},
+	{
+		kicker: 'One template',
+		title: 'The template is also the editor’s preview.',
+		text: 'Each change of the title re-renders the template on the server, so what editors see in the editor is always the real markup of the site.',
+		code: blade(`<article {!! get_block_wrapper_attributes(['class' => 'card']) !!}>
+    <h3 class="card__title">{{ $attributes['title'] ?? '' }}</h3>
+
+    <InnerBlocks class="card__body" />
+</article>`),
+	},
+	{
+		kicker: 'Inner blocks',
+		title: 'Editors write inside the block.',
+		text: 'Where the inner blocks should go, write <InnerBlocks />, the tag ACF users already know. The editor view is one line: a component that previews the Blade template and makes the tag editable.',
+		code: php(`const Preview = window.pollora.blocks.bladeEdit(metadata);`),
+	},
+];
+---
+
+<PinStory
+	id="blocks"
+	kicker="Blade blocks"
+	badge="Since 13.32.0-beta.9"
+	title='One template. <span class="text-gradient">Two views.</span>'
+	intro="Dynamic Gutenberg blocks written once, in Blade. The editor previews the real render, and editors write inside it."
+	steps={steps}
+	glow="var(--color-pollora-pink)"
+	cta={{
+		href: '/blog/blade-blocks-with-inner-blocks/',
+		label: 'Build a block, step by step',
+		text: 'Coming from ACF blocks? The tutorial ends with what changes, and what does not.',
+	}}
+>
+	<div class="pab-vars pin-panel pab-panel">
+		<div class="pab-in">
+		<div class="pab-tpl">
+			<span class="pab-tag">render.blade.php</span>
+<pre><code><span class="token-keyword">&lt;article</span> <span class="token-string">class="card"</span><span class="token-keyword">&gt;</span>
+  <span class="token-keyword">&lt;h3&gt;</span><span class="pab-hl pab-hl-t token-function">&#123;&#123; $attributes['title'] &#125;&#125;</span><span class="token-keyword">&lt;/h3&gt;</span>
+  <span class="pab-hl pab-hl-b token-keyword">&lt;InnerBlocks /&gt;</span>
+<span class="token-keyword">&lt;/article&gt;</span></code></pre>
+		</div>
+
+		<p class="pab-arrow">rendered on the server</p>
+
+		<div class="pab-views">
+			<div class="pab-view pab-editor">
+				<span class="pab-tag">Editor</span>
+				<div class="pab-card">
+					<h4 class="pab-title"><span class="pab-typed pab-typed-1">Opening night</span><i class="pab-caret"></i></h4>
+					<div class="pab-body pab-body-edit">
+						<span class="pab-ph">Write the card…</span>
+						<span class="pab-typed pab-typed-2">Doors at seven.<br />Free entry.</span>
+						<i class="pab-plus">+</i>
+					</div>
+				</div>
+			</div>
+			<div class="pab-view pab-site">
+				<span class="pab-tag">Site</span>
+				<div class="pab-card">
+					<h4 class="pab-title"><span class="pab-typed pab-typed-1">Opening night</span></h4>
+					<div class="pab-body">
+						<span class="pab-typed pab-typed-2">Doors at seven.<br />Free entry.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+</PinStory>
+
+<style>
+	.pab-vars {
+		--a1: clamp(0, var(--p) / 0.3, 1);
+		--a2: clamp(0, (var(--p) - 0.35) / 0.3, 1);
+		--a3: clamp(0, (var(--p) - 0.72) / 0.2, 1);
+		container-type: inline-size;
+		aspect-ratio: auto;
+	}
+	.pab-in {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 3.5cqw;
+		padding: 0 3cqw;
+		font: 500 max(10.5px, 2.5cqw) / 1.35 var(--font-code);
+	}
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.pab-vars { container-type: size; }
+		}
+	}
+
+	.pab-tag {
+		display: inline-block;
+		margin-bottom: 1.2cqw;
+		font-size: 0.82em;
+		letter-spacing: 0.04em;
+		color: color-mix(in oklch, var(--color-paper) 70%, transparent);
+	}
+	.pab-tpl {
+		padding: 2.6cqw 3cqw;
+		border-radius: 1.6cqw;
+		background: var(--color-code-surface);
+		outline: 1px solid color-mix(in oklch, var(--color-paper) 16%, transparent);
+	}
+	.pab-tpl pre { margin: 0; font: inherit; white-space: pre; overflow: hidden; }
+	.pab-tpl code { font: inherit; }
+	.pab-hl { border-radius: 0.5cqw; padding: 0 0.3em; }
+	.pab-hl-t { background: color-mix(in oklch, var(--color-pollora-pink) 30%, transparent); }
+	.pab-hl-b { background: color-mix(in oklch, var(--color-pollora-teal) 30%, transparent); color: oklch(94% 0.04 180); }
+
+	.pab-arrow { margin: 0; text-align: center; font-size: 0.85em; color: color-mix(in oklch, var(--color-paper) 75%, transparent); }
+	.pab-arrow::before, .pab-arrow::after { content: ' ↓ '; color: var(--color-pollora-amber); }
+
+	.pab-views { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3cqw; }
+	.pab-card {
+		padding: 3cqw;
+		border-radius: 1.6cqw;
+		background: var(--color-paper);
+		color: var(--color-ink);
+		font-family: var(--font-body);
+		min-height: 24cqw;
+	}
+	.pab-title { margin: 0 0 2cqw; font: 700 max(13px, 3.4cqw) / 1.15 var(--font-display); text-decoration: underline 0.25em color-mix(in oklch, var(--color-pollora-pink) 45%, transparent); text-underline-offset: 0.2em; text-decoration-skip-ink: none; }
+	.pab-typed { display: inline-block; vertical-align: top; }
+	.pab-typed-1 { clip-path: inset(-0.2em calc((1 - var(--a1)) * 100%) -0.2em 0); }
+	.pab-typed-2 { clip-path: inset(0 calc((1 - var(--a2)) * 100%) 0 0); }
+	.pab-body { position: relative; padding: 1.6cqw; border-radius: 1cqw; background: color-mix(in oklch, var(--color-pollora-teal) 16%, transparent); line-height: 1.4; font-size: max(10.5px, 2.5cqw); min-height: 9cqw; }
+	.pab-body-edit { outline: 1.5px dashed var(--color-pollora-teal); outline-offset: 0; }
+	.pab-ph { position: absolute; left: 1.6cqw; top: 1.6cqw; color: oklch(48% 0.02 290); opacity: calc(1 - clamp(0, var(--a2) * 5, 1)); }
+	.pab-plus {
+		position: absolute;
+		right: -1.2cqw;
+		bottom: -2.6cqw;
+		display: grid;
+		place-items: center;
+		width: 5.4cqw;
+		height: 5.4cqw;
+		border-radius: 50%;
+		background: var(--color-code-bg);
+		color: var(--color-paper);
+		font: 700 max(11px, 3.4cqw) / 1 var(--font-code);
+		font-style: normal;
+		opacity: var(--a3);
+		scale: calc(0.6 + 0.4 * var(--a3));
+	}
+	.pab-caret { display: inline-block; width: 2px; height: 0.9em; margin-left: 2px; vertical-align: -0.1em; background: var(--color-pollora-pink); opacity: calc(var(--a1) * (1 - var(--a2))); }
+</style>
