@@ -52,7 +52,7 @@ Example output:
 ```
 Pollora v13.38.1 (latest: v13.38.1) ✓
 
-  PHP 8.4.12 | Laravel 13.36 | WordPress 7.1
+  PHP 8.4.12 | Laravel 13.38 | WordPress 7.1
 
   WP_DEBUG: off | Multisite: no | Permalinks: /%postname%/
 
@@ -100,7 +100,7 @@ This outputs the complete system information as a JSON object:
     },
     "environment": {
         "php": "8.4.12",
-        "laravel": "13.35.0",
+        "laravel": "13.38.0",
         "wordpress": "7.1"
     },
     "wordpress": {

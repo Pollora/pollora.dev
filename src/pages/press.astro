@@ -159,7 +159,7 @@ Route::wp('page', 'contact', [ContactController::class, 'show']);`,
 				<tr><th scope="row">{k}</th><td>{v}</td></tr>
 			))}
 			<tr><th scope="row">Requirements</th><td>PHP 8.4+, WordPress 7.1+, MySQL 5.7+ or MariaDB 10.3+</td></tr>
-			<tr><th scope="row">Links</th><td><a href="https://github.com/Pollora">GitHub</a> · <a href="https://github.com/Pollora/framework/releases/tag/v13.35.2">v13.35.2 release notes</a> · <a href="/getting-started/installation/">Installation</a> · <a href="/compare/">How Pollora compares</a></td></tr>
+			<tr><th scope="row">Links</th><td><a href="https://github.com/Pollora">GitHub</a> · <a href={`https://github.com/Pollora/framework/releases/tag/v${release.version}`}>v{release.version} release notes</a> · <a href="/getting-started/installation/">Installation</a> · <a href="/compare/">How Pollora compares</a></td></tr>
 		</tbody>
 	</table>
 

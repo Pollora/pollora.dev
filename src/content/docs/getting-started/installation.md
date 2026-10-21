@@ -20,7 +20,7 @@ Welcome to Pollora! This guide will help you get a working installation up and r
 ## Current release
 
 Pollora's version numbers follow the Laravel release it is built on, so the
-current line is **13.36**, built on Laravel 13.36.
+current line is **13.38**, built on Laravel 13.38.
 
 Two packages carry that number: `pollora/pollora`, the skeleton
 `create-project` installs, and `pollora/framework`, which the skeleton requires.

@@ -19,6 +19,8 @@ const TARGETS = [
 	['src/content/docs/advanced/dashboard.md', /Pollora v(\d+\.\d+\.\d+) \(latest: v(\d+\.\d+\.\d+)\)/g, 1],
 	['src/content/docs/advanced/dashboard.md', /"(?:current|latest)": "(\d+\.\d+\.\d+)"/g, 2],
 	['src/content/docs/advanced/dashboard.md', /latest stable: v(\d+\.\d+\.\d+)/g, 1],
+	['src/content/docs/compare.md', /v(\d+\.\d+\.\d+) stable, a young project/g, 1],
+	['src/content/docs/why.md', /The current release, v(\d+\.\d+\.\d+), is stable/g, 1],
 ];
 
 const versionsIn = (m) => m.slice(1).filter(Boolean);
