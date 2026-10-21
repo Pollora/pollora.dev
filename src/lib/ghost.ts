@@ -69,7 +69,7 @@ export function mountGhost(host: HTMLElement): Ghost | null {
 	} catch {
 		return null; // no WebGL: the poster stays
 	}
-	renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+	renderer.setPixelRatio(Math.min(devicePixelRatio, W < 480 ? 1.5 : 1.75));
 	renderer.setSize(W, W);
 	renderer.setClearColor(0x000000, 0);
 	const canvas = renderer.domElement;
