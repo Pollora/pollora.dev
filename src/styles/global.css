@@ -1012,8 +1012,8 @@ body {
 }
 .ghost-pulse { animation: ghost-pulse 1.1s ease-out; }
 @media (max-width: 47.99rem) {
-	/* The picture has a wide empty margin: pull the host up and down so the ghost sits close to the text */
-	.ghost-host { width: min(78vw, 18rem); margin-block: -2rem -1.5rem; margin-inline: auto; }
+	/* On phones the ghost sits behind the text (see the hero), so the host just fills its box */
+	.ghost-host { width: 100%; margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
 	.ghost-pulse { animation: none; }

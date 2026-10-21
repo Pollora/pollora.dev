@@ -99,7 +99,7 @@ const packages = [
 			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] w-full">
 				<div class="grid grid-cols-[minmax(0,1fr)] md:grid-cols-[1.1fr_1fr] gap-0 md:gap-12 items-center">
 					<div class="pl-hero-in contents md:block" style="--i:0">
-						<div class="flex flex-wrap items-center gap-3 mb-5 order-1 md:order-none">
+						<div class="flex flex-wrap items-center gap-3 mb-5 relative z-10 md:z-auto">
 							<p class="text-base font-semibold font-[var(--font-code)] tracking-wider uppercase text-gradient">Modern PHP, zero compromise</p>
 							<a href="https://github.com/Pollora/framework/releases" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-3 py-1 rounded-[var(--radius-pill)] border border-white/15 bg-white/[0.06] text-sm font-semibold font-[var(--font-code)] text-paper/85 hover:border-pollora-coral/60 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								<span class="w-2 h-2 rounded-full bg-pollora-coral" aria-hidden="true"></span>
@@ -112,13 +112,13 @@ const packages = [
 								</a>
 							)}
 						</div>
-						<h1 class="order-2 md:order-none font-[var(--font-display)] font-bold text-[clamp(2.4rem,5vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-paper mb-1 md:mb-8" style="overflow-wrap:anywhere;min-width:0">
+						<h1 class="relative z-10 md:z-auto font-[var(--font-display)] font-bold text-[clamp(2.4rem,5vw+0.5rem,5.5rem)] leading-[1.05] tracking-tight text-paper mb-6 md:mb-8" style="overflow-wrap:anywhere;min-width:0">
 							The Laravel framework<br /><span class="text-gradient">for WordPress.</span>
 						</h1>
-						<p class="order-4 md:order-none text-lg text-paper/80 max-w-[50ch] leading-relaxed mb-8 md:mb-12">
+						<p class="relative z-10 md:z-auto text-lg text-paper/80 max-w-[50ch] leading-relaxed mb-8 md:mb-12">
 							WordPress runs inside a Laravel app: routing, controllers, Blade and Eloquent on the front end, the admin and plugins untouched. PHP 8 attributes and auto-discovery do the registering.
 						</p>
-						<div class="order-5 md:order-none flex flex-wrap gap-4">
+						<div class="relative z-10 md:z-auto flex flex-wrap gap-4">
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								Get Started <span aria-hidden="true">&rarr;</span>
 							</a>
@@ -126,13 +126,13 @@ const packages = [
 								View on GitHub
 							</a>
 						</div>
-						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="order-6 md:order-none group mt-8 inline-flex items-center gap-3 text-base font-semibold text-paper/80 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
+						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="relative z-10 md:z-auto group mt-8 inline-flex items-center gap-3 text-base font-semibold text-paper/80 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
 							<span class="grid place-items-center w-11 h-11 rounded-full bg-gradient-pollora text-white shadow-[0_0_20px_rgba(255,83,52,0.35)] group-hover:scale-110 transition-transform duration-[var(--dur-short)]"><svg class="w-5 h-5 translate-x-[8%]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.9-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14Z"/></svg></span>
 							Watch the 1-min tour
 							<span class="font-[var(--font-code)] text-sm font-normal text-paper/60">1:06</span>
 						</button>
 					</div>
-					<div class="order-3 md:order-none">
+					<div class="absolute top-[4.6rem] right-[-21vw] w-[84vw] z-0 opacity-75 pointer-events-none md:static md:w-auto md:opacity-100 md:pointer-events-auto md:z-auto">
 						<GhostHero />
 					</div>
 				</div>
