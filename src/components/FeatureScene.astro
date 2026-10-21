@@ -64,6 +64,8 @@ const chapters = [
 		const wide = matchMedia('(min-width: 64rem)');
 		const calm = matchMedia('(prefers-reduced-motion: no-preference)');
 		const capable = CSS.supports('animation-timeline: view()') && CSS.supports('timeline-scope: --x');
+		// The background follows the chapter everywhere: pinned or stacked, the tint changes as the scroll goes
+		root.classList.add('fs-tint');
 		const sync = () => root.classList.toggle('fs-live', capable && wide.matches && calm.matches);
 		wide.addEventListener('change', sync);
 		calm.addEventListener('change', sync);
