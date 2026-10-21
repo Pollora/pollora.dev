@@ -1,6 +1,6 @@
 ---
 // The ghost of the home hero: a poster image (the ghost seen from the front) that is on screen at once, and a
-// WebGL canvas (src/lib/ghost.ts) that takes over once the page has loaded. Phones and reduced motion keep
+// WebGL canvas (src/lib/ghost.ts) that takes over once the page has loaded. Reduced motion keeps
 // the poster. The canvas is square like the poster, so nothing moves when it arrives.
 import poster from '../assets/ghost-poster.webp';
 ---
@@ -11,9 +11,8 @@ import poster from '../assets/ghost-poster.webp';
 
 <script>
 	const host = document.querySelector<HTMLElement>('[data-ghost]');
-	const wide = matchMedia('(min-width: 48rem)');
 	const calm = matchMedia('(prefers-reduced-motion: no-preference)');
-	if (host && wide.matches && calm.matches) {
+	if (host && calm.matches) {
 		// Nothing is loaded until the visitor first moves, scrolls or touches: the poster is the same picture,
 		// and a render loop that starts by itself would weigh on the load metrics.
 		const start = () => import('../lib/ghost').then((m) => m.mountGhost(host));
