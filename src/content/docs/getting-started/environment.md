@@ -3,7 +3,7 @@ title: Environment Management
 description: "Detect and manage environments in Pollora, from local to staging and production, with one API that works in both WordPress and Laravel contexts."
 editUrl: https://github.com/Pollora/documentation/edit/main/environment-management.md
 sidebar:
-  order: 4
+  order: 5
 ---
 
 

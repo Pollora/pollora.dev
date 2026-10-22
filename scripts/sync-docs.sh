@@ -44,6 +44,7 @@ rewrite_links() {
     -e 's|(patterns\.md\(#[^)]*\)\?)|(/blocks/patterns/\1)|g' \
     -e 's|(block-bindings\.md\(#[^)]*\)\?)|(/blocks/block-bindings/\1)|g' \
     -e 's|(server-configuration\.md\(#[^)]*\)\?)|(/getting-started/server-configuration/\1)|g' \
+    -e 's|(local-environments\.md\(#[^)]*\)\?)|(/getting-started/local-environments/\1)|g' \
     -e 's|(translations\.md\(#[^)]*\)\?)|(/core-concepts/translations/\1)|g' \
     -e 's|(abilities\.md\(#[^)]*\)\?)|(/advanced/abilities/\1)|g' \
     -e 's|(wp-rest-api\.md\(#[^)]*\)\?)|(/advanced/rest-api/\1)|g' \
@@ -98,10 +99,11 @@ EOF
 
 # Getting Started
 sync_file "getting-started.md" "getting-started/installation.md" "Installation" "Install Pollora, the Laravel framework for WordPress, with the Pollora CLI or Composer, run the WordPress setup and check that your new project works." 1
-sync_file "installation.md" "getting-started/configuration.md" "Configuration" "Configure a new Pollora project: environment variables, database, WordPress settings, local environments such as DDEV, and fixes for common setup issues." 2
-sync_file "ide.md" "getting-started/ide-setup.md" "IDE Setup" "Set up PhpStorm or Visual Studio Code for a Pollora project so that autocompletion and code navigation work across your Laravel and WordPress code." 3
-sync_file "environment-management.md" "getting-started/environment.md" "Environment Management" "Detect and manage environments in Pollora, from local to staging and production, with one API that works in both WordPress and Laravel contexts." 4
-sync_file "server-configuration.md" "getting-started/server-configuration.md" "Server Configuration" "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy." 5
+sync_file "installation.md" "getting-started/configuration.md" "Configuration" "Configure a new Pollora project: environment variables, the database, WordPress settings, and fixes for common setup issues." 2
+sync_file "local-environments.md" "getting-started/local-environments.md" "Local Development Environments" "Choose and set up a local server for Pollora: artisan serve, Valet, Herd, MAMP, DDEV, Apache or nginx, with the document root, APP_URL and a checklist for blank pages and 404s." 3
+sync_file "ide.md" "getting-started/ide-setup.md" "IDE Setup" "Set up PhpStorm or Visual Studio Code for a Pollora project so that autocompletion and code navigation work across your Laravel and WordPress code." 4
+sync_file "environment-management.md" "getting-started/environment.md" "Environment Management" "Detect and manage environments in Pollora, from local to staging and production, with one API that works in both WordPress and Laravel contexts." 5
+sync_file "server-configuration.md" "getting-started/server-configuration.md" "Server Configuration" "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy." 6
 
 # Core Concepts
 sync_file "discovery.md" "core-concepts/auto-discovery.md" "Auto-Discovery" "How Pollora auto-discovery scans your code and registers hooks, post types, routes and other components, with caching and custom discovery classes." 1
