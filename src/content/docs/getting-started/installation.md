@@ -20,7 +20,7 @@ Welcome to Pollora! This guide will help you get a working installation up and r
 ## Current release
 
 Pollora's version numbers follow the Laravel release it is built on, so the
-current line is **13.38**, built on Laravel 13.38.
+current line is **13.36**, built on Laravel 13.36.
 
 Two packages carry that number: `pollora/pollora`, the skeleton
 `create-project` installs, and `pollora/framework`, which the skeleton requires.
@@ -184,7 +184,7 @@ After successful installation:
 3. Access your WordPress admin panel at: `your-site-url/wp-admin`
 4. Verify you can log in with the admin credentials you configured
 
-For post-installation configuration (WordPress settings, environment variables, development environments), see the [Configuration](/getting-started/configuration/) guide.
+Choose your local server (Valet, Herd, MAMP, DDEV, Apache, nginx) in [Local Development Environments](/getting-started/local-environments/). For post-installation configuration (WordPress settings and environment variables), see the [Configuration](/getting-started/configuration/) guide.
 
 <div class="alert alert-info" role="alert"><strong>Heads up!</strong> Pollora rids WordPress of frontend responsibilites altogether, this means theme support in WordPress is dropped completely. Don't worry though, any functions you can run in vanilla WordPress you can run in Pollora!</div>
 

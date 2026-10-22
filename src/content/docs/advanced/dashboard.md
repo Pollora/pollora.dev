@@ -52,7 +52,7 @@ Example output:
 ```
 Pollora v13.38.1 (latest: v13.38.1) ✓
 
-  PHP 8.4.12 | Laravel 13.38 | WordPress 7.1
+  PHP 8.4.12 | Laravel 13.36 | WordPress 7.1
 
   WP_DEBUG: off | Multisite: no | Permalinks: /%postname%/
 
@@ -100,7 +100,7 @@ This outputs the complete system information as a JSON object:
     },
     "environment": {
         "php": "8.4.12",
-        "laravel": "13.38.0",
+        "laravel": "13.35.0",
         "wordpress": "7.1"
     },
     "wordpress": {
@@ -161,6 +161,7 @@ It looks for failures that stay silent — the site renders, every command exits
 | WordPress core patch | the core still declares `__()` (a patch Composer skipped), or `__()` is not Pollora's |
 | Composer patches lock | `patches.lock.json` missing, or older than the framework's patches |
 | Environment file | `.env` names Pollora does not read (`DB_NAME`, `DB_USER`, `WP_HOME`…), MySQL settings on a sqlite connection |
+| Application URL | `APP_URL` without a scheme (`APP_URL=my-project.test`) |
 | Configuration and route caches | configuration or routes cached outside production: edits to `.env` or `routes/` are ignored |
 | Discovery cache | classes added since the discovery cache was written, which are not registered — named, one by one |
 | Theme, plugin and module builds | no theme; a build missing, or written to another folder than Pollora reads; a hot file pointing at a Vite dev server that is stopped or whose port is not exposed |
@@ -178,7 +179,7 @@ The builds, directories, placeholders and blocks are checked for the active them
 
 ### In Site Health
 
-The same checks appear in WordPress's **Tools › Site Health**, with a *Pollora* badge, plus one only a web request can make: every block of the theme, the Pollora plugins and the modules is registered. Site Health runs in an administrator's web request — the boot a visitor gets — which is where a block can be missing while WP-CLI sees it.
+The same checks appear in WordPress's **Tools › Site Health**, with a *Pollora* badge, plus two only a web request can make: every block of the theme, the Pollora plugins and the modules is registered, and the web server's document root is `public/` (an error when `/.env` is served as a text file). Site Health runs in an administrator's web request — the boot a visitor gets — which is where a block can be missing while WP-CLI sees it, and where the server shows what it exposes.
 
 ## Programmatic Access
 
