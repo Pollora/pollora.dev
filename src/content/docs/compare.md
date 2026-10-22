@@ -25,6 +25,7 @@ Pollora's own WordPress models are built on **`pollora/colt`, a fork of Corcel**
 | **Templating** | Blade themes with Sage Directives, Vite and Tailwind CSS; block themes also supported | Blade | Blade, Tailwind CSS, Vite | Blade, through Sage |
 | **Post types and hooks** | PHP 8 attributes (`#[PostType]`, `#[Taxonomy]`, `#[Action]`, `#[Filter]`, `#[WpRestRoute]`, `#[Schedule]`…), auto-discovered | Your theme or plugin code | Your theme code | Post types and taxonomies in `config/post-types.php` |
 | **Blocks** | `pollora:make:block`, rendered with Blade | Your build | Your build | `make:block`, server-side rendering |
+| **Media and image sizes** | Any Laravel disk (S3, R2, MinIO…) with two settings; sizes declared in PHP with `ImageSize`, made on demand | WordPress's own uploads and image sizes | WordPress's own uploads and image sizes | WordPress's own uploads and image sizes |
 | **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions |
 | **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 10 MCP tools, on Laravel Boost | | | |
 | **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites |
@@ -60,6 +61,7 @@ Radicle is the closest project to Pollora: a complete, Laravel-powered WordPress
 
 - **Laravel first.** WordPress runs inside the Laravel application instead of Laravel running inside WordPress, so routing, middleware and the request lifecycle are Laravel's.
 - **Attributes and auto-discovery** for post types, taxonomies, hooks, REST routes, WP-CLI commands, schedules, AJAX handlers and abilities, where Radicle registers post types and taxonomies in a configuration file.
+- **Media on any disk, image sizes in PHP.** The [media library](/advanced/media/) moves to S3, R2 or any Laravel disk with `MEDIA_DISK` and `MEDIA_URL`, and `ImageSize` declares the sizes your design uses, instead of the sizes WordPress registers for every image.
 - **`Route::wp()`**: Laravel routes matched on WordPress conditional tags, with the template hierarchy as a fallback.
 - **AI tooling**: [Nectar](/nectar/overview/) gives coding agents guidelines, skills and MCP tools for the project.
 - **Free and MIT-licensed.**
