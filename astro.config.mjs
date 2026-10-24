@@ -10,6 +10,11 @@ export default defineConfig({
 	site: 'https://pollora.dev',
 	vite: {
 		plugins: [tailwindcss()],
+		build: {
+			// Every script is emitted as a file, never inlined in the page: the Content-Security-Policy in
+			// vercel.json allows scripts by origin, so the site needs no inline script (nor hashes to keep up to date)
+			assetsInlineLimit: 0,
+		},
 	},
 	integrations: [
 		starlight({

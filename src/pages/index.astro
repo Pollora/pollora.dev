@@ -652,9 +652,8 @@ const packages = [
 		</div>
 	</div>
 
-	<script define:vars={{ terminalSequence }}>
-		window.__terminalSequence = terminalSequence;
-	</script>
+	<!-- Data block, not executed: read by the terminal animation below. "<" is escaped so the JSON cannot close the tag. -->
+	<script type="application/json" id="terminal-sequence" set:html={JSON.stringify(terminalSequence).replace(/</g, '\\u003c')}></script>
 	<script>
 		import Alpine from 'alpinejs';
 
@@ -830,7 +829,7 @@ const packages = [
 			},
 
 			async run() {
-				const sequence = window.__terminalSequence;
+				const sequence = JSON.parse(document.getElementById('terminal-sequence')?.textContent ?? '[]');
 				while (true) {
 					this.lines = [];
 					this._id = 0;

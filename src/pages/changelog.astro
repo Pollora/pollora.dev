@@ -74,7 +74,7 @@ const headings = groups.map((g) => ({ depth: 2, slug: `v${g.line}.x`, text: `${g
 	)}
 
 	{entries.length > 0 && (
-		<form class="pl-changelog-filter not-content" role="search" onsubmit="return false">
+		<form class="pl-changelog-filter not-content" role="search">
 			<label class="pl-changelog-field">
 				<span>Filter by version</span>
 				<input type="search" name="v" placeholder="13, 13.35 or 13.35.2" autocomplete="off" spellcheck="false" list="pl-changelog-lines" />
@@ -118,6 +118,8 @@ const headings = groups.map((g) => ({ depth: 2, slug: `v${g.line}.x`, text: `${g
 <script>
 	const form = document.querySelector<HTMLFormElement>('.pl-changelog-filter');
 	if (form) {
+		// The filter works as you type: Enter must not reload the page
+		form.addEventListener('submit', (event) => event.preventDefault());
 		const input = form.querySelector<HTMLInputElement>('input[name="v"]')!;
 		const pre = form.querySelector<HTMLInputElement>('input[name="pre"]')!;
 		const count = form.querySelector<HTMLElement>('.pl-changelog-count')!;
