@@ -90,7 +90,7 @@ See [Routing](/routing/wordpress-routes/) for more information about routing in 
 
 #### Plugin Conditions
 
-The `plugin_conditions` array contains plugin-specific conditions for routing. Currently, it includes conditions for WooCommerce.
+The `plugin_conditions` array contains plugin-specific conditions for routing. Currently, it includes conditions for WooCommerce. [`pollora/woocommerce`](https://github.com/Pollora/woocommerce) adds them itself, so a shop needs the package rather than this key; the framework's `config/wordpress.php` keeps them until the next major release, and the entries of your own `config/wordpress.php` win over both.
 
 ```php
 'plugin_conditions' => [
@@ -114,6 +114,10 @@ The `plugin_conditions` array contains plugin-specific conditions for routing. C
 - `is_product_tag`: Matches product tag pages
 - `is_wc_endpoint_url`: Matches WooCommerce endpoint URLs
 
+
+### WP Rocket
+
+The `wprocket` array holds the two settings of the [`pollora/wp-rocket`](/advanced/wp-rocket/) package: whether WP Rocket may write its rules into `.htaccess` (`generate_htaccess`) and set `WP_CACHE` (`set_cache_constant`). Both are `false` unless you say otherwise.
 
 ### Mail Handling
 
