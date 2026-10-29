@@ -1108,14 +1108,14 @@ class WordPressUpdatedListener
 
 ### WooCommerce Events
 
-The following events are available for WooCommerce actions:
+The following events are available for WooCommerce actions. They come from [`pollora/woocommerce`](https://github.com/Pollora/woocommerce), which a project that runs WooCommerce installs with `composer require pollora/woocommerce`; `pollora:doctor` warns when it is missing. Before Pollora 13.39 they were part of the framework, as `Pollora\Events\WordPress\Plugins\WooCommerce\…`: that name still works, and goes away in the next major release.
 
 #### OrderStatusChanged
 
 Fired when a WooCommerce order status is changed.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\OrderStatusChanged;
+use Pollora\WooCommerce\Events\OrderStatusChanged;
 
 class OrderStatusChangedListener
 {
@@ -1134,7 +1134,7 @@ class OrderStatusChangedListener
 Fired when a new product attribute is created.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\AttributeCreated;
+use Pollora\WooCommerce\Events\AttributeCreated;
 
 class AttributeCreatedListener
 {
@@ -1152,7 +1152,7 @@ class AttributeCreatedListener
 Fired when a product attribute is updated.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\AttributeUpdated;
+use Pollora\WooCommerce\Events\AttributeUpdated;
 
 class AttributeUpdatedListener
 {
@@ -1170,7 +1170,7 @@ class AttributeUpdatedListener
 Fired when a product attribute is deleted.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\AttributeDeleted;
+use Pollora\WooCommerce\Events\AttributeDeleted;
 
 class AttributeDeletedListener
 {
@@ -1188,7 +1188,7 @@ class AttributeDeletedListener
 Fired when a new tax rate is created.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\TaxRateCreated;
+use Pollora\WooCommerce\Events\TaxRateCreated;
 
 class TaxRateCreatedListener
 {
@@ -1206,7 +1206,7 @@ class TaxRateCreatedListener
 Fired when a tax rate is updated.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\TaxRateUpdated;
+use Pollora\WooCommerce\Events\TaxRateUpdated;
 
 class TaxRateUpdatedListener
 {
@@ -1224,7 +1224,7 @@ class TaxRateUpdatedListener
 Fired when a tax rate is deleted.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\TaxRateDeleted;
+use Pollora\WooCommerce\Events\TaxRateDeleted;
 
 class TaxRateDeletedListener
 {
@@ -1241,7 +1241,7 @@ class TaxRateDeletedListener
 Fired when a WooCommerce setting is updated.
 
 ```php
-use Pollora\Events\WordPress\Plugins\WooCommerce\SettingUpdated;
+use Pollora\WooCommerce\Events\SettingUpdated;
 
 class SettingUpdatedListener
 {

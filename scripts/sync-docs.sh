@@ -59,6 +59,8 @@ rewrite_links() {
     -e 's|(wordpress-logging\.md\(#[^)]*\)\?)|(/advanced/logging/\1)|g' \
     -e 's|(wp-cli-commands\.md\(#[^)]*\)\?)|(/advanced/wp-cli/\1)|g' \
     -e 's|(plugins\.md\(#[^)]*\)\?)|(/advanced/plugins/\1)|g' \
+    -e 's|(woocommerce\.md\(#[^)]*\)\?)|(/advanced/woocommerce/\1)|g' \
+    -e 's|(wp-rocket\.md\(#[^)]*\)\?)|(/advanced/wp-rocket/\1)|g' \
     -e 's|(nectar\.md\(#[^)]*\)\?)|(/nectar/overview/\1)|g' \
     | sed -e 's|\[blocks\.md\]|[Gutenberg Blocks]|g' \
           -e 's|\[assets\.md\]|[Assets & Vite]|g'
@@ -152,6 +154,8 @@ sync_file "debugging.md" "advanced/debugging.md" "Debugging" "See WordPress quer
 sync_file "wordpress-logging.md" "advanced/logging.md" "Logging" "Log WordPress errors, warnings and deprecated function calls through Laravel logging in Pollora, so they reach your log channels without breaking pages." 10
 sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create custom WP-CLI commands in Pollora with PHP attributes: single commands, subcommand suites, automatic slugs, and a generator to scaffold them." 11
 sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets." 12
+sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Blade templates for the shop, Route::wp() conditions, the Coming Soon page and WooCommerce events as Laravel events." 13
+sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Keep WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project with the pollora/wp-rocket package, and turn either on with two settings in config/wordpress.php." 14
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1
