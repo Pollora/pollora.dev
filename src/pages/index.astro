@@ -11,12 +11,16 @@ import GhostHero from '../components/GhostHero.astro';
 import LatestPosts from '../components/blog/LatestPosts.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { social } from '../lib/site';
-import { compact, monthlyInstalls } from '../lib/stats';
+import { compact, githubStars, monthlyInstalls } from '../lib/stats';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 // Packagist installs of pollora/framework over the last 30 days, shown in the hero (null: left out)
 const installs = await monthlyInstalls();
+
+// Stars of the skeleton repo (the one people clone), shown on the star button once they are worth showing
+const stars = await githubStars('Pollora/pollora');
+const starIcon = 'M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279L12 19.446l-7.416 3.967 1.48-8.279L0 9.306l8.332-1.151z';
 
 // Current release, shown in the hero badge and in the structured data
 import release from '../data/release.json';
@@ -122,8 +126,10 @@ const packages = [
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-3.5 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-semibold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								Get Started <span aria-hidden="true">&rarr;</span>
 							</a>
-							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-3.5 rounded-[var(--radius-md)] border-2 border-white/25 text-paper text-lg font-semibold hover:border-pollora-coral/70 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-								View on GitHub
+							<a href="https://github.com/Pollora/pollora" target="_blank" rel="noopener" data-track="github_star_hero" class="inline-flex items-center gap-2.5 px-6 py-3 md:px-8 md:py-3.5 rounded-[var(--radius-md)] border-2 border-white/25 text-paper text-lg font-semibold hover:border-pollora-coral/70 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								<svg class="w-5 h-5 text-pollora-coral" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={starIcon}/></svg>
+								Star on GitHub
+								{stars && <span class="font-[var(--font-code)] text-base font-normal text-white/60">{compact(stars)}</span>}
 							</a>
 						</div>
 						<button type="button" x-data @click="$store.tour.show()" data-track="tour_video_play" class="relative z-10 md:z-auto group mt-8 inline-flex items-center gap-3 text-base font-semibold text-paper/80 hover:text-paper transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--color-focus)] rounded-[var(--radius-pill)]">
@@ -606,8 +612,10 @@ const packages = [
 							<a href="/getting-started/installation/" class="inline-flex items-center gap-2.5 px-7 py-3.5 md:px-10 md:py-4 rounded-[var(--radius-md)] bg-gradient-pollora text-white text-lg font-bold hover:opacity-90 transition-opacity duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
 								Get Started <span aria-hidden="true">&rarr;</span>
 							</a>
-							<a href="https://github.com/Pollora" target="_blank" rel="noopener" class="inline-flex items-center gap-2.5 px-7 py-3.5 md:px-10 md:py-4 rounded-[var(--radius-md)] border border-[oklch(30%_0.01_290)] text-[var(--color-accent-ink)] text-lg font-semibold hover:border-neutral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
-								View on GitHub
+							<a href="https://github.com/Pollora/pollora" target="_blank" rel="noopener" data-track="github_star_footer" class="inline-flex items-center gap-2.5 px-7 py-3.5 md:px-10 md:py-4 rounded-[var(--radius-md)] border border-[oklch(30%_0.01_290)] text-[var(--color-accent-ink)] text-lg font-semibold hover:border-neutral transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]">
+								<svg class="w-5 h-5 text-pollora-coral" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={starIcon}/></svg>
+								Star on GitHub
+								{stars && <span class="font-[var(--font-code)] text-base font-normal text-neutral">{compact(stars)}</span>}
 							</a>
 						</div>
 
