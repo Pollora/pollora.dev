@@ -11,6 +11,10 @@ const quote = '';
 const youtubeId = 'Wk1VzPapqM8';
 const embedCode = `<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/${youtubeId}" title="Pollora in one minute" frameborder="0" allow="encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
 
+// An {expression} as the text of a link in a table cell makes Astro's compiler reopen that <a> after the table, which then
+// wraps the rest of the page. set:text on the link avoids it (see the Links row).
+const releaseNotesUrl = `https://github.com/Pollora/framework/releases/tag/v${release.version}`;
+const releaseNotesLabel = `v${release.version} release notes`;
 const facts = [
 	['Name', 'Pollora, the Laravel framework for WordPress'],
 	['What it is', 'An open-source PHP framework: WordPress runs inside a Laravel application'],
@@ -160,7 +164,7 @@ Route::wp('page', 'contact', [ContactController::class, 'show']);`,
 			))}
 			<tr><th scope="row">Requirements</th><td>PHP 8.4+, WordPress 7.1+, MySQL 5.7+ or MariaDB 10.3+</td></tr>
 			<tr><th scope="row">Coverage</th><td><a href="https://laravel-news.com/pollora-wordpress-laravel">Pollora: Run WordPress Inside a Laravel Application</a>, Laravel News, 29 October 2026</td></tr>
-			<tr><th scope="row">Links</th><td><a href="https://github.com/Pollora">GitHub</a> · <a href={`https://github.com/Pollora/framework/releases/tag/v${release.version}`}>v{release.version} release notes</a> · <a href="/getting-started/installation/">Installation</a> · <a href="/compare/">How Pollora compares</a></td></tr>
+			<tr><th scope="row">Links</th><td><a href="https://github.com/Pollora">GitHub</a> · <a href={releaseNotesUrl} set:text={releaseNotesLabel} /> · <a href="/getting-started/installation/">Installation</a> · <a href="/compare/">How Pollora compares</a></td></tr>
 		</tbody>
 	</table>
 
