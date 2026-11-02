@@ -999,6 +999,8 @@ body {
 	aspect-ratio: 1;
 	margin-inline: auto;
 	filter: var(--halo);
+	/* The ghost sits about 2% low in its square: lifted so the drawing, not the box, is what is centred */
+	translate: 0 -2.1%;
 }
 .ghost-poster, .ghost-canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; }
 .ghost-poster { transition: opacity 0.15s linear; }
@@ -1012,8 +1014,11 @@ body {
 }
 .ghost-pulse { animation: ghost-pulse 1.1s ease-out; }
 @media (max-width: 47.99rem) {
-	/* On phones the ghost sits behind the text (see the hero), so the host just fills its box */
-	.ghost-host { width: 100%; margin: 0; }
+	/* Under the desktop layout the ghost is a cell of the hero grid, beside the buttons (see the hero). The
+	   cell has no height of its own (it follows the buttons), and the host is centred in it both ways. The
+	   poster is mostly empty around the ghost, so the box may be wider than the cell and still stay clear of the buttons. */
+	.ghost-wrap { min-height: 0; }
+	.ghost-wrap .ghost-host { position: absolute; left: 50%; top: 50%; translate: -50% -52.1%; width: min(190%, 15rem); margin: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
 	.ghost-pulse { animation: none; }
