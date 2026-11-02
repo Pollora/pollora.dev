@@ -2,6 +2,7 @@
 import mascotDeveloper from '../assets/mascot-developer.svg';
 import mascotDocs from '../assets/mascot-documentation.svg';
 import mascotGithub from '../assets/mascot-github.svg';
+import laravelNewsLogo from '../assets/laravel-news.svg';
 import themeDefault from '../assets/themes/default.png';
 import themeApiary from '../assets/themes/apiary.png';
 import themeBuzz from '../assets/themes/buzz.png';
@@ -142,6 +143,20 @@ const packages = [
 						<GhostHero />
 					</div>
 				</div>
+			</div>
+		</section>
+
+		<!-- ═══ PRESS — Laravel News article ═══ -->
+		<section class="py-10 md:py-12 bg-paper border-b border-rule" aria-label="Press">
+			<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+				<a data-reveal href="https://laravel-news.com/pollora-wordpress-laravel" target="_blank" rel="noopener" data-track="press_laravel_news" class="group mx-auto flex max-w-3xl items-center gap-5 md:gap-6 rounded-[var(--radius-lg)] border border-rule bg-paper-2 p-5 md:p-6 hover:border-pollora-coral/40 transition-colors duration-[var(--dur-micro)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-focus)]" style="--i:0">
+					<img src={laravelNewsLogo.src} width="56" height="56" alt="" class="w-12 h-12 md:w-14 md:h-14 shrink-0 rounded-[var(--radius-md)]" loading="lazy" decoding="async" />
+					<span class="min-w-0 flex-1">
+						<span class="block text-sm font-semibold font-[var(--font-code)] tracking-wider uppercase text-muted mb-1">Featured in Laravel News</span>
+						<span class="block font-[var(--font-display)] font-bold text-lg md:text-xl text-ink leading-snug">Pollora: Run WordPress Inside a Laravel Application</span>
+					</span>
+					<span class="hidden sm:inline-flex shrink-0 items-center gap-1.5 text-base font-semibold text-gradient">Read the article <span aria-hidden="true" class="transition-transform duration-[var(--dur-micro)] group-hover:translate-x-0.5">&rarr;</span></span>
+				</a>
 			</div>
 		</section>
 
