@@ -210,6 +210,60 @@ final class EventBinding
 		],
 	},
 	{
+		id: 'media',
+		label: 'Store your media',
+		title: 'A media library that lives anywhere',
+		intro: 'WordPress keeps using its own file functions while the files live on S3, R2 or any Laravel disk, and the image sizes are declared in PHP.',
+		accent: '#ff8c12',
+		features: [
+			{
+				id: 'media-storage',
+				kicker: 'Media storage',
+				badge: 'New in 13.37',
+				title: 'Your media library, on any Laravel disk',
+				desc: 'Two settings move the WordPress media library to a local disk, S3, R2, Scaleway or MinIO. WordPress keeps using its own file functions, so Gutenberg, ACF, Meta Box and WooCommerce follow without any adaptation.',
+				points: [
+					'Without <code>media.disk</code>, nothing changes: WordPress keeps its own uploads folder.',
+					'A media URL is built from <code>media.url</code> and the path of the file: rendering a page never asks the disk.',
+					'<code>pollora:media:migrate</code> copies between disks and rewrites the URLs in the database, a dry run until <code>--execute</code>.',
+				],
+				file: '.env',
+				lang: 'plaintext',
+				code: String.raw`MEDIA_DISK=media
+MEDIA_URL=https://media.client.fr
+
+$ php artisan pollora:media:migrate --from=uploads --to=media
+$ php artisan pollora:media:migrate --from=uploads --to=media --execute`,
+				links: [
+					{ label: 'Media storage', href: '/advanced/media/' },
+					{ label: 'pollora/media', href: 'https://github.com/Pollora/media' },
+				],
+			},
+			{
+				id: 'image-sizes',
+				kicker: 'Image sizes',
+				badge: 'New in 13.37',
+				title: 'Declare the sizes your design uses',
+				desc: 'The <code>ImageSize</code> facade states a size, how the image fits and its format. The URL, the width, the height and the <code>srcset</code> are worked out from the metadata of the image, so rendering a page never touches the disk.',
+				points: [
+					'A size not marked <code>eager()</code> is made the first time its URL is asked for, then served as a plain file with a one-year cache.',
+					'Or let Bunny Optimizer or imgproxy make the sizes, with signed URLs and no file at all.',
+					'<code>Anchor::Top</code> picks where a crop falls; private media get signed URLs that expire.',
+				],
+				file: 'app/Providers/AppServiceProvider.php',
+				lang: 'php',
+				code: String.raw`ImageSize::add('card')->cover(600, 400)->webp(75);
+ImageSize::add('hero')->scale(width: 1920)->webp(70)->widths([640, 1024, 1440]);
+ImageSize::add('portrait')->cover(400, 500, Anchor::Top);
+ImageSize::add('thumb')->cover(150, 150)->eager();`,
+				links: [
+					{ label: 'Image sizes', href: '/advanced/media/#image-sizes' },
+					{ label: 'Media storage', href: '/advanced/media/' },
+				],
+			},
+		],
+	},
+	{
 		id: 'hooks',
 		label: 'React to WordPress',
 		title: 'Hooks, the Laravel way',
@@ -345,20 +399,21 @@ final class CreatePost implements AbilityHandler
 			{
 				id: 'auth',
 				kicker: 'Auth & roles',
+				badge: 'Role facade: new in 13.37',
 				title: 'Laravel Auth on WordPress users',
-				desc: 'The <code>Auth</code> facade works against WordPress accounts, and Laravel authorization answers with WordPress capabilities. Roles can be declared as classes.',
+				desc: 'The <code>Auth</code> facade works against WordPress accounts, and Laravel authorization answers with WordPress capabilities. Roles are declared as classes or with a fluent <code>Role</code> facade.',
 				points: [
 					'<code>can()</code>, the <code>can:</code> middleware, <code>@can</code> and <code>@role</code> in Blade.',
 					'Meta capabilities resolved through <code>map_meta_cap()</code>.',
-					'Role declarations are experimental; capability checks are stable.',
+					'<code>#[Role]</code> and the <code>Role</code> facade share their names and their checks. Role declarations are experimental; capability checks are stable.',
 				],
 				file: 'app/Roles/EventManager.php',
 				lang: 'php',
-				code: String.raw`#[Role('event_manager', label: 'Event manager', inherits: 'author')]
-#[GrantsPostType(Event::class, Access::Editor)]
-#[Grants(EventCap::ExportAttendees, 'moderate_comments')]
-#[Without('publish_posts')]
-final class EventManager {}
+				code: String.raw`Role::make('event_manager', 'Event manager')
+    ->inherits('author')
+    ->grantsPostType(Event::class, Access::Editor)
+    ->grants('export_attendees', 'moderate_comments')
+    ->without('publish_posts');
 
 Route::get('/reports', ReportController::class)->middleware('can:manage_options');`,
 				links: [
@@ -423,7 +478,7 @@ class MyPluginClass
 
 <SiteLayout
 	title="Pollora features: Laravel tooling for WordPress"
-	description="Every main feature of Pollora: post types and typed meta as PHP attributes, Laravel routes on WordPress, Blade, blocks, async actions, abilities for AI agents, auth and diagnostics."
+	description="Every main feature of Pollora: post types and typed meta as PHP attributes, Laravel routes on WordPress, Blade, blocks, media on any disk, async actions, abilities for AI agents, auth and diagnostics."
 >
 	<header class="pt-36 md:pt-44 pb-12 md:pb-16">
 		<div class="pl-container">

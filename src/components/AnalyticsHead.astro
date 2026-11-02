@@ -16,11 +16,16 @@
  * pages outside the docs; links to Pollora's GitHub and X, and to AmphiBee, from anywhere.
  * copy_code: code blocks of the docs, the install command of the homepage, and the
  * "Copy page" menu (page-markdown, mcp-command).
+ *
+ * Both scripts are processed by Astro (neither inline nor given variables through define:vars),
+ * so that the site's Content-Security-Policy (security.csp in astro.config.mjs) can allow them
+ * by hash. The container id lives in src/data/analytics.ts.
  */
-const GTM_ID = 'GTM-59HN2M7Z';
 ---
 
-<script is:inline define:vars={{ GTM_ID }}>
+<script>
+	import { GTM_ID } from '../data/analytics';
+
 	(function () {
 		var KEY = 'pollora-consent';
 		var MAX_AGE = 1000 * 60 * 60 * 24 * 395; // 13 months
@@ -92,7 +97,7 @@ const GTM_ID = 'GTM-59HN2M7Z';
 	})();
 </script>
 
-<script is:inline>
+<script>
 	(function () {
 		var push = function (data) { window.dataLayer.push(data); };
 

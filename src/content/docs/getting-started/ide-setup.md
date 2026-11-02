@@ -3,7 +3,7 @@ title: IDE Setup
 description: "Set up PhpStorm or Visual Studio Code for a Pollora project so that autocompletion and code navigation work across your Laravel and WordPress code."
 editUrl: https://github.com/Pollora/documentation/edit/main/ide.md
 sidebar:
-  order: 3
+  order: 4
 ---
 
 

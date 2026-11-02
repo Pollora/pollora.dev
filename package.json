@@ -10,6 +10,7 @@
     "check-release": "node scripts/release.mjs --check",
     "prebuild": "node scripts/release.mjs --check",
     "build": "astro build",
+    "postbuild": "node scripts/check-csp.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -30,6 +31,7 @@
     "sharp": "^0.34.5",
     "starlight-llms-txt": "^0.10.0",
     "tailwindcss": "^4.3.0",
+    "three": "^0.186.1",
     "zod": "4.4.3"
   }
 }

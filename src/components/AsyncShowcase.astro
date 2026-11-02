@@ -1,0 +1,166 @@
+---
+// Asynchronous actions, since 13.35.2: the same slow handler, once inside the request and once after it.
+// The text and the snippets come from the 13.35.2 release post and async-actions.md.
+import Chapter from './Chapter.astro';
+import { php } from '../lib/highlight';
+
+const steps = [
+	{
+		text: 'The handler runs after the request. Its arguments travel with the job: a WP_Post, a WP_User or an Eloquent model goes by ID and is reloaded when the handler runs. Remove the attribute and it is synchronous again.',
+		code: php(`#[Action('save_post_event', priority: 20)]
+#[Async(tries: 3, unique: true)]
+public function handle(int $postId, CrmClient $crm): void`),
+		note: 'The default driver, auto, uses the Laravel queue once a connection names a worker, then Action Scheduler, then WP-Cron. pollora:doctor flags what fails silently.',
+	},
+];
+const { order } = Astro.props;
+---
+
+<Chapter
+	id="async"
+	order={order}
+	len={1.25}
+	kicker="Asynchronous actions"
+	badge="Since 13.35.2"
+	title='Slow work, <span class="text-gradient">after the response.</span>'
+	intro="Move a WordPress action to a Laravel queue, Action Scheduler or WP-Cron, with delays and retries."
+	steps={steps}
+	glow="var(--color-pollora-orange)"
+	link={{
+		href: '/hooks/async-actions/',
+		label: 'Asynchronous actions',
+		text: 'Test it with <code class="font-[var(--font-code)] text-[0.9em]">Async::fake()</code>, which records what would be queued, with <code class="font-[var(--font-code)] text-[0.9em]">assertDispatched()</code> and <code class="font-[var(--font-code)] text-[0.9em]">runDispatched()</code>.',
+	}}
+>
+	<div class="pas-vars pin-panel pas-panel">
+		<div class="pas-in">
+		<!-- The same work, twice. Top: inside the request. Bottom: the request ends, the job follows. -->
+		<div class="pas-lane pas-sync">
+			<p class="pas-title"><b>save_post</b><span class="pas-chip">synchronous</span></p>
+			<div class="pas-track">
+				<i class="pas-seg pas-handler">handler</i><i class="pas-seg pas-crm">CRM</i><i class="pas-seg pas-resp"></i>
+				<span class="pas-cover pas-cover-1"></span>
+			</div>
+			<p class="pas-status">
+				<span class="pas-wait"><i class="pas-dot"></i>the editor is waiting</span>
+				<span class="pas-done pas-done-1">saved</span>
+			</p>
+		</div>
+
+		<div class="pas-lane pas-async">
+			<p class="pas-title"><b>save_post</b><span class="pas-chip pas-chip-hot">#[Async]</span></p>
+			<div class="pas-track pas-track-req">
+				<i class="pas-seg pas-handler">handler</i><i class="pas-seg pas-resp"></i>
+				<span class="pas-cover pas-cover-2"></span>
+			</div>
+			<p class="pas-status"><span class="pas-done pas-done-2">saved, the editor is free</span></p>
+			<div class="pas-track pas-track-job">
+				<i class="pas-seg pas-crm">CRM</i>
+				<span class="pas-cover pas-cover-3"></span>
+			</div>
+			<p class="pas-status pas-job-label"><span>runs after the response, with retries</span></p>
+		</div>
+
+		<div class="pas-drivers">
+			<span class="pas-auto">auto</span>
+			<span class="pas-drv pas-d1">Laravel queue</span>
+			<i class="pas-then">then</i>
+			<span class="pas-drv pas-d2">Action Scheduler</span>
+			<i class="pas-then">then</i>
+			<span class="pas-drv pas-d3">WP-Cron</span>
+		</div>
+	</div>
+	</div>
+</Chapter>
+
+<style>
+	.pas-vars {
+		--t1: clamp(0, var(--p) / 0.25, 1);
+		--t2: clamp(0, var(--p) / 0.06, 1);
+		--t3: clamp(0, (var(--p) - 0.08) / 0.3, 1);
+		--dim: calc(1 - 0.35 * clamp(0, (var(--p) - 0.3) / 0.15, 1));
+		--a3: clamp(0, (var(--p) - 0.62) / 0.25, 1);
+		container-type: inline-size;
+		aspect-ratio: auto;
+	}
+	.pas-in {
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 7cqw;
+		padding: 0 4cqw;
+		font: 500 max(10.5px, 2.5cqw) / 1.35 var(--font-code);
+	}
+	@supports (animation-timeline: view()) {
+		@media (prefers-reduced-motion: no-preference) {
+			.pas-vars { container-type: size; }
+		}
+	}
+
+	.pas-lane { display: grid; gap: 1.6cqw; }
+	.pas-sync { opacity: var(--dim); }
+	.pas-title { display: flex; align-items: center; gap: 2cqw; margin: 0; }
+	.pas-title b { font-weight: 700; }
+	.pas-chip {
+		padding: 0.15em 0.7em;
+		border-radius: var(--radius-pill);
+		border: 1px solid color-mix(in oklch, var(--color-paper) 30%, transparent);
+		font-size: 0.85em;
+	}
+	.pas-chip-hot { border-color: transparent; background: linear-gradient(135deg, var(--color-pollora-pink), var(--color-pollora-orange)); color: white; font-weight: 700; }
+
+	.pas-track {
+		position: relative;
+		display: flex;
+		height: 7cqw;
+		border-radius: 1.2cqw;
+		overflow: hidden;
+		outline: 1px solid color-mix(in oklch, var(--color-paper) 16%, transparent);
+	}
+	.pas-seg { display: grid; place-items: center; font-style: normal; font-weight: 600; font-size: 0.82em; color: var(--color-pollora-dark); white-space: nowrap; }
+	.pas-handler { flex: 0 0 14%; background: var(--color-pollora-teal); }
+	.pas-crm {
+		flex: 1 1 auto;
+		background: repeating-linear-gradient(135deg, var(--color-pollora-amber) 0 1.6cqw, color-mix(in oklch, var(--color-pollora-amber) 78%, white) 1.6cqw 3.2cqw);
+	}
+	.pas-resp { flex: 0 0 16%; background: var(--color-pollora-pink); }
+	/* what has not happened yet is hidden under a cover that slides away */
+	.pas-cover { position: absolute; inset: 0; background: var(--color-code-bg); transform-origin: right; transform: scaleX(calc(1 - var(--t))); }
+	.pas-cover-1 { --t: var(--t1); }
+	.pas-cover-2 { --t: var(--t2); }
+	.pas-cover-3 { --t: var(--t3); }
+	.pas-track-req { width: 30%; }
+	.pas-track-req .pas-handler { flex-basis: 64%; }
+	.pas-track-req .pas-resp { flex-basis: 36%; }
+	.pas-track-job { width: 70%; margin-left: 30%; }
+	.pas-track-job .pas-crm { flex: 1; }
+
+	.pas-status { display: flex; margin: 0; min-height: 1.4em; color: color-mix(in oklch, var(--color-paper) 80%, transparent); }
+	.pas-status > span { display: inline-flex; align-items: center; gap: 1.2cqw; }
+	.pas-dot { width: 1.6cqw; height: 1.6cqw; border-radius: 50%; background: var(--color-pollora-amber); }
+	.pas-wait { opacity: calc(1 - clamp(0, (var(--t1) - 0.85) * 12, 1)); }
+	.pas-done { color: var(--color-pollora-teal); font-weight: 700; }
+	.pas-done::before { content: '✓'; margin-right: 0.5em; }
+	.pas-sync .pas-status { display: grid; }
+	.pas-sync .pas-status > span { grid-area: 1 / 1; }
+	.pas-done-1 { opacity: clamp(0, (var(--t1) - 0.85) * 12, 1); }
+	.pas-done-2 { opacity: clamp(0, (var(--t2) - 0.85) * 12, 1); }
+	.pas-job-label { margin-left: 30%; opacity: clamp(0, var(--t3) * 6, 1); }
+
+	.pas-drivers {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.6cqw;
+		font-size: 0.92em;
+	}
+	.pas-auto { padding: 0.2em 0.8em; border-radius: var(--radius-pill); background: color-mix(in oklch, var(--color-paper) 14%, transparent); font-weight: 700; opacity: clamp(0, var(--a3) * 5, 1); }
+	.pas-drv { padding: 0.5em 0.9em; border-radius: var(--radius-md); border: 1px solid color-mix(in oklch, var(--color-pollora-teal) 55%, transparent); }
+	.pas-then { font-style: normal; color: color-mix(in oklch, var(--color-paper) 65%, transparent); }
+	.pas-d1 { opacity: clamp(0, var(--a3) * 3, 1); }
+	.pas-d2 { opacity: clamp(0, var(--a3) * 3 - 1, 1); }
+	.pas-d3 { opacity: clamp(0, var(--a3) * 3 - 2, 1); }
+	.pas-then:nth-of-type(1) { opacity: clamp(0, var(--a3) * 3 - 0.5, 1); }
+	.pas-then:nth-of-type(2) { opacity: clamp(0, var(--a3) * 3 - 1.5, 1); }
+</style>

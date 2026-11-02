@@ -1,0 +1,72 @@
+---
+// One chapter of the features scene (see FeatureScene.astro): the text that scrolls on one side and, in the
+// default slot, the picture drawn on the pinned frame on the other. It renders two siblings, the copy and
+// the panel, so the scene's grid can place them in separate columns. The mechanics live in global.css (.fs-*).
+interface Step {
+	kicker?: string;
+	title?: string;
+	text?: string;
+	code?: string;
+	note?: string;
+}
+interface Props {
+	id: string;
+	order: number;
+	kicker: string;
+	badge?: string;
+	title: string; // HTML: may carry the gradient span
+	intro: string;
+	steps: Step[];
+	len: number; // scroll length of the chapter, in screens, when the frame is pinned
+	glow?: string;
+	link?: { href: string; label: string; text?: string };
+}
+const { id, order, kicker, badge, title, intro, steps, len, glow, link } = Astro.props;
+const n = steps.length;
+const last = Math.max(n - 1, 1);
+// Where the chapter's progress (--p) starts and ends, as a share of its height at the middle of the screen:
+// the first step is centered at p = 0 and the last at p = 1. A single step has no such anchor.
+const u0 = n > 1 ? 1 / (2 * n) : 0.2;
+const u1 = n > 1 ? 1 - 1 / (2 * n) : 0.8;
+const vars = `--o:${order};--tint:var(--c-${id});--tl:--ch-${id};--h:${len};--u0:${u0.toFixed(3)};--u1:${u1.toFixed(3)}${glow ? `;--glow:${glow}` : ''}`;
+---
+
+<div class="fs-head-m" style={vars}>
+	<p class="fs-kicker"><span>{kicker}</span>{badge && <b class="fs-badge">{badge}</b>}</p>
+	<h2 class="fs-title" set:html={title} />
+	<p class="fs-intro">{intro}</p>
+</div>
+
+<div class="fs-panel" data-ch={id} style={vars} aria-hidden="true">
+	<div class="fs-glow"></div>
+	<div class="fs-stage">
+		<slot />
+	</div>
+</div>
+
+<section class="fs-chapter" id={id} aria-labelledby={`${id}-title`} data-n={n} style={`${vars};--n:${n};--w:${(0.68 / last).toFixed(3)};view-timeline-name:--ch-${id}`}>
+	{steps.map((s, i) => (
+		<article class="fs-step" style={`--c:${(i / last).toFixed(3)}`}>
+			<div class="fs-step-in">
+				{i === 0 && (
+					<header class="fs-head-d">
+						<p class="fs-kicker"><span>{kicker}</span>{badge && <b class="fs-badge">{badge}</b>}</p>
+						<h2 class="fs-title" id={`${id}-title`} set:html={title} />
+						<p class="fs-intro">{intro}</p>
+					</header>
+				)}
+				{s.kicker && <p class="fs-skick"><span>0{i + 1}</span> &nbsp;{s.kicker}</p>}
+				{s.title && <h3 class="fs-stitle">{s.title}</h3>}
+				{s.text && <p class="fs-text">{s.text}</p>}
+				{s.code && <pre class="fs-code"><code set:html={s.code} /></pre>}
+				{s.note && <p class="fs-note">{s.note}</p>}
+				{link && i === n - 1 && (
+					<p class="fs-link-row">
+						<a class="fs-link" href={link.href}>{link.label} <span aria-hidden="true">&rarr;</span></a>
+						{link.text && <span class="fs-link-text" set:html={link.text} />}
+					</p>
+				)}
+			</div>
+		</article>
+	))}
+</section>

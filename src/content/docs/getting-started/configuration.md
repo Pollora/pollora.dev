@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: "Configure a new Pollora project: environment variables, database, WordPress settings, local environments such as DDEV, and fixes for common setup issues."
+description: "Configure a new Pollora project: environment variables, the database, WordPress settings, and fixes for common setup issues."
 editUrl: https://github.com/Pollora/documentation/edit/main/installation.md
 sidebar:
   order: 2
@@ -244,18 +244,18 @@ During installation, the WordPress authentication keys and salts are automatical
 <a name="development-environments"></a>
 ## Development Environments
 
-Pollora automatically detects and configures itself for common development environments:
+Pollora runs on `php artisan serve`, Valet, Herd, MAMP, DDEV, and on Apache or nginx with PHP-FPM. Whatever the tool, three things must agree: the document root is `public/`, the site is opened at the address written in `APP_URL`, and `APP_URL` names a scheme. [Local Development Environments](/getting-started/local-environments/) compares the tools, shows the setup of each and lists what to check when a site does not answer.
 
 ### DDEV
-When using DDEV, the system will automatically:
-- Detect DDEV configuration
-- Use appropriate database settings
-- Set the correct site URL
 
-### Laradock
-With Laradock, the system will:
-- Use Laradock's database configuration
-- Configure appropriate host settings
+`pollora new my-project --ddev` configures and starts DDEV, and the installation commands pre-fill their questions from the DDEV container. See [DDEV](/getting-started/local-environments/#ddev).
+
+### macOS
+
+Valet, Herd, MAMP, `artisan serve` and Apache were run on macOS 15 for 13.38. The setup of each, the Herd driver and the MAMP PHP version are in [Local Development Environments](/getting-started/local-environments/#choose-your-environment).
+
+> [!WARNING]
+> Do not point MAMP or Apache at the project folder: the site answers a 404 and `.env` is served as a text file. See [The Three Conditions](/getting-started/local-environments/#the-three-conditions).
 
 <a name="troubleshooting"></a>
 ## Troubleshooting

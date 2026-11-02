@@ -1,6 +1,6 @@
 ---
 title: Roles & Capabilities
-description: "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole]."
+description: "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole] or the fluent Role facade."
 editUrl: https://github.com/Pollora/documentation/edit/main/roles.md
 sidebar:
   order: 6
@@ -176,6 +176,38 @@ final class EditorAdjustments {}
 
 Several classes may modify the same role, for instance one per module. If one grants a capability another removes, discovery refuses the second and names both.
 
+### With the fluent API
+
+The `Role` facade declares the same roles without a class. Its methods carry the names of the attributes and of their arguments, and the same code checks both: a mistake is refused with the same reason.
+
+```php
+use App\Cms\PostTypes\Event;
+use App\Cms\Roles\EventCap;
+use Pollora\Role\Domain\Enums\Access;
+use Pollora\Support\Facades\Role;
+
+Role::make('event_manager', 'Event manager')       // #[Role('event_manager', label: 'Event manager')]
+    ->inherits('author')                            // a slug, or the class of a #[Role]
+    ->grantsPostType(Event::class, Access::Editor)  // #[GrantsPostType]: a class or a slug
+    ->grantsTaxonomy(Genre::class)                  // #[GrantsTaxonomy]
+    ->grants(EventCap::ExportAttendees, 'moderate_comments') // #[Grants]: names or backed enums
+    ->without('publish_posts')                      // #[Without]
+    ->allowSensitive()                              // allowSensitive: true
+    ->textDomain('my-theme');                       // textDomain: 'my-theme'
+
+Role::modify('editor')                              // #[ModifyRole('editor')]
+    ->grants('moderate_comments')
+    ->without('edit_theme_options');
+
+Role::capabilitySet(EventCap::class);               // #[CapabilitySet]: a backed enum, or a list of names
+```
+
+There is nothing to register and nothing to end the chain with: a declaration is checked when WordPress builds its roles, so a chain can be written in any order. Call it where WordPress is loaded, for instance in a service provider's `boot()` or a theme's `functions.php`. A role declared after WordPress built its roles reaches it on `init`; one declared after `wp_loaded` waits for the next load.
+
+A declaration that is refused is left out, and the reason names the call: `Role::make('meddler') at /path/to/file.php:12: granting "edit_users" lets a user take over the site; …`. It is logged as a warning and listed by `pollora:doctor`.
+
+`inherits()` and `textDomain()` only apply to a role that is declared, not to one that is modified.
+
 ## Project capabilities
 
 Capabilities your own code checks are best declared in a backed enum marked `#[CapabilitySet]`:
@@ -331,3 +363,35 @@ Route::get('/events/scan', ScanController::class)
 A user who has none of the roles, or a guest, gets a 403 response. If your application already uses the `role` alias, for another package, Pollora keeps it: use `EnsureUserHasRole::using()`.
 
 As in Blade, prefer `can:` with a capability: `can:export_attendees` stays right when a second role is given that capability, `role:event_manager` does not.
+
+## Without Laravel: a plugin or Bedrock
+
+The role classes are the package [`pollora/roles`](https://github.com/Pollora/roles), which the framework requires: `composer require pollora/roles` installs them on their own. They run in a WordPress project that is not a Pollora application, such as a plugin, a Bedrock site or any PHP project. Class names do not change.
+Point the discovery engine at your code and add `RoleDiscovery`, then hand the roles to WordPress when it builds `WP_Roles`:
+
+```php
+use Pollora\Discovery\Domain\Models\DiscoveryLocation;
+use Pollora\Discovery\Infrastructure\Services\DiscoveryEngine;
+use Pollora\Role\Application\Services\CapabilityOwnerReader;
+use Pollora\Role\Application\Services\RoleDefinitionBuilder;
+use Pollora\Role\Application\Services\RoleRegistry;
+use Pollora\Role\Domain\Services\PostTypeCapabilityMap;
+use Pollora\Role\Domain\Services\RoleCompiler;
+use Pollora\Role\Infrastructure\Adapters\WordPressRoleInjector;
+use Pollora\Role\Infrastructure\Services\RoleDiscovery;
+
+$reader = new CapabilityOwnerReader;
+$registry = new RoleRegistry($reader, new PostTypeCapabilityMap);
+$injector = new WordPressRoleInjector($registry, new RoleCompiler, ['administrator']);
+
+// Before WordPress builds WP_Roles: the first thing a plugin loads, or an mu-plugin
+add_action('wp_roles_init', $injector->inject(...), 1);
+add_action('init', $injector->reportWarnings(...), PHP_INT_MAX);
+
+(new DiscoveryEngine)
+    ->addLocation(new DiscoveryLocation('MyPlugin\\', __DIR__.'/src'))
+    ->addDiscovery('roles', new RoleDiscovery(new RoleDefinitionBuilder($reader, ['administrator']), $registry, $injector))
+    ->run();
+```
+
+Declarations are read before WordPress loads its roles, so run the engine early. The stored roles themselves are read and written through `WordPressRoleStore` (`RoleStoreInterface`) and the users who carry a role counted through `WordPressRoleUsage` (`RoleUsageInterface`).

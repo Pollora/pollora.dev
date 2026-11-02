@@ -3,7 +3,7 @@ title: Server Configuration
 description: "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy."
 editUrl: https://github.com/Pollora/documentation/edit/main/server-configuration.md
 sidebar:
-  order: 5
+  order: 6
 ---
 
 
@@ -19,6 +19,9 @@ sidebar:
 
 <a name="overview"></a>
 ## Overview
+
+> **Note**  
+> To set up a local server such as Valet, Herd, MAMP or DDEV, see [Local Development Environments](/getting-started/local-environments/).
 
 Pollora uses a Bedrock-style directory layout where WordPress core, plugins, themes, and uploads all live under the `public/` document root. This differs from a standard WordPress installation and requires specific web server configuration to prevent exposing internal directories.
 

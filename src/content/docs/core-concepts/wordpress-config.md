@@ -90,7 +90,7 @@ See [Routing](/routing/wordpress-routes/) for more information about routing in 
 
 #### Plugin Conditions
 
-The `plugin_conditions` array contains plugin-specific conditions for routing. Currently, it includes conditions for WooCommerce.
+The `plugin_conditions` array contains plugin-specific conditions for routing. Currently, it includes conditions for WooCommerce. [`pollora/woocommerce`](https://github.com/Pollora/woocommerce) adds them itself, so a shop needs the package rather than this key; the framework's `config/wordpress.php` keeps them until the next major release, and the entries of your own `config/wordpress.php` win over both.
 
 ```php
 'plugin_conditions' => [
@@ -115,6 +115,10 @@ The `plugin_conditions` array contains plugin-specific conditions for routing. C
 - `is_wc_endpoint_url`: Matches WooCommerce endpoint URLs
 
 
+### WP Rocket
+
+The `wprocket` array holds the two settings of the [`pollora/wp-rocket`](/advanced/wp-rocket/) package: whether WP Rocket may write its rules into `.htaccess` (`generate_htaccess`) and set `WP_CACHE` (`set_cache_constant`). Both are `false` unless you say otherwise.
+
 ### Mail Handling
 
 The `enable_mail_handling` option controls whether the Pollora framework should handle WordPress mail functionality.
@@ -125,6 +129,19 @@ The `enable_mail_handling` option controls whether the Pollora framework should 
 
 - When set to `true` (default), Pollora overrides the `wp_mail` function to use Laravel's mail system.
 - When set to `false`, WordPress will use its native mail handling.
+
+### Sessions
+
+The `sessions` option controls whether `Route::wp()` routes declared in `routes/web.php` start a Laravel session.
+
+```php
+'sessions' => true,
+```
+
+- When set to `true` (default), they inherit the `web` group as any Laravel route: a session row and two cookies on every request.
+- When set to `false`, they skip the session, error-sharing and CSRF middleware. Laravel-native routes and the template hierarchy are not affected.
+
+See [Sessions and the `web` group](/routing/middleware/#sessions-and-the-web-group) for what stops working without a session.
 
 ### WordPress Constants
 
