@@ -349,7 +349,7 @@ export function mountGhost(host: HTMLElement): Ghost | null {
 
 		root.rotation.y = cx * 0.9 + Math.sin(ms / 2800) * 0.12 + scroll * 3.5 + spin;
 		root.rotation.x = cy * 0.3 + Math.sin(ms / 3600) * 0.03;
-		root.position.y = -0.2 + Math.sin(ms / 1100) * 0.06 + hop;
+		root.position.y = Math.sin(ms / 1100) * 0.06 + hop;
 		root.scale.set(1 + 0.05 * surprise, 1 - 0.06 * surprise + (hop > 0 ? 0.04 : 0), 1 + 0.05 * surprise);
 		faintMat.opacity = 0.15 + 0.17 * scroll;
 
