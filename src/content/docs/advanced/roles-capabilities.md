@@ -1,6 +1,6 @@
 ---
 title: Roles & Capabilities
-description: "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole] or the fluent Role facade."
+description: "Check WordPress capabilities with Laravel in Pollora (can(), can: middleware, @can) and declare roles in code with #[Role] and #[ModifyRole]."
 editUrl: https://github.com/Pollora/documentation/edit/main/roles.md
 sidebar:
   order: 6

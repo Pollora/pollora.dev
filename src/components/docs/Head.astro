@@ -1,19 +1,16 @@
 ---
 import Default from '@astrojs/starlight/components/Head.astro';
 import AnalyticsHead from '../AnalyticsHead.astro';
-import { sections } from '../../lib/docs';
 
 // schema.org data for docs pages: the page as a TechArticle, and its place in the site.
+// The sidebar groups have no page of their own, and Google rejects a breadcrumb step with no URL, so they are left out.
 const route = Astro.locals.starlightRoute;
 const site = 'https://pollora.dev';
 const url = new URL(Astro.url.pathname, site).href;
-const first = route.id.split('/')[0];
-const section = route.id.includes('/') ? sections[first] : undefined;
 const isDocPage = route.entry.data.template !== 'splash' && route.id !== '404';
 
 const breadcrumb = [
 	{ name: 'Pollora', item: `${site}/` },
-	...(section ? [{ name: section }] : []),
 	{ name: route.entry.data.title, item: url },
 ].map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, ...crumb }));
 

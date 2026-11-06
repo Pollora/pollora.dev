@@ -1,6 +1,7 @@
 ---
 title: Build a Gutenberg block in Blade, inner blocks included
 description: A step-by-step tutorial. Scaffold a dynamic block, render it with a Blade template, then let editors write inside it with <InnerBlocks />, the tag ACF users already know.
+metaDescription: "Tutorial: scaffold a dynamic block in Pollora, render it with Blade, and let editors write inside it with <InnerBlocks />, the tag ACF users know."
 date: 2026-09-28
 category: tutorial
 version: 13.32.0-beta.9

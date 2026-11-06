@@ -1,6 +1,7 @@
 ---
 title: Pollora is in public beta
 description: WordPress running inside a Laravel application, with hooks, post types and REST routes declared as PHP attributes. The first public beta is out, and its version number now follows Laravel's.
+metaDescription: "Pollora is in public beta: WordPress running inside a Laravel application, with hooks, post types and REST routes declared as PHP attributes."
 date: 2026-09-17
 category: announcement
 version: 13.32.0-beta

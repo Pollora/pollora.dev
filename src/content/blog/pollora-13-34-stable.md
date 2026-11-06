@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.34: the first stable release"
 description: Eleven pre-releases later, Pollora is stable. It moves to Laravel 13.34, ships a command that finds the failures that stay silent, and adds a Full Site Editing theme to start from.
+metaDescription: "Pollora 13.34 is stable: it moves to Laravel 13.34, adds a command that finds silent failures, and a Full Site Editing theme to start from."
 date: 2026-09-30
 category: release
 version: 13.34.0

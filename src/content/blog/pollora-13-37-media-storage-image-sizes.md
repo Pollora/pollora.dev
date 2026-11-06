@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.37: your media library on any disk, and image sizes declared in PHP"
 description: "Two settings move the WordPress media library to S3, R2 or any Laravel disk, and an ImageSize facade declares the sizes your design uses. Roles get a fluent API too."
+metaDescription: "Pollora 13.37: two settings move the WordPress media library to S3, R2 or any Laravel disk, and an ImageSize facade declares your image sizes."
 date: 2026-10-20
 category: release
 version: 13.37.1

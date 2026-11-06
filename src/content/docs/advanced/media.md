@@ -1,6 +1,6 @@
 ---
 title: Media Storage
-description: "Keep the WordPress media library on any Laravel disk (S3, R2, Scaleway, MinIO) in Pollora, declare image sizes in PHP, serve them on demand or from Bunny or imgproxy, and sign private files."
+description: "Keep the WordPress media library on any Laravel disk (S3, R2, MinIO) in Pollora, declare image sizes in PHP, and sign private files."
 editUrl: https://github.com/Pollora/documentation/edit/main/media.md
 sidebar:
   order: 3.5

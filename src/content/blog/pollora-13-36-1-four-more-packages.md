@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.36.1: assets, typed meta, roles and Block Bindings are packages"
 description: "Four more features leave the framework as packages you can install on their own, with the same class names. A Pollora site renders the same pages, and the packages also run in a plugin or a Bedrock."
+metaDescription: "Pollora 13.36.1: four more features become packages you can install on their own, with the same class names, in a plugin or a Bedrock project."
 date: 2026-10-16
 category: release
 version: 13.36.1

@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.39: WooCommerce and WP Rocket become packages"
 description: "The framework no longer ships its WooCommerce and WP Rocket integrations: pollora/woocommerce and pollora/wp-rocket carry them. A project that runs either plugin has one command to run, and pollora:doctor tells you when it is missing."
+metaDescription: "Pollora 13.39: WooCommerce and WP Rocket support move to pollora/woocommerce and pollora/wp-rocket. One command to run, and pollora:doctor checks it."
 date: 2026-10-29
 category: release
 version: 13.39.1
