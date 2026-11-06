@@ -47,7 +47,7 @@ const searchTitles: Record<string, string> = {
 	compare: 'Pollora vs Acorn, Sage, Radicle and Corcel',
 	changelog: 'Pollora changelog: release notes and versions',
 	'guides/custom-post-types-php-attributes': 'Custom post types and taxonomies with PHP attributes',
-	'guides/laravel-and-wordpress-approaches': 'Laravel and WordPress: every way to combine them',
+	'guides/laravel-and-wordpress-approaches': 'Laravel with WordPress: 6 ways to integrate them (2026)',
 	'guides/how-pollora-runs-wordpress-inside-laravel': 'How Pollora runs WordPress inside Laravel',
 };
 

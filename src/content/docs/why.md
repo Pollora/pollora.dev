@@ -9,7 +9,7 @@ WordPress is a very good CMS. Editors know the admin, the plugin ecosystem cover
 
 Custom WordPress code is mostly procedural. Behaviour is attached with `add_action()` and `add_filter()` calls scattered across `functions.php` and plugin files, usually as global functions or closures. Post types are arrays of options passed to `register_post_type()` inside an `init` callback. The front end is a set of template files picked by the template hierarchy, each mixing queries, logic and HTML. There is no service container, no routing layer you control, no standard way to test, queue or schedule work.
 
-Modern PHP has answers for all of this, mostly in Laravel: dependency injection, routing and middleware, Blade, Eloquent, Artisan, queues, a test setup. The question is how to get them without fighting WordPress.
+Modern PHP has answers for all of this, mostly in Laravel: dependency injection, routing and middleware, Blade, Eloquent, Artisan, queues, a test setup. The question is how to get them without fighting WordPress. There are several ways to bring Laravel and WordPress together; [this guide compares six of them](/guides/laravel-and-wordpress-approaches/), and Pollora is one.
 
 ## The approach
 
