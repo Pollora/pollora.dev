@@ -66,6 +66,8 @@ Radicle is the closest project to Pollora: a complete, Laravel-powered WordPress
 - **AI tooling**: [Nectar](/nectar/overview/) gives coding agents guidelines, skills and MCP tools for the project.
 - **Free and MIT-licensed.**
 
+The [full Pollora and Radicle comparison](/compare/pollora-vs-radicle/) sets them side by side, including where Radicle is ahead.
+
 Both use a Bedrock-style layout (in Pollora, WordPress core in `public/cms` and `wp-content` in `public/content`; see [Server Configuration](/getting-started/server-configuration/)) and install WordPress core and plugins with Composer.
 
 ## Corcel: a different job
