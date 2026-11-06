@@ -6,7 +6,7 @@ category: release
 version: 13.40.2
 ---
 
-`pollora new` with the E-commerce template (`pollora/theme-apiary`) stopped with `arsort(): Argument #1 ($array) must be of type array, null given`, on a fresh project, every time. [The issue](https://github.com/Pollora/pollora/issues/274) came with the diagnosis. 13.40.1 fixed the first crash, 13.40.2 the second one behind it. Both come from the same place.
+`pollora new` with the E-commerce template (`pollora/theme-apiary`) stopped with `arsort(): Argument #1 ($array) must be of type array, null given`, on a fresh project, every time. [The issue](https://github.com/Pollora/pollora/issues/274), opened by [bale-ad](https://github.com/bale-ad), came with the stack trace, the cause and the symptoms on two fresh projects: thank you. 13.40.1 fixed the first crash, 13.40.2 the second one behind it. Both come from the same place.
 
 13.40.0, on 4 November, only moves the framework to Laravel 13.40 (`illuminate/*` `^13.40`).
 
