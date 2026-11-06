@@ -11,7 +11,8 @@ const DATA = new URL('../src/data/release.json', import.meta.url);
 const root = (p) => new URL(`../${p}`, import.meta.url);
 const release = JSON.parse(readFileSync(DATA, 'utf8'));
 
-// [file, regex with the version in group 1 (and nothing else varying), expected number of matches]
+// [file, regex with the version in group 1 (and nothing else varying), expected number of matches, 'line']
+// 'line' marks mentions of the Laravel line (13.40) instead of the full version (13.40.2).
 const TARGETS = [
 	['src/content/docs/getting-started/installation.md', /current release is \*\*v(\d+\.\d+\.\d+)\*\*/g, 1],
 	['src/content/docs/getting-started/installation.md', /today that is the stable v(\d+\.\d+\.\d+)/g, 1],
@@ -21,17 +22,20 @@ const TARGETS = [
 	['src/content/docs/advanced/dashboard.md', /latest stable: v(\d+\.\d+\.\d+)/g, 1],
 	['src/content/docs/compare.md', /v(\d+\.\d+\.\d+) stable, a young project/g, 1],
 	['src/content/docs/why.md', /The current release, v(\d+\.\d+\.\d+), is stable/g, 1],
+	['src/content/docs/getting-started/installation.md', /current line is \*\*(\d+\.\d+)\*\*, built on Laravel (\d+\.\d+)\./g, 1, 'line'],
+	['src/content/docs/faq.md', /built on Laravel (\d+\.\d+) and installs/g, 1, 'line'],
 ];
 
 const versionsIn = (m) => m.slice(1).filter(Boolean);
+const expectedFor = (line) => (line ? release.laravel : release.version);
 
 function scan() {
 	const problems = [];
-	for (const [file, re, expected] of TARGETS) {
+	for (const [file, re, expected, line] of TARGETS) {
 		const text = readFileSync(root(file), 'utf8');
 		const matches = [...text.matchAll(re)];
 		if (matches.length !== expected) problems.push(`${file}: ${re} matched ${matches.length}x, expected ${expected} (was the wording changed?)`);
-		for (const m of matches) for (const v of versionsIn(m)) if (v !== release.version) problems.push(`${file}: says ${v}, current is ${release.version}`);
+		for (const m of matches) for (const v of versionsIn(m)) if (v !== expectedFor(line)) problems.push(`${file}: says ${v}, current is ${expectedFor(line)}`);
 	}
 	return problems;
 }
@@ -60,11 +64,12 @@ writeFileSync(DATA, JSON.stringify(release, null, '\t') + '\n');
 
 for (const file of new Set(TARGETS.map((t) => t[0]))) {
 	let text = readFileSync(root(file), 'utf8');
-	for (const [f, re] of TARGETS) {
+	for (const [f, re, , line] of TARGETS) {
 		if (f !== file) continue;
 		text = text.replace(re, (whole, ...groups) => {
 			let out = whole;
-			for (const v of groups.filter((g) => /^\d+\.\d+\.\d+$/.test(g))) out = out.replace(v, version);
+			const shape = line ? /^\d+\.\d+$/ : /^\d+\.\d+\.\d+$/;
+			for (const v of groups.filter((g) => typeof g === 'string' && shape.test(g))) out = out.replace(v, expectedFor(line));
 			return out;
 		});
 	}

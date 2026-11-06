@@ -14,7 +14,8 @@ Le numéro de la release courante vit à un seul endroit : `src/data/release.jso
   mention est en retard ou si une phrase a été reformulée au point que le script ne la
   retrouve plus.
 - Nouvelle mention « release courante » dans les docs : l'ajouter à `TARGETS` dans
-  `scripts/release.mjs`, sinon elle ne sera pas surveillée.
+  `scripts/release.mjs`, sinon elle ne sera pas surveillée. Une mention de la ligne seule (« built on Laravel 13.40 », sans le
+  dernier numéro) s'ajoute avec le 4ᵉ élément `'line'`.
 - Après un `npm run sync-docs`, relancer `npm run release -- <version courante>` : la
   sync peut réécrire les docs avec un ancien numéro.
 - Hors périmètre, volontairement : articles de blog, badge « New in 13.35.2 » de
