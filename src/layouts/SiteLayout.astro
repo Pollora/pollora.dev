@@ -46,7 +46,6 @@ const footer = [
 		title: 'Product',
 		links: [
 			{ label: 'Features', href: '/features/' },
-			{ label: 'How it compares', href: '/compare/' },
 			{ label: 'Nectar AI', href: '/nectar/overview/' },
 			{ label: 'Roadmap', href: '/roadmap/' },
 			{ label: 'Changelog', href: '/changelog/' },
@@ -59,6 +58,15 @@ const footer = [
 			{ label: 'Guides', href: '/guides/laravel-and-wordpress-approaches/' },
 			{ label: 'FAQ', href: '/faq/' },
 			{ label: 'Docs MCP server', href: '/nectar/docs-mcp-server/' },
+		],
+	},
+	{
+		title: 'Compare',
+		links: [
+			{ label: 'How Pollora compares', href: '/compare/' },
+			{ label: 'Pollora vs Acorn', href: '/compare/pollora-vs-acorn/' },
+			{ label: 'Pollora vs Radicle', href: '/compare/pollora-vs-radicle/' },
+			{ label: 'Pollora vs Timber', href: '/compare/pollora-vs-timber/' },
 		],
 	},
 	{
@@ -170,7 +178,7 @@ const footer = [
 
 	<footer class="pl-footer">
 		<div class="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] pt-16 pb-10">
-			<div class="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+			<div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_repeat(4,1fr)]">
 				<div>
 					<img src={polloraLogo.src} alt="Pollora" class="h-9 w-auto" width="173" height="70" loading="lazy" />
 					<p class="mt-5 max-w-[30ch] text-base text-[oklch(72%_0.02_295)]">The Laravel framework for WordPress. Open source, MIT-licensed.</p>

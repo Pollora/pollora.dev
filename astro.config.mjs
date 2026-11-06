@@ -104,17 +104,10 @@ export default defineConfig({
 			},
 			sidebar: [
 				{
-					label: 'About Pollora',
+					label: 'Introduction',
 					items: [
 						{ label: 'Why Pollora', link: '/why/' },
-						{ label: 'How Pollora compares', link: '/compare/' },
-						{ label: 'Pollora vs Acorn', link: '/compare/pollora-vs-acorn/' },
-						{ label: 'Pollora vs Radicle', link: '/compare/pollora-vs-radicle/' },
-						{ label: 'Pollora vs Timber', link: '/compare/pollora-vs-timber/' },
 						{ label: 'FAQ', link: '/faq/' },
-						{ label: 'Roadmap', link: '/roadmap/' },
-						{ label: 'Changelog', link: '/changelog/' },
-						{ label: 'Blog', link: '/blog/' },
 					],
 				},
 				{ label: 'Getting Started', items: [{ autogenerate: { directory: 'getting-started' } }] },
@@ -127,6 +120,24 @@ export default defineConfig({
 				{ label: 'Blocks', items: [{ autogenerate: { directory: 'blocks' } }] },
 				{ label: 'Advanced', items: [{ autogenerate: { directory: 'advanced' } }] },
 				{ label: 'Nectar AI', items: [{ autogenerate: { directory: 'nectar' } }] },
+				{
+					label: 'Compare',
+					collapsed: true,
+					items: [
+						{ label: 'How Pollora compares', link: '/compare/' },
+						{ label: 'Pollora vs Acorn', link: '/compare/pollora-vs-acorn/' },
+						{ label: 'Pollora vs Radicle', link: '/compare/pollora-vs-radicle/' },
+						{ label: 'Pollora vs Timber', link: '/compare/pollora-vs-timber/' },
+					],
+				},
+				{
+					label: 'Project',
+					items: [
+						{ label: 'Roadmap', link: '/roadmap/' },
+						{ label: 'Changelog', link: '/changelog/' },
+						{ label: 'Blog', link: '/blog/' },
+					],
+				},
 			],
 		}),
 	],
