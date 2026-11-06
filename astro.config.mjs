@@ -110,6 +110,7 @@ export default defineConfig({
 						{ label: 'How Pollora compares', link: '/compare/' },
 						{ label: 'Pollora vs Acorn', link: '/compare/pollora-vs-acorn/' },
 						{ label: 'Pollora vs Radicle', link: '/compare/pollora-vs-radicle/' },
+						{ label: 'Pollora vs Timber', link: '/compare/pollora-vs-timber/' },
 						{ label: 'FAQ', link: '/faq/' },
 						{ label: 'Roadmap', link: '/roadmap/' },
 						{ label: 'Changelog', link: '/changelog/' },

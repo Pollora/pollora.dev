@@ -95,4 +95,5 @@ What changes: hooks and post types move from function calls or configuration to 
 
 - [Install Pollora](/getting-started/installation/) with `pollora new example-app`.
 - Read [Why Pollora](/why/) for the reasoning and the trade-offs.
+- Looking at Timber? Not a Laravel project, but a common alternative for cleaner templates: [Pollora vs Timber](/compare/pollora-vs-timber/).
 - Check the [FAQ](/faq/) for requirements, hosting and plugins.
