@@ -44,6 +44,8 @@ rewrite_links() {
     -e 's|(patterns\.md\(#[^)]*\)\?)|(/blocks/patterns/\1)|g' \
     -e 's|(block-bindings\.md\(#[^)]*\)\?)|(/blocks/block-bindings/\1)|g' \
     -e 's|(server-configuration\.md\(#[^)]*\)\?)|(/getting-started/server-configuration/\1)|g' \
+    -e 's|(deployment\.md\(#[^)]*\)\?)|(/getting-started/deployment/\1)|g' \
+    -e 's|(testing\.md\(#[^)]*\)\?)|(/advanced/testing/\1)|g' \
     -e 's|(local-environments\.md\(#[^)]*\)\?)|(/getting-started/local-environments/\1)|g' \
     -e 's|(translations\.md\(#[^)]*\)\?)|(/core-concepts/translations/\1)|g' \
     -e 's|(abilities\.md\(#[^)]*\)\?)|(/advanced/abilities/\1)|g' \
@@ -106,6 +108,7 @@ sync_file "local-environments.md" "getting-started/local-environments.md" "Local
 sync_file "ide.md" "getting-started/ide-setup.md" "IDE Setup" "Set up PhpStorm or Visual Studio Code for a Pollora project so that autocompletion and code navigation work across your Laravel and WordPress code." 4
 sync_file "environment-management.md" "getting-started/environment.md" "Environment Management" "Detect and manage environments in Pollora, from local to staging and production, with one API that works in both WordPress and Laravel contexts." 5
 sync_file "server-configuration.md" "getting-started/server-configuration.md" "Server Configuration" "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy." 6
+sync_file "deployment.md" "getting-started/deployment.md" "Deploying to Production" "Deploy a Pollora project to production: the release sequence, asset builds, discovery and config caches, WP-Cron and queue workers, and a go-live checklist." 7
 
 # Core Concepts
 sync_file "discovery.md" "core-concepts/auto-discovery.md" "Auto-Discovery" "How Pollora auto-discovery scans your code and registers hooks, post types, routes and other components, with caching and custom discovery classes." 1
@@ -156,6 +159,7 @@ sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create cu
 sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets." 12
 sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Route::wp() conditions and WooCommerce events as Laravel events." 13
 sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Stop WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project: the pollora/wp-rocket package and two settings in config/wordpress.php." 14
+sync_file "testing.md" "advanced/testing.md" "Testing" "Test a Pollora project with PHPUnit: unit and feature tests that reach WordPress, Async and Schedule fakes, and pollora:doctor in a CI job." 15
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1

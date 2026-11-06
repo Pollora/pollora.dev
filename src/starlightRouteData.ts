@@ -12,6 +12,8 @@ const searchTitles: Record<string, string> = {
 	'getting-started/ide-setup': 'IDE setup for Pollora: PhpStorm and VS Code',
 	'getting-started/environment': 'Environments in WordPress and Laravel · Pollora',
 	'getting-started/server-configuration': 'Apache and Nginx setup for Pollora',
+	'getting-started/deployment': 'Deploy a Pollora project to production',
+	'advanced/testing': 'Testing a Pollora project with PHPUnit',
 	'core-concepts/auto-discovery': 'Auto-discovery of hooks and post types · Pollora',
 	'core-concepts/wordpress-config': 'WordPress constants from Laravel config · Pollora',
 	'core-concepts/translations': 'Laravel and WordPress translations · Pollora',

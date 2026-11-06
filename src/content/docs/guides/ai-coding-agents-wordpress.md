@@ -41,7 +41,7 @@ Loaded upfront through Boost, they describe Pollora's architecture (Laravel rout
 
 ### Agent skills
 
-Nine skills, loaded when the task matches:
+Twelve skills, loaded when the task matches (the [Nectar overview](/nectar/overview/#agent-skills) lists them with the commands each one covers):
 
 | Skill | Covers |
 |-------|--------|
@@ -54,10 +54,13 @@ Nine skills, loaded when the task matches:
 | `pollora-scheduling` | Recurring tasks with `#[Schedule]` and WordPress cron |
 | `pollora-modules` | Laravel Modules (nwidart) with discovery |
 | `pollora-abilities` | The WordPress Abilities API with `#[Ability]` |
+| `pollora-typed-meta` | Post, term, user and comment meta as typed properties with `#[Meta]` and `Meta::of()` |
+| `pollora-roles` | Capabilities through Laravel's Gate, roles declared with `#[Role]`, `#[ModifyRole]` and `#[CapabilitySet]` |
+| `pollora-block-bindings` | `#[BlockBinding]` sources and bindable Blade blocks, to fill core blocks with server-side values |
 
 ### MCP tools
 
-Nectar runs its own MCP server, `pollora-nectar`, next to Boost's. Its ten tools read the live environment, which is the part static code cannot show:
+Nectar runs its own MCP server, `pollora-nectar`, next to Boost's. Its eleven tools read the live environment, which is the part static code cannot show:
 
 | Tool | Returns |
 |------|---------|
@@ -71,8 +74,9 @@ Nectar runs its own MCP server, `pollora-nectar`, next to Boost's. Its ten tools
 | `wordpress_routes` | Routes, including `Route::wp()` conditions |
 | `modules_info` | Installed Laravel Modules and their status |
 | `wp_option` | One WordPress option value by key |
+| `scheduled_events` | The scheduled events with the driver that keeps each (WP-Cron, Action Scheduler, the Laravel queue), and the state of the scheduling setup |
 
-Every tool is marked read-only: none of them changes the application.
+Every tool is marked read-only: none of them changes the application. The [Nectar overview](/nectar/overview/#available-mcp-tools) documents each tool's parameters.
 
 ### Upgrade prompts
 

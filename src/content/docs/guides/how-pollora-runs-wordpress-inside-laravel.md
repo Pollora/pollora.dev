@@ -106,27 +106,24 @@ By the end of `wp-settings.php`, plugins, the active theme's `functions.php`, `i
 
 ## 4. WordPress parses the request
 
-Still in `boot()`, if WordPress is installed and this is not a console run, `runWp()` runs the main query:
+Still in `boot()`, if WordPress is installed and this is not a console run, `runWp()` parses the request. It does so in two steps: `wp()` runs at once, and everything that follows `wp()` is deferred until every provider has booted:
 
 ```php title="src/WordPress/QueryTrait.php"
 if ($this->laravelIsServingTheRequest()) {
     wp();
 
-    if (wp_using_themes()) {
-        $this->action->do('template_redirect');
-    }
+    App::booted(function () {
+        // template_redirect, then robots, favicon, feeds and trackbacks
+        $this->handleTemplateRedirect();
 
-    if (is_robots()) {
-        $this->action->do('do_robots');
-        exit;
-    }
-    // is_favicon(), is_feed() and is_trackback() are handled the same way
+        $this->action->do('pollora_loaded');
+    });
 }
-
-$this->action->do('pollora_loaded');
 ```
 
-`wp()` parses the URL against WordPress's rewrite rules and fills `$wp_query`. From here on, `is_single()`, `is_page()` and the other conditional tags return real answers. `template_redirect` fires, so canonical redirects and plugin redirects still happen. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
+`wp()` parses the URL against WordPress's rewrite rules and fills `$wp_query`. From here on, `is_single()`, `is_page()` and the other conditional tags return real answers.
+
+`template_redirect` does not fire here but in `handleTemplateRedirect()`, once every provider has booted and still before routing. The reason is in the method's docblock: the active theme's providers are registered by `functions.php`, which runs while WordPress loads, so they boot after the provider that loads WordPress. A plugin that renders a page from `template_redirect` (WooCommerce's Review Order 404 is the case the docblock names) then finds the theme's view composers and shared data. Canonical redirects and plugin redirects still happen at that point. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
 
 `laravelIsServingTheRequest()` compares `$_SERVER['SCRIPT_FILENAME']` with `public/index.php`. That check matters for the admin paths described below.
 
@@ -210,7 +207,7 @@ Booting the providers runs `Bootstrap::boot()`, which requires `wp-settings.php`
 
 **AJAX.** `admin-ajax.php` lives in `wp-admin`, so it follows the admin path. The `Ajax` facade and `#[Ajax]` attribute register ordinary `wp_ajax_*` hooks ([AJAX](/advanced/ajax/)).
 
-**Cron.** `DISABLE_WP_CRON` is true by default, so page views do not trigger WordPress's pseudo-cron. With `wordpress.use_laravel_scheduler` enabled, `src/Schedule/` intercepts WordPress's cron storage (`pre_schedule_event`, `pre_option_cron` and related filters) and runs events as Laravel jobs and scheduled callbacks ([scheduling](/advanced/scheduling/)).
+**Cron.** `DISABLE_WP_CRON` is true by default (`src/WordPress/Bootstrap.php`), so page views do not trigger WordPress's pseudo-cron: a system cron has to request `wp-cron.php` or run `wp cron event run --due-now`. Scheduled events go through the engine of the `pollora/schedule` package, and a driver decides where they are kept and who runs them: `wp-cron` (the default), `action-scheduler` or `laravel`, which uses a queue worker ([scheduling](/advanced/scheduling/#drivers)). The `wordpress.use_laravel_scheduler` option of earlier versions no longer exists.
 
 ## Hooks as attributes and events
 
@@ -241,7 +238,7 @@ In the other direction, `src/Events/WordPress/` turns selected WordPress actions
 - **Every web request boots both frameworks.** Front-end pages run Laravel and a full `wp-settings.php`, plugins included. Admin requests boot Laravel as well, through `wp-config.php`. The `/api/` mode is the only built-in way to load less.
 - **WordPress core is patched.** WordPress and Laravel both declare a global `__()`. Pollora applies a Composer patch that renames WordPress's to `__wp()` (`patches/wordpress-core.patch`), and `pollora/helper-overrider` provides one `__()` that serves both translation systems. The patch is applied by `cweagans/composer-patches`, and `pollora:doctor` checks that it is present.
 - **Core updates go through Composer.** `WP_AUTO_UPDATE_CORE` is false.
-- **WP-Cron needs a decision.** It is off by default, so scheduled events need a real cron or the Laravel scheduler mode.
+- **WP-Cron needs a decision.** It is off by default, so scheduled events need a system cron that runs WP-Cron, or the `laravel` scheduling driver with a queue worker.
 - **Front-end rendering is Laravel's.** Plugins that depend on `template-loader.php` including a PHP file see the same `template_include` filter, but the result is rendered as a view. Block themes still work: their `template-canvas.php` is included by `FrontendController` when no Blade view exists.
 
 If you want the opposite arrangement, with WordPress in charge and Laravel components added to it, look at Acorn. [How Pollora compares](/compare/) sets the options side by side, and [Why Pollora](/why/) explains the reasons for this design. To try it, start with the [installation guide](/getting-started/installation/) and the [WordPress configuration reference](/core-concepts/wordpress-config/).
