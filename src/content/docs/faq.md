@@ -9,7 +9,7 @@ Pollora is an open-source PHP framework that runs WordPress inside a Laravel app
 
 ## What are the requirements?
 
-A new project needs PHP 8.4 or higher, Composer 2, MySQL 5.7+ or MariaDB 10.3+, and Node.js for theme assets. The current release is built on Laravel 13.40 and installs WordPress 7.1 or later. PHP 8.4 is required because the skeleton's `composer.lock` ships Symfony 8; the framework package alone accepts PHP 8.3. DDEV is optional, and `pollora new example-app --ddev` sets up a complete local environment (see [Installation](/getting-started/installation/)).
+A new project needs PHP 8.3 or higher, Composer 2, MySQL 5.7+ or MariaDB 10.3+, and Node.js for theme assets. The current release is built on Laravel 13.40 and installs WordPress 7.1 or later. The framework and the skeleton both accept PHP 8.3, and the skeleton's `composer.lock` is resolved for it. DDEV is optional, and `pollora new example-app --ddev` sets up a complete local environment (see [Installation](/getting-started/installation/)).
 
 ## Is Pollora free?
 
@@ -29,7 +29,7 @@ Plugins run as they do in WordPress, because Pollora loads WordPress normally. W
 
 ## What does a server need to host Pollora?
 
-A server that runs PHP 8.4 with a MySQL or MariaDB database, and lets you point the document root at the project's `public/` directory. Pollora uses a Bedrock-style layout (WordPress core in `public/cms`, `wp-content` in `public/content`), so the Apache or Nginx rules differ slightly from a standard WordPress install. Behind a reverse proxy, setting `APP_URL` to an `https://` URL is enough for HTTPS. The details are in [Server Configuration](/getting-started/server-configuration/).
+A server that runs PHP 8.3 or later with a MySQL or MariaDB database, and lets you point the document root at the project's `public/` directory. Pollora uses a Bedrock-style layout (WordPress core in `public/cms`, `wp-content` in `public/content`), so the Apache or Nginx rules differ slightly from a standard WordPress install. Behind a reverse proxy, setting `APP_URL` to an `https://` URL is enough for HTTPS. The details are in [Server Configuration](/getting-started/server-configuration/).
 
 ## Can I use Pollora on an existing WordPress site?
 
@@ -53,7 +53,7 @@ Multisite is configured with the usual WordPress constants, set through `config/
 
 ## Does Pollora work with AI coding agents?
 
-Yes, through [Nectar](/nectar/overview/), a development-only package built on Laravel Boost. It adds Pollora guidelines to the agent's context, 9 on-demand agent skills (post types, hooks, blocks, theming…) and an MCP server with 10 tools that inspect the running site: registered hooks, post types, routes, plugins and more. It works with agents such as Claude Code and Cursor.
+Yes, through [Nectar](/nectar/overview/), a development-only package built on Laravel Boost. It adds Pollora guidelines to the agent's context, 12 on-demand agent skills (post types, hooks, blocks, theming…) and an MCP server with 11 tools that inspect the running site: registered hooks, post types, routes, plugins and more. It works with agents such as Claude Code and Cursor.
 
 ## Who maintains Pollora, and where do I get help?
 

@@ -102,7 +102,7 @@ class ContentHooks
 - **The admin and the editors' workflow.** Editors log in to `wp-admin` and use the block editor as usual.
 - **Plugins.** WordPress is loaded normally, so plugins run as they do in WordPress. They are installed with Composer, and Pollora even maps WooCommerce conditional tags to `Route::wp()` aliases.
 - **The data.** Content lives in the standard WordPress tables.
-- **Ordinary PHP hosting.** Any server that runs PHP 8.4 and MySQL or MariaDB, with the document root pointed at `public/` (see [Server Configuration](/getting-started/server-configuration/)).
+- **Ordinary PHP hosting.** Any server that runs PHP 8.3 or later and MySQL or MariaDB, with the document root pointed at `public/` (see [Server Configuration](/getting-started/server-configuration/)).
 
 ## Trade-offs, and who it is not for
 

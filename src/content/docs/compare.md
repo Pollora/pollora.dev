@@ -27,11 +27,11 @@ Pollora's own WordPress models are built on **`pollora/colt`, a fork of Corcel**
 | **Blocks** | `pollora:make:block`, rendered with Blade | Your build | Your build | `make:block`, server-side rendering |
 | **Media and image sizes** | Any Laravel disk (S3, R2, MinIO…) with two settings; sizes declared in PHP with `ImageSize`, made on demand | WordPress's own uploads and image sizes | WordPress's own uploads and image sizes | WordPress's own uploads and image sizes |
 | **Testing** | Laravel's testing tools | Laravel's testing tools | Your setup | Pest, Playwright, linting in GitHub Actions |
-| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 10 MCP tools, on Laravel Boost | | | |
+| **AI tooling** | [Nectar](/nectar/overview/): guidelines, 12 agent skills and 11 MCP tools, on Laravel Boost | | | |
 | **License and price** | MIT, free | MIT, free | MIT, free | One-time purchase: $80 for one site, $240 for unlimited sites |
-| **Maturity** (October 2026) | v13.40.2 stable, a young project | v6.3.0, about 2.66M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots |
+| **Maturity** (November 2026) | v13.40.2 stable, a young project | v6.3.0, about 2.8M Packagist installs | v11.2.1, about 13.3k GitHub stars | Commercial product from Roots |
 
-Sources: each project's GitHub repository, Packagist and product page (roots.io/acorn, roots.io/radicle), checked on 1 October 2026.
+Sources: each project's GitHub repository, Packagist and product page (roots.io/acorn, roots.io/radicle), checked on 6 November 2026.
 
 Corcel is not in this table: it is a library of database models, not a way to build a WordPress site, so most rows would not apply. It has [its own section](#corcel-a-different-job) below.
 
