@@ -137,4 +137,4 @@ Acorn: the [Acorn documentation](https://roots.io/acorn/docs/installation/), the
 
 - [Install Pollora](/getting-started/installation/) with `pollora new example-app`.
 - Read the [four-way comparison](/compare/) for Sage, Radicle and Corcel, and [Why Pollora](/why/) for the trade-offs.
-- Not sure Laravel and WordPress should meet at all? See [every way to combine them](/guides/laravel-and-wordpress-approaches/).
+- Not sure which way to combine Laravel and WordPress suits you? See [six ways to integrate Laravel with WordPress](/guides/laravel-and-wordpress-approaches/).

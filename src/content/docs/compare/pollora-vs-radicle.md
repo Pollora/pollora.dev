@@ -80,4 +80,4 @@ Radicle: the [product page](https://roots.io/radicle/) at roots.io, and the [Aco
 
 - [Install Pollora](/getting-started/installation/) with `pollora new example-app`.
 - Read the [four-way comparison](/compare/), the [Pollora vs Acorn](/compare/pollora-vs-acorn/) page and [Why Pollora](/why/) for the trade-offs.
-- Not sure Laravel and WordPress should meet at all? See [every way to combine them](/guides/laravel-and-wordpress-approaches/).
+- Not sure which way to combine Laravel and WordPress suits you? See [six ways to integrate Laravel with WordPress](/guides/laravel-and-wordpress-approaches/).

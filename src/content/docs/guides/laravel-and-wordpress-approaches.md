@@ -1,13 +1,23 @@
 ---
-title: "Laravel and WordPress: every way to combine them (2026)"
-description: "Five ways to use Laravel with WordPress: headless, Corcel, Acorn and Sage, Pollora, or two apps. What each keeps, what it costs, and when to pick it."
+title: "Laravel with WordPress: 6 ways to integrate them (2026)"
+description: "How to integrate Laravel with WordPress: headless, Corcel, Acorn and Sage, Pollora, two apps, or loading WordPress by hand. What each keeps and costs."
 sidebar:
   order: 4
+  label: "Laravel and WordPress: every approach"
 ---
 
-Teams reach for Laravel and WordPress together for a common reason: editors want the WordPress admin, developers want Laravel's routing, Blade, Eloquent, queues and tests. There are several ways to combine them, and they differ in one main question: which of the two is in charge of the request.
+You can use Laravel with WordPress in six ways, and they differ in one main question: which of the two is in charge of the request. Teams reach for both for a common reason: editors want the WordPress admin, developers want Laravel's routing, Blade, Eloquent, queues and tests.
 
-This guide covers five approaches, what each keeps and loses, and when it is the right choice. Pollora, which this site documents, is one of them. It is not the best answer for every project.
+## Which way should you integrate Laravel with WordPress?
+
+- **The site is WordPress, and you want nicer templates and some Laravel tooling:** [Acorn, Sage or Radicle](#3-acorn-sage-and-radicle-laravel-components-inside-wordpress).
+- **The front end is its own product, or several clients read the same content:** [headless WordPress](#1-headless-wordpress-with-a-laravel-front-end).
+- **A Laravel application only needs to read some WordPress content:** [Corcel](#2-corcel-laravel-reads-the-wordpress-database).
+- **One application with business logic, and editors who stay in WordPress:** [Pollora](#4-pollora-wordpress-inside-a-laravel-application).
+- **A marketing site and a separate product:** [two applications](#5-two-separate-applications).
+- **A prototype, or one script that needs a WordPress function:** [loading WordPress by hand](#6-loading-wordpress-by-hand-inside-laravel).
+
+The rest of this guide covers each approach: what it keeps, what it costs, and when to pick it. Pollora, which this site documents, is one of them. It is not the best answer for every project.
 
 ## 1. Headless WordPress with a Laravel front end
 
@@ -58,7 +68,7 @@ This guide covers five approaches, what each keeps and loses, and when it is the
 **What you lose or take on.**
 
 - A non-standard layout. Pollora uses a Bedrock-style structure where the web server's document root is `public/`, with WordPress core in `public/cms` and `wp-content` in `public/content`. Hosts built around a standard WordPress layout may not fit. See [Server configuration](/getting-started/server-configuration/).
-- A newer stack: a new project needs PHP 8.4, Laravel 13 and WordPress 7.1 or later.
+- A newer stack: a new project is built on Laravel 13, runs on PHP 8.3 or later and installs WordPress 7.1 or later.
 - Plugins that write their own drop-ins or assume WordPress's default paths, such as some page-cache plugins, are worth testing before you rely on them.
 - The team needs to be comfortable with both Laravel and WordPress.
 
@@ -78,7 +88,21 @@ This guide covers five approaches, what each keeps and loses, and when it is the
 
 **Pick it when** the marketing site and the product are clearly separate, are owned by different people, and rarely need to show each other's data.
 
+## 6. Loading WordPress by hand inside Laravel
+
+**How it works.** Many tutorials install WordPress in a folder of a Laravel project, then load it from Laravel's entry point or from a controller: they define `WP_USE_THEMES` as `false` and require `wp-blog-header.php` (or `wp-load.php`), so that WordPress functions become available in Laravel code.
+
+**What you keep.** WordPress functions inside a Laravel request with very little setup.
+
+**What you take on.** Nothing connects the two. WordPress loads in the global scope, defines its own constants (database credentials, paths and URLs) and global functions, and talks to the database through its own layer rather than Laravel's. You write and maintain the glue: configuration shared between `.env` and `wp-config.php`, routing between the two, Composer for WordPress core and plugins, and every upgrade of either side. [How Pollora runs WordPress inside Laravel](/guides/how-pollora-runs-wordpress-inside-laravel/) shows what that glue involves when it is done as a framework: for example, the database constants are copied from Laravel's connection, so WordPress and Eloquent use the same settings.
+
+**Complexity.** Low to start, and it grows with every plugin and every upgrade.
+
+**Pick it when** you are prototyping, or a one-off script needs a WordPress function. For a site that stays in production, one of the approaches above does the same job with the glue already written.
+
 ## Decision table
+
+The table compares the first five approaches; loading WordPress by hand is a shortcut, not a way to run a site.
 
 | | Headless | Corcel | Acorn / Sage / Radicle | Pollora | Two apps |
 |---|---|---|---|---|---|
@@ -89,15 +113,7 @@ This guide covers five approaches, what each keeps and loses, and when it is the
 | **SEO plugin output** | Via API fields, if the plugin offers them | To rebuild | Native | Through `wp_head()` | Native on the WordPress site |
 | **Full Laravel application** | Yes | Yes | Laravel components | Yes | Yes, separate |
 | **Deployments** | Two | One or two | One | One | Two |
-| **Hosting** | Any, twice | Any | Standard WordPress hosting | `public/` document root, PHP 8.4 | Any, twice |
+| **Hosting** | Any, twice | Any | Standard WordPress hosting | `public/` document root, PHP 8.3+ | Any, twice |
 | **Main cost** | Rebuilding front-end features | Hooks never run | Laravel as a guest | Non-standard layout, two frameworks | Duplicated shared parts |
 
-A short version:
-
-- **The site is WordPress, and you want nicer templates:** Acorn and Sage.
-- **The front end is its own product or serves several clients:** headless.
-- **A Laravel app only needs to read some WordPress content:** Corcel.
-- **One application with business logic, and editors in WordPress:** Pollora.
-- **A marketing site and a separate product:** two applications.
-
-For a feature-by-feature comparison of Pollora with Acorn, Sage, Corcel and others, see [Compare](/compare/). For the reasoning behind Pollora's design, see [Why Pollora](/why/).
+Pollora is built for the fourth column of this table. For a feature-by-feature comparison with Acorn, Sage, Radicle and Corcel, see [Compare](/compare/), or the one-to-one pages for [Acorn](/compare/pollora-vs-acorn/), [Radicle](/compare/pollora-vs-radicle/) and [Timber](/compare/pollora-vs-timber/). For the reasoning behind Pollora's design, see [Why Pollora](/why/), and to try it, [install Pollora](/getting-started/installation/).
