@@ -1,6 +1,6 @@
 ---
 title: Pollora vs Radicle
-description: "Pollora or Roots Radicle as a Laravel-powered WordPress starter: what each gives you, who handles the request, tooling, price, and when Radicle is the better choice."
+description: "Pollora or Roots Radicle as a Laravel-powered WordPress starter: what each gives you, tooling, price, and when Radicle is the better choice."
 ---
 
 **Short answer:** pick **Radicle** if you want the Roots stack (Acorn, Bedrock, Sage, optionally Trellis) already assembled, with its testing and linting setup, from the team that built those tools. Pick **Pollora** if you want Laravel to be the application that boots first and runs WordPress inside it, with hooks, post types and REST routes declared as PHP attributes, in a project that is free and open source.

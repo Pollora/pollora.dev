@@ -1,6 +1,6 @@
 ---
 title: WP Rocket
-description: "Keep WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project with the pollora/wp-rocket package, and turn either on with two settings in config/wordpress.php."
+description: "Stop WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project: the pollora/wp-rocket package and two settings in config/wordpress.php."
 editUrl: https://github.com/Pollora/documentation/edit/main/wp-rocket.md
 sidebar:
   order: 14

@@ -102,7 +102,7 @@ EOF
 # Getting Started
 sync_file "getting-started.md" "getting-started/installation.md" "Installation" "Install Pollora, the Laravel framework for WordPress, with the Pollora CLI or Composer, run the WordPress setup and check that your new project works." 1
 sync_file "installation.md" "getting-started/configuration.md" "Configuration" "Configure a new Pollora project: environment variables, the database, WordPress settings, and fixes for common setup issues." 2
-sync_file "local-environments.md" "getting-started/local-environments.md" "Local Development Environments" "Choose and set up a local server for Pollora: artisan serve, Valet, Herd, MAMP, DDEV, Apache or nginx, with the document root, APP_URL and a checklist for blank pages and 404s." 3
+sync_file "local-environments.md" "getting-started/local-environments.md" "Local Development Environments" "Set up a local server for Pollora: artisan serve, Valet, Herd, MAMP, DDEV, Apache or nginx, with document root, APP_URL and a checklist for 404s." 3
 sync_file "ide.md" "getting-started/ide-setup.md" "IDE Setup" "Set up PhpStorm or Visual Studio Code for a Pollora project so that autocompletion and code navigation work across your Laravel and WordPress code." 4
 sync_file "environment-management.md" "getting-started/environment.md" "Environment Management" "Detect and manage environments in Pollora, from local to staging and production, with one API that works in both WordPress and Laravel contexts." 5
 sync_file "server-configuration.md" "getting-started/server-configuration.md" "Server Configuration" "Serve a Pollora site with Apache or Nginx: the document root, protection against directory browsing, and HTTPS when running behind a reverse proxy." 6
@@ -137,25 +137,25 @@ sync_file "menu.md" "theming/menus.md" "Menus" "Customize WordPress menus in Pol
 
 # Blocks
 sync_file "blocks.md" "blocks/gutenberg-blocks.md" "Gutenberg Blocks" "Build custom Gutenberg blocks in Pollora with Vite and JSX, scaffold them with pollora:make:block, and render them on the server with Blade templates." 1
-sync_file "block-bindings.md" "blocks/block-bindings.md" "Block Bindings" "Fill core blocks and Blade blocks with server data in Pollora: #[BlockBinding] sources in PHP, typed meta formatted by type, a field picker and live preview in the editor." 3
+sync_file "block-bindings.md" "blocks/block-bindings.md" "Block Bindings" "Fill core and Blade blocks with server data in Pollora: #[BlockBinding] sources in PHP, typed meta, a field picker and live editor preview." 3
 sync_file "patterns.md" "blocks/patterns.md" "Block Patterns" "Register WordPress block patterns in Pollora: configuration, how to organize pattern files, writing patterns, and how they are loaded automatically." 2
 
 # Advanced
 sync_file "wp-rest-api.md" "advanced/rest-api.md" "REST API" "Build WordPress REST API endpoints in Pollora with the WpRestRoute attribute: define routes and methods, and control access with permission classes." 1
 sync_file "abilities.md" "advanced/abilities.md" "Abilities" "Declare WordPress abilities in Pollora with an attribute or a facade, with permissions and input schemas, so AI agents and MCP clients can use your site." 2
 sync_file "schedule-events.md" "advanced/scheduling.md" "Scheduling" "Schedule recurring WordPress tasks in Pollora with PHP attributes: the Every enum, custom intervals, hook names and arguments, without WP-Cron boilerplate." 3
-sync_file "media.md" "advanced/media.md" "Media Storage" "Keep the WordPress media library on any Laravel disk (S3, R2, Scaleway, MinIO) in Pollora, declare image sizes in PHP, serve them on demand or from Bunny or imgproxy, and sign private files." 3.5
+sync_file "media.md" "advanced/media.md" "Media Storage" "Keep the WordPress media library on any Laravel disk (S3, R2, MinIO) in Pollora, declare image sizes in PHP, and sign private files." 3.5
 sync_file "modules.md" "advanced/modules.md" "Modules" "Organize a Pollora project with Laravel Modules: when to choose a module over a WordPress plugin, and how to create, enable and auto-discover modules." 4
 sync_file "auth.md" "advanced/authentication.md" "Authentication" "Use Laravel's Auth facade with WordPress users in Pollora: the WordPress guard lets the standard Auth methods work against WordPress accounts." 5
-sync_file "roles.md" "advanced/roles-capabilities.md" "Roles & Capabilities" "Check WordPress capabilities with Laravel in Pollora — can(), the can: middleware, @can — and declare roles in code with #[Role] and #[ModifyRole] or the fluent Role facade." 6
+sync_file "roles.md" "advanced/roles-capabilities.md" "Roles & Capabilities" "Check WordPress capabilities with Laravel in Pollora (can(), can: middleware, @can) and declare roles in code with #[Role] and #[ModifyRole]." 6
 sync_file "ajax.md" "advanced/ajax.md" "AJAX" "Handle WordPress AJAX requests in Pollora with an attribute or a facade, understand the security model, and call your handlers from frontend JavaScript." 7
 sync_file "dashboard.md" "advanced/dashboard.md" "Dashboard & Status" "Check a Pollora installation from the WordPress admin dashboard or the CLI, see discovered components and diagnose a project with pollora:doctor." 8
 sync_file "debugging.md" "advanced/debugging.md" "Debugging" "See WordPress queries, hooks, the template or route that answered and REST calls in Laravel Debugbar with pollora/debugbar, and add your own tabs." 9
 sync_file "wordpress-logging.md" "advanced/logging.md" "Logging" "Log WordPress errors, warnings and deprecated function calls through Laravel logging in Pollora, so they reach your log channels without breaking pages." 10
 sync_file "wp-cli-commands.md" "advanced/wp-cli.md" "WP-CLI Commands" "Create custom WP-CLI commands in Pollora with PHP attributes: single commands, subcommand suites, automatic slugs, and a generator to scaffold them." 11
 sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPress plugins with Pollora: scaffold them from the CLI, then use service providers, attribute-based hooks, autoloading and Vite assets." 12
-sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Blade templates for the shop, Route::wp() conditions, the Coming Soon page and WooCommerce events as Laravel events." 13
-sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Keep WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project with the pollora/wp-rocket package, and turn either on with two settings in config/wordpress.php." 14
+sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Route::wp() conditions and WooCommerce events as Laravel events." 13
+sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Stop WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project: the pollora/wp-rocket package and two settings in config/wordpress.php." 14
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1

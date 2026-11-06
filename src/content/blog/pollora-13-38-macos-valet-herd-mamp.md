@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.38: Valet, Herd and MAMP, measured on a real Mac"
 description: "A report of a blank page on macOS sent us to a rented Mac. We ran Pollora on artisan serve, Valet, Herd, MAMP and Apache, found four ways a local setup ends on a 404 or a loop, and fixed them."
+metaDescription: "We ran Pollora on artisan serve, Valet, Herd, MAMP and Apache on a real Mac, found four ways a local setup ends on a 404 or a loop, and fixed them."
 date: 2026-10-21
 category: release
 version: 13.38.1

@@ -33,7 +33,7 @@ const structuredData = {
 };
 ---
 
-<SiteLayout title={`${name} · Pollora blog`} description={author.bio ?? `Posts by ${name} on the Pollora blog.`} structuredData={structuredData}>
+<SiteLayout title={`${name} · Pollora blog`} description={author.bio ? `${author.bio.split('. ')[0]}.` : `Posts by ${name} on the Pollora blog.`} structuredData={structuredData}>
 	<header class="pl-author-hero">
 		<div class="pl-container">
 			<a href="/blog/" class="pl-back">

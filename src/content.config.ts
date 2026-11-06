@@ -13,6 +13,8 @@ export const collections = {
 			title: z.string(),
 			// The standfirst under the title, also the meta description
 			description: z.string(),
+			// Optional shorter text for the meta description and social cards, when the standfirst runs past 160 characters
+			metaDescription: z.string().max(160).optional(),
 			date: z.coerce.date(),
 			category: z.enum(['announcement', 'release', 'tutorial', 'roadmap']),
 			// A key of `authors` in src/lib/blog.ts

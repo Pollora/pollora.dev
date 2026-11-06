@@ -1,6 +1,7 @@
 ---
 title: "The Pollora roadmap: smaller packages, more of WordPress, and a Pollora without Laravel"
 description: "Discovery and attributes become standalone packages, blocks, menus and widgets get their APIs, each WordPress integration moves to its own package, and Pollora heads toward a mu-plugin for classic WordPress and Bedrock."
+metaDescription: "Pollora's roadmap: standalone packages, APIs for blocks, menus and widgets, one package per WordPress integration, then a mu-plugin for classic WordPress."
 date: 2026-10-12
 category: roadmap
 ---

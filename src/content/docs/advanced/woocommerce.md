@@ -1,6 +1,6 @@
 ---
 title: WooCommerce
-description: "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Blade templates for the shop, Route::wp() conditions, the Coming Soon page and WooCommerce events as Laravel events."
+description: "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Route::wp() conditions and WooCommerce events as Laravel events."
 editUrl: https://github.com/Pollora/documentation/edit/main/woocommerce.md
 sidebar:
   order: 13

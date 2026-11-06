@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.35: typed meta, roles in code and Block Bindings"
 description: Declare a meta once as a typed PHP property, describe roles as classes, and fill core blocks with server values. Three experimental features that remove a lot of stringly-typed WordPress code.
+metaDescription: "Pollora 13.35: declare meta as a typed PHP property, roles as classes, and fill core blocks with server values. Three experimental features."
 date: 2026-10-06
 category: release
 version: 13.35.0

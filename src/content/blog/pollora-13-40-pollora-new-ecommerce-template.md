@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.40: pollora new finishes with the E-commerce template"
 description: "On a first install, pollora new stopped with an arsort() error as soon as the E-commerce template activated WooCommerce, then exited with an error after building the theme. 13.40.1 and 13.40.2 activate plugins and theme in a fresh process, and the install ends with its success message."
+metaDescription: "Pollora 13.40.2: pollora new no longer fails with the E-commerce template. Plugins and theme are activated in a fresh process on a first install."
 date: 2026-11-06
 category: release
 version: 13.40.2

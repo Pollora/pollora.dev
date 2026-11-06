@@ -1,6 +1,6 @@
 ---
 title: Block Bindings
-description: "Fill core blocks and Blade blocks with server data in Pollora: #[BlockBinding] sources in PHP, typed meta formatted by type, a field picker and live preview in the editor."
+description: "Fill core and Blade blocks with server data in Pollora: #[BlockBinding] sources in PHP, typed meta, a field picker and live editor preview."
 editUrl: https://github.com/Pollora/documentation/edit/main/block-bindings.md
 sidebar:
   order: 3

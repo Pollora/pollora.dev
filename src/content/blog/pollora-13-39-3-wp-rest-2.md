@@ -1,6 +1,7 @@
 ---
 title: "Pollora 13.39.3: REST routes are private unless you say otherwise"
 description: "The framework now accepts pollora/wp-rest 2.0, and composer update installs it: a REST route declared with #[WpRestRoute] that names no permission is refused. One line per public route keeps it open, and a filter gives you time to migrate."
+metaDescription: "Pollora 13.39.3 installs pollora/wp-rest 2.0: a #[WpRestRoute] that names no permission is now refused. One line keeps a route public."
 date: 2026-11-02
 category: release
 version: 13.39.3

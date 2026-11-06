@@ -1,6 +1,7 @@
 ---
 title: "On the roadmap: async actions, in one word"
 description: "A slow handler on save_post slows down every editor who saves. We are designing async() and #[Async] to move it out of the request, on WP-Cron, Action Scheduler or a Laravel queue, without changing the handler."
+metaDescription: "Designing async() and #[Async] for Pollora: move a slow save_post handler out of the request onto WP-Cron, Action Scheduler or a Laravel queue."
 date: 2026-10-07
 category: roadmap
 ---

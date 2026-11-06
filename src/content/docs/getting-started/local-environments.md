@@ -1,6 +1,6 @@
 ---
 title: Local Development Environments
-description: "Choose and set up a local server for Pollora: artisan serve, Valet, Herd, MAMP, DDEV, Apache or nginx, with the document root, APP_URL and a checklist for blank pages and 404s."
+description: "Set up a local server for Pollora: artisan serve, Valet, Herd, MAMP, DDEV, Apache or nginx, with document root, APP_URL and a checklist for 404s."
 editUrl: https://github.com/Pollora/documentation/edit/main/local-environments.md
 sidebar:
   order: 3

@@ -1,6 +1,7 @@
 ---
 title: Your login screen, dressed in your theme
 description: Every WordPress site signs people in through the same grey form. From beta.5, Pollora prints your theme's colours, fonts and logo on wp-login.php, read straight from theme.json.
+metaDescription: "From Pollora beta.5, wp-login.php shows your theme's colours, fonts and logo, read straight from theme.json instead of WordPress's grey form."
 date: 2026-09-22
 category: release
 version: 13.32.0-beta.5
