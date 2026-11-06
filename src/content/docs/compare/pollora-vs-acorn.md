@@ -98,25 +98,18 @@ The Pollora version has less to register by hand. The Acorn version is plain Wor
 | **WordPress Abilities API** | [`pollora/abilities`](/advanced/abilities/) | [`roots/acorn-ai`](https://github.com/roots/acorn-ai) |
 | **License** | MIT | MIT |
 
-## Maturity: where Acorn is far ahead
+## Maturity
 
-Figures read on 6 November 2026:
+Acorn is the established project. The Roots team has worked on modern WordPress development since 2011, Sage and Radicle both run on Acorn, and it has a documentation site, a forum and a list of [community packages](https://roots.io/acorn/docs/available-packages/) (WooCommerce, ACF, mail, caching). It is the safe default for a WordPress-first project.
 
-| | Pollora (`pollora/framework`) | Acorn |
-|---|---|---|
-| **Packagist installs** | about 10,400 | about 2.82 million |
-| **GitHub stars** | 30 | 1,010 |
-| **Latest release** | v13.40.2 | v6.3.0 |
-| **Built on** | Laravel 13.40 | Laravel 13 (`illuminate/*` `^13.0`) |
-
-Acorn is the established project. It is maintained by the Roots team, which has worked on modern WordPress development since 2011. Sage and Radicle both run on it, it has a documentation site, a forum, and a list of [community packages](https://roots.io/acorn/docs/available-packages/) (WooCommerce, ACF, mail, caching). Pollora is a young project maintained by [AmphiBee](https://amphibee.fr): it has a much smaller community, fewer third-party tutorials, and fewer people who have already hit and solved your problem.
+Pollora is younger, maintained by [AmphiBee](https://amphibee.fr). It follows Laravel's release line (v13.40.2 is built on Laravel 13.40), ships its own packages for the pieces a WordPress project needs, and is still growing its community and its ecosystem.
 
 ## Choose Acorn if
 
 - you have a **WordPress site, theme or plugin that already exists** and you do not want to move it;
 - you want **Sage** (or Radicle) and its documented, widely used starting point;
 - your team prefers **plain WordPress functions** for hooks and post types;
-- you want the project with the **larger community**, more packages and a longer track record;
+- you want the project with the **longer track record** and the larger ecosystem;
 - WordPress should stay in charge of the request, which is what Acorn is built for.
 
 ## Choose Pollora if
@@ -138,7 +131,7 @@ What changes: Laravel becomes the entry point instead of `functions.php`, `wp ac
 
 ## Sources
 
-Acorn: the [Acorn documentation](https://roots.io/acorn/docs/installation/), the [`roots/acorn`](https://github.com/roots/acorn) repository and its `composer.json` (v6.3.0), and [Packagist](https://packagist.org/packages/roots/acorn). Pollora: this documentation, Packagist and the [Pollora repositories](https://github.com/Pollora). All read on 6 November 2026. If something here is out of date, [open an issue](https://github.com/Pollora/pollora.dev/issues) and we will correct it.
+Acorn: the [Acorn documentation](https://roots.io/acorn/docs/installation/), the [`roots/acorn`](https://github.com/roots/acorn) repository and its `composer.json` (v6.3.0). Pollora: this documentation and the [Pollora repositories](https://github.com/Pollora). All read on 6 November 2026. If something here is out of date, [open an issue](https://github.com/Pollora/pollora.dev/issues) and we will correct it.
 
 ## Next steps
 
