@@ -108,6 +108,7 @@ export default defineConfig({
 					items: [
 						{ label: 'Why Pollora', link: '/why/' },
 						{ label: 'How Pollora compares', link: '/compare/' },
+						{ label: 'Pollora vs Acorn', link: '/compare/pollora-vs-acorn/' },
 						{ label: 'FAQ', link: '/faq/' },
 						{ label: 'Roadmap', link: '/roadmap/' },
 						{ label: 'Changelog', link: '/changelog/' },

@@ -41,7 +41,7 @@ Corcel is not in this table: it is a library of database models, not a way to bu
 
 **Pollora takes the inverse route.** The project *is* a Laravel application: `public/index.php` is Laravel's front controller, `routes/web.php` is checked first, and WordPress is loaded inside it to serve the admin, the database and the plugins. Registration code becomes attributes that are [discovered automatically](/core-concepts/auto-discovery/): a class with `#[PostType]` becomes a post type, a method with `#[Action('init')]` becomes an action. `Route::wp()` lets a Laravel route match a WordPress conditional tag such as `is_singular` (see [WordPress Routes](/routing/wordpress-routes/)).
 
-Acorn slots into any WordPress site; Pollora is a project layout you start from.
+Acorn slots into any WordPress site; Pollora is a project layout you start from. The [full Pollora and Acorn comparison](/compare/pollora-vs-acorn/) goes further: the same task written both ways, adoption figures and when Acorn is the better choice.
 
 ## Pollora and Sage
 
