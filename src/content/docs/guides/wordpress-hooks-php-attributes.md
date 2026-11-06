@@ -72,7 +72,7 @@ class Seo
     }
 
     #[Filter('body_class')]
-    public function bodyClass(array $classes, array $cssClass): array
+    public function bodyClass(array $classes, string|array $cssClass): array
     {
         $classes[] = 'has-js';
 
@@ -81,7 +81,7 @@ class Seo
 }
 ```
 
-There is no argument count to declare. When Pollora registers the method, it counts the parameters in its signature and passes that number to WordPress as `$accepted_args`. `bodyClass()` declares two parameters, so it receives both values `body_class` provides. If you only need the first one, declare only the first one.
+There is no argument count to declare. When Pollora registers the method, it counts the parameters in its signature and passes that number to WordPress as `$accepted_args`. `bodyClass()` declares two parameters, so it receives both values `body_class` provides. The second one, `$cssClass`, is typed `string|array` because WordPress passes it as the caller gave it to `body_class()`: a space-separated string or an array of class names. If you only need the first one, declare only the first one.
 
 A method that should run on several hooks takes several attributes:
 
