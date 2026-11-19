@@ -1,7 +1,7 @@
 ---
 title: "Pollora 13.43: AJAX actions can check a nonce and a capability"
 description: "#[Ajax] now takes nonce and capability parameters, the admin notices and the update dismissal require manage_options, and three patterns no longer let a trailing line break through. The release also adds query budgets to the browser tests and cuts the queries Colt makes."
-metaDescription: "Pollora 13.43: #[Ajax] checks a nonce and a capability, admin notices require manage_options, a trailing newline no longer slips through, and Colt makes fewer queries."
+metaDescription: "Pollora 13.43: #[Ajax] checks a nonce and a capability, admin notices need manage_options, a trailing newline no longer slips through, Colt runs fewer queries."
 date: 2026-11-19
 category: release
 version: 13.43.0
@@ -23,7 +23,6 @@ version: 13.43.0
 The framework's own browser tests now measure cost, not only behaviour.
 
 - **Query budgets per type of page.** A request that sends `X-Pollora-Diagnostics: 1` while `WP_DEBUG` is on gets a report of its WordPress and Laravel query counts and boot time: a response header on REST, a trailing HTML comment on a page. Without both conditions nothing is reported. The end-to-end suite checks each type of page against a query budget, with no margin, and a nightly run measures boot, cold discovery and one thumbnail, then fails when a figure is more than 10 % worse than the last good night.
-- **A warm discovery cache reads no file.** With `pollora/discovery` 0.2.0, a warm cache took about 0.24 ms against about 7.9 ms cold, on 200 classes.
 - **No more N+1 queries in Colt.** With `pollora/colt` 11.1.0, serialising 100 posts took 502 queries and now takes 7.
 
 ## Other changes
@@ -36,7 +35,9 @@ The framework's own browser tests now measure cost, not only behaviour.
 
 ## Packages published with it
 
-`pollora/ajax` 1.3.0 and `pollora/attributes` 0.1.4 are required for the nonce and the capability. `pollora/discovery` 0.2.0 and `pollora/colt` 11.1.0 carry the performance changes above. This release is also published with new versions of `pollora/media`, `pollora/query`, `pollora/woocommerce`, `pollora/abilities`, `pollora/portcullis`, `pollora/debugbar` and Nectar. Each package's release notes list what changed in it.
+A new project installs these with the framework: `pollora/ajax` 1.3.0 and `pollora/attributes` 0.1.4 (required for the nonce and the capability), `pollora/colt` 11.1.0, `pollora/query` 3.1.0 and `pollora/abilities` 1.0.2.
+
+Published the same day, outside this release: `pollora/media` 0.9.0 and `pollora/discovery` 0.2.0 (a warm cache that reads no file: about 0.24 ms against about 7.9 ms cold, on 200 classes), which the framework accepts from its next patch release; and the optional packages `pollora/nectar` 1.8.0, `pollora/woocommerce` 0.1.3, `pollora/portcullis` 2.2.0 and `pollora/debugbar` 1.1.0.
 
 ## Upgrade
 
