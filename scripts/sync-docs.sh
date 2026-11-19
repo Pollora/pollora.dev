@@ -18,57 +18,57 @@ echo "Syncing docs from $DOC_REPO..."
 rewrite_links() {
   local text="$1"
   # Map source filenames to Starlight URL paths (handles optional #anchor)
-  echo "$text" | sed \
-    -e 's|(getting-started\.md\(#[^)]*\)\?)|(/getting-started/installation/\1)|g' \
-    -e 's|(installation\.md\(#[^)]*\)\?)|(/getting-started/configuration/\1)|g' \
-    -e 's|(ide\.md\(#[^)]*\)\?)|(/getting-started/ide-setup/\1)|g' \
-    -e 's|(environment-management\.md\(#[^)]*\)\?)|(/getting-started/environment/\1)|g' \
-    -e 's|(discovery\.md\(#[^)]*\)\?)|(/core-concepts/auto-discovery/\1)|g' \
-    -e 's|(wordpress-config\.md\(#[^)]*\)\?)|(/core-concepts/wordpress-config/\1)|g' \
-    -e 's|(routing\.md\(#[^)]*\)\?)|(/routing/wordpress-routes/\1)|g' \
-    -e 's|(controllers\.md\(#[^)]*\)\?)|(/routing/controllers/\1)|g' \
-    -e 's|(middleware\.md\(#[^)]*\)\?)|(/routing/middleware/\1)|g' \
-    -e 's|(post-types\.md\(#[^)]*\)\?)|(/content/post-types/\1)|g' \
-    -e 's|(post-types-reference\.md\(#[^)]*\)\?)|(/content/post-types-reference/\1)|g' \
-    -e 's|(taxonomies\.md\(#[^)]*\)\?)|(/content/taxonomies/\1)|g' \
-    -e 's|(meta\.md\(#[^)]*\)\?)|(/content/typed-meta/\1)|g' \
-    -e 's|(options\.md\(#[^)]*\)\?)|(/content/options/\1)|g' \
-    -e 's|(hooks\.md\(#[^)]*\)\?)|(/hooks/actions-filters/\1)|g' \
-    -e 's|(async-actions\.md\(#[^)]*\)\?)|(/hooks/async-actions/\1)|g' \
-    -e 's|(events-listeners\.md\(#[^)]*\)\?)|(/hooks/events-listeners/\1)|g' \
-    -e 's|(wordpress-events-reference\.md\(#[^)]*\)\?)|(/hooks/wordpress-events-reference/\1)|g' \
-    -e 's|(theming\.md\(#[^)]*\)\?)|(/theming/theme-structure/\1)|g' \
-    -e 's|(assets\.md\(#[^)]*\)\?)|(/theming/assets-vite/\1)|g' \
-    -e 's|(menu\.md\(#[^)]*\)\?)|(/theming/menus/\1)|g' \
-    -e 's|(blocks\.md\(#[^)]*\)\?)|(/blocks/gutenberg-blocks/\1)|g' \
-    -e 's|(patterns\.md\(#[^)]*\)\?)|(/blocks/patterns/\1)|g' \
-    -e 's|(block-bindings\.md\(#[^)]*\)\?)|(/blocks/block-bindings/\1)|g' \
-    -e 's|(server-configuration\.md\(#[^)]*\)\?)|(/getting-started/server-configuration/\1)|g' \
-    -e 's|(deployment\.md\(#[^)]*\)\?)|(/getting-started/deployment/\1)|g' \
-    -e 's|(testing\.md\(#[^)]*\)\?)|(/advanced/testing/\1)|g' \
-    -e 's|(local-environments\.md\(#[^)]*\)\?)|(/getting-started/local-environments/\1)|g' \
-    -e 's|(translations\.md\(#[^)]*\)\?)|(/core-concepts/translations/\1)|g' \
-    -e 's|(abilities\.md\(#[^)]*\)\?)|(/advanced/abilities/\1)|g' \
-    -e 's|(wp-rest-api\.md\(#[^)]*\)\?)|(/advanced/rest-api/\1)|g' \
-    -e 's|(schedule-events\.md\(#[^)]*\)\?)|(/advanced/scheduling/\1)|g' \
-    -e 's|(modules\.md\(#[^)]*\)\?)|(/advanced/modules/\1)|g' \
-    -e 's|(auth\.md\(#[^)]*\)\?)|(/advanced/authentication/\1)|g' \
-    -e 's|(roles\.md\(#[^)]*\)\?)|(/advanced/roles-capabilities/\1)|g' \
-    -e 's|(media\.md\(#[^)]*\)\?)|(/advanced/media/\1)|g' \
-    -e 's|(ajax\.md\(#[^)]*\)\?)|(/advanced/ajax/\1)|g' \
-    -e 's|(dashboard\.md\(#[^)]*\)\?)|(/advanced/dashboard/\1)|g' \
-    -e 's|(debugging\.md\(#[^)]*\)\?)|(/advanced/debugging/\1)|g' \
-    -e 's|(wordpress-logging\.md\(#[^)]*\)\?)|(/advanced/logging/\1)|g' \
-    -e 's|(wp-cli-commands\.md\(#[^)]*\)\?)|(/advanced/wp-cli/\1)|g' \
-    -e 's|(plugins\.md\(#[^)]*\)\?)|(/advanced/plugins/\1)|g' \
-    -e 's|(woocommerce\.md\(#[^)]*\)\?)|(/advanced/woocommerce/\1)|g' \
-    -e 's|(wp-rocket\.md\(#[^)]*\)\?)|(/advanced/wp-rocket/\1)|g' \
-    -e 's|(colt\.md\(#[^)]*\)\?)|(/advanced/colt/\1)|g' \
-    -e 's|(query\.md\(#[^)]*\)\?)|(/advanced/query/\1)|g' \
-    -e 's|(performance-gates\.md\(#[^)]*\)\?)|(/advanced/performance-gates/\1)|g' \
-    -e 's|(nectar\.md\(#[^)]*\)\?)|(/nectar/overview/\1)|g' \
+  echo "$text" | sed -E \
+    -e 's|\(getting-started\.md(#[^)]*)?\)|(/getting-started/installation/\1)|g' \
+    -e 's|\(installation\.md(#[^)]*)?\)|(/getting-started/configuration/\1)|g' \
+    -e 's|\(ide\.md(#[^)]*)?\)|(/getting-started/ide-setup/\1)|g' \
+    -e 's|\(environment-management\.md(#[^)]*)?\)|(/getting-started/environment/\1)|g' \
+    -e 's|\(discovery\.md(#[^)]*)?\)|(/core-concepts/auto-discovery/\1)|g' \
+    -e 's|\(wordpress-config\.md(#[^)]*)?\)|(/core-concepts/wordpress-config/\1)|g' \
+    -e 's|\(routing\.md(#[^)]*)?\)|(/routing/wordpress-routes/\1)|g' \
+    -e 's|\(controllers\.md(#[^)]*)?\)|(/routing/controllers/\1)|g' \
+    -e 's|\(middleware\.md(#[^)]*)?\)|(/routing/middleware/\1)|g' \
+    -e 's|\(post-types\.md(#[^)]*)?\)|(/content/post-types/\1)|g' \
+    -e 's|\(post-types-reference\.md(#[^)]*)?\)|(/content/post-types-reference/\1)|g' \
+    -e 's|\(taxonomies\.md(#[^)]*)?\)|(/content/taxonomies/\1)|g' \
+    -e 's|\(meta\.md(#[^)]*)?\)|(/content/typed-meta/\1)|g' \
+    -e 's|\(options\.md(#[^)]*)?\)|(/content/options/\1)|g' \
+    -e 's|\(hooks\.md(#[^)]*)?\)|(/hooks/actions-filters/\1)|g' \
+    -e 's|\(async-actions\.md(#[^)]*)?\)|(/hooks/async-actions/\1)|g' \
+    -e 's|\(events-listeners\.md(#[^)]*)?\)|(/hooks/events-listeners/\1)|g' \
+    -e 's|\(wordpress-events-reference\.md(#[^)]*)?\)|(/hooks/wordpress-events-reference/\1)|g' \
+    -e 's|\(theming\.md(#[^)]*)?\)|(/theming/theme-structure/\1)|g' \
+    -e 's|\(assets\.md(#[^)]*)?\)|(/theming/assets-vite/\1)|g' \
+    -e 's|\(menu\.md(#[^)]*)?\)|(/theming/menus/\1)|g' \
+    -e 's|\(blocks\.md(#[^)]*)?\)|(/blocks/gutenberg-blocks/\1)|g' \
+    -e 's|\(patterns\.md(#[^)]*)?\)|(/blocks/patterns/\1)|g' \
+    -e 's|\(block-bindings\.md(#[^)]*)?\)|(/blocks/block-bindings/\1)|g' \
+    -e 's|\(server-configuration\.md(#[^)]*)?\)|(/getting-started/server-configuration/\1)|g' \
+    -e 's|\(deployment\.md(#[^)]*)?\)|(/getting-started/deployment/\1)|g' \
+    -e 's|\(testing\.md(#[^)]*)?\)|(/advanced/testing/\1)|g' \
+    -e 's|\(local-environments\.md(#[^)]*)?\)|(/getting-started/local-environments/\1)|g' \
+    -e 's|\(translations\.md(#[^)]*)?\)|(/core-concepts/translations/\1)|g' \
+    -e 's|\(abilities\.md(#[^)]*)?\)|(/advanced/abilities/\1)|g' \
+    -e 's|\(wp-rest-api\.md(#[^)]*)?\)|(/advanced/rest-api/\1)|g' \
+    -e 's|\(schedule-events\.md(#[^)]*)?\)|(/advanced/scheduling/\1)|g' \
+    -e 's|\(modules\.md(#[^)]*)?\)|(/advanced/modules/\1)|g' \
+    -e 's|\(auth\.md(#[^)]*)?\)|(/advanced/authentication/\1)|g' \
+    -e 's|\(roles\.md(#[^)]*)?\)|(/advanced/roles-capabilities/\1)|g' \
+    -e 's|\(media\.md(#[^)]*)?\)|(/advanced/media/\1)|g' \
+    -e 's|\(ajax\.md(#[^)]*)?\)|(/advanced/ajax/\1)|g' \
+    -e 's|\(dashboard\.md(#[^)]*)?\)|(/advanced/dashboard/\1)|g' \
+    -e 's|\(debugging\.md(#[^)]*)?\)|(/advanced/debugging/\1)|g' \
+    -e 's|\(wordpress-logging\.md(#[^)]*)?\)|(/advanced/logging/\1)|g' \
+    -e 's|\(wp-cli-commands\.md(#[^)]*)?\)|(/advanced/wp-cli/\1)|g' \
+    -e 's|\(plugins\.md(#[^)]*)?\)|(/advanced/plugins/\1)|g' \
+    -e 's|\(woocommerce\.md(#[^)]*)?\)|(/advanced/woocommerce/\1)|g' \
+    -e 's|\(wp-rocket\.md(#[^)]*)?\)|(/advanced/wp-rocket/\1)|g' \
+    -e 's|\(colt\.md(#[^)]*)?\)|(/advanced/colt/\1)|g' \
+    -e 's|\(query\.md(#[^)]*)?\)|(/advanced/query/\1)|g' \
+    -e 's|\(performance-gates\.md(#[^)]*)?\)|(/advanced/performance-gates/\1)|g' \
+    -e 's|\(nectar\.md(#[^)]*)?\)|(/nectar/overview/\1)|g' \
     | sed -e 's|\[blocks\.md\]|[Gutenberg Blocks]|g' \
-          -e 's|\[assets\.md\]|[Assets & Vite]|g'
+          -e 's|\[assets\.md\]|[Assets \& Vite]|g'
 }
 
 sync_file() {
@@ -85,8 +85,15 @@ sync_file() {
 
   # Read source, skip the first H1 heading line, rewrite links
   local content
-  content=$(sed '1{/^# /d}' "$src_path")
+  content=$(sed '1{/^# /d;}' "$src_path")
   content=$(rewrite_links "$content")
+
+  # A page written with an empty body, without any error, is what a non-portable sed once did on macOS:
+  # stop instead of publishing it.
+  if [ -z "$content" ] && [ "$(wc -l < "$src_path")" -gt 1 ]; then
+    echo "  ERROR: $src has content but the rewrite produced nothing (is sed behaving as POSIX sed?)" >&2
+    exit 1
+  fi
 
   # Write with frontmatter
   cat > "$target_path" << EOF
