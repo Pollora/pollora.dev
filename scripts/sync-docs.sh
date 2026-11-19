@@ -63,6 +63,9 @@ rewrite_links() {
     -e 's|(plugins\.md\(#[^)]*\)\?)|(/advanced/plugins/\1)|g' \
     -e 's|(woocommerce\.md\(#[^)]*\)\?)|(/advanced/woocommerce/\1)|g' \
     -e 's|(wp-rocket\.md\(#[^)]*\)\?)|(/advanced/wp-rocket/\1)|g' \
+    -e 's|(colt\.md\(#[^)]*\)\?)|(/advanced/colt/\1)|g' \
+    -e 's|(query\.md\(#[^)]*\)\?)|(/advanced/query/\1)|g' \
+    -e 's|(performance-gates\.md\(#[^)]*\)\?)|(/advanced/performance-gates/\1)|g' \
     -e 's|(nectar\.md\(#[^)]*\)\?)|(/nectar/overview/\1)|g' \
     | sed -e 's|\[blocks\.md\]|[Gutenberg Blocks]|g' \
           -e 's|\[assets\.md\]|[Assets & Vite]|g'
@@ -160,6 +163,9 @@ sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPre
 sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Route::wp() conditions and WooCommerce events as Laravel events." 13
 sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Stop WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project: the pollora/wp-rocket package and two settings in config/wordpress.php." 14
 sync_file "testing.md" "advanced/testing.md" "Testing" "Test a Pollora project with PHPUnit: unit and feature tests that reach WordPress, Async and Schedule fakes, and pollora:doctor in a CI job." 15
+sync_file "colt.md" "advanced/colt.md" "Colt" "Query WordPress posts, pages, custom post types, meta, taxonomies and users as Eloquent models in a Pollora project with pollora/colt." 16
+sync_file "query.md" "advanced/query.md" "Query" "Build the arguments of WP_Query and the other WordPress query classes with a fluent, typed API in Pollora, with pollora/query." 17
+sync_file "performance-gates.md" "advanced/performance-gates.md" "Performance Gates" "The X-Pollora-Diagnostics header, the query budgets per page type and the nightly boot, discovery and thumbnail measures of the framework." 18
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1
