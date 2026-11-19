@@ -16,7 +16,7 @@ version: 13.43.0
 - **Admin notices checked no capability.** The Pollora update notice (framework version, changelog link) and the "no theme installed" notice (the project's shell commands) were printed on every wp-admin screen to any logged-in user, a subscriber included. The AJAX call that dismisses the update notice only verified a nonce. All three now require `manage_options`, like the Pollora dashboard, and the dismissal answers 403 without it.
 - **A trailing newline slipped through patterns ending with `$`.** In PHP, `$` also matches before a final `\n`. The patterns now end with the `D` modifier. `ModuleDownloader` accepted `owner/repo\n` as a repository name and `v2.0.0\n` as a version tag, which would have put a line break in a folder name, a temporary file name and GitHub URLs. `VersionSources` read a GitHub repository out of a `vcs` URL ending with a newline. The module name of `pollora:make:module`, the block name of `pollora:make:block` and the `--command` name of `pollora:make:wp-cli` took a trailing line break too. Valid values behave as before.
 - **`Mailer` and header injection.** An address such as `user@example.com\n` kept its line break and reached the e-mail headers. Addresses are now trimmed of every kind of whitespace, and both address patterns end with `D`.
-- **`ModuleDownloader::setVersion()` validates the tag.** It used to validate nothing, and the tag goes into the archive URL and the name of the temporary file. It now throws `InvalidArgumentException` for anything that is not version-shaped. `v1.2.0`, `1.2.0-beta.1` and `v9` stay valid; a slash, a space, a line break or a branch name are refused.
+- **`ModuleDownloader::setVersion()` validates the tag.** It used to validate nothing, and the tag goes into the archive URL and the name of the temporary file. It now throws `InvalidArgumentException` unless the tag is a plain tag name: it starts with a letter or a digit and holds only letters, digits, `.`, `_`, `-` and `+`, with no `..`. `v1.2.0`, `1.2.0-beta.1` and `release-2024` stay valid; a slash, a space, a `?`, a line break or a leading hyphen are refused.
 
 ## Performance
 
@@ -39,6 +39,8 @@ The framework's own browser tests now measure cost, not only behaviour.
 `pollora/ajax` 1.3.0 and `pollora/attributes` 0.1.4 are required for the nonce and the capability. `pollora/discovery` 0.2.0 and `pollora/colt` 11.1.0 carry the performance changes above. This release is also published with new versions of `pollora/media`, `pollora/query`, `pollora/woocommerce`, `pollora/abilities`, `pollora/portcullis`, `pollora/debugbar` and Nectar. Each package's release notes list what changed in it.
 
 ## Upgrade
+
+This release requires Laravel 13.43 (`illuminate/*` is `^13.43`), the version it is numbered after.
 
 ```bash
 composer update
