@@ -66,6 +66,7 @@ rewrite_links() {
     -e 's|\(colt\.md(#[^)]*)?\)|(/advanced/colt/\1)|g' \
     -e 's|\(query\.md(#[^)]*)?\)|(/advanced/query/\1)|g' \
     -e 's|\(performance-gates\.md(#[^)]*)?\)|(/advanced/performance-gates/\1)|g' \
+    -e 's|\(quality-gates\.md(#[^)]*)?\)|(/advanced/quality-gates/\1)|g' \
     -e 's|\(nectar\.md(#[^)]*)?\)|(/nectar/overview/\1)|g' \
     | sed -e 's|\[blocks\.md\]|[Gutenberg Blocks]|g' \
           -e 's|\[assets\.md\]|[Assets \& Vite]|g'
@@ -173,6 +174,7 @@ sync_file "testing.md" "advanced/testing.md" "Testing" "Test a Pollora project w
 sync_file "colt.md" "advanced/colt.md" "Colt" "Query WordPress posts, pages, custom post types, meta, taxonomies and users as Eloquent models in a Pollora project with pollora/colt." 16
 sync_file "query.md" "advanced/query.md" "Query" "Build the arguments of WP_Query and the other WordPress query classes with a fluent, typed API in Pollora, with pollora/query." 17
 sync_file "performance-gates.md" "advanced/performance-gates.md" "Performance Gates" "The X-Pollora-Diagnostics header, the query budgets per page type and the nightly boot, discovery and thumbnail measures of the framework." 18
+sync_file "quality-gates.md" "advanced/quality-gates.md" "Quality Gates" "The pollora/harness quality gates: adopt them, read the rules by status, understand a failure, take an exemption and keep the public surface stable." 19
 
 # Nectar AI
 sync_file "nectar.md" "nectar/overview.md" "Overview" "Nectar gives AI coding agents Pollora context: an MCP server and its tools, AI guidelines and agent skills built on Laravel Boost, plus upgrade help." 1
