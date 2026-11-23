@@ -361,6 +361,7 @@ namespace MyTheme\Discovery;
 use MyTheme\Attributes\CustomComponent;
 use Pollora\Discovery\Domain\Contracts\DiscoveryInterface;
 use Pollora\Discovery\Domain\Contracts\DiscoveryLocationInterface;
+use Pollora\Discovery\Domain\Contracts\ReflectionCacheInterface;
 use Pollora\Discovery\Domain\Services\IsDiscovery;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
@@ -377,7 +378,7 @@ final class CustomComponentDiscovery implements DiscoveryInterface
         private readonly MyComponentService $componentService
     ) {}
 
-    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure): void
+    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure, ?ReflectionCacheInterface $reflectionCache = null): void
     {
         // Only process classes
         if (!$structure instanceof \Spatie\StructureDiscoverer\Data\DiscoveredClass) {
@@ -429,6 +430,8 @@ final class CustomComponentDiscovery implements DiscoveryInterface
     }
 }
 ```
+
+`discover()` takes three parameters, as `DiscoveryInterface` declares them: a class that leaves out the third one fails to load with a fatal error ("must be compatible with `DiscoveryInterface::discover()`"). `$reflectionCache` is an optional `ReflectionCacheInterface` that the engine passes to every discovery: ask it for the reflection of a class, its attributes or its methods instead of reflecting again, so that all the discoveries share the work. Ignore it if your discovery needs no reflection.
 
 ### 2. Path-Aware Discovery Class
 
@@ -637,6 +640,7 @@ namespace MyTheme\Discovery;
 use MyTheme\Attributes\Component;
 use Pollora\Discovery\Domain\Contracts\DiscoveryInterface;
 use Pollora\Discovery\Domain\Contracts\DiscoveryLocationInterface;
+use Pollora\Discovery\Domain\Contracts\ReflectionCacheInterface;
 use Pollora\Discovery\Domain\Services\IsDiscovery;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
@@ -644,7 +648,7 @@ final class ComponentDiscovery implements DiscoveryInterface
 {
     use IsDiscovery;
 
-    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure): void
+    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure, ?ReflectionCacheInterface $reflectionCache = null): void
     {
         if (!$structure instanceof \Spatie\StructureDiscoverer\Data\DiscoveredClass) {
             return;
@@ -694,6 +698,7 @@ namespace MyPlugin\Discovery;
 use MyPlugin\Contracts\PluginService;
 use Pollora\Discovery\Domain\Contracts\DiscoveryInterface;
 use Pollora\Discovery\Domain\Contracts\DiscoveryLocationInterface;
+use Pollora\Discovery\Domain\Contracts\ReflectionCacheInterface;
 use Pollora\Discovery\Domain\Services\IsDiscovery;
 use Spatie\StructureDiscoverer\Data\DiscoveredStructure;
 
@@ -701,7 +706,7 @@ final class ServiceDiscovery implements DiscoveryInterface
 {
     use IsDiscovery;
 
-    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure): void
+    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure, ?ReflectionCacheInterface $reflectionCache = null): void
     {
         if (!$structure instanceof \Spatie\StructureDiscoverer\Data\DiscoveredClass) {
             return;
@@ -774,7 +779,7 @@ class MyDiscovery implements DiscoveryInterface
 {
     use IsDiscovery;
 
-    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure): void
+    public function discover(DiscoveryLocationInterface $location, DiscoveredStructure $structure, ?ReflectionCacheInterface $reflectionCache = null): void
     {
         if ($structure instanceof DiscoveredClass) {
             if (in_array(MyInterface::class, $structure->implements)) {
