@@ -13,7 +13,7 @@ Welcome to Pollora! This guide will help you get a working installation up and r
 
 - PHP 8.3 or higher (the framework and the skeleton both accept it; the skeleton's `composer.lock` is resolved for PHP 8.3)
 - Composer 2.x
-- MySQL 5.7+ or MariaDB 10.3+ (WordPress is loaded only on the `mysql` driver; SQLite is not supported)
+- MySQL 5.7+ or MariaDB 10.3+ (WordPress is loaded on the `mysql` or `mariadb` driver)
 - Node.js and NPM (for theme asset bundling)
 - [DDEV](https://ddev.readthedocs.io) (optional, for a ready-made local environment)
 
@@ -29,7 +29,7 @@ number in its `composer.lock` — which is what `create-project` installs from,
 whatever constraint the `composer.json` carries. So one version number describes
 an install completely.
 
-The current release is **v13.44.0**, a stable release: a plain
+The current release is **v13.44.2**, a stable release: a plain
 `composer create-project pollora/pollora` installs it.
 
 ## Installation Methods
@@ -74,7 +74,7 @@ With `--ddev`, the CLI configures DDEV (WordPress project type, PHP 8.4, MariaDB
 | `--ver=VERSION` | Install a specific version or constraint (e.g. `13.35.0`, `^13.35`) |
 | `--stable` | Install the latest stable release instead of the latest pre-release |
 
-`pollora new` installs the latest release **including pre-releases**: today that is the stable v13.44.0, and a beta published after it would be picked up. Pass `--stable` to never get a pre-release, or `--ver` to pin an exact version.
+`pollora new` installs the latest release **including pre-releases**: today that is the stable v13.44.2, and a beta published after it would be picked up. Pass `--stable` to never get a pre-release, or `--ver` to pin an exact version.
 
 ### 2. Composer create-project
 

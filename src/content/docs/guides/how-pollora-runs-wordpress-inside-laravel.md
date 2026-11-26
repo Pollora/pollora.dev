@@ -106,24 +106,30 @@ By the end of `wp-settings.php`, plugins, the active theme's `functions.php`, `i
 
 ## 4. WordPress parses the request
 
-Still in `boot()`, if WordPress is installed and this is not a console run, `runWp()` parses the request. It does so in two steps: `wp()` runs at once, and everything that follows `wp()` is deferred until every provider has booted:
+Still in `boot()`, if WordPress is installed and this is not a console run, `runWp()` schedules the request parsing. Neither `wp()` nor what follows it runs at once: both are deferred until every provider has booted:
 
 ```php title="src/WordPress/QueryTrait.php"
-if ($this->laravelIsServingTheRequest()) {
-    wp();
+if (! $this->laravelIsServingTheRequest()) {
+    $this->action->do('pollora_loaded');
 
-    App::booted(function () {
-        // template_redirect, then robots, favicon, feeds and trackbacks
+    return;
+}
+
+App::booted(function (): void {
+    $this->withWordPressErrorHandling(function (): void {
+        // Initialize WordPress for the current request
+        wp();
+
         $this->handleTemplateRedirect();
 
         $this->action->do('pollora_loaded');
     });
-}
+});
 ```
 
-`wp()` parses the URL against WordPress's rewrite rules and fills `$wp_query`. From here on, `is_single()`, `is_page()` and the other conditional tags return real answers.
+`wp()` parses the URL against WordPress's rewrite rules and fills `$wp_query`. From here on, `is_single()`, `is_page()` and the other conditional tags return real answers. Before that they have nothing to answer from: a provider's `boot()`, or a route file while it is loaded, runs before the query is parsed. Read the query from a hook such as `wp`, or inside the route.
 
-`template_redirect` does not fire here but in `handleTemplateRedirect()`, once every provider has booted and still before routing. The reason is in the method's docblock: the active theme's providers are registered by `functions.php`, which runs while WordPress loads, so they boot after the provider that loads WordPress. A plugin that renders a page from `template_redirect` (WooCommerce's Review Order 404 is the case the docblock names) then finds the theme's view composers and shared data. Canonical redirects and plugin redirects still happen at that point. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
+The reason for the deferral is in the docblock of `runWp()`: the application's providers, and the theme's (registered by `functions.php` while WordPress loads), boot after the provider that loads WordPress. Hooks they add in `boot()`, `pre_get_posts` included, are therefore in place when `wp()` builds the main query. This is the behaviour since 13.44.1; before it, `wp()` ran during the boot and only what follows it was deferred. `template_redirect` fires in `handleTemplateRedirect()`, right after `wp()` and still before routing. A plugin that renders a page from `template_redirect` (WooCommerce's Review Order 404 is the case the docblock names) then finds the theme's view composers and shared data. Canonical redirects and plugin redirects still happen at that point. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
 
 `laravelIsServingTheRequest()` compares `$_SERVER['SCRIPT_FILENAME']` with `public/index.php`. That check matters for the admin paths described below.
 
@@ -203,7 +209,7 @@ $app->bootstrapWith([
 
 Booting the providers runs `Bootstrap::boot()`, which requires `wp-settings.php`. Control then returns to the admin script, and the HTTP kernel never handles the request. Because the running script is not `public/index.php`, `runWp()` skips `wp()`. That avoids a real bug recorded in the framework changelog: `/cms/wp-login.php` matched the attachment rewrite rule and was sent with a 404 status. `WP_USE_THEMES` is false for `/cms/` URLs. A `template_include` filter at `PHP_INT_MAX` redirects to the home URL if a `.blade.php` file is about to be included outside Laravel, rather than printing Blade source.
 
-**REST API.** `/wp-json/...` is not a file, so it goes through `index.php`. WordPress core hooks `rest_api_loaded` to `parse_request`, so the `wp()` call in step 4 serves the REST response and calls `die()`. This happens during provider boot, before the Laravel router runs. The skeleton excludes `wp-json/*` from CSRF checks and from the trailing-slash redirect in `.htaccess`. Custom endpoints can be declared with `#[WpRestRoute]` ([REST API](/advanced/rest-api/)).
+**REST API.** `/wp-json/...` is not a file, so it goes through `index.php`. WordPress core hooks `rest_api_loaded` to `parse_request`, so the `wp()` call in step 4 serves the REST response and calls `die()`. This happens once every provider has booted and before the Laravel router runs, so the hooks and REST routes that the application's and the theme's providers add in `boot()` are there (since 13.44.1). The skeleton excludes `wp-json/*` from CSRF checks and from the trailing-slash redirect in `.htaccess`. Custom endpoints can be declared with `#[WpRestRoute]` ([REST API](/advanced/rest-api/)).
 
 **AJAX.** `admin-ajax.php` lives in `wp-admin`, so it follows the admin path. The `Ajax` facade and `#[Ajax]` attribute register ordinary `wp_ajax_*` hooks ([AJAX](/advanced/ajax/)).
 
