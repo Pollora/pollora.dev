@@ -120,7 +120,6 @@ App::booted(function (): void {
         // Initialize WordPress for the current request
         wp();
 
-        // template_redirect, then robots, favicon, feeds and trackbacks
         $this->handleTemplateRedirect();
 
         $this->action->do('pollora_loaded');
@@ -130,7 +129,7 @@ App::booted(function (): void {
 
 `wp()` parses the URL against WordPress's rewrite rules and fills `$wp_query`. From here on, `is_single()`, `is_page()` and the other conditional tags return real answers. Before that they have nothing to answer from: a provider's `boot()`, or a route file while it is loaded, runs before the query is parsed. Read the query from a hook such as `wp`, or inside the route.
 
-The reason for the deferral is in the docblock of `runWp()`: the application's providers, and the theme's, registered by `functions.php` while WordPress loads, boot after the provider that loads WordPress. Hooks they add in `boot()`, `pre_get_posts` included, are therefore in place when `wp()` builds the main query. This is the behaviour since 13.44.1; before it, `wp()` ran during the boot and only what follows it was deferred. `template_redirect` fires in `handleTemplateRedirect()`, right after `wp()` and still before routing. A plugin that renders a page from `template_redirect` (WooCommerce's Review Order 404 is the case the docblock names) then finds the theme's view composers and shared data. Canonical redirects and plugin redirects still happen at that point. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
+The reason for the deferral is in the docblock of `runWp()`: the application's providers, and the theme's (registered by `functions.php` while WordPress loads), boot after the provider that loads WordPress. Hooks they add in `boot()`, `pre_get_posts` included, are therefore in place when `wp()` builds the main query. This is the behaviour since 13.44.1; before it, `wp()` ran during the boot and only what follows it was deferred. `template_redirect` fires in `handleTemplateRedirect()`, right after `wp()` and still before routing. A plugin that renders a page from `template_redirect` (WooCommerce's Review Order 404 is the case the docblock names) then finds the theme's view composers and shared data. Canonical redirects and plugin redirects still happen at that point. Robots, favicon, feeds and trackbacks are answered by WordPress and the script exits. What WordPress does not do is include `template-loader.php`. Rendering is left to Laravel.
 
 `laravelIsServingTheRequest()` compares `$_SERVER['SCRIPT_FILENAME']` with `public/index.php`. That check matters for the admin paths described below.
 
