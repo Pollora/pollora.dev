@@ -1,5 +1,6 @@
 ---
-// Release notes of pollora/framework, fetched from GitHub at build time.
+// Release notes of pollora/framework, and of the skeleton releases that have no framework release of the same
+// number, fetched from GitHub at build time.
 // A failed fetch (rate limit, network) renders a link to GitHub instead of failing the build.
 // Releases are grouped by minor line (13.35.x) and collapsed except the newest one;
 // the filter at the top narrows them by version prefix, client side, and syncs with ?v=.
@@ -7,22 +8,35 @@ import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 
 const REPO = 'Pollora/framework';
+const SKELETON = 'Pollora/pollora';
 
-type Release = { tag_name: string; name: string | null; body: string | null; published_at: string; prerelease: boolean; html_url: string };
+type Release = { tag_name: string; name: string | null; body: string | null; published_at: string; prerelease: boolean; html_url: string; skeleton?: boolean };
 
 // The API caps a page at 100 releases: follow pages until a short one comes back
-let releases: Release[] = [];
-try {
-	const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
-	if (import.meta.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${import.meta.env.GITHUB_TOKEN}`;
-	for (let page = 1; page <= 10; page++) {
-		const res = await fetch(`https://api.github.com/repos/${REPO}/releases?per_page=100&page=${page}`, { headers });
-		if (!res.ok) break;
-		const batch: Release[] = await res.json();
-		releases.push(...batch);
-		if (batch.length < 100) break;
-	}
-} catch {}
+async function fetchReleases(repo: string): Promise<Release[]> {
+	const found: Release[] = [];
+	try {
+		const headers: Record<string, string> = { Accept: 'application/vnd.github+json' };
+		if (import.meta.env.GITHUB_TOKEN) headers.Authorization = `Bearer ${import.meta.env.GITHUB_TOKEN}`;
+		for (let page = 1; page <= 10; page++) {
+			const res = await fetch(`https://api.github.com/repos/${repo}/releases?per_page=100&page=${page}`, { headers });
+			if (!res.ok) break;
+			const batch: Release[] = await res.json();
+			found.push(...batch);
+			if (batch.length < 100) break;
+		}
+	} catch {}
+	return found;
+}
+
+const [framework, skeleton] = await Promise.all([fetchReleases(REPO), fetchReleases(SKELETON)]);
+// Both repositories use the same numbers: a skeleton release is listed only when the framework has none of that tag.
+// Without the framework's list that cannot be told, so nothing is listed and the page links to GitHub.
+const frameworkTags = new Set(framework.map((r) => r.tag_name));
+const releases: Release[] = framework.length === 0 ? [] : [
+	...framework,
+	...skeleton.filter((r) => !frameworkTags.has(r.tag_name)).map((r) => ({ ...r, skeleton: true })),
+].sort((a, b) => b.published_at.localeCompare(a.published_at));
 
 const markdown = await createMarkdownProcessor();
 const entries = await Promise.all(
@@ -30,12 +44,14 @@ const entries = await Promise.all(
 		const version = r.tag_name.replace(/^v/, '');
 		const [major, minor] = version.split(/[.-]/);
 		// Release bodies use ### sections: push them under the release <h3>, and scope their ids to the release
-		const html = (await markdown.render(r.body ?? '')).code
+		const html = (await markdown.render((r.body ?? '').replace('[!WARNING]', '**Warning**'))).code
 			.replace(/<(\/?)h([1-6])/g, (_, slash, n) => `<${slash}h${Math.min(6, Math.max(4, Number(n) + 1))}`)
 			.replace(/<h([4-6]) id="([^"]+)"/g, (_, n, id) => `<h${n} id="${r.tag_name}-${id}"`);
 		return {
 			...r,
 			version,
+			// A release withdrawn by its own notes says so before anything is opened
+			withdrawn: /\*\*Do not use this release/i.test(r.body ?? ''),
 			line: `${major}.${minor}`,
 			sections: [...(r.body ?? '').matchAll(/^#{2,3}\s+(Added|Changed|Fixed|Removed|Deprecated|Security)\b/gim)].map((m) => m[1]),
 			html,
@@ -58,15 +74,16 @@ const headings = groups.map((g) => ({ depth: 2, slug: `v${g.line}.x`, text: `${g
 <StarlightPage
 	frontmatter={{
 		title: 'Changelog',
-		description: 'Release notes for Pollora, the Laravel framework for WordPress: every stable and pre-release version of pollora/framework, newest first.',
+		description: 'Release notes for Pollora, the Laravel framework for WordPress: every version of pollora/framework and the skeleton releases of their own, newest first.',
 		tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 2 },
 	}}
 	headings={headings}
 >
 	<p>
-		Pollora's version numbers follow the Laravel release it is built on. The skeleton (<code>pollora/pollora</code>) is tagged
-		with the same number as the framework it ships. Releases are also published on
-		<a href={`https://github.com/${REPO}/releases`}>GitHub</a>.
+		Pollora's version numbers follow the Laravel release it is built on. The skeleton (<code>pollora/pollora</code>) takes the
+		number of the framework it ships, and can have releases of its own between two framework releases: they are listed
+		here too, marked <em>Skeleton</em>. Releases are also published on <a href={`https://github.com/${REPO}/releases`}>GitHub</a>
+		(<a href={`https://github.com/${SKELETON}/releases`}>skeleton</a>).
 	</p>
 
 	{entries.length === 0 && (
@@ -100,6 +117,8 @@ const headings = groups.map((g) => ({ depth: 2, slug: `v${g.line}.x`, text: `${g
 					<summary class="not-content">
 						<h3>{r.name || r.tag_name}</h3>
 						{r.prerelease && <span class="pl-release-badge">Pre-release</span>}
+						{r.skeleton && <span class="pl-release-badge">Skeleton</span>}
+						{r.withdrawn && <span class="pl-release-badge">Do not use</span>}
 						<span class="pl-release-meta">
 							<time datetime={r.published_at}>{r.date}</time>
 							{r.sections.length > 0 && <span class="pl-release-sections"> · {[...new Set(r.sections)].join(', ')}</span>}
