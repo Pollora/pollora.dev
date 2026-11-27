@@ -64,6 +64,7 @@ rewrite_links() {
     -e 's|\(woocommerce\.md(#[^)]*)?\)|(/advanced/woocommerce/\1)|g' \
     -e 's|\(wp-rocket\.md(#[^)]*)?\)|(/advanced/wp-rocket/\1)|g' \
     -e 's|\(object-cache\.md(#[^)]*)?\)|(/advanced/object-cache/\1)|g' \
+    -e 's|\(security\.md(#[^)]*)?\)|(/advanced/security/\1)|g' \
     -e 's|\(colt\.md(#[^)]*)?\)|(/advanced/colt/\1)|g' \
     -e 's|\(query\.md(#[^)]*)?\)|(/advanced/query/\1)|g' \
     -e 's|\(performance-gates\.md(#[^)]*)?\)|(/advanced/performance-gates/\1)|g' \
@@ -172,6 +173,7 @@ sync_file "plugins.md" "advanced/plugins.md" "Plugin Development" "Build WordPre
 sync_file "woocommerce.md" "advanced/woocommerce.md" "WooCommerce" "Write a WooCommerce shop in Blade with Pollora: the pollora/woocommerce package, Route::wp() conditions and WooCommerce events as Laravel events." 13
 sync_file "wp-rocket.md" "advanced/wp-rocket.md" "WP Rocket" "Stop WP Rocket from writing .htaccess and setting WP_CACHE in a Pollora project: the pollora/wp-rocket package and two settings in config/wordpress.php." 14
 sync_file "object-cache.md" "advanced/object-cache.md" "Object Cache" "Keep the WordPress object cache in Redis between requests in a Pollora project: the pollora/object-cache package, its drop-in, a Laravel cache driver and a doctor check." 14.5
+sync_file "security.md" "advanced/security.md" "Security (Hornet)" "Audit, scan and harden a WordPress site with pollora/hornet: a security score, file integrity checks and alerts, on Pollora, Bedrock or classic WordPress." 14.75
 sync_file "testing.md" "advanced/testing.md" "Testing" "Test a Pollora project with PHPUnit: unit and feature tests that reach WordPress, Async and Schedule fakes, and pollora:doctor in a CI job." 15
 sync_file "colt.md" "advanced/colt.md" "Colt" "Query WordPress posts, pages, custom post types, meta, taxonomies and users as Eloquent models in a Pollora project with pollora/colt." 16
 sync_file "query.md" "advanced/query.md" "Query" "Build the arguments of WP_Query and the other WordPress query classes with a fluent, typed API in Pollora, with pollora/query." 17
